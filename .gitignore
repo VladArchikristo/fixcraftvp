@@ -6,9 +6,36 @@ __pycache__/
 
 # Large files — GitHub 100MB limit
 .claude/plugins/cache/
-.claude/claudeclaw/whisper/models/
+.claude/claudeclaw/whisper/
 *.bin
 *.model
 
 # Logs (часто меняются, не нужны в бэкапе)
 .claude/claudeclaw/logs/
+trading-bot/logs/
+trading-bot/data/scan_logs/
+trading-bot/*.tmp
+trading-bot/data/*.lock
+
+# Inbox / photos (медиа не нужны в бэкапе)
+.claude/claudeclaw/inbox/
+coder-bot/data/photos/
+
+# Session backups (временные)
+.claude/claudeclaw/session_*.backup
+.claude/claudeclaw/session.json
+.claude/claudeclaw/state.json
+.claude/claudeclaw/daemon.pid
+
+# Conversation logs (большие, меняются постоянно)
+beast-bot/conversation_log.jsonl
+beast-bot/history_state.json
+coder-bot/conversation_log.jsonl
+coder-bot/history.json
+
+# Lock files
+*.json.lock
+
+# Cron secrets
+cron-secrets.conf
+*.conf

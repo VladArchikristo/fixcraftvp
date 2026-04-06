@@ -106,7 +106,16 @@ def _get_claude_env() -> dict:
 # ---------------------------------------------------------------------------
 # Logging — stdout + rotating file (max 2MB x 3 backups)
 # ---------------------------------------------------------------------------
-_log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+class _SafeFormatter(logging.Formatter):
+    """Formatter that redacts bot token from ALL log output."""
+    def format(self, record):
+        msg = super().format(record)
+        if BOT_TOKEN:
+            msg = msg.replace(BOT_TOKEN, "***")
+        return msg
+
+
+_log_formatter = _SafeFormatter("%(asctime)s [%(levelname)s] %(message)s")
 _stdout_handler = logging.StreamHandler(sys.stdout)
 _stdout_handler.setFormatter(_log_formatter)
 
@@ -244,8 +253,12 @@ def history_prompt() -> str:
 
 
 def _load_portfolio() -> dict:
-    """Load paper portfolio from disk."""
+    """Load paper portfolio from disk with shared file lock."""
+    lock_path = PORTFOLIO_FILE.with_suffix(".json.lock")
+    lock_fd = None
     try:
+        lock_fd = open(lock_path, "w")
+        fcntl.flock(lock_fd, fcntl.LOCK_SH)  # Shared lock — safe concurrent reads
         data = json.loads(PORTFOLIO_FILE.read_text(encoding="utf-8"))
         data.setdefault("initial_capital", 100)
         data.setdefault("cash", 100)
@@ -255,6 +268,13 @@ def _load_portfolio() -> dict:
         return data
     except Exception:
         return {"initial_capital": 100, "cash": 100, "positions": [], "closed_trades": [], "scan_history": []}
+    finally:
+        if lock_fd:
+            try:
+                fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                lock_fd.close()
+            except Exception:
+                pass
 
 
 def _portfolio_summary() -> str:

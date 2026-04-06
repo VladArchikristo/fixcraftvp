@@ -2,3 +2,89 @@
 2026-04-05 21:34:30,850 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {
 2026-04-05 21:34:30,850 [WARNING] vasily_scan: Не удалось распарсить JSON для OPEN_POSITION::  {
 2026-04-05 21:34:30,850 [WARNING] vasily_scan: Не удалось распарсить JSON для NO_ACTION::  {
+2026-04-06 00:01:00,796 [WARNING] vasily_scan: Не удалось распарсить JSON для OPEN_POSITION::  {asset: "AVAX", side: "LONG", size_usd: 13.50, entry: 9.45, stop_loss: 8.85, take_profit: 10.35, reason: "AVAX лидер alt season (+5.6%, выше всех), капитал туда бежит. Маленький размер (30% кэша) на 
+2026-04-06 00:01:00,798 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {asset: "SOL", reason: "В профите +4%, SL защищён, тренд продолжается. Может быть дальше к $85-86, но рост может спад любой момент. Ждём подтверждения alt сезона."}
+
+HOLD: {asset: "ETH", reason: "В п
+2026-04-06 00:01:00,798 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {asset: "ETH", reason: "В профите +3.9%, тренд хороший (+3.5% за сутки), следует BTC но быстрее. Может до $2230-2280 на alt season. Риск только если BTC упадёт ниже $67K."}
+
+OPEN_POSITION: {asset: "A
+2026-04-06 00:01:00,798 [WARNING] vasily_scan: Не удалось распарсить JSON для NO_ACTION::  {reason: "BTC не трогать (маленький кэш), UNI/XRP/BNB — нет каталиста. Ждём либо новостей, либо пробоя уровней на BTC (выше $70K или ниже $67K)."}
+```
+
+---
+
+## 6️⃣ ПРОГНОЗ НА 24-48 ЧАСОВ
+
+| Сценарий 
+2026-04-06 00:01:01,536 [WARNING] vasily_scan: Telegram chunk 0 attempt 1: HTTP 400
+2026-04-06 00:01:04,507 [WARNING] vasily_scan: Telegram chunk 0 attempt 2: HTTP 400
+2026-04-06 00:01:09,325 [WARNING] vasily_scan: Telegram chunk 0 attempt 3: HTTP 400
+2026-04-06 00:01:15,419 [ERROR] vasily_scan: Не удалось отправить chunk 1/1 после 3 попыток
+2026-04-06 07:49:31,750 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {asset: "SOL", reason: "Позиция +4.6%, до TP $85.92 осталось 4.2%. 
+Импульс сохраняется, SL на $76.47 безопасен. 
+Нет причин закрывать раньше времени."}
+
+HOLD: {asset: "ETH", reason: "Позиция +5.0%, 
+2026-04-06 07:49:31,751 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {asset: "ETH", reason: "Позиция +5.0%, до TP $2232 осталось 3.8%. 
+ETH сильнее BTC по % за сутки. 
+Держать до TP или трейлить SL до $2100 для защиты прибыли."}
+
+NO_ACTION: {reason: "Кэш $45 (макс поз
+2026-04-06 07:49:31,752 [WARNING] vasily_scan: Не удалось распарсить JSON для NO_ACTION::  {reason: "Кэш $45 (макс позиция $13.5) — слишком мало для значимого входа. 
+Рост идёт на геополитическом триггере (ceasefire talks) без подтверждения. 
+F&G = 13 — экстремальный страх, рынок нестабиле
+2026-04-06 09:10:45,279 [WARNING] vasily_scan: Не удалось распарсить JSON для OPEN_POSITION::  {
+  asset: "AVAX",
+  side: "LONG",
+  size_usd: 13,
+  stop_loss: 8.72,
+  take_profit: 10.65,
+  reason: "Лидер роста среди альт (+6.9%). Относительная сила 
+           к BTC говорит об интересе покупат
+2026-04-06 09:10:45,280 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {
+  asset: "SOL",
+  reason: "Позиция +4.4%, до TP $85.92 осталось 4.4%. 
+           Рынок в моменте бычий. Подтягиваем SL до $79.50 
+           для защиты прибыли."
+}
+
+HOLD: {
+  asset: "ETH",
+  reaso
+2026-04-06 09:10:45,281 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {
+  asset: "ETH",
+  reason: "Позиция +4.7%, ETH опережает BTC — сила. 
+           До TP $2232 осталось 4.1%. 
+           Подтягиваем SL до $2050."
+}
+
+OPEN_POSITION: {
+  asset: "AVAX",
+  side: "LONG",
+2026-04-06 12:01:08,783 [WARNING] vasily_scan: Не удалось распарсить JSON для OPEN_POSITION::  {
+  asset: "AVAX",
+  side: "LONG",
+  size_usd: 13,
+  stop_loss: 8.65,
+  take_profit: 10.80,
+  reason: "Лидер дня +5.6%, упомянут в новостях рядом с NEAR. 
+           Fear & Greed 13 — contrarian зона
+2026-04-06 12:01:08,784 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {
+  asset: "ETH",
+  reason: "Лидер отскока, +5.7%, до TP $2232 осталось ~3.2%. 
+           Институциональный спрос от Bitmine. Держать до цели."
+}
+
+HOLD: {
+  asset: "SOL",
+  reason: "Позиция в прибыл
+2026-04-06 12:01:08,784 [WARNING] vasily_scan: Не удалось распарсить JSON для HOLD::  {
+  asset: "SOL",
+  reason: "Позиция в прибыли +4.4%, SL безопасен. Слабее рынка — 
+           тревожно, но не критично. Держать до TP $85.92, 
+           стоп не двигать."
+}
+
+OPEN_POSITION: {
+  asse

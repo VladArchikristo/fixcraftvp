@@ -431,6 +431,20 @@ async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("История очищена.")
 
 
+async def _thinking_ticker(msg, start: float, prefix: str = "⚙️ Костя работает"):
+    """Обновляет сообщение каждые 5 сек — показывает сколько времени идёт обработка."""
+    try:
+        while True:
+            await asyncio.sleep(5)
+            elapsed = int(time.monotonic() - start)
+            try:
+                await msg.edit_text(f"{prefix}... {elapsed} сек")
+            except Exception:
+                break
+    except asyncio.CancelledError:
+        pass
+
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global _processing, _last_message_time
     if not is_allowed(update):
@@ -451,11 +465,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _processing = True
 
     thinking_msg = None
+    _ticker_task = None
     try:
-        thinking_msg = await update.message.reply_text("Думаю...")
+        _t_start = time.monotonic()
+        thinking_msg = await update.message.reply_text("⚙️ Костя работает... 0 сек")
+        _ticker_task = asyncio.create_task(_thinking_ticker(thinking_msg, _t_start))
         _log_conversation("user", user_text, update.effective_user.id)
         user_history.append({{"role": "user", "text": user_text}})
         ok, answer = await ask_claude(user_text)
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -472,6 +491,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(answer or "Ошибка. Попробуй ещё раз.")
     except Exception as e:
         log.error("handle_message error: %s", e, exc_info=True)
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -497,8 +518,11 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _processing = True
 
     thinking_msg = None
+    _ticker_task = None
     try:
-        thinking_msg = await update.message.reply_text("Анализирую фото...")
+        _t_start = time.monotonic()
+        thinking_msg = await update.message.reply_text("⚙️ Костя работает... 0 сек")
+        _ticker_task = asyncio.create_task(_thinking_ticker(thinking_msg, _t_start))
         photo = update.message.photo[-1]
         file = await context.bot.get_file(photo.file_id)
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -511,6 +535,8 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_history.append({{"role": "user", "text": f"[PHOTO] {{user_text}}"}})
 
         ok, answer = await ask_claude(user_text, image_path=str(photo_path))
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -527,6 +553,8 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(answer or "Не удалось проанализировать фото.")
     except Exception as e:
         log.error("handle_photo error: %s", e, exc_info=True)
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -1080,6 +1108,20 @@ async def cmd_newbot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(answer or "Ошибка при создании бота.")
 
 
+async def _thinking_ticker(msg, start: float, prefix: str = "⚙️ Костя работает"):
+    """Обновляет сообщение каждые 5 сек — показывает сколько времени идёт обработка."""
+    try:
+        while True:
+            await asyncio.sleep(5)
+            elapsed = int(time.monotonic() - start)
+            try:
+                await msg.edit_text(f"{prefix}... {elapsed} сек")
+            except Exception:
+                break
+    except asyncio.CancelledError:
+        pass
+
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global _processing, _last_message_time
     if not is_allowed(update):
@@ -1101,13 +1143,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _processing = True
 
     thinking_msg = None
+    _ticker_task = None
     try:
-        thinking_msg = await update.message.reply_text("Думаю...")
+        _t_start = time.monotonic()
+        thinking_msg = await update.message.reply_text("⚙️ Костя работает... 0 сек")
+        _ticker_task = asyncio.create_task(_thinking_ticker(thinking_msg, _t_start))
         _log_conversation("user", user_text, update.effective_user.id)
         user_history.append({"role": "user", "text": user_text})
 
         ok, answer = await ask_claude(user_text)
 
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -1125,6 +1172,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(answer or "Что-то пошло не так. Попробуй ещё раз.")
     except Exception as e:
         log.error("handle_message error: %s", e, exc_info=True)
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -1150,8 +1199,11 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _processing = True
 
     thinking_msg = None
+    _ticker_task = None
     try:
-        thinking_msg = await update.message.reply_text("Скачиваю и анализирую фото...")
+        _t_start = time.monotonic()
+        thinking_msg = await update.message.reply_text("⚙️ Костя работает... 0 сек")
+        _ticker_task = asyncio.create_task(_thinking_ticker(thinking_msg, _t_start))
         photo = update.message.photo[-1]
         file = await context.bot.get_file(photo.file_id)
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -1166,6 +1218,8 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         ok, answer = await ask_claude(user_text, image_path=str(photo_path))
 
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()
@@ -1183,6 +1237,8 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(answer or "Не удалось проанализировать фото.")
     except Exception as e:
         log.error("handle_photo error: %s", e, exc_info=True)
+        if _ticker_task:
+            _ticker_task.cancel()
         if thinking_msg:
             try:
                 await thinking_msg.delete()

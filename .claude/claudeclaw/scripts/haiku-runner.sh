@@ -7,8 +7,19 @@ set -euo pipefail
 export HOME="/Users/vladimirprihodko"
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
-TELEGRAM_TOKEN="8589217990:AAEEBSx_yP0fC1vU7BOdHkx1BVwij4uYaQA"
-CHAT_ID="244710532"
+# Token loaded from config — NEVER hardcode secrets in scripts
+CRON_SECRETS="$HOME/cron-secrets.conf"
+if [ -f "$CRON_SECRETS" ]; then
+    # shellcheck disable=SC1090
+    source "$CRON_SECRETS"
+fi
+TELEGRAM_TOKEN="${CRON_BOT_TOKEN:-}"
+CHAT_ID="${CRON_CHAT_ID:-244710532}"
+
+if [ -z "$TELEGRAM_TOKEN" ]; then
+    echo "$(date): ERROR — CRON_BOT_TOKEN not set in $CRON_SECRETS" >&2
+    exit 1
+fi
 LOCK_DIR="/tmp/cron-locks"
 LOG_DIR="$HOME/logs/cron"
 RETRY_DIR="/tmp/cron-retry"
@@ -27,6 +38,30 @@ acquire_lock() {
     local job_name="$1"
     local lock_path="$LOCK_DIR/$job_name"
     if mkdir "$lock_path" 2>/dev/null; then
+        echo $$ > "$lock_path/pid"
+        echo "$(date +%s)" > "$lock_path/timestamp"
+        return 0
+    fi
+    # Lock exists — check if stale (>5 min)
+    local ts_file="$lock_path/timestamp"
+    if [ -f "$ts_file" ]; then
+        local ts=$(cat "$ts_file" 2>/dev/null || echo 0)
+        local now_ts=$(date +%s)
+        local age=$((now_ts - ts))
+        if [ "$age" -gt 300 ]; then
+            # Stale lock — kill old process and take over
+            local old_pid=$(cat "$lock_path/pid" 2>/dev/null)
+            [ -n "$old_pid" ] && kill -0 "$old_pid" 2>/dev/null && kill "$old_pid" 2>/dev/null
+            rm -rf "$lock_path"
+            mkdir "$lock_path" 2>/dev/null || return 1
+            echo $$ > "$lock_path/pid"
+            echo "$(date +%s)" > "$lock_path/timestamp"
+            return 0
+        fi
+    else
+        # No timestamp = orphaned lock — clean up
+        rm -rf "$lock_path"
+        mkdir "$lock_path" 2>/dev/null || return 1
         echo $$ > "$lock_path/pid"
         echo "$(date +%s)" > "$lock_path/timestamp"
         return 0
@@ -95,16 +130,21 @@ job_monitor() {
     fi
 
     # Check bots
-    for bot_name in beast vasily masha; do
+    for bot_name in beast vasily masha kostya; do
         local hb_file="$HOME/logs/${bot_name}-heartbeat"
         if [ -f "$hb_file" ]; then
             local raw_hb=$(cat "$hb_file" 2>/dev/null)
             local last_hb
-            # Handle both epoch timestamps and ISO dates
+            # Handle both epoch timestamps and ISO dates (2026-04-06T09:24:50.478897)
             if echo "$raw_hb" | grep -qE '^[0-9]+$'; then
                 last_hb=$raw_hb
+            elif echo "$raw_hb" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T'; then
+                # Strip fractional seconds and timezone, parse ISO date
+                local clean_hb
+                clean_hb=$(echo "$raw_hb" | sed 's/\.[0-9]*//' | sed 's/[+-][0-9:]*$//')
+                last_hb=$(date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_hb" +%s 2>/dev/null || echo 0)
             else
-                last_hb=$(date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$raw_hb" | cut -d. -f1)" +%s 2>/dev/null || echo 0)
+                last_hb=0
             fi
             local now=$(date +%s)
             local diff=$((now - last_hb))
@@ -129,19 +169,45 @@ job_monitor() {
 }
 
 job_self_check() {
-    local status="🔍 *Self-check* $(date '+%H:%M')\n"
+    local status="🔍 *Self-Check* $(date '+%H:%M')\n\n"
+    local problems=""
 
-    # Disk
+    # Check bots via PID files (reliable method)
+    for bot_entry in "Beast:beast-bot" "Вася:vasily-bot" "Маша:masha-bot" "Костя:kostya-bot"; do
+        local label="${bot_entry%%:*}"
+        local pid_name="${bot_entry##*:}"
+        local pid_file="$HOME/logs/${pid_name}.pid"
+        if [ -f "$pid_file" ]; then
+            local pid=$(cat "$pid_file" 2>/dev/null | tr -d ' \n')
+            if [ -n "$pid" ] && ps -p "$pid" -o pid= > /dev/null 2>&1; then
+                status+="✅ $label: PID $pid\n"
+            else
+                status+="❌ $label\n"
+                problems+="$label мёртв\n"
+            fi
+        else
+            status+="❌ $label: no PID\n"
+            problems+="$label — нет PID файла\n"
+        fi
+    done
+
+    # Check Nexus via launchctl
+    local nexus_pid=$(launchctl list 2>/dev/null | grep claudeclaw | awk '{print $1}')
+    if [ -n "$nexus_pid" ] && [ "$nexus_pid" != "-" ] && echo "$nexus_pid" | grep -qE '^[0-9]+$'; then
+        status+="✅ Nexus: PID $nexus_pid\n"
+    else
+        status+="❌ Nexus\n"
+        problems+="Nexus не запущен\n"
+    fi
+
+    # Disk & Logs
     local disk_usage=$(df -h / | awk 'NR==2{print $5}')
-    status+="💾 Disk: $disk_usage\n"
+    local log_size=$(du -sh "$HOME/logs" 2>/dev/null | awk '{print $1}')
+    status+="💾 Диск: $disk_usage | Логи: ${log_size:-?}\n"
 
-    # Memory
-    local mem_pressure=$(memory_pressure 2>/dev/null | head -1 || echo "N/A")
-    status+="🧠 Memory: $mem_pressure\n"
-
-    # LaunchAgents
-    local agents_count=$(launchctl list 2>/dev/null | grep -c vladimir || echo 0)
-    status+="⚙️ LaunchAgents: $agents_count loaded\n"
+    if [ -n "$problems" ]; then
+        status+="\n⚠️ Есть проблемы!\n$problems"
+    fi
 
     send_telegram "$status"
 }

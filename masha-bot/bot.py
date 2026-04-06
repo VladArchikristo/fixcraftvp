@@ -88,6 +88,7 @@ START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False
 _processing_lock = asyncio.Lock()
+_message_queue: deque = deque(maxlen=5)  # queue up to 5 messages
 
 
 def _get_claude_env() -> dict:
@@ -107,8 +108,17 @@ def _get_claude_env() -> dict:
 
 # ---------------------------------------------------------------------------
 # Logging — stdout only (LaunchAgent redirects to ~/logs/masha-bot.log)
+# Token sanitization: never leak bot token in logs
 # ---------------------------------------------------------------------------
-_log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+class _SafeFormatter(logging.Formatter):
+    """Replaces bot token with *** in all log output."""
+    def format(self, record):
+        msg = super().format(record)
+        if BOT_TOKEN and len(BOT_TOKEN) > 10:
+            msg = msg.replace(BOT_TOKEN, "***")
+        return msg
+
+_log_formatter = _SafeFormatter("%(asctime)s [%(levelname)s] %(message)s")
 _stdout_handler = logging.StreamHandler(sys.stdout)
 _stdout_handler.setFormatter(_log_formatter)
 
@@ -254,7 +264,8 @@ async def _safe_reply(message, text: str):
     """Send with Markdown, fallback to plain text on parse error."""
     try:
         await message.reply_text(text, parse_mode=ParseMode.MARKDOWN)
-    except Exception:
+    except Exception as e:
+        log.debug("Markdown parse failed, falling back to plain text: %s", e)
         await message.reply_text(text)
 
 
@@ -452,7 +463,7 @@ async def cmd_deploy(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
     await update.message.reply_text("Запускаю деплой сайта на Vercel...")
     try:
-        result = await asyncio.get_event_loop().run_in_executor(
+        result = await asyncio.get_running_loop().run_in_executor(
             _claude_executor,
             lambda: subprocess.run(
                 ["vercel", "--prod", "--yes"],
@@ -494,27 +505,13 @@ async def cmd_set_mode(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Неизвестный режим.")
 
 
-async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    if not is_allowed(update):
-        return
-
-    user_text = update.message.text
-    if not user_text:
-        return
-
-    log.info("Message from %s: %.100s", update.effective_user.id, user_text)
-
-    global _processing
-    async with _processing_lock:
-        if _processing:
-            await update.message.reply_text("Подожди, обрабатываю предыдущий запрос...")
-            return
-        _processing = True
-
+async def _process_single_message(update: Update, user_text: str, image_path: str | None = None):
+    """Process a single message (text or photo) through Claude."""
     thinking_msg = None
     status_task = None
     try:
-        thinking_msg = await update.message.reply_text("Думаю...")
+        thinking_label = "Смотрю скрин..." if image_path else "Думаю..."
+        thinking_msg = await update.message.reply_text(thinking_label)
 
         # Periodic status updates while Claude works
         async def _status_updater():
@@ -535,10 +532,16 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
         status_task = asyncio.create_task(_status_updater())
 
-        user_history.append({"role": "user", "text": user_text[:2000]})
-        _log_conversation("user", user_text, update.effective_user.id)
-
-        success, answer = await ask_claude(user_text, update.effective_user.id)
+        if image_path:
+            caption = user_text or ""
+            hist_text = f"[скриншот] {caption}" if caption else "[скриншот]"
+            user_history.append({"role": "user", "text": hist_text[:2000]})
+            _log_conversation("user", hist_text, update.effective_user.id)
+            success, answer = await ask_claude(caption, update.effective_user.id, image_path=image_path)
+        else:
+            user_history.append({"role": "user", "text": user_text[:2000]})
+            _log_conversation("user", user_text, update.effective_user.id)
+            success, answer = await ask_claude(user_text, update.effective_user.id)
 
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
@@ -562,7 +565,7 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
                     break
 
     except Exception as e:
-        log.error("handle_message error: %s", e, exc_info=True)
+        log.error("_process_single_message error: %s", e, exc_info=True)
         try:
             if thinking_msg:
                 await thinking_msg.delete()
@@ -575,8 +578,58 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     finally:
         if status_task:
             status_task.cancel()
+        if image_path:
+            try:
+                os.unlink(image_path)
+            except OSError:
+                pass
+
+
+async def _drain_queue(update: Update):
+    """Process queued messages one by one after current message finishes."""
+    global _processing
+    while True:
         async with _processing_lock:
-            _processing = False
+            if not _message_queue:
+                _processing = False
+                return
+            queued_update, queued_text, queued_image = _message_queue.popleft()
+
+        remaining = len(_message_queue)
+        if remaining > 0:
+            try:
+                await queued_update.message.reply_text(f"Подожди {remaining}с.")
+            except Exception:
+                pass
+
+        await _process_single_message(queued_update, queued_text, queued_image)
+
+
+async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+
+    user_text = update.message.text
+    if not user_text:
+        return
+
+    log.info("Message from %s: %.100s", update.effective_user.id, user_text)
+
+    global _processing
+    async with _processing_lock:
+        if _processing:
+            if len(_message_queue) >= 5:
+                await update.message.reply_text("Очередь полная (5). Подожди немного.")
+                return
+            _message_queue.append((update, user_text, None))
+            pos = len(_message_queue)
+            await update.message.reply_text(f"В очереди ({pos}). Дойду скоро.")
+            return
+        _processing = True
+
+    await _process_single_message(update, user_text)
+    # Drain any queued messages
+    await _drain_queue(update)
 
 
 async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -586,73 +639,40 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     log.info("Photo from %s", update.effective_user.id)
 
-    global _processing
-    async with _processing_lock:
-        if _processing:
-            await update.message.reply_text("Подожди, обрабатываю предыдущий запрос...")
-            return
-        _processing = True
-
-    thinking_msg = None
+    # Download photo immediately (before queueing, since Telegram file links expire)
     tmp_path = None
     try:
-        thinking_msg = await update.message.reply_text("Смотрю скрин...")
-
         photo = update.message.photo[-1]
         tg_file = await photo.get_file()
-
         fd, tmp_path = tempfile.mkstemp(suffix=".jpg", prefix="masha_photo_")
         os.close(fd)
         await tg_file.download_to_drive(tmp_path)
         log.info("Photo saved to %s (%d bytes)", tmp_path, Path(tmp_path).stat().st_size)
-
-        caption = update.message.caption or ""
-        user_text_for_history = f"[скриншот] {caption}" if caption else "[скриншот]"
-        user_history.append({"role": "user", "text": user_text_for_history[:2000]})
-        _log_conversation("user", user_text_for_history, update.effective_user.id)
-
-        success, answer = await ask_claude(caption, update.effective_user.id, image_path=tmp_path)
-
-        if success:
-            user_history.append({"role": "assistant", "text": answer[:2000]})
-            _save_history()
-            _log_conversation("assistant", answer, update.effective_user.id)
-
-        try:
-            await thinking_msg.delete()
-        except Exception:
-            pass
-
-        chunks = _split_message(answer)
-        if not chunks:
-            await update.message.reply_text("Не получил ответ. Попробуй ещё раз.")
-        else:
-            for chunk in chunks:
-                try:
-                    await _safe_reply(update.message, chunk)
-                except Exception as e:
-                    log.error("Send error: %s", e)
-                    break
-
     except Exception as e:
-        log.error("handle_photo error: %s", e, exc_info=True)
-        try:
-            if thinking_msg:
-                await thinking_msg.delete()
-        except Exception:
-            pass
-        try:
-            await update.message.reply_text("Не удалось обработать скриншот. Попробуй ещё раз.")
-        except Exception:
-            pass
-    finally:
-        if tmp_path:
-            try:
-                os.unlink(tmp_path)
-            except OSError:
-                pass
-        async with _processing_lock:
-            _processing = False
+        log.error("Failed to download photo: %s", e)
+        await update.message.reply_text("Не удалось скачать фото. Попробуй ещё раз.")
+        return
+
+    caption = update.message.caption or ""
+
+    global _processing
+    async with _processing_lock:
+        if _processing:
+            if len(_message_queue) >= 5:
+                await update.message.reply_text("Очередь полная (5). Подожди немного.")
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+                return
+            _message_queue.append((update, caption, tmp_path))
+            pos = len(_message_queue)
+            await update.message.reply_text(f"В очереди ({pos}). Дойду скоро.")
+            return
+        _processing = True
+
+    await _process_single_message(update, caption, image_path=tmp_path)
+    await _drain_queue(update)
 
 
 # ---------------------------------------------------------------------------

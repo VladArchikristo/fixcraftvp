@@ -28,7 +28,21 @@
 ## Другие боты на Mac Mini
 - **Василий** (@vasily_trader_bot) — трейдер, ~/Папка тест/fixcraftvp/trading-bot/
 - **Маша** (@masha_marketer_bot) — маркетолог, ~/Папка тест/fixcraftvp/masha-bot/
+- **Костя** (@KostyaCoderBot) — программист, ~/Папка тест/fixcraftvp/coder-bot/
 - **Nexus** (ClaudeClaw) — автономный ассистент
+
+## Как проверять статус ботов (Self-Check)
+ВАЖНО: Процессы ботов НЕ содержат имя бота в командной строке! Все выглядят как `Python telegram_bot.py` или `Python bot.py`.
+
+**Правильный способ проверки:**
+1. **Через PID файлы** (самый надёжный):
+   - Василий: `cat ~/logs/vasily-bot.pid` → проверить `ps -p <PID>`
+   - Маша: `cat ~/logs/masha-bot.pid` → проверить `ps -p <PID>`
+   - Костя: `cat ~/logs/kostya-bot.pid` → проверить `ps -p <PID>`
+   - Beast: `cat ~/logs/beast-bot.pid` → проверить `ps -p <PID>`
+2. **Nexus/ClaudeClaw**: `launchctl list | grep claudeclaw` или `ps aux | grep claudeclaw | grep -v grep`
+3. **Через LaunchAgent**: `launchctl list | grep vladimir`
+4. **НЕ ДЕЛАЙ** `ps aux | grep vasily` — это НЕ работает, в процессе нет имени бота!
 
 ## Правила
 1. НИКОГДА не выполняй деструктивные команды без явного запроса (rm -rf, drop database, etc)

@@ -10,6 +10,7 @@ import subprocess
 import sys
 import os
 import time
+import fcntl
 import logging
 from logging.handlers import RotatingFileHandler
 import requests
@@ -18,6 +19,7 @@ from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from dotenv import load_dotenv
+import html as html_mod
 
 # ─── Конфиг ───────────────────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -54,6 +56,7 @@ ASSET_SYMBOLS = {
 
 # ─── Портфель ─────────────────────────────────────────────────────────────────
 def load_portfolio():
+    """Load portfolio with shared file lock to prevent reading during write."""
     if not PORTFOLIO_FILE.exists():
         default = {
             "initial_capital": 100,
@@ -67,22 +70,38 @@ def load_portfolio():
         with open(PORTFOLIO_FILE, "w") as f:
             json.dump(default, f, indent=2, ensure_ascii=False)
         return default
+    lock_path = PORTFOLIO_FILE.with_suffix(".json.lock")
+    lock_fd = None
     try:
+        lock_fd = open(lock_path, "w")
+        fcntl.flock(lock_fd, fcntl.LOCK_SH)  # Shared lock — multiple readers OK
         with open(PORTFOLIO_FILE, "r") as f:
             return json.load(f)
     except (json.JSONDecodeError, ValueError) as e:
-        print(f"[ERROR] Portfolio file corrupted: {e}")
+        log.error("Portfolio file corrupted: %s", e)
         backup = PORTFOLIO_FILE.with_suffix(".json.bak")
         PORTFOLIO_FILE.rename(backup)
-        print(f"[WARN] Backed up corrupted portfolio to {backup}")
+        log.warning("Backed up corrupted portfolio to %s", backup)
         return load_portfolio()
+    finally:
+        if lock_fd:
+            try:
+                fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                lock_fd.close()
+            except Exception:
+                pass
 
 def save_portfolio(portfolio):
-    """Save portfolio atomically (write to tmp → rename) to prevent corruption."""
+    """Save portfolio atomically with file lock to prevent race conditions.
+    Uses fcntl.flock on a .lock file + atomic write (tmp → rename)."""
     import tempfile
     portfolio["updated_at"] = datetime.now().isoformat()
+    lock_path = PORTFOLIO_FILE.with_suffix(".json.lock")
+    lock_fd = None
     tmp_path = None
     try:
+        lock_fd = open(lock_path, "w")
+        fcntl.flock(lock_fd, fcntl.LOCK_EX)  # Exclusive lock — blocks until free
         fd, tmp_path = tempfile.mkstemp(dir=PORTFOLIO_FILE.parent, suffix=".tmp")
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(portfolio, f, indent=2, ensure_ascii=False)
@@ -94,6 +113,13 @@ def save_portfolio(portfolio):
             try:
                 os.unlink(tmp_path)
             except OSError:
+                pass
+    finally:
+        if lock_fd:
+            try:
+                fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                lock_fd.close()
+            except Exception:
                 pass
 
 # ─── Рыночные данные ──────────────────────────────────────────────────────────
@@ -113,7 +139,8 @@ def fetch_fear_greed():
         data = r.json()
         d = data["data"][0]
         return f"{d['value']} ({d['value_classification']})"
-    except:
+    except (requests.RequestException, KeyError, IndexError, ValueError) as e:
+        log.warning("fetch_fear_greed failed: %s", e)
         return "N/A"
 
 def fetch_news():
@@ -171,7 +198,8 @@ def fetch_btc_dominance():
         btc_dom = data["data"]["market_cap_percentage"].get("btc", 0)
         total_mcap = data["data"]["total_market_cap"].get("usd", 0)
         return round(btc_dom, 1), round(total_mcap / 1e12, 2)
-    except:
+    except (requests.RequestException, KeyError, ValueError) as e:
+        log.warning("fetch_btc_dominance failed: %s", e)
         return "N/A", "N/A"
 
 # ─── P&L расчёт + автоматическое закрытие по SL/TP ───────────────────────────
@@ -380,10 +408,19 @@ def _extract_json_object(text: str):
         elif ch == '}':
             depth -= 1
             if depth == 0:
-                try:
-                    return json.loads(text[start:i + 1])
-                except (json.JSONDecodeError, ValueError):
-                    return None
+                raw = text[start:i + 1]
+                # Cascade of fixes: try each level of repair
+                for fixer in [
+                    lambda t: t,                                          # raw
+                    _fix_multiline_strings,                               # fix newlines in strings
+                    _fix_unquoted_keys,                                   # fix unquoted keys
+                    lambda t: _fix_unquoted_keys(_fix_multiline_strings(t)),  # both fixes
+                ]:
+                    try:
+                        return json.loads(fixer(raw))
+                    except (json.JSONDecodeError, ValueError):
+                        continue
+                return None
     return None
 
 
@@ -405,6 +442,42 @@ COMMAND_PREFIXES = {
 _JSON_RE = re.compile(r'\{(?:[^{}]|\{[^{}]*\})*\}')
 
 
+def _fix_unquoted_keys(text: str) -> str:
+    """Fix unquoted JSON keys: {asset: "BTC"} → {"asset": "BTC"}.
+    Claude sometimes returns JS-style objects instead of valid JSON."""
+    # Match unquoted keys before colon (word chars, not already quoted)
+    return re.sub(r'(?<=[{,])\s*([a-zA-Z_]\w*)\s*:', r' "\1":', text)
+
+
+def _fix_multiline_strings(text: str) -> str:
+    """Fix literal newlines inside JSON string values.
+    Claude often returns multi-line reason fields like:
+      "reason": "Line one.
+                 Line two."
+    which is invalid JSON. Replace newlines inside strings with spaces."""
+    result = []
+    in_string = False
+    escape = False
+    for ch in text:
+        if escape:
+            result.append(ch)
+            escape = False
+            continue
+        if ch == '\\' and in_string:
+            result.append(ch)
+            escape = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+            result.append(ch)
+            continue
+        if in_string and ch == '\n':
+            result.append(' ')  # Replace newline with space inside strings
+            continue
+        result.append(ch)
+    return ''.join(result)
+
+
 def _try_parse_json(text: str):
     """Пытаемся извлечь JSON из строки, поддерживая разные форматы Claude."""
     text = text.strip()
@@ -413,11 +486,23 @@ def _try_parse_json(text: str):
         return json.loads(text)
     except (json.JSONDecodeError, ValueError):
         pass
+    # Попытка починить unquoted keys
+    try:
+        fixed = _fix_unquoted_keys(text)
+        return json.loads(fixed)
+    except (json.JSONDecodeError, ValueError):
+        pass
     # Поиск JSON внутри строки через regex
     match = _JSON_RE.search(text)
     if match:
         try:
             return json.loads(match.group())
+        except (json.JSONDecodeError, ValueError):
+            pass
+        # Попытка починить unquoted keys в найденном JSON
+        try:
+            fixed = _fix_unquoted_keys(match.group())
+            return json.loads(fixed)
         except (json.JSONDecodeError, ValueError):
             pass
     return None
@@ -575,8 +660,8 @@ def ask_claude(prompt):
     """Вызываем Claude через CLI"""
     try:
         result = subprocess.run(
-            [CLAUDE_PATH, "-p", prompt, "--model", "claude-haiku-4-5", "--output-format", "text"],
-            capture_output=True, text=True, timeout=120,
+            [CLAUDE_PATH, "-p", prompt, "--model", "claude-sonnet-4-6", "--output-format", "text"],
+            capture_output=True, text=True, timeout=180,
             cwd="/Users/vladimirprihodko/Папка тест/fixcraftvp"
         )
         if result.returncode == 0:
@@ -585,28 +670,61 @@ def ask_claude(prompt):
             log.error("Claude stderr: %s", result.stderr[:500])
             return None
     except subprocess.TimeoutExpired:
-        log.error("Claude timeout после 120 сек")
+        log.error("Claude timeout после 180 сек")
         return None
     except Exception as e:
         log.error("ask_claude error: %s", e)
         return None
 
 # ─── Telegram ─────────────────────────────────────────────────────────────────
+def _smart_split(text: str, limit: int = 4000) -> list[str]:
+    """Split text preferring line boundaries so tables/sections stay intact."""
+    chunks = []
+    while text:
+        if len(text) <= limit:
+            chunks.append(text)
+            break
+        # Try to split at a blank line (section boundary) first
+        split_at = text.rfind("\n\n", 0, limit)
+        if split_at <= 0:
+            # Fall back to any newline
+            split_at = text.rfind("\n", 0, limit)
+        if split_at <= 0:
+            # Last resort: hard cut
+            split_at = limit
+        chunks.append(text[:split_at])
+        text = text[split_at:].lstrip("\n")
+    return chunks
+
+
 def send_telegram(text, max_len=4000):
-    """Отправка в Telegram с retry (разбиваем длинные сообщения)."""
-    chunks = [text[i:i+max_len] for i in range(0, len(text), max_len)]
+    """Отправка в Telegram с retry. HTML fallback → plain text если парсинг не удался."""
+    chunks = _smart_split(text, max_len)
     for i, chunk in enumerate(chunks):
         sent = False
         for attempt in range(3):
             try:
+                # First try HTML parse_mode
+                parse_mode = "HTML" if attempt < 2 else None
                 resp = requests.post(
                     f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-                    json={"chat_id": CHAT_ID, "text": chunk, "parse_mode": "HTML"},
+                    json={"chat_id": CHAT_ID, "text": chunk, "parse_mode": parse_mode},
                     timeout=15
                 )
                 if resp.status_code == 200:
                     sent = True
                     break
+                # If HTTP 400 (bad markup), retry without parse_mode immediately
+                if resp.status_code == 400 and attempt == 0:
+                    log.warning("Telegram HTML parse failed, retrying as plain text")
+                    resp2 = requests.post(
+                        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+                        json={"chat_id": CHAT_ID, "text": chunk},
+                        timeout=15
+                    )
+                    if resp2.status_code == 200:
+                        sent = True
+                        break
                 log.warning("Telegram chunk %d attempt %d: HTTP %d", i, attempt + 1, resp.status_code)
             except Exception as e:
                 log.warning("Telegram chunk %d attempt %d: %s", i, attempt + 1, e)
@@ -632,8 +750,9 @@ def save_log(scan_result):
 def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, total_value, fear_greed, btc_dom):
     now = datetime.now().strftime("%d.%m.%Y %H:%M")
 
-    # Сокращаем анализ до 2500 символов для Telegram
-    analysis_short = analysis[:2500] + "..." if len(analysis) > 2500 else analysis
+    # Экранируем HTML спецсимволы в анализе Claude (< > & ломают parse_mode=HTML)
+    analysis_safe = html_mod.escape(analysis)
+    analysis_short = analysis_safe[:3500] + "\n..." if len(analysis_safe) > 3500 else analysis_safe
 
     trades_text = "\n".join(trade_log) if trade_log else "Действий не выполнено"
     pnl_text = "\n".join(pnl_lines) if pnl_lines else "Нет открытых позиций"
