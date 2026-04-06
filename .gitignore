@@ -3,3 +3,12 @@ node_modules/
 __pycache__/
 *.pyc
 .env
+
+# Large files — GitHub 100MB limit
+.claude/plugins/cache/
+.claude/claudeclaw/whisper/models/
+*.bin
+*.model
+
+# Logs (часто меняются, не нужны в бэкапе)
+.claude/claudeclaw/logs/
