@@ -1,0 +1,44 @@
+{
+  "model": "claude-sonnet-4-6",
+  "api": "",
+  "fallback": {
+    "model": "claude-sonnet-4-6",
+    "api": ""
+  },
+  "agentic": {
+    "enabled": true,
+    "defaultMode": "implementation",
+    "modes": [
+      {
+        "name": "planning",
+        "model": "claude-opus-4-6",
+        "keywords": ["plan", "design", "architect", "research", "analyze", "think", "evaluate", "review", "audit", "compare", "strategy", "decide", "complex", "debug", "refactor", "migrate", "security", "architecture", "explain", "why", "tradeoff"]
+      },
+      {
+        "name": "implementation",
+        "model": "claude-sonnet-4-6",
+        "keywords": ["implement", "code", "write", "fix", "deploy", "test", "commit", "create", "add", "update", "change", "run", "install", "build", "setup", "start", "stop", "restart", "status", "check", "list", "show", "read", "send", "delete"]
+      }
+    ]
+  },
+  "timezone": "UTC-5",
+  "heartbeat": {
+    "enabled": true,
+    "interval": 30,
+    "prompt": "Check git status and summarize recent changes. Save a brief status update to ~/ObsidianVault/ClaudeClaw-Memory/heartbeat-latest.md with current date, status, and any issues found. Keep the file short — max 10 lines."
+  },
+  "telegram": {
+    "token": "",
+    "allowedUserIds": [244710532]
+  },
+  "discord": {
+    "token": "",
+    "allowedUserIds": [],
+    "listenChannels": []
+  },
+  "security": {
+    "level": "moderate",
+    "allowedTools": [],
+    "disallowedTools": ["Bash(rm -rf:*)", "Bash(rm -r:*)", "Bash(sudo:*)"]
+  }
+}

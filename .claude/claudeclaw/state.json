@@ -1,0 +1,1 @@
+{"heartbeat":{"nextAt":1775440654532},"jobs":[{"name":"compress-logs","nextAt":1775611680000}],"security":"moderate","telegram":true,"discord":false,"startedAt":1775438854519,"web":{"enabled":true,"host":"127.0.0.1","port":4632}}

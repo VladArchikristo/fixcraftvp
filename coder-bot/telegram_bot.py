@@ -1,0 +1,1242 @@
+#!/usr/bin/env python3
+"""
+Костя — бот-программист архитектор.
+Claude Opus 4.6 | Читает фото | Знает всех ботов | Создаёт суббота.
+Singleton, LaunchAgent restarts, heartbeat, Claude CLI.
+"""
+from __future__ import annotations
+
+import atexit
+import os
+import sys
+import fcntl
+import signal
+import time
+import logging
+from logging.handlers import RotatingFileHandler
+import subprocess
+import asyncio
+from pathlib import Path
+from datetime import datetime
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
+
+import json
+import tempfile
+from dotenv import load_dotenv
+from telegram import Update
+from telegram.error import Conflict, NetworkError, TimedOut
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    MessageHandler,
+    filters,
+    ContextTypes,
+)
+
+# ---------------------------------------------------------------------------
+# Config
+# ---------------------------------------------------------------------------
+SCRIPT_DIR = Path(__file__).resolve().parent
+load_dotenv(SCRIPT_DIR / ".env")
+
+BOT_TOKEN = os.getenv("KOSTYA_BOT_TOKEN", "")
+ALLOWED_USER = 244710532
+CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
+PROJECT_ROOT = Path("/Users/vladimirprihodko/Папка тест/fixcraftvp")
+WORKING_DIR = str(PROJECT_ROOT)
+CLAUDE_TIMEOUT = 3600
+RATE_LIMIT_SEC = 3
+MAX_PROMPT_CHARS = 60000
+
+LOG_DIR = Path.home() / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+PID_FILE = LOG_DIR / "kostya-bot.pid"
+HEARTBEAT_FILE = LOG_DIR / "kostya-heartbeat"
+LOCK_FILE = LOG_DIR / "kostya-bot.lock"
+
+PHOTO_DIR = SCRIPT_DIR / "data" / "photos"
+PHOTO_DIR.mkdir(parents=True, exist_ok=True)
+
+# ---------------------------------------------------------------------------
+# Реестр ботов — добавляй сюда новых, Костя будет о них знать
+# ---------------------------------------------------------------------------
+BOTS_REGISTRY = {
+    "vasily": {
+        "label": "Василий",
+        "handle": "@vasily_trader_bot",
+        "role": "трейдер, финансовый аналитик",
+        "dir": str(PROJECT_ROOT / "trading-bot"),
+        "main_file": "telegram_bot.py",
+        "pid_file": str(LOG_DIR / "vasily-bot.pid"),
+        "log_file": str(LOG_DIR / "vasily-bot-main.log"),
+        "heartbeat": str(LOG_DIR / "vasily-heartbeat"),
+        "launcher": str(Path.home() / "vasily-launcher.sh"),
+        "launchagent": "com.vasily.market-scan",
+        "notes": "Основной файл: telegram_bot.py, логика сканов: market_scan.py, портфель: data/paper_portfolio.json",
+    },
+    "masha": {
+        "label": "Маша",
+        "handle": "@masha_marketer_bot",
+        "role": "маркетолог, контент-менеджер",
+        "dir": str(PROJECT_ROOT / "masha-bot"),
+        "main_file": "bot.py",
+        "pid_file": str(LOG_DIR / "masha-bot.pid"),
+        "log_file": str(LOG_DIR / "masha-bot.log"),
+        "heartbeat": str(LOG_DIR / "masha-heartbeat"),
+        "launcher": str(Path.home() / "masha-launcher.sh"),
+        "launchagent": "com.vladimir.masha-bot",
+        "notes": "",
+    },
+    "beast": {
+        "label": "Beast",
+        "handle": "@Antropic_BeastBot",
+        "role": "главный ассистент, точка входа от Влада",
+        "dir": str(PROJECT_ROOT / "beast-bot"),
+        "main_file": "bot.py",
+        "pid_file": str(LOG_DIR / "beast-bot.pid"),
+        "log_file": str(LOG_DIR / "beast-bot-main.log"),
+        "heartbeat": str(LOG_DIR / "beast-heartbeat"),
+        "launcher": str(Path.home() / "beast-launcher.sh"),
+        "launchagent": "com.vladimir.beast-bot",
+        "notes": "ВАЖНО: beast-bot/bot.py — НЕ редактировать никогда",
+    },
+    "kostya": {
+        "label": "Костя",
+        "handle": "@KostyaCoderBot",
+        "role": "программист-архитектор, помогает всем ботам",
+        "dir": str(PROJECT_ROOT / "coder-bot"),
+        "main_file": "telegram_bot.py",
+        "pid_file": str(LOG_DIR / "kostya-bot.pid"),
+        "log_file": str(LOG_DIR / "kostya-bot-main.log"),
+        "heartbeat": str(LOG_DIR / "kostya-heartbeat"),
+        "launcher": str(Path.home() / "kostya-launcher.sh"),
+        "launchagent": "com.vladimir.kostya-bot",
+        "notes": "",
+    },
+}
+
+# ---------------------------------------------------------------------------
+# Шаблон нового бота (используется командой /newbot)
+# ---------------------------------------------------------------------------
+BOT_TEMPLATE = '''#!/usr/bin/env python3
+"""
+{BOT_LABEL} — {BOT_ROLE}
+Создан Костей {CREATED_DATE}
+"""
+from __future__ import annotations
+
+import atexit
+import os
+import sys
+import fcntl
+import signal
+import time
+import logging
+from logging.handlers import RotatingFileHandler
+import subprocess
+import asyncio
+from pathlib import Path
+from datetime import datetime
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
+import json
+import tempfile
+
+from dotenv import load_dotenv
+from telegram import Update
+from telegram.error import Conflict, NetworkError, TimedOut
+from telegram.ext import (
+    ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes,
+)
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+load_dotenv(SCRIPT_DIR / ".env")
+
+BOT_TOKEN = os.getenv("{ENV_TOKEN_KEY}", "")
+ALLOWED_USER = 244710532
+CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
+WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
+CLAUDE_TIMEOUT = 3600
+RATE_LIMIT_SEC = 3
+MAX_PROMPT_CHARS = 60000
+MODEL = "{MODEL}"
+
+LOG_DIR = Path.home() / "logs"
+LOG_DIR.mkdir(exist_ok=True)
+PID_FILE = LOG_DIR / "{BOT_ID}-bot.pid"
+HEARTBEAT_FILE = LOG_DIR / "{BOT_ID}-heartbeat"
+LOCK_FILE = LOG_DIR / "{BOT_ID}-bot.lock"
+
+PHOTO_DIR = SCRIPT_DIR / "data" / "photos"
+PHOTO_DIR.mkdir(parents=True, exist_ok=True)
+
+SYSTEM_PROMPT = """{SYSTEM_PROMPT}"""
+
+START_TIME = datetime.now()
+_claude_executor = ThreadPoolExecutor(max_workers=1)
+_processing = False
+_processing_lock = asyncio.Lock()
+_last_message_time: float = 0.0
+_rate_limit_lock = asyncio.Lock()
+
+
+def _get_claude_env() -> dict:
+    env = {{
+        "HOME": str(Path.home()),
+        "PATH": os.environ.get("PATH", "/usr/bin:/usr/local/bin"),
+        "USER": os.environ.get("USER", ""),
+        "LANG": os.environ.get("LANG", "en_US.UTF-8"),
+        "TERM": os.environ.get("TERM", "xterm-256color"),
+    }}
+    tmpdir = os.environ.get("TMPDIR")
+    if tmpdir:
+        env["TMPDIR"] = tmpdir
+    return env
+
+
+_log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+_stdout_handler = logging.StreamHandler(sys.stdout)
+_stdout_handler.setFormatter(_log_formatter)
+_file_handler = RotatingFileHandler(
+    LOG_DIR / "{BOT_ID}-bot-main.log", maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
+_file_handler.setFormatter(_log_formatter)
+logging.basicConfig(level=logging.INFO, handlers=[_stdout_handler, _file_handler])
+log = logging.getLogger("{BOT_ID}")
+
+_lock_fd = None
+
+
+def acquire_lock():
+    global _lock_fd
+    _lock_fd = open(LOCK_FILE, "w")
+    try:
+        fcntl.flock(_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        _lock_fd.close()
+        _lock_fd = None
+        log.info("Another instance is already running. Exiting.")
+        sys.exit(0)
+    _lock_fd.write(str(os.getpid()))
+    _lock_fd.flush()
+
+
+def write_pid():
+    PID_FILE.write_text(str(os.getpid()))
+
+
+def write_heartbeat():
+    HEARTBEAT_FILE.write_text(datetime.now().isoformat())
+
+
+async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
+    try:
+        write_heartbeat()
+    except Exception as e:
+        log.error("Heartbeat write failed: %s", e)
+
+
+HISTORY_FILE = SCRIPT_DIR / "history.json"
+user_history: deque = deque(maxlen=40)
+CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
+
+
+def _log_conversation(role: str, text: str, user_id=None):
+    entry = {{"ts": datetime.now().isoformat(), "role": role, "user_id": user_id, "text": text[:5000]}}
+    try:
+        with open(CONVERSATION_LOG, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\\n")
+    except Exception as e:
+        log.warning("Failed to write conversation log: %s", e)
+
+
+def _load_history():
+    if not HISTORY_FILE.exists():
+        return
+    try:
+        data = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
+        if not isinstance(data, list):
+            raise ValueError("history is not a list")
+        for item in data[-40:]:
+            if isinstance(item, dict) and "role" in item and "text" in item:
+                user_history.append(item)
+    except (json.JSONDecodeError, ValueError) as e:
+        log.error("History corrupted: %s. Starting fresh.", e)
+        try:
+            HISTORY_FILE.rename(HISTORY_FILE.with_suffix(".json.bak"))
+        except Exception:
+            pass
+    except Exception as e:
+        log.warning("Failed to load history: %s", e)
+
+
+def _save_history():
+    tmp_path = None
+    try:
+        data = json.dumps(list(user_history), ensure_ascii=False)
+        fd, tmp_path = tempfile.mkstemp(dir=SCRIPT_DIR, suffix=".tmp")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(data)
+        os.replace(tmp_path, str(HISTORY_FILE))
+        tmp_path = None
+    except Exception as e:
+        log.warning("Failed to save history: %s", e)
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
+def history_prompt() -> str:
+    if not user_history:
+        return ""
+    lines = []
+    total_chars = 0
+    for msg in reversed(list(user_history)):
+        role = "Влад" if msg["role"] == "user" else "{BOT_LABEL}"
+        line = f"{{role}}: {{msg[\'text\'][:1000]}}"
+        total_chars += len(line)
+        if total_chars > 15000:
+            break
+        lines.append(line)
+    lines.reverse()
+    return "\\n".join(lines)
+
+
+def _split_message(text: str, limit: int = 4096) -> list:
+    chunks = []
+    while text:
+        if len(text) <= limit:
+            chunks.append(text)
+            break
+        split_at = text.rfind("\\n", 0, limit)
+        if split_at <= 0:
+            split_at = limit
+        chunks.append(text[:split_at])
+        text = text[split_at:].lstrip("\\n")
+    return chunks
+
+
+CLAUDE_TOOLS = "Read,Edit,Write,Grep,Glob,Bash"
+
+
+def _call_claude_once(full_prompt: str, extra_flags=None):
+    cmd = [
+        CLAUDE_PATH, "-p",
+        "--model", MODEL,
+        "--output-format", "text",
+        "--system-prompt", SYSTEM_PROMPT,
+        "--allowedTools", CLAUDE_TOOLS,
+        "--permission-mode", "bypassPermissions",
+    ]
+    if extra_flags:
+        cmd.extend(extra_flags)
+    proc = None
+    try:
+        proc = subprocess.Popen(
+            cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            cwd=WORKING_DIR, env=_get_claude_env(), text=True, start_new_session=True,
+        )
+        stdout, stderr = proc.communicate(input=full_prompt, timeout=CLAUDE_TIMEOUT)
+        if proc.returncode != 0:
+            log.error("Claude exited %d: %s", proc.returncode, stderr.strip())
+            return False, ""
+        answer = stdout.strip()
+        return (True, answer) if answer else (False, "")
+    except subprocess.TimeoutExpired:
+        if proc:
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
+                try:
+                    proc.kill()
+                except (ProcessLookupError, PermissionError):
+                    pass
+            try:
+                proc.wait(timeout=5)
+            except (ChildProcessError, subprocess.TimeoutExpired):
+                pass
+        return False, "TIMEOUT"
+    except Exception as e:
+        log.error("Claude call error: %s", e)
+        return False, ""
+
+
+def _call_claude_sync(full_prompt: str, extra_flags=None):
+    for attempt in range(2):
+        ok, text = _call_claude_once(full_prompt, extra_flags=extra_flags)
+        if ok:
+            return True, text
+        if text == "TIMEOUT":
+            return False, "Таймаут. Разбей задачу на части."
+        if attempt == 0:
+            time.sleep(3)
+    return False, "Что-то пошло не так. Попробуй ещё раз."
+
+
+async def ask_claude(user_text: str, image_path: str = None):
+    hist = history_prompt()
+    full_prompt = f"История диалога:\\n{{hist}}\\n\\n" if hist else ""
+    if image_path:
+        caption = user_text or "Опиши что на этом изображении"
+        full_prompt += (
+            f"Пользователь прислал изображение. "
+            f"Используй Read для файла: {{image_path}}\\n\\n"
+            f"Запрос: {{caption}}"
+        )
+    else:
+        full_prompt += f"Влад: {{user_text}}"
+
+    if len(full_prompt) > MAX_PROMPT_CHARS:
+        full_prompt = full_prompt[-MAX_PROMPT_CHARS:]
+
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(_claude_executor, lambda: _call_claude_sync(full_prompt))
+
+
+def is_allowed(update: Update) -> bool:
+    return update.effective_user and update.effective_user.id == ALLOWED_USER
+
+
+async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    await update.message.reply_text(
+        "Привет! Я {BOT_LABEL} — {BOT_ROLE}\\n\\n"
+        "Команды:\\n"
+        "/status — статус\\n"
+        "/clear — очистить историю\\n\\n"
+        "Пиши задачи, пришли код или скриншот."
+    )
+
+
+async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    uptime = datetime.now() - START_TIME
+    h, rem = divmod(int(uptime.total_seconds()), 3600)
+    m, s = divmod(rem, 60)
+    await update.message.reply_text(
+        f"{{h}}ч {{m}}м {{s}}с онлайн | PID {{os.getpid()}} | {{len(user_history)}} сообщений | модель: {{MODEL}}"
+    )
+
+
+async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    user_history.clear()
+    _save_history()
+    await update.message.reply_text("История очищена.")
+
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global _processing, _last_message_time
+    if not is_allowed(update):
+        return
+    user_text = (update.message.text or "").strip()
+    if not user_text:
+        return
+
+    async with _rate_limit_lock:
+        elapsed = time.monotonic() - _last_message_time
+        if elapsed < RATE_LIMIT_SEC:
+            await asyncio.sleep(RATE_LIMIT_SEC - elapsed)
+
+    async with _processing_lock:
+        if _processing:
+            await update.message.reply_text("Ещё обрабатываю предыдущий запрос.")
+            return
+        _processing = True
+
+    thinking_msg = None
+    try:
+        thinking_msg = await update.message.reply_text("Думаю...")
+        _log_conversation("user", user_text, update.effective_user.id)
+        user_history.append({{"role": "user", "text": user_text}})
+        ok, answer = await ask_claude(user_text)
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+            thinking_msg = None
+        if ok and answer:
+            user_history.append({{"role": "assistant", "text": answer}})
+            _save_history()
+            _log_conversation("assistant", answer)
+            for chunk in _split_message(answer):
+                await update.message.reply_text(chunk)
+        else:
+            await update.message.reply_text(answer or "Ошибка. Попробуй ещё раз.")
+    except Exception as e:
+        log.error("handle_message error: %s", e, exc_info=True)
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+        await update.message.reply_text("Ошибка обработки запроса.")
+    finally:
+        async with _rate_limit_lock:
+            _last_message_time = time.monotonic()
+        async with _processing_lock:
+            _processing = False
+
+
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global _processing
+    if not is_allowed(update):
+        return
+
+    async with _processing_lock:
+        if _processing:
+            await update.message.reply_text("Ещё обрабатываю предыдущий запрос.")
+            return
+        _processing = True
+
+    thinking_msg = None
+    try:
+        thinking_msg = await update.message.reply_text("Анализирую фото...")
+        photo = update.message.photo[-1]
+        file = await context.bot.get_file(photo.file_id)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        photo_path = PHOTO_DIR / f"photo_{{ts}}_{{photo.file_id[-8:]}}.jpg"
+        await file.download_to_drive(str(photo_path))
+
+        caption = (update.message.caption or "").strip()
+        user_text = caption or "Что на этом изображении? Если это код или ошибка — проанализируй."
+        _log_conversation("user", f"[PHOTO] {{user_text}}", update.effective_user.id)
+        user_history.append({{"role": "user", "text": f"[PHOTO] {{user_text}}"}})
+
+        ok, answer = await ask_claude(user_text, image_path=str(photo_path))
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+            thinking_msg = None
+        if ok and answer:
+            user_history.append({{"role": "assistant", "text": answer}})
+            _save_history()
+            _log_conversation("assistant", answer)
+            for chunk in _split_message(answer):
+                await update.message.reply_text(chunk)
+        else:
+            await update.message.reply_text(answer or "Не удалось проанализировать фото.")
+    except Exception as e:
+        log.error("handle_photo error: %s", e, exc_info=True)
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+        await update.message.reply_text("Ошибка при обработке фото.")
+    finally:
+        async with _processing_lock:
+            _processing = False
+
+
+async def error_handler(update, context: ContextTypes.DEFAULT_TYPE):
+    err = context.error
+    if isinstance(err, (NetworkError, TimedOut)):
+        log.warning("Network error: %s", err)
+        return
+    if isinstance(err, Conflict):
+        log.error("Conflict — shutting down.")
+        os.kill(os.getpid(), signal.SIGTERM)
+        return
+    log.error("Unhandled error: %s", err, exc_info=True)
+
+
+def main():
+    if not BOT_TOKEN:
+        log.error("{ENV_TOKEN_KEY} not set in .env")
+        sys.exit(1)
+    acquire_lock()
+    write_pid()
+    _load_history()
+    log.info("Starting {BOT_LABEL} bot (PID %d)", os.getpid())
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
+    app.add_handler(CommandHandler("start", cmd_start))
+    app.add_handler(CommandHandler("status", cmd_status))
+    app.add_handler(CommandHandler("clear", cmd_clear))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_error_handler(error_handler)
+    app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+    log.info("{BOT_LABEL} bot polling started.")
+    app.run_polling(drop_pending_updates=True)
+
+
+if __name__ == "__main__":
+    main()
+'''
+
+# ---------------------------------------------------------------------------
+# System prompt — мега-программист с полным контекстом
+# ---------------------------------------------------------------------------
+def _build_bots_context() -> str:
+    lines = []
+    for key, b in BOTS_REGISTRY.items():
+        line = f"- {b['label']} ({b['handle']}) — {b['role']}\n  dir: {b['dir']}, main: {b['main_file']}"
+        if b.get("notes"):
+            line += f"\n  ВАЖНО: {b['notes']}"
+        lines.append(line)
+    return "\n".join(lines)
+
+
+SYSTEM_PROMPT = f"""Ты — Костя, профессиональный программист-архитектор. Правая рука Владимира на Mac Mini.
+
+== ТВОИ СКИЛЛЫ ==
+- Python, JavaScript/TypeScript, Bash, SQL — senior level
+- Архитектура систем, microservices, Telegram боты, CLI инструменты
+- Рефакторинг, оптимизация, глубокий аудит кода
+- Отладка сложных багов — читаешь логи, трассируешь, находишь корень проблемы
+- Читаешь и анализируешь скриншоты, фото кода, диаграммы архитектуры
+- СОЗДАНИЕ НОВЫХ БОТОВ — знаешь шаблон, создаёшь launcher, LaunchAgent, всё с нуля
+
+== ЭКОСИСТЕМА БОТОВ ==
+{_build_bots_context()}
+
+== КАК РАБОТАТЬ С БОТАМИ ==
+- Для аудита: Read файлы, Grep по коду, проверь логи через Bash (tail -50 ~/logs/XXX.log)
+- Для правок: сначала прочти файл целиком, потом Edit — никогда вслепую
+- Статус процесса: Bash "ps aux | grep telegram_bot | grep -v grep"
+- LaunchAgent: launchctl list | grep vladimir, launchctl kickstart/stop/unload
+- НЕЛЬЗЯ ТРОГАТЬ: beast-bot/bot.py, любые .env файлы, launcher.sh скрипты
+
+== СКИЛ: СОЗДАНИЕ СУББОТА ==
+Когда Влад говорит "создай нового бота" — ты:
+1. Уточняешь: имя, роль, токен от @BotFather, нужна ли модель Opus или Sonnet
+2. Создаёшь папку в {str(PROJECT_ROOT)}/
+3. Пишешь telegram_bot.py из шаблона (шаблон у тебя в памяти)
+4. Создаёшь .env с токеном
+5. Создаёшь ~/BOT_NAME-launcher.sh
+6. Создаёшь ~/Library/LaunchAgents/com.vladimir.BOT_NAME-bot.plist
+7. launchctl load + start
+8. Говоришь Владу добавить бота в реестр BOTS_REGISTRY в своём telegram_bot.py
+
+Шаблон для launcher.sh:
+#!/bin/bash
+export HOME="/Users/vladimirprihodko"
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+if [ -f "$HOME/.zprofile" ]; then source "$HOME/.zprofile" 2>/dev/null; fi
+mkdir -p "$HOME/logs"
+cd "$HOME/Папка тест/fixcraftvp/BOT_NAME" || exit 1
+exec /usr/bin/python3 telegram_bot.py
+
+== СТИЛЬ ОБЩЕНИЯ ==
+- Русский язык, дружески, как хороший коллега
+- Честно и прямо — если код плохой, скажи
+- Объясняй что делаешь, особенно если Влад хочет понять
+- Пошутить про код — нормально
+- Краткость ценится, но не в ущерб ясности
+
+== РАБОТА С ИЗОБРАЖЕНИЯМИ ==
+Если пришло фото/скриншот — Read файл через инструмент (Claude умеет читать изображения).
+Анализируй ошибки на экране, схемы, диаграммы, код на фото.
+"""
+
+START_TIME = datetime.now()
+_claude_executor = ThreadPoolExecutor(max_workers=1)
+_processing = False
+_processing_lock = asyncio.Lock()
+_last_message_time: float = 0.0
+_rate_limit_lock = asyncio.Lock()
+
+
+def _get_claude_env() -> dict:
+    env = {
+        "HOME": str(Path.home()),
+        "PATH": os.environ.get("PATH", "/usr/bin:/usr/local/bin"),
+        "USER": os.environ.get("USER", ""),
+        "LANG": os.environ.get("LANG", "en_US.UTF-8"),
+        "TERM": os.environ.get("TERM", "xterm-256color"),
+    }
+    tmpdir = os.environ.get("TMPDIR")
+    if tmpdir:
+        env["TMPDIR"] = tmpdir
+    return env
+
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+_log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+_stdout_handler = logging.StreamHandler(sys.stdout)
+_stdout_handler.setFormatter(_log_formatter)
+_file_handler = RotatingFileHandler(
+    LOG_DIR / "kostya-bot-main.log", maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
+_file_handler.setFormatter(_log_formatter)
+logging.basicConfig(level=logging.INFO, handlers=[_stdout_handler, _file_handler])
+log = logging.getLogger("kostya")
+
+# ---------------------------------------------------------------------------
+# Singleton lock
+# ---------------------------------------------------------------------------
+_lock_fd = None
+
+
+def acquire_lock():
+    global _lock_fd
+    _lock_fd = open(LOCK_FILE, "w")
+    try:
+        fcntl.flock(_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        _lock_fd.close()
+        _lock_fd = None
+        log.info("Another instance is already running. Exiting.")
+        sys.exit(0)
+    _lock_fd.write(str(os.getpid()))
+    _lock_fd.flush()
+
+
+def write_pid():
+    PID_FILE.write_text(str(os.getpid()))
+    log.info("PID %d written to %s", os.getpid(), PID_FILE)
+
+
+def write_heartbeat():
+    HEARTBEAT_FILE.write_text(datetime.now().isoformat())
+
+
+async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
+    try:
+        write_heartbeat()
+    except Exception as e:
+        log.error("Heartbeat write failed: %s", e)
+
+
+# ---------------------------------------------------------------------------
+# History
+# ---------------------------------------------------------------------------
+HISTORY_FILE = SCRIPT_DIR / "history.json"
+user_history: deque = deque(maxlen=40)
+CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
+
+
+def _log_conversation(role: str, text: str, user_id=None):
+    entry = {
+        "ts": datetime.now().isoformat(),
+        "role": role,
+        "user_id": user_id,
+        "text": text[:5000],
+    }
+    try:
+        with open(CONVERSATION_LOG, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception as e:
+        log.warning("Failed to write conversation log: %s", e)
+
+
+def _load_history():
+    if not HISTORY_FILE.exists():
+        return
+    try:
+        data = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
+        if not isinstance(data, list):
+            raise ValueError("history is not a list")
+        for item in data[-40:]:
+            if isinstance(item, dict) and "role" in item and "text" in item:
+                user_history.append(item)
+        log.info("Loaded %d history messages", len(user_history))
+    except (json.JSONDecodeError, ValueError) as e:
+        log.error("History corrupted: %s. Starting fresh.", e)
+        try:
+            HISTORY_FILE.rename(HISTORY_FILE.with_suffix(".json.bak"))
+        except Exception:
+            pass
+    except Exception as e:
+        log.warning("Failed to load history: %s", e)
+
+
+def _save_history():
+    tmp_path = None
+    try:
+        data = json.dumps(list(user_history), ensure_ascii=False)
+        fd, tmp_path = tempfile.mkstemp(dir=SCRIPT_DIR, suffix=".tmp")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(data)
+        os.replace(tmp_path, str(HISTORY_FILE))
+        tmp_path = None
+    except Exception as e:
+        log.warning("Failed to save history: %s", e)
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
+def history_prompt() -> str:
+    if not user_history:
+        return ""
+    lines = []
+    total_chars = 0
+    for msg in reversed(list(user_history)):
+        role = "Влад" if msg["role"] == "user" else "Костя"
+        line = f"{role}: {msg['text'][:1000]}"
+        total_chars += len(line)
+        if total_chars > 15000:
+            break
+        lines.append(line)
+    lines.reverse()
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Message split
+# ---------------------------------------------------------------------------
+def _split_message(text: str, limit: int = 4096) -> list:
+    chunks = []
+    while text:
+        if len(text) <= limit:
+            chunks.append(text)
+            break
+        split_at = text.rfind("\n", 0, limit)
+        if split_at <= 0:
+            split_at = limit
+        chunks.append(text[:split_at])
+        text = text[split_at:].lstrip("\n")
+    return chunks
+
+
+# ---------------------------------------------------------------------------
+# Claude CLI
+# ---------------------------------------------------------------------------
+CLAUDE_TOOLS = "Read,Edit,Write,Grep,Glob,Bash"
+
+
+def _call_claude_once(full_prompt: str, extra_flags=None):
+    cmd = [
+        CLAUDE_PATH, "-p",
+        "--model", "claude-opus-4-6",
+        "--output-format", "text",
+        "--system-prompt", SYSTEM_PROMPT,
+        "--allowedTools", CLAUDE_TOOLS,
+        "--permission-mode", "bypassPermissions",
+    ]
+    if extra_flags:
+        cmd.extend(extra_flags)
+    proc = None
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=WORKING_DIR,
+            env=_get_claude_env(),
+            text=True,
+            start_new_session=True,
+        )
+        stdout, stderr = proc.communicate(input=full_prompt, timeout=CLAUDE_TIMEOUT)
+        if proc.returncode != 0:
+            log.error("Claude exited %d: %s", proc.returncode, stderr.strip())
+            return False, ""
+        answer = stdout.strip()
+        return (True, answer) if answer else (False, "")
+    except subprocess.TimeoutExpired:
+        if proc:
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
+                try:
+                    proc.kill()
+                except (ProcessLookupError, PermissionError):
+                    pass
+            try:
+                proc.wait(timeout=5)
+            except (ChildProcessError, subprocess.TimeoutExpired):
+                pass
+        log.warning("Claude timed out after %d sec", CLAUDE_TIMEOUT)
+        return False, "TIMEOUT"
+    except Exception as e:
+        log.error("Claude call error: %s", e)
+        return False, ""
+
+
+def _call_claude_sync(full_prompt: str, extra_flags=None):
+    for attempt in range(2):
+        ok, text = _call_claude_once(full_prompt, extra_flags=extra_flags)
+        if ok:
+            return True, text
+        if text == "TIMEOUT":
+            return False, "Таймаут (1 час). Разбей задачу на части — справимся."
+        if attempt == 0:
+            log.info("Claude attempt 1 failed, retrying...")
+            time.sleep(3)
+    return False, "Что-то пошло не так. Попробуй ещё раз через минуту."
+
+
+async def ask_claude(user_text: str, image_path: str = None):
+    hist = history_prompt()
+    full_prompt = f"История диалога:\n{hist}\n\n" if hist else ""
+
+    if image_path:
+        caption = user_text or "Опиши что на этом изображении"
+        full_prompt += (
+            f"Пользователь прислал изображение. "
+            f"Используй инструмент Read чтобы прочитать файл: {image_path} "
+            f"(Claude умеет читать изображения через Read). "
+            f"Затем ответь на запрос.\n\nЗапрос: {caption}"
+        )
+    else:
+        full_prompt += f"Влад: {user_text}"
+
+    if len(full_prompt) > MAX_PROMPT_CHARS:
+        if hist:
+            user_part = full_prompt[len(hist):]
+            max_hist = MAX_PROMPT_CHARS - len(user_part)
+            full_prompt = (hist[-max_hist:] + user_part) if max_hist > 0 else user_part[-MAX_PROMPT_CHARS:]
+        else:
+            full_prompt = full_prompt[-MAX_PROMPT_CHARS:]
+        log.warning("Prompt truncated to %d chars", len(full_prompt))
+
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(
+        _claude_executor,
+        lambda: _call_claude_sync(full_prompt),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Helpers — статус ботов
+# ---------------------------------------------------------------------------
+def _bot_status_line(key: str) -> str:
+    b = BOTS_REGISTRY[key]
+    # Проверяем PID
+    alive = False
+    pid_str = ""
+    pid_file = Path(b["pid_file"])
+    if pid_file.exists():
+        try:
+            pid = int(pid_file.read_text().strip())
+            os.kill(pid, 0)
+            alive = True
+            pid_str = f" PID:{pid}"
+        except (ValueError, ProcessLookupError, PermissionError):
+            pass
+    # Heartbeat
+    hb_file = Path(b["heartbeat"])
+    hb_str = ""
+    if hb_file.exists():
+        try:
+            hb = datetime.fromisoformat(hb_file.read_text().strip())
+            age_min = int((datetime.now() - hb).total_seconds() / 60)
+            hb_str = f" hb:{age_min}м"
+        except Exception:
+            pass
+    status = "✅" if alive else "❌"
+    return f"{status} {b['label']} ({b['handle']}){pid_str}{hb_str} — {b['role']}"
+
+
+# ---------------------------------------------------------------------------
+# Access check
+# ---------------------------------------------------------------------------
+def is_allowed(update: Update) -> bool:
+    return update.effective_user and update.effective_user.id == ALLOWED_USER
+
+
+# ---------------------------------------------------------------------------
+# Handlers
+# ---------------------------------------------------------------------------
+async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    await update.message.reply_text(
+        "Привет! Я Костя — программист-архитектор.\n\n"
+        "Помогаю с кодом, дебажу ботов, читаю скрины ошибок, создаю новых ботов.\n\n"
+        "Команды:\n"
+        "/bots — статус всех ботов\n"
+        "/inspect <имя> — логи бота (vasily/masha/beast/kostya)\n"
+        "/newbot — создать нового бота\n"
+        "/status — мой статус\n"
+        "/clear — очистить историю\n\n"
+        "Присылай код, скрины, задачи — разберёмся."
+    )
+
+
+async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    uptime = datetime.now() - START_TIME
+    hours, rem = divmod(int(uptime.total_seconds()), 3600)
+    minutes, seconds = divmod(rem, 60)
+    await update.message.reply_text(
+        f"Костя онлайн\n"
+        f"PID: {os.getpid()} | Uptime: {hours}ч {minutes}м {seconds}с\n"
+        f"История: {len(user_history)} сообщений\n"
+        f"Модель: claude-opus-4-6"
+    )
+
+
+async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    user_history.clear()
+    _save_history()
+    await update.message.reply_text("История очищена. Начнём с чистого листа.")
+
+
+async def cmd_bots(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Показать статус всех ботов из реестра."""
+    if not is_allowed(update):
+        return
+    lines = ["Статус ботов:\n"]
+    for key in BOTS_REGISTRY:
+        try:
+            lines.append(_bot_status_line(key))
+        except Exception as e:
+            lines.append(f"? {key}: ошибка ({e})")
+    await update.message.reply_text("\n".join(lines))
+
+
+async def cmd_inspect(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Показать последние логи бота. Использование: /inspect vasily"""
+    if not is_allowed(update):
+        return
+    args = context.args
+    if not args:
+        names = ", ".join(BOTS_REGISTRY.keys())
+        await update.message.reply_text(f"Использование: /inspect <имя>\nДоступные: {names}")
+        return
+    bot_key = args[0].lower().strip("@")
+    if bot_key not in BOTS_REGISTRY:
+        names = ", ".join(BOTS_REGISTRY.keys())
+        await update.message.reply_text(f"Не знаю такого бота. Доступные: {names}")
+        return
+    b = BOTS_REGISTRY[bot_key]
+    log_file = Path(b["log_file"])
+    if not log_file.exists():
+        await update.message.reply_text(f"Лог файл не найден: {log_file}")
+        return
+    try:
+        result = subprocess.run(
+            ["tail", "-30", str(log_file)],
+            capture_output=True, text=True, timeout=5
+        )
+        tail = result.stdout.strip()
+        if not tail:
+            tail = "(лог пустой)"
+        status = _bot_status_line(bot_key)
+        reply = f"{status}\n\n```\n{tail[-3000:]}\n```"
+        await update.message.reply_text(reply, parse_mode="Markdown")
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка чтения лога: {e}")
+
+
+async def cmd_newbot(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Запустить Claude для создания нового бота."""
+    if not is_allowed(update):
+        return
+    args = context.args
+    if not args:
+        await update.message.reply_text(
+            "Создам нового бота через диалог с Claude.\n\n"
+            "Скажи: /newbot <имя> <роль>\n"
+            "Например: /newbot analyst анализатор новостей\n\n"
+            "Токен нужно будет получить через @BotFather и дать мне."
+        )
+        return
+
+    bot_name = args[0]
+    role = " ".join(args[1:]) if len(args) > 1 else "ассистент"
+
+    prompt = (
+        f"Влад хочет создать нового Telegram бота.\n"
+        f"Имя: {bot_name}\n"
+        f"Роль: {role}\n\n"
+        f"Твоя задача:\n"
+        f"1. Создай папку {WORKING_DIR}/{bot_name}-bot/\n"
+        f"2. Создай telegram_bot.py — используй шаблон бота который ты знаешь\n"
+        f"3. Создай requirements.txt\n"
+        f"4. Создай ~/Library/LaunchAgents/com.vladimir.{bot_name}-bot.plist\n"
+        f"5. Создай ~/{bot_name}-launcher.sh и сделай chmod +x\n"
+        f"6. Скажи Владу:\n"
+        f"   - Какой ENV ключ использовать для токена\n"
+        f"   - Что нужно создать .env файл с токеном от @BotFather\n"
+        f"   - Как запустить: launchctl load + kickstart\n\n"
+        f"ВАЖНО: .env с токеном НЕ создавай — его даст Влад.\n"
+        f"Модель по умолчанию: claude-sonnet-4-6 (если роль требует Opus — используй claude-opus-4-6).\n"
+        f"Структуру шаблона telegram_bot.py ты знаешь — используй её."
+    )
+
+    thinking_msg = await update.message.reply_text(f"Создаю бота {bot_name}... это займёт минуту.")
+    ok, answer = await ask_claude(prompt)
+    try:
+        await thinking_msg.delete()
+    except Exception:
+        pass
+    if ok and answer:
+        user_history.append({"role": "assistant", "text": answer})
+        _save_history()
+        for chunk in _split_message(answer):
+            await update.message.reply_text(chunk)
+    else:
+        await update.message.reply_text(answer or "Ошибка при создании бота.")
+
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global _processing, _last_message_time
+    if not is_allowed(update):
+        return
+
+    user_text = (update.message.text or "").strip()
+    if not user_text:
+        return
+
+    async with _rate_limit_lock:
+        elapsed = time.monotonic() - _last_message_time
+        if elapsed < RATE_LIMIT_SEC:
+            await asyncio.sleep(RATE_LIMIT_SEC - elapsed)
+
+    async with _processing_lock:
+        if _processing:
+            await update.message.reply_text("Ещё обрабатываю предыдущий запрос, подожди.")
+            return
+        _processing = True
+
+    thinking_msg = None
+    try:
+        thinking_msg = await update.message.reply_text("Думаю...")
+        _log_conversation("user", user_text, update.effective_user.id)
+        user_history.append({"role": "user", "text": user_text})
+
+        ok, answer = await ask_claude(user_text)
+
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+            thinking_msg = None
+
+        if ok and answer:
+            user_history.append({"role": "assistant", "text": answer})
+            _save_history()
+            _log_conversation("assistant", answer)
+            for chunk in _split_message(answer):
+                await update.message.reply_text(chunk)
+        else:
+            await update.message.reply_text(answer or "Что-то пошло не так. Попробуй ещё раз.")
+    except Exception as e:
+        log.error("handle_message error: %s", e, exc_info=True)
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+        await update.message.reply_text("Ошибка обработки запроса.")
+    finally:
+        async with _rate_limit_lock:
+            _last_message_time = time.monotonic()
+        async with _processing_lock:
+            _processing = False
+
+
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global _processing
+    if not is_allowed(update):
+        return
+
+    async with _processing_lock:
+        if _processing:
+            await update.message.reply_text("Ещё обрабатываю предыдущий запрос, подожди.")
+            return
+        _processing = True
+
+    thinking_msg = None
+    try:
+        thinking_msg = await update.message.reply_text("Скачиваю и анализирую фото...")
+        photo = update.message.photo[-1]
+        file = await context.bot.get_file(photo.file_id)
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        photo_path = PHOTO_DIR / f"photo_{ts}_{photo.file_id[-8:]}.jpg"
+        await file.download_to_drive(str(photo_path))
+        log.info("Photo saved: %s", photo_path)
+
+        caption = (update.message.caption or "").strip()
+        user_text = caption or "Что на этом изображении? Если это код или ошибка — проанализируй."
+        _log_conversation("user", f"[PHOTO] {user_text}", update.effective_user.id)
+        user_history.append({"role": "user", "text": f"[PHOTO] {user_text}"})
+
+        ok, answer = await ask_claude(user_text, image_path=str(photo_path))
+
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+            thinking_msg = None
+
+        if ok and answer:
+            user_history.append({"role": "assistant", "text": answer})
+            _save_history()
+            _log_conversation("assistant", answer)
+            for chunk in _split_message(answer):
+                await update.message.reply_text(chunk)
+        else:
+            await update.message.reply_text(answer or "Не удалось проанализировать фото.")
+    except Exception as e:
+        log.error("handle_photo error: %s", e, exc_info=True)
+        if thinking_msg:
+            try:
+                await thinking_msg.delete()
+            except Exception:
+                pass
+        await update.message.reply_text("Ошибка при обработке фото.")
+    finally:
+        async with _processing_lock:
+            _processing = False
+
+
+async def error_handler(update, context: ContextTypes.DEFAULT_TYPE):
+    err = context.error
+    if isinstance(err, (NetworkError, TimedOut)):
+        log.warning("Network error: %s", err)
+        return
+    if isinstance(err, Conflict):
+        log.error("Conflict (duplicate instance). Shutting down.")
+        os.kill(os.getpid(), signal.SIGTERM)
+        return
+    log.error("Unhandled error: %s", err, exc_info=True)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+def main():
+    if not BOT_TOKEN:
+        log.error("KOSTYA_BOT_TOKEN not set in .env")
+        sys.exit(1)
+
+    acquire_lock()
+    write_pid()
+    _load_history()
+
+    log.info("Starting Kostya bot (PID %d)", os.getpid())
+
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    app.add_handler(CommandHandler("start", cmd_start))
+    app.add_handler(CommandHandler("status", cmd_status))
+    app.add_handler(CommandHandler("clear", cmd_clear))
+    app.add_handler(CommandHandler("bots", cmd_bots))
+    app.add_handler(CommandHandler("inspect", cmd_inspect))
+    app.add_handler(CommandHandler("newbot", cmd_newbot))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_error_handler(error_handler)
+
+    app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+
+    log.info("Kostya bot polling started.")
+    app.run_polling(drop_pending_updates=True)
+
+
+if __name__ == "__main__":
+    main()

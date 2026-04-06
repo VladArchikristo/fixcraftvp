@@ -1,0 +1,42 @@
+{
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "/Users/vladimirprikhodko/.claude/plugins/marketplaces/claude-plugins-official",
+    "lastUpdated": "2026-04-02T13:24:15.433Z"
+  },
+  "claudeclaw": {
+    "source": {
+      "source": "github",
+      "repo": "moazbuilds/claudeclaw"
+    },
+    "installLocation": "/Users/vladimirprikhodko/.claude/plugins/marketplaces/claudeclaw",
+    "lastUpdated": "2026-03-29T00:59:59.071Z"
+  },
+  "dev-browser-marketplace": {
+    "source": {
+      "source": "github",
+      "repo": "SawyerHood/dev-browser"
+    },
+    "installLocation": "/Users/vladimirprikhodko/.claude/plugins/marketplaces/dev-browser-marketplace",
+    "lastUpdated": "2026-03-29T01:44:46.000Z"
+  },
+  "thedotmack": {
+    "source": {
+      "source": "github",
+      "repo": "thedotmack/claude-mem"
+    },
+    "installLocation": "/Users/vladimirprikhodko/.claude/plugins/marketplaces/thedotmack",
+    "lastUpdated": "2026-03-29T01:46:44.000Z"
+  },
+  "superpowers-marketplace": {
+    "source": {
+      "source": "github",
+      "repo": "obra/superpowers-marketplace"
+    },
+    "installLocation": "/Users/vladimirprikhodko/.claude/plugins/marketplaces/superpowers-marketplace",
+    "lastUpdated": "2026-03-29T01:46:44.000Z"
+  }
+}

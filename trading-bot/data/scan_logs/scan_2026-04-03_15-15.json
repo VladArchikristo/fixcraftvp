@@ -1,0 +1,22 @@
+{
+  "time": "2026-04-03T15:15:03.177153",
+  "fear_greed": "9 (Extreme Fear)",
+  "btc_dom": 56.1,
+  "prices": {
+    "AVAX": 8.96,
+    "BNB": 586.77,
+    "BTC": 66775,
+    "ADA": 0.246464,
+    "LINK": 8.65,
+    "ETH": 2046.31,
+    "DOT": 1.24,
+    "XRP": 1.32,
+    "SOL": 79.98,
+    "UNI": 3.16
+  },
+  "news_count": 0,
+  "analysis_len": 3635,
+  "trades": [],
+  "portfolio_value": 100.33,
+  "cash": 45
+}

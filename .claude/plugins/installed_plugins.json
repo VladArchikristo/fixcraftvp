@@ -1,0 +1,114 @@
+{
+  "version": 2,
+  "plugins": {
+    "claudeclaw@claudeclaw": [
+      {
+        "scope": "user",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claudeclaw/claudeclaw/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-03-29T01:00:07.733Z",
+        "lastUpdated": "2026-03-29T01:00:07.733Z",
+        "gitCommitSha": "843f969abaf7cdfcc3453ff71624324c8884a39e"
+      }
+    ],
+    "dev-browser@dev-browser-marketplace": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/dev-browser-marketplace/dev-browser/94748ec1cab3",
+        "version": "94748ec1cab3",
+        "installedAt": "2026-03-29T01:44:46.000Z",
+        "lastUpdated": "2026-03-29T01:44:46.000Z",
+        "gitCommitSha": "94748ec1cab3a9a0f7ce758f6b253f222dc1a894"
+      }
+    ],
+    "claude-mem@thedotmack": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/thedotmack/claude-mem/a656af2bff0f",
+        "version": "a656af2bff0f",
+        "installedAt": "2026-03-29T01:46:44.000Z",
+        "lastUpdated": "2026-03-29T01:46:44.000Z",
+        "gitCommitSha": "a656af2bff0fb8bb413a2ad8da1b9f1b4a6d2eb6"
+      }
+    ],
+    "superpowers@superpowers-marketplace": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/superpowers-marketplace/superpowers/710dc8356339",
+        "version": "710dc8356339",
+        "installedAt": "2026-03-29T01:46:44.000Z",
+        "lastUpdated": "2026-03-29T01:46:44.000Z",
+        "gitCommitSha": "710dc83563399bf66b88ce28594b96dde60399e3"
+      }
+    ],
+    "ralph-loop@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claude-plugins-official/ralph-loop/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-03-29T01:46:46.000Z",
+        "lastUpdated": "2026-03-29T05:26:25.215Z",
+        "gitCommitSha": "548bfa83750f4191adcb46ffa51b44f02e1ceaa7"
+      }
+    ],
+    "hookify@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claude-plugins-official/hookify/b091cb4179d3",
+        "version": "b091cb4179d3",
+        "installedAt": "2026-03-29T01:46:46.000Z",
+        "lastUpdated": "2026-04-01T01:14:43.070Z",
+        "gitCommitSha": "548bfa83750f4191adcb46ffa51b44f02e1ceaa7"
+      }
+    ],
+    "code-review@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claude-plugins-official/code-review/b091cb4179d3",
+        "version": "b091cb4179d3",
+        "installedAt": "2026-03-29T01:46:46.000Z",
+        "lastUpdated": "2026-04-01T01:14:42.561Z",
+        "gitCommitSha": "548bfa83750f4191adcb46ffa51b44f02e1ceaa7"
+      }
+    ],
+    "pr-review-toolkit@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claude-plugins-official/pr-review-toolkit/b091cb4179d3",
+        "version": "b091cb4179d3",
+        "installedAt": "2026-03-29T01:46:46.000Z",
+        "lastUpdated": "2026-04-01T01:14:42.679Z",
+        "gitCommitSha": "548bfa83750f4191adcb46ffa51b44f02e1ceaa7"
+      }
+    ],
+    "commit-commands@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claude-plugins-official/commit-commands/b091cb4179d3",
+        "version": "b091cb4179d3",
+        "installedAt": "2026-03-29T01:46:46.000Z",
+        "lastUpdated": "2026-04-01T01:14:42.611Z",
+        "gitCommitSha": "548bfa83750f4191adcb46ffa51b44f02e1ceaa7"
+      }
+    ],
+    "plugin-dev@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/vladimirprikhodko/Папка тест/fixcraftvp",
+        "installPath": "/Users/vladimirprikhodko/.claude/plugins/cache/claude-plugins-official/plugin-dev/b091cb4179d3",
+        "version": "b091cb4179d3",
+        "installedAt": "2026-03-29T01:46:46.000Z",
+        "lastUpdated": "2026-04-01T01:14:43.903Z",
+        "gitCommitSha": "548bfa83750f4191adcb46ffa51b44f02e1ceaa7"
+      }
+    ]
+  }
+}

@@ -1,0 +1,448 @@
+2026-04-03 10:43:23,595 [INFO] PID 33429 written to /Users/vladimirprihodko/logs/vasily-bot.pid
+2026-04-03 10:43:23,595 [INFO] Василий starting, PID 33429
+2026-04-03 10:43:23,631 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-04-03 10:43:23,631 [INFO] Василий polling started
+2026-04-03 10:43:24,609 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getMe "HTTP/1.1 200 OK"
+2026-04-03 10:43:24,762 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-03 10:43:24,766 [INFO] Added job "heartbeat_job" to job store "default"
+2026-04-03 10:43:24,766 [INFO] Scheduler started
+2026-04-03 10:43:24,766 [INFO] Application started
+2026-04-03 10:43:33,631 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:44:33 UTC)" (scheduled at 2026-04-03 14:43:33.630788+00:00)
+2026-04-03 10:43:33,632 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:44:33 UTC)" executed successfully
+2026-04-03 10:43:35,613 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:43:45,833 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:43:56,050 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:44:06,243 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:44:16,411 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:44:26,559 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:44:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:45:33 UTC)" (scheduled at 2026-04-03 14:44:33.630788+00:00)
+2026-04-03 10:44:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:45:33 UTC)" executed successfully
+2026-04-03 10:44:36,748 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:44:47,008 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:44:57,185 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:45:07,347 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:45:17,519 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:45:27,683 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:45:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:46:33 UTC)" (scheduled at 2026-04-03 14:45:33.630788+00:00)
+2026-04-03 10:45:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:46:33 UTC)" executed successfully
+2026-04-03 10:45:37,862 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:45:48,103 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:45:58,343 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:46:08,496 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:46:18,687 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:46:28,849 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:46:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:47:33 UTC)" (scheduled at 2026-04-03 14:46:33.630788+00:00)
+2026-04-03 10:46:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:47:33 UTC)" executed successfully
+2026-04-03 10:46:39,304 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:46:49,501 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:46:59,774 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:47:10,201 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:47:20,367 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:47:30,975 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:47:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:48:33 UTC)" (scheduled at 2026-04-03 14:47:33.630788+00:00)
+2026-04-03 10:47:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:48:33 UTC)" executed successfully
+2026-04-03 10:47:42,279 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:47:53,133 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:48:04,298 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:48:15,048 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:48:25,595 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:48:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:49:33 UTC)" (scheduled at 2026-04-03 14:48:33.630788+00:00)
+2026-04-03 10:48:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:49:33 UTC)" executed successfully
+2026-04-03 10:48:35,835 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:48:46,076 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:48:56,373 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:49:06,530 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:49:16,683 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:49:26,878 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:49:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:50:33 UTC)" (scheduled at 2026-04-03 14:49:33.630788+00:00)
+2026-04-03 10:49:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:50:33 UTC)" executed successfully
+2026-04-03 10:49:37,071 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:49:47,254 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:49:57,448 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:50:07,688 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:50:17,916 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:50:28,170 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:50:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:51:33 UTC)" (scheduled at 2026-04-03 14:50:33.630788+00:00)
+2026-04-03 10:50:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:51:33 UTC)" executed successfully
+2026-04-03 10:50:38,409 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:50:48,557 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:50:58,787 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:51:09,027 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:51:19,268 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:51:29,431 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:51:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:52:33 UTC)" (scheduled at 2026-04-03 14:51:33.630788+00:00)
+2026-04-03 10:51:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:52:33 UTC)" executed successfully
+2026-04-03 10:51:40,260 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:51:50,704 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:52:00,945 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:52:11,133 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:52:21,342 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:52:31,665 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:52:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:53:33 UTC)" (scheduled at 2026-04-03 14:52:33.630788+00:00)
+2026-04-03 10:52:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:53:33 UTC)" executed successfully
+2026-04-03 10:52:41,863 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:52:52,047 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:53:02,288 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:53:12,527 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:53:22,767 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:53:32,941 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:53:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:54:33 UTC)" (scheduled at 2026-04-03 14:53:33.630788+00:00)
+2026-04-03 10:53:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:54:33 UTC)" executed successfully
+2026-04-03 10:53:43,267 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:53:53,423 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:54:03,827 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:54:14,171 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:54:24,410 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:54:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:55:33 UTC)" (scheduled at 2026-04-03 14:54:33.630788+00:00)
+2026-04-03 10:54:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:55:33 UTC)" executed successfully
+2026-04-03 10:54:34,650 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:54:44,820 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:54:55,131 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:55:05,371 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:55:15,611 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:55:25,762 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:55:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:56:33 UTC)" (scheduled at 2026-04-03 14:55:33.630788+00:00)
+2026-04-03 10:55:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:56:33 UTC)" executed successfully
+2026-04-03 10:55:35,947 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:55:46,107 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:55:56,369 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:56:06,549 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:56:16,746 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:56:26,986 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:56:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:57:33 UTC)" (scheduled at 2026-04-03 14:56:33.630788+00:00)
+2026-04-03 10:56:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:57:33 UTC)" executed successfully
+2026-04-03 10:56:37,156 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:56:47,321 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:56:57,553 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:57:07,741 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:57:17,913 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:57:28,110 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:57:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:58:33 UTC)" (scheduled at 2026-04-03 14:57:33.630788+00:00)
+2026-04-03 10:57:33,634 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:58:33 UTC)" executed successfully
+2026-04-03 10:57:38,268 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:57:48,432 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:57:58,737 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:58:09,081 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:58:19,264 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:58:29,428 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:58:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:59:33 UTC)" (scheduled at 2026-04-03 14:58:33.630788+00:00)
+2026-04-03 10:58:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 14:59:33 UTC)" executed successfully
+2026-04-03 10:58:39,657 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:58:49,889 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:59:00,076 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:59:10,243 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:59:20,557 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:59:30,797 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:59:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:00:33 UTC)" (scheduled at 2026-04-03 14:59:33.630788+00:00)
+2026-04-03 10:59:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:00:33 UTC)" executed successfully
+2026-04-03 10:59:40,985 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 10:59:51,192 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:00:01,416 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:00:11,759 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:00:21,965 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:00:32,238 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:00:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:01:33 UTC)" (scheduled at 2026-04-03 15:00:33.630788+00:00)
+2026-04-03 11:00:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:01:33 UTC)" executed successfully
+2026-04-03 11:00:43,095 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:00:53,336 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:01:03,513 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:01:13,707 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:01:24,157 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:01:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:02:33 UTC)" (scheduled at 2026-04-03 15:01:33.630788+00:00)
+2026-04-03 11:01:33,635 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:02:33 UTC)" executed successfully
+2026-04-03 11:01:34,337 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:01:44,546 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:01:54,731 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:02:04,921 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:02:15,097 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:02:25,301 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:02:33,646 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:03:33 UTC)" (scheduled at 2026-04-03 15:02:33.630788+00:00)
+2026-04-03 11:02:33,648 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:03:33 UTC)" executed successfully
+2026-04-03 11:02:35,542 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:02:45,716 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:02:55,893 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:03:06,072 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:03:16,304 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:03:26,490 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:03:33,635 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:04:33 UTC)" (scheduled at 2026-04-03 15:03:33.630788+00:00)
+2026-04-03 11:03:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:04:33 UTC)" executed successfully
+2026-04-03 11:03:36,677 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:03:46,838 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:03:57,017 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:04:07,245 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:04:17,449 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:04:27,608 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:04:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:05:33 UTC)" (scheduled at 2026-04-03 15:04:33.630788+00:00)
+2026-04-03 11:04:33,636 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:05:33 UTC)" executed successfully
+2026-04-03 11:04:37,800 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:04:47,980 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:04:58,147 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:08,429 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:18,593 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:28,788 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:33,634 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:06:33 UTC)" (scheduled at 2026-04-03 15:05:33.630788+00:00)
+2026-04-03 11:05:33,634 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-03 15:06:33 UTC)" executed successfully
+2026-04-03 11:05:39,107 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:49,289 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:58,031 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAEHa4QwtNR-arfMK075gbbl2JOxuXhFRwk/getUpdates "HTTP/1.1 200 OK"
+2026-04-03 11:05:58,033 [INFO] Application is stopping. This might take a moment.
+2026-04-03 11:05:58,034 [INFO] Scheduler has been shut down
+2026-04-03 11:05:58,046 [INFO] Application.stop() complete
+2026-04-03 11:05:58,048 [INFO] Cleaning up resources...
+2026-04-05 08:41:22,168 [INFO] Another instance is already running. Exiting.
+2026-04-05 08:41:22,168 [INFO] Cleaning up resources...
+2026-04-05 08:41:41,372 [INFO] PID 66100 written to /Users/vladimirprihodko/logs/vasily-bot.pid
+2026-04-05 08:41:41,372 [INFO] Loaded 0 history messages from disk
+2026-04-05 08:41:41,372 [INFO] Василий starting, PID 66100
+2026-04-05 08:41:41,394 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-04-05 08:41:41,394 [INFO] Василий polling started
+2026-04-05 08:41:42,136 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getMe "HTTP/1.1 200 OK"
+2026-04-05 08:41:42,275 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-05 08:41:42,280 [INFO] Added job "heartbeat_job" to job store "default"
+2026-04-05 08:41:42,280 [INFO] Scheduler started
+2026-04-05 08:41:42,280 [INFO] Application started
+2026-04-05 08:41:47,092 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 409 Conflict"
+2026-04-05 08:41:47,094 [CRITICAL] 409 Conflict — another bot instance is running! Shutting down.
+2026-04-05 08:41:48,292 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:41:48,294 [INFO] Application is stopping. This might take a moment.
+2026-04-05 08:41:48,294 [INFO] Scheduler has been shut down
+2026-04-05 08:41:48,306 [INFO] Application.stop() complete
+2026-04-05 08:41:48,309 [INFO] Cleaning up resources...
+2026-04-05 08:42:51,201 [INFO] PID 66430 written to /Users/vladimirprihodko/logs/vasily-bot.pid
+2026-04-05 08:42:51,201 [INFO] Loaded 0 history messages from disk
+2026-04-05 08:42:51,201 [INFO] Василий starting, PID 66430
+2026-04-05 08:42:51,223 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-04-05 08:42:51,223 [INFO] Василий polling started
+2026-04-05 08:42:52,088 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getMe "HTTP/1.1 200 OK"
+2026-04-05 08:42:52,243 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-05 08:42:52,247 [INFO] Added job "heartbeat_job" to job store "default"
+2026-04-05 08:42:52,247 [INFO] Scheduler started
+2026-04-05 08:42:52,248 [INFO] Application started
+2026-04-05 08:43:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:44:01 UTC)" (scheduled at 2026-04-05 12:43:01.223549+00:00)
+2026-04-05 08:43:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:44:01 UTC)" executed successfully
+2026-04-05 08:43:02,893 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:43:13,114 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:43:23,267 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:43:33,490 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:43:43,761 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:43:54,003 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:44:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:45:01 UTC)" (scheduled at 2026-04-05 12:44:01.223549+00:00)
+2026-04-05 08:44:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:45:01 UTC)" executed successfully
+2026-04-05 08:44:04,241 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:44:14,481 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:44:24,722 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:44:34,961 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:44:46,020 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:44:56,773 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:45:01,225 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:46:01 UTC)" (scheduled at 2026-04-05 12:45:01.223549+00:00)
+2026-04-05 08:45:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:46:01 UTC)" executed successfully
+2026-04-05 08:45:07,013 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:45:17,252 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:45:28,477 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:45:39,269 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:45:49,512 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:45:59,753 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:46:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:47:01 UTC)" (scheduled at 2026-04-05 12:46:01.223549+00:00)
+2026-04-05 08:46:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:47:01 UTC)" executed successfully
+2026-04-05 08:46:09,988 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:46:20,331 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:46:30,572 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:46:40,732 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:46:50,950 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:47:01,191 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:47:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:48:01 UTC)" (scheduled at 2026-04-05 12:47:01.223549+00:00)
+2026-04-05 08:47:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:48:01 UTC)" executed successfully
+2026-04-05 08:47:11,532 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:47:21,773 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:47:32,015 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:47:42,164 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:47:52,492 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:48:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:49:01 UTC)" (scheduled at 2026-04-05 12:48:01.223549+00:00)
+2026-04-05 08:48:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:49:01 UTC)" executed successfully
+2026-04-05 08:48:02,733 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:48:12,972 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:48:23,213 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:48:33,452 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:48:43,693 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:48:53,932 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:49:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:50:01 UTC)" (scheduled at 2026-04-05 12:49:01.223549+00:00)
+2026-04-05 08:49:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:50:01 UTC)" executed successfully
+2026-04-05 08:49:04,176 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:49:14,415 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:49:24,652 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:49:34,996 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:49:45,340 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:49:55,680 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:50:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:51:01 UTC)" (scheduled at 2026-04-05 12:50:01.223549+00:00)
+2026-04-05 08:50:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:51:01 UTC)" executed successfully
+2026-04-05 08:50:05,921 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:50:16,263 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:50:26,503 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:50:36,743 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:50:46,983 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:50:57,172 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:51:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:52:01 UTC)" (scheduled at 2026-04-05 12:51:01.223549+00:00)
+2026-04-05 08:51:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:52:01 UTC)" executed successfully
+2026-04-05 08:51:07,312 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:51:17,498 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:51:27,662 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:51:37,979 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:51:48,180 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:51:58,358 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:52:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:53:01 UTC)" (scheduled at 2026-04-05 12:52:01.223549+00:00)
+2026-04-05 08:52:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:53:01 UTC)" executed successfully
+2026-04-05 08:52:08,599 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:52:18,837 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:52:29,076 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:52:39,318 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:52:49,557 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:52:59,798 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:53:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:54:01 UTC)" (scheduled at 2026-04-05 12:53:01.223549+00:00)
+2026-04-05 08:53:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:54:01 UTC)" executed successfully
+2026-04-05 08:53:10,036 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:53:20,207 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:53:30,518 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:53:40,757 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:53:50,997 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:54:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:55:01 UTC)" (scheduled at 2026-04-05 12:54:01.223549+00:00)
+2026-04-05 08:54:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:55:01 UTC)" executed successfully
+2026-04-05 08:54:01,237 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:54:11,580 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:54:21,823 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:54:32,060 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:54:42,300 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:54:52,643 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:55:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:56:01 UTC)" (scheduled at 2026-04-05 12:55:01.223549+00:00)
+2026-04-05 08:55:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:56:01 UTC)" executed successfully
+2026-04-05 08:55:02,984 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:55:13,225 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:55:23,465 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:55:33,705 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:55:43,895 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:55:54,032 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:56:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:57:01 UTC)" (scheduled at 2026-04-05 12:56:01.223549+00:00)
+2026-04-05 08:56:01,226 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:57:01 UTC)" executed successfully
+2026-04-05 08:56:04,242 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:56:14,411 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:56:24,558 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:56:34,764 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:56:45,180 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:56:55,422 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:57:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:58:01 UTC)" (scheduled at 2026-04-05 12:57:01.223549+00:00)
+2026-04-05 08:57:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:58:01 UTC)" executed successfully
+2026-04-05 08:57:05,661 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:57:16,006 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:57:26,219 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:57:36,416 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:57:46,723 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:57:56,963 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:58:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:59:01 UTC)" (scheduled at 2026-04-05 12:58:01.223549+00:00)
+2026-04-05 08:58:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 12:59:01 UTC)" executed successfully
+2026-04-05 08:58:07,206 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:58:17,546 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:58:27,791 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:58:38,027 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:58:48,369 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:58:58,713 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:59:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:00:01 UTC)" (scheduled at 2026-04-05 12:59:01.223549+00:00)
+2026-04-05 08:59:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:00:01 UTC)" executed successfully
+2026-04-05 08:59:09,159 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:59:19,499 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:59:29,841 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:59:40,184 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 08:59:50,370 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:00:00,769 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:00:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:01:01 UTC)" (scheduled at 2026-04-05 13:00:01.223549+00:00)
+2026-04-05 09:00:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:01:01 UTC)" executed successfully
+2026-04-05 09:00:11,623 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:00:21,863 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:00:32,103 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:00:42,270 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:00:52,479 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:01:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:02:01 UTC)" (scheduled at 2026-04-05 13:01:01.223549+00:00)
+2026-04-05 09:01:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:02:01 UTC)" executed successfully
+2026-04-05 09:01:02,719 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:01:12,958 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:01:23,404 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:01:33,643 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:01:43,987 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:01:54,226 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:02:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:03:01 UTC)" (scheduled at 2026-04-05 13:02:01.223549+00:00)
+2026-04-05 09:02:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:03:01 UTC)" executed successfully
+2026-04-05 09:02:04,466 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:02:14,706 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:02:24,895 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:02:35,084 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:02:45,324 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:02:55,564 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:03:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:04:01 UTC)" (scheduled at 2026-04-05 13:03:01.223549+00:00)
+2026-04-05 09:03:01,228 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:04:01 UTC)" executed successfully
+2026-04-05 09:03:06,013 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:03:16,454 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:03:26,607 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:03:36,831 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:03:47,071 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:03:57,311 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:04:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:05:01 UTC)" (scheduled at 2026-04-05 13:04:01.223549+00:00)
+2026-04-05 09:04:01,226 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:05:01 UTC)" executed successfully
+2026-04-05 09:04:07,653 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:04:17,869 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:04:28,237 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:04:38,383 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:04:48,522 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:04:58,755 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:05:01,226 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:06:01 UTC)" (scheduled at 2026-04-05 13:05:01.223549+00:00)
+2026-04-05 09:05:01,227 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:06:01 UTC)" executed successfully
+2026-04-05 09:05:08,924 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:05:19,129 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:05:29,316 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:05:29,318 [INFO] Application is stopping. This might take a moment.
+2026-04-05 09:05:29,319 [INFO] Scheduler has been shut down
+2026-04-05 09:05:29,329 [INFO] Application.stop() complete
+2026-04-05 09:05:29,332 [INFO] Cleaning up resources...
+2026-04-05 09:05:30,824 [INFO] PID 69183 written to /Users/vladimirprihodko/logs/vasily-bot.pid
+2026-04-05 09:05:30,825 [INFO] Loaded 0 history messages from disk
+2026-04-05 09:05:30,825 [INFO] Василий starting, PID 69183
+2026-04-05 09:05:30,847 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-04-05 09:05:30,847 [INFO] Василий polling started
+2026-04-05 09:05:31,549 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getMe "HTTP/1.1 200 OK"
+2026-04-05 09:05:31,730 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/deleteWebhook "HTTP/1.1 200 OK"
+2026-04-05 09:05:31,736 [INFO] Added job "heartbeat_job" to job store "default"
+2026-04-05 09:05:31,736 [INFO] Scheduler started
+2026-04-05 09:05:31,736 [INFO] Application started
+2026-04-05 09:05:40,850 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:06:40 UTC)" (scheduled at 2026-04-05 13:05:40.847571+00:00)
+2026-04-05 09:05:40,852 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:06:40 UTC)" executed successfully
+2026-04-05 09:05:42,379 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:05:52,540 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:06:02,682 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:06:12,840 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:06:23,130 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:06:33,372 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:06:40,850 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:07:40 UTC)" (scheduled at 2026-04-05 13:06:40.847571+00:00)
+2026-04-05 09:06:40,852 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:07:40 UTC)" executed successfully
+2026-04-05 09:06:43,712 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:06:53,955 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:07:04,216 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:07:14,359 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:07:24,528 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:07:34,762 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:07:40,850 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:08:40 UTC)" (scheduled at 2026-04-05 13:07:40.847571+00:00)
+2026-04-05 09:07:40,852 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:08:40 UTC)" executed successfully
+2026-04-05 09:07:45,053 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:07:55,297 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:08:05,553 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:08:15,785 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:08:25,935 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:08:36,198 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:08:40,850 [INFO] Running job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:09:40 UTC)" (scheduled at 2026-04-05 13:08:40.847571+00:00)
+2026-04-05 09:08:40,852 [INFO] Job "heartbeat_job (trigger: interval[0:01:00], next run at: 2026-04-05 13:09:40 UTC)" executed successfully
+2026-04-05 09:08:46,398 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:08:56,547 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:09:06,696 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:09:16,858 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:09:27,098 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:09:34,348 [INFO] HTTP Request: POST https://api.telegram.org/bot8682781986:AAH98A_EZDKfYgzw-bG2KLMkjk43-rE6NxI/getUpdates "HTTP/1.1 200 OK"
+2026-04-05 09:09:34,351 [INFO] Application is stopping. This might take a moment.
+2026-04-05 09:09:34,351 [INFO] Scheduler has been shut down
+2026-04-05 09:09:34,363 [INFO] Application.stop() complete
+2026-04-05 09:09:34,366 [INFO] Cleaning up resources...
