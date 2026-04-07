@@ -44,6 +44,8 @@ ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
+CLAUDE_MODEL_OPUS = "claude-opus-4-6"
+COMPLEX_THRESHOLD = 250  # chars — longer messages use Opus
 CLAUDE_TIMEOUT = 3600
 
 LOG_DIR = Path.home() / "logs"
@@ -342,11 +344,11 @@ def _split_message(text: str, limit: int = 4096) -> list[str]:
 CLAUDE_TOOLS = "Read,Edit,Write,Bash,Grep,Glob"
 
 
-def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | None = None) -> tuple[bool, str]:
+def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | None = None, model: str | None = None) -> tuple[bool, str]:
     cmd = [
         CLAUDE_PATH,
         "-p",
-        "--model", CLAUDE_MODEL,
+        "--model", model or CLAUDE_MODEL,
         "--output-format", "text",
         "--system-prompt", system,
         "--allowedTools", CLAUDE_TOOLS,
@@ -400,9 +402,9 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
         return False, ""
 
 
-def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | None = None) -> tuple[bool, str]:
+def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | None = None, model: str | None = None) -> tuple[bool, str]:
     for attempt in range(2):
-        ok, text = _call_claude_once(full_prompt, system, extra_flags=extra_flags)
+        ok, text = _call_claude_once(full_prompt, system, extra_flags=extra_flags, model=model)
         if ok:
             return True, text
         if text == "TIMEOUT":
@@ -420,7 +422,19 @@ def build_system_prompt(user_id: int) -> str:
     return SYSTEM_PROMPT
 
 
-async def ask_claude(user_text: str, user_id: int, image_path: str | None = None) -> tuple[bool, str]:
+def _choose_model(user_text: str) -> str:
+    """Use Opus for complex/long tasks, Sonnet for quick ones."""
+    if len(user_text) > COMPLEX_THRESHOLD:
+        return CLAUDE_MODEL_OPUS
+    keywords = ("создай", "разработай", "напиши", "проанализируй", "объясни подробно",
+                 "архитектур", "система", "разбери", "оптимизируй", "перепиши")
+    lower = user_text.lower()
+    if any(kw in lower for kw in keywords):
+        return CLAUDE_MODEL_OPUS
+    return CLAUDE_MODEL
+
+
+async def ask_claude(user_text: str, user_id: int, image_path: str | None = None, force_opus: bool = False) -> tuple[bool, str]:
     hist = history_prompt()
     system = build_system_prompt(user_id)
     full_prompt = ""
@@ -438,10 +452,11 @@ async def ask_claude(user_text: str, user_id: int, image_path: str | None = None
     else:
         full_prompt += f"Пользователь: {user_text}"
 
+    model = CLAUDE_MODEL_OPUS if force_opus else _choose_model(user_text)
     loop = asyncio.get_running_loop()
     return await loop.run_in_executor(
         _claude_executor,
-        lambda: _call_claude_sync(full_prompt, system),
+        lambda: _call_claude_sync(full_prompt, system, model=model),
     )
 
 
@@ -495,6 +510,20 @@ async def cmd_status(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def cmd_opus(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Force Opus model for this message: /opus <текст задачи>"""
+    if not is_allowed(update):
+        return
+    text = " ".join(ctx.args) if ctx.args else ""
+    if not text:
+        await update.message.reply_text(
+            "Используй: /opus <задача>\n\nПример: /opus Разработай архитектуру микросервисной системы...\n\n"
+            "Автоматически Opus включается при длинных сообщениях (>250 символов) или сложных запросах."
+        )
+        return
+    await _process_single_message(update, text, force_opus=True)
+
+
 async def cmd_clear(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
@@ -529,11 +558,13 @@ async def cmd_set_mode(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Неизвестный режим.")
 
 
-async def _process_single_message(update: Update, user_text: str, image_path: str | None = None):
+async def _process_single_message(update: Update, user_text: str, image_path: str | None = None, force_opus: bool = False):
     thinking_msg = None
     status_task = None
     try:
-        thinking_label = "Изучаю изображение..." if image_path else "Обдумываю..."
+        chosen_model = CLAUDE_MODEL_OPUS if (force_opus or (not image_path and _choose_model(user_text) == CLAUDE_MODEL_OPUS)) else CLAUDE_MODEL
+        model_label = " [Opus]" if chosen_model == CLAUDE_MODEL_OPUS else ""
+        thinking_label = f"Изучаю изображение{model_label}..." if image_path else f"Обдумываю{model_label}..."
         thinking_msg = await update.message.reply_text(thinking_label)
 
         async def _status_updater():
@@ -559,11 +590,11 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
             hist_text = f"[изображение] {caption}" if caption else "[изображение]"
             user_history.append({"role": "user", "text": hist_text[:2000]})
             _log_conversation("user", hist_text, update.effective_user.id)
-            success, answer = await ask_claude(caption, update.effective_user.id, image_path=image_path)
+            success, answer = await ask_claude(caption, update.effective_user.id, image_path=image_path, force_opus=force_opus)
         else:
             user_history.append({"role": "user", "text": user_text[:2000]})
             _log_conversation("user", user_text, update.effective_user.id)
-            success, answer = await ask_claude(user_text, update.effective_user.id)
+            success, answer = await ask_claude(user_text, update.effective_user.id, force_opus=force_opus)
 
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
@@ -813,6 +844,7 @@ def main():
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("status", cmd_status))
     app.add_handler(CommandHandler("clear", cmd_clear))
+    app.add_handler(CommandHandler("opus", cmd_opus))
 
     for mode_name in MODE_PREFIXES:
         app.add_handler(CommandHandler(mode_name, cmd_set_mode))
