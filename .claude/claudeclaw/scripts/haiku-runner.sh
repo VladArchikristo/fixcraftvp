@@ -130,7 +130,7 @@ job_monitor() {
     fi
 
     # Check bots
-    for bot_name in beast vasily masha kostya; do
+    for bot_name in beast vasily masha kostya philip; do
         local hb_file="$HOME/logs/${bot_name}-heartbeat"
         if [ -f "$hb_file" ]; then
             local raw_hb=$(cat "$hb_file" 2>/dev/null)
@@ -173,7 +173,7 @@ job_self_check() {
     local problems=""
 
     # Check bots via PID files (reliable method)
-    for bot_entry in "Beast:beast-bot" "Вася:vasily-bot" "Маша:masha-bot" "Костя:kostya-bot"; do
+    for bot_entry in "Beast:beast-bot" "Вася:vasily-bot" "Маша:masha-bot" "Костя:kostya-bot" "Филип:philip-bot"; do
         local label="${bot_entry%%:*}"
         local pid_name="${bot_entry##*:}"
         local pid_file="$HOME/logs/${pid_name}.pid"

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Василий Market Scanner — 3x Daily
-Сканирует крипторынок, делает анализ через Claude CLI, обновляет paper portfolio.
+Василий Market Scanner v2 — Hyperliquid Edition
+Сканирует крипторынок через РЕАЛЬНЫЕ данные Hyperliquid + полный тех.анализ.
+Делает анализ через Claude CLI, обновляет paper portfolio.
 """
 
 import json
@@ -20,6 +21,21 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 from dotenv import load_dotenv
 import html as html_mod
+
+# ─── Local modules ──────────────────────────────────────────────────────────
+from hyperliquid_api import (
+    fetch_market_summary, fetch_candles, fetch_funding_rates,
+    fetch_extended_market, fetch_multi_timeframe, fetch_vault_summaries,
+    fetch_vault_positions, fetch_perp_universe,
+    CG_TO_HL, HL_TO_CG,
+)
+from technical_analysis import full_analysis, format_ta_report
+from strategies import (
+    analyze_funding_extremes, analyze_oi_divergence,
+    analyze_whale_walls, analyze_vault_signals,
+    analyze_multi_timeframe, combine_strategies,
+    format_strategy_report,
+)
 
 # ─── Конфиг ───────────────────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -47,6 +63,9 @@ CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 
 ASSETS = ["bitcoin", "ethereum", "solana", "binancecoin", "ripple",
           "cardano", "avalanche-2", "polkadot", "chainlink", "uniswap"]
+
+# Coins to do full TA on (top by volume on HL)
+TA_COINS = ["BTC", "ETH", "SOL", "BNB", "AVAX", "XRP", "LINK", "DOGE", "SUI", "ARB"]
 
 ASSET_SYMBOLS = {
     "bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL",
@@ -191,6 +210,43 @@ def fetch_news():
 
     return news[:12]
 
+def fetch_rsi(asset_id: str, days: int = 14):
+    """Calculate RSI from CoinGecko historical data. Returns RSI (0-100) or None."""
+    try:
+        url = f"https://api.coingecko.com/api/v3/coins/{asset_id}/market_chart?vs_currency=usd&days={days + 1}&interval=daily"
+        r = requests.get(url, timeout=15)
+        data = r.json()
+        prices_hist = [p[1] for p in data.get("prices", [])]
+        if len(prices_hist) < days + 1:
+            return None
+        # Calculate daily changes
+        changes = [prices_hist[i] - prices_hist[i - 1] for i in range(1, len(prices_hist))]
+        gains = [c if c > 0 else 0 for c in changes]
+        losses = [-c if c < 0 else 0 for c in changes]
+        avg_gain = sum(gains[-days:]) / days
+        avg_loss = sum(losses[-days:]) / days
+        if avg_loss == 0:
+            return 100.0
+        rs = avg_gain / avg_loss
+        return round(100 - (100 / (1 + rs)), 1)
+    except Exception as e:
+        log.warning("fetch_rsi(%s) failed: %s", asset_id, e)
+        return None
+
+
+def fetch_all_rsi() -> dict:
+    """Fetch RSI for key assets. Returns {symbol: rsi_value}."""
+    rsi_data = {}
+    key_assets = ["bitcoin", "ethereum", "solana", "binancecoin", "avalanche-2"]
+    for asset_id in key_assets:
+        rsi = fetch_rsi(asset_id)
+        if rsi is not None:
+            sym = ASSET_SYMBOLS.get(asset_id, asset_id)
+            rsi_data[sym] = rsi
+        time.sleep(0.3)  # Rate limit CoinGecko
+    return rsi_data
+
+
 def fetch_btc_dominance():
     try:
         r = requests.get("https://api.coingecko.com/api/v3/global", timeout=10)
@@ -202,8 +258,21 @@ def fetch_btc_dominance():
         log.warning("fetch_btc_dominance failed: %s", e)
         return "N/A", "N/A"
 
+# ─── Получить текущую цену актива ────────────────────────────────────────────
+def _get_price(asset: str, prices: dict, hl_market: dict = None) -> float:
+    """Get current price for asset. Prefers Hyperliquid, falls back to CoinGecko."""
+    # Try Hyperliquid first
+    if hl_market and asset in hl_market:
+        return hl_market[asset].get("price", 0)
+    # Fallback to CoinGecko
+    cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == asset), None)
+    if cg_id and cg_id in prices:
+        return prices[cg_id]["usd"]
+    return 0
+
+
 # ─── P&L расчёт + автоматическое закрытие по SL/TP ───────────────────────────
-def check_sl_tp(portfolio, prices):
+def check_sl_tp(portfolio, prices, hl_market=None):
     """Проверяем SL/TP для всех позиций. Автоматически закрываем сработавшие."""
     auto_closed = []
     remaining = []
@@ -211,22 +280,38 @@ def check_sl_tp(portfolio, prices):
 
     for pos in portfolio["positions"]:
         asset = pos["asset"]
-        cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == asset), None)
-        if not cg_id or cg_id not in prices:
+        cur_price = _get_price(asset, prices, hl_market)
+        if cur_price <= 0:
             remaining.append(pos)
             continue
-
-        cur_price = prices[cg_id]["usd"]
         entry = pos.get("entry_price", 0)
         if entry <= 0:
             log.warning("Позиция %s имеет entry_price=0, пропускаем", asset)
             remaining.append(pos)
             continue
 
-        size_usd = pos["size_usd"]
+        size_usd = pos.get("size_usd", 0)
         sl = pos.get("stop_loss")
         tp = pos.get("take_profit")
         side = pos.get("side", "LONG").upper()
+        trailing_pct = pos.get("trailing_stop_pct", 0)
+
+        # --- Trailing Stop Logic ---
+        if trailing_pct > 0 and sl:
+            if side == "LONG" and cur_price > entry:
+                # Price moved up — trail the stop loss higher
+                new_sl = cur_price * (1 - trailing_pct / 100)
+                if new_sl > sl:
+                    log.info("Trailing SL %s LONG: $%.2f → $%.2f (price $%.2f)", asset, sl, new_sl, cur_price)
+                    pos["stop_loss"] = round(new_sl, 2)
+                    sl = pos["stop_loss"]
+            elif side == "SHORT" and cur_price < entry:
+                # Price moved down — trail the stop loss lower
+                new_sl = cur_price * (1 + trailing_pct / 100)
+                if new_sl < sl:
+                    log.info("Trailing SL %s SHORT: $%.2f → $%.2f (price $%.2f)", asset, sl, new_sl, cur_price)
+                    pos["stop_loss"] = round(new_sl, 2)
+                    sl = pos["stop_loss"]
 
         triggered = None
         if side == "LONG":
@@ -243,10 +328,15 @@ def check_sl_tp(portfolio, prices):
         if triggered:
             qty = size_usd / entry
             cur_value = qty * cur_price
-            pnl_usd = cur_value - size_usd
+            # SHORT: profit when price drops; LONG: profit when price rises
+            if side == "SHORT":
+                pnl_usd = size_usd - cur_value
+            else:
+                pnl_usd = cur_value - size_usd
             pnl_pct = (pnl_usd / size_usd) * 100
 
-            portfolio["cash"] += cur_value
+            # Cash returned = original investment + profit/loss
+            portfolio["cash"] += size_usd + pnl_usd
             portfolio.setdefault("closed_trades", []).append({
                 "asset": asset,
                 "side": side,
@@ -272,17 +362,16 @@ def check_sl_tp(portfolio, prices):
     return auto_closed
 
 
-def calc_pnl(portfolio, prices):
+def calc_pnl(portfolio, prices, hl_market=None):
     pnl_lines = []
     total_value = portfolio["cash"]
 
     for pos in portfolio["positions"]:
         asset = pos["asset"]
-        cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == asset), None)
-        if not cg_id or cg_id not in prices:
+        cur_price = _get_price(asset, prices, hl_market)
+        if cur_price <= 0:
             continue
 
-        cur_price = prices[cg_id]["usd"]
         entry = pos.get("entry_price", 0)
         size_usd = pos.get("size_usd", 0)
 
@@ -290,16 +379,22 @@ def calc_pnl(portfolio, prices):
             log.warning("Позиция %s: некорректные данные (entry=%.2f, size=%.2f)", asset, entry, size_usd)
             continue
 
+        side = pos.get("side", "LONG").upper()
         qty = size_usd / entry
         cur_value = qty * cur_price
-        pnl_usd = cur_value - size_usd
+        # SHORT: profit when price drops; LONG: profit when price rises
+        if side == "SHORT":
+            pnl_usd = size_usd - cur_value
+        else:
+            pnl_usd = cur_value - size_usd
         pnl_pct = (pnl_usd / size_usd) * 100
 
         sl = pos.get("stop_loss")
         tp = pos.get("take_profit")
         sl_tp_info = f" | SL:${sl:.2f} TP:${tp:.2f}" if sl and tp else " | ⚠️ БЕЗ SL/TP"
 
-        total_value += cur_value
+        # Position value = original investment + P&L
+        total_value += size_usd + pnl_usd
         pnl_lines.append(
             f"  {pos.get('side','LONG')} {asset}: вход ${entry:.2f} → сейчас ${cur_price:.2f} | "
             f"P&L: {'+' if pnl_usd >= 0 else ''}{pnl_usd:.2f}$ ({'+' if pnl_pct >= 0 else ''}{pnl_pct:.1f}%){sl_tp_info}"
@@ -308,17 +403,117 @@ def calc_pnl(portfolio, prices):
     return pnl_lines, total_value
 
 # ─── Сборка промпта для Claude ─────────────────────────────────────────────────
-def build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_lines, total_value):
+def build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_lines, total_value,
+                 rsi_data=None, hl_market=None, ta_reports=None, strategy_report=None,
+                 extended_data=None):
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
-    # Цены топ активов
+    # === ЦЕНЫ: Hyperliquid (первичные) + CoinGecko (fallback) ===
     price_block = ""
-    for cg_id, sym in ASSET_SYMBOLS.items():
-        if cg_id in prices:
-            p = prices[cg_id]
-            ch = p.get("usd_24h_change", 0) or 0
-            vol = p.get("usd_24h_vol", 0) or 0
-            price_block += f"  {sym}: ${p['usd']:,.2f} | 24h: {'+' if ch >= 0 else ''}{ch:.1f}% | Vol: ${vol/1e6:.0f}M\n"
+    if hl_market:
+        for coin in TA_COINS:
+            info = hl_market.get(coin, {})
+            if not info:
+                continue
+            price = info["price"]
+            ch = info.get("price_change_24h", 0)
+            vol = info.get("day_volume_usd", 0)
+            fr = info.get("funding_rate", 0)
+            oi = info.get("open_interest_usd", 0)
+            price_block += (
+                f"  {coin}: ${price:,.2f} | 24h: {ch:+.2f}% | "
+                f"Vol: ${vol/1e6:.0f}M | Funding: {fr:+.4f}% | "
+                f"OI: ${oi/1e6:.0f}M\n"
+            )
+    else:
+        # Fallback to CoinGecko
+        for cg_id, sym in ASSET_SYMBOLS.items():
+            if cg_id in prices:
+                p = prices[cg_id]
+                ch = p.get("usd_24h_change", 0) or 0
+                vol = p.get("usd_24h_vol", 0) or 0
+                price_block += f"  {sym}: ${p['usd']:,.2f} | 24h: {'+' if ch >= 0 else ''}{ch:.1f}% | Vol: ${vol/1e6:.0f}M\n"
+
+    # === FUNDING RATES ANALYSIS ===
+    funding_block = ""
+    if hl_market:
+        high_funding = [(c, d) for c, d in hl_market.items()
+                        if abs(d.get("funding_rate", 0)) > 0.005]
+        if high_funding:
+            funding_block = "\nFUNDING ALERTS (>0.005%):\n"
+            for coin, d in sorted(high_funding, key=lambda x: -abs(x[1]["funding_rate"])):
+                fr = d["funding_rate"]
+                ann = d.get("funding_annual", 0)
+                direction = "LONGS PAY" if fr > 0 else "SHORTS PAY"
+                funding_block += f"  {coin}: {fr:+.4f}% ({ann:+.1f}% annual) — {direction}\n"
+
+    # === TECHNICAL ANALYSIS ===
+    ta_block = ""
+    if ta_reports:
+        ta_block = "\n═══════════════ ПОЛНЫЙ ТЕХНИЧЕСКИЙ АНАЛИЗ ═══════════════\n"
+        for report in ta_reports:
+            ta_block += report + "\n"
+
+    # === ORDER BOOK IMBALANCE ===
+    book_block = ""
+    if hl_market:
+        imbalances = [(c, d.get("book_imbalance", 0)) for c, d in hl_market.items()
+                      if abs(d.get("book_imbalance", 0)) > 10]
+        if imbalances:
+            book_block = "\nORDER BOOK IMBALANCE:\n"
+            for coin, imb in sorted(imbalances, key=lambda x: -abs(x[1])):
+                side = "BID-HEAVY (buy pressure)" if imb > 0 else "ASK-HEAVY (sell pressure)"
+                book_block += f"  {coin}: {imb:+.1f}% — {side}\n"
+
+    # === EXTENDED DATA (OI, Predicted Funding, Liquidations, Whale Walls) ===
+    extended_block = ""
+    if extended_data:
+        # Predicted Funding
+        pred = extended_data.get("predicted_funding", {})
+        if pred:
+            high_pred = [(c, d) for c, d in pred.items() if abs(d.get("predicted_rate", 0)) > 0.003]
+            if high_pred:
+                extended_block += "\nPREDICTED NEXT FUNDING:\n"
+                for coin, d in sorted(high_pred, key=lambda x: -abs(x[1]["predicted_rate"]))[:8]:
+                    r = d["predicted_rate"]
+                    ann = d.get("predicted_annual", 0)
+                    extended_block += f"  {coin}: {r:+.4f}% ({ann:+.1f}% annual)\n"
+
+        # OI Analysis
+        oi = extended_data.get("oi_analysis", {})
+        if oi:
+            extended_block += "\nOPEN INTEREST ANALYSIS:\n"
+            for coin, d in oi.items():
+                cap_str = " !! AT CAP !!" if d.get("at_cap") else f" ({d.get('pct_of_cap', 0):.0f}% of cap)"
+                extended_block += f"  {coin}: OI ${d.get('oi_usd', 0)/1e6:.0f}M{cap_str}\n"
+
+        # Liquidation Cascade Risk
+        casc = extended_data.get("liquidation_cascades", {})
+        risky = [(c, d) for c, d in casc.items() if d.get("cascade_risk") != "LOW"]
+        if risky:
+            extended_block += "\nLIQUIDATION CASCADE RISK:\n"
+            for coin, d in risky:
+                extended_block += f"  {coin}: {d['cascade_risk']} — premium {d['premium_pct']:+.4f}% | 24h: {d['price_change_24h']:+.2f}%\n"
+
+        # Whale Walls
+        walls = extended_data.get("whale_walls", {})
+        if walls:
+            extended_block += "\nWHALE WALLS IN ORDER BOOK:\n"
+            for coin, entries in walls.items():
+                for w in entries[:3]:
+                    extended_block += f"  {coin}: {w['side']} ${w['usd_size']:,.0f} @ ${w['price']:,.2f} ({w['orders']} orders)\n"
+
+        # Funding History Trends
+        fh = extended_data.get("funding_history", {})
+        if fh:
+            extended_block += "\nFUNDING HISTORY (72h):\n"
+            for coin, d in fh.items():
+                extended_block += f"  {coin}: avg {d['avg_rate']:+.4f}% | range [{d['min_rate']:+.4f}%, {d['max_rate']:+.4f}%] | trend: {d['trend']}\n"
+
+    # === STRATEGY INTELLIGENCE ===
+    strategy_block = ""
+    if strategy_report:
+        strategy_block = f"\n{strategy_report}\n"
 
     # Новости
     news_block = ""
@@ -333,16 +528,17 @@ def build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_l
     # Доступные активы для торговли
     available_syms = list(ASSET_SYMBOLS.values())
 
-    prompt = f"""Ты Василий — опытный крипто-трейдер. Сейчас {now} UTC.
+    prompt = f"""Ты Василий — профессиональный крипто-трейдер на Hyperliquid perpetual futures. Сейчас {now} UTC.
+Все данные ниже — РЕАЛЬНЫЕ с биржи Hyperliquid (perpetual futures, не спот!).
 
-═══════════════ РЫНОЧНЫЕ ДАННЫЕ ═══════════════
-ЦЕНЫ И ОБЪЁМЫ (топ-10):
-{price_block}
+═══════════════ РЫНОЧНЫЕ ДАННЫЕ (HYPERLIQUID) ═══════════════
+ЦЕНЫ, ОБЪЁМЫ, FUNDING, OPEN INTEREST:
+{price_block}{funding_block}{book_block}{extended_block}
 Fear & Greed Index: {fear_greed}
 BTC Dominance: {btc_dom}%
 Total Market Cap: ${total_mcap}T
-
-═══════════════ НОВОСТИ (последние 8ч) ═══════════════
+{ta_block}{strategy_block}
+═══════════════ НОВОСТИ (последние 24ч) ═══════════════
 {news_block}
 ═══════════════ ТЕКУЩИЙ ПОРТФЕЛЬ ═══════════════
 Кэш: ${portfolio['cash']:.2f}
@@ -353,31 +549,77 @@ Total Market Cap: ${total_mcap}T
 Общая стоимость портфеля: ~${total_value:.2f}
 Общий P&L: {'+' if total_value >= portfolio['initial_capital'] else ''}{total_value - portfolio['initial_capital']:.2f}$ ({'+' if total_value >= portfolio['initial_capital'] else ''}{((total_value/portfolio['initial_capital'])-1)*100:.1f}%)
 
+═══════════════ КАК ПРИНИМАТЬ РЕШЕНИЯ ═══════════════
+Используй ВСЕ доступные данные Hyperliquid для КОМПЛЕКСНОГО анализа:
+
+**ТЕХНИЧЕСКИЙ АНАЛИЗ:**
+1. **Тренд** (EMA 20/50/200, MACD) — НЕ торгуй против тренда
+2. **Моментум** (RSI, MACD histogram) — ищи дивергенции
+3. **Волатильность** (Bollinger Bands, ATR) — определяет размер SL/TP
+4. **Объём** (volume profile, OBV) — подтверждение движения
+5. **Уровни** (поддержка/сопротивление) — точки входа/выхода
+6. **Multi-TF** — если 1h/4h/1d все согласны = СИЛЬНЫЙ сигнал
+
+**HYPERLIQUID-СПЕЦИФИЧНЫЕ ДАННЫЕ:**
+7. **Funding Rate** — extreme +funding = лонги перегружены → SHORT squeeze risk
+8. **Predicted Funding** — если растёт → crowd всё больше в одну сторону
+9. **Funding History 72h** — тренд фандинга: растёт/стабильный/падает
+10. **Open Interest** — рост OI + рост цены = новые лонги; рост OI + падение = новые шорты
+11. **OI vs Cap** — OI у лимита = нельзя открыть новые позы, только закрытие
+12. **Liquidation Cascade Risk** — высокий = возможны резкие движения
+13. **Whale Walls** — крупные ордера в стакане = зоны поддержки/сопротивления
+14. **Order Book Imbalance** — перевес bid/ask показывает давление
+
+**СТРАТЕГИИ (из Strategy Intelligence выше):**
+- **Funding Extreme**: fade crowd при extreme funding (mean reversion)
+- **OI Divergence**: расхождение OI/цены → potential squeeze
+- **Whale Flow**: крупные стены в стакане → зоны S/R
+- **Trend Following**: вход по тренду на откатах к EMA20/50
+- **Mean Reversion**: oversold Bollinger/RSI = покупка, overbought = продажа
+- **Breakout**: прорыв уровня с объёмом
+- **Multi-TF Confluence**: все таймфреймы совпадают = высокая уверенность
+
+ВАЖНО: Секция "STRATEGY INTELLIGENCE" выше содержит автоматически рассчитанные сигналы.
+Используй их как ДОПОЛНИТЕЛЬНЫЙ вход, но принимай решение САМИ на основе ВСЕХ данных.
+
 ═══════════════ ЗАДАЧА ═══════════════
-Сделай ПОЛНЫЙ объективный анализ:
+Сделай ПОЛНЫЙ профессиональный анализ:
 
-1. НАСТРОЕНИЕ РЫНКА — bull/bear/neutral и почему, оценка рисков
-2. АНАЛИЗ ПО КАЖДОМУ АКТИВУ — BTC, ETH, SOL + топ альты: тренд, уровни, риски
-3. НОВОСТНОЙ ФОНД — что важно, что bullish/bearish
-4. АНАЛИЗ ТЕКУЩИХ ПОЗИЦИЙ — оценить держать/закрыть/увеличить
+1. **MACRO OUTLOOK** — общее настроение рынка, ключевые драйверы
+2. **HYPERLIQUID FLOW** — что показывают funding trends, OI, whale walls, ликвидации
+3. **INDIVIDUAL ANALYSIS** — по каждому активу: тренд, TA сигналы, уровни, риски
+4. **ПОЗИЦИИ** — каждую открытую позицию: держать/закрыть/подвинуть SL
+5. **ТОРГОВЫЕ РЕШЕНИЯ** (ОБЯЗАТЕЛЬНЫЙ БЛОК):
 
-5. ТОРГОВЫЕ РЕШЕНИЯ — ОБЯЗАТЕЛЬНЫЙ БЛОК:
 Формат строго:
-OPEN_POSITION: {{asset: "XXX", side: "LONG/SHORT", size_usd: NN, stop_loss: ЦЕНА, take_profit: ЦЕНА, reason: "..."}}
-CLOSE_POSITION: {{asset: "XXX", reason: "..."}}
-HOLD: {{asset: "XXX", reason: "..."}}
-NO_ACTION: {{reason: "..."}}
+OPEN_POSITION: {{"asset": "XXX", "side": "LONG/SHORT", "size_usd": NN, "stop_loss": ЦЕНА, "take_profit": ЦЕНА, "reason": "..."}}
+CLOSE_POSITION: {{"asset": "XXX", "reason": "..."}}
+HOLD: {{"asset": "XXX", "reason": "..."}}
+NO_ACTION: {{"reason": "..."}}
 
-ОБЯЗАТЕЛЬНО указывай stop_loss и take_profit в каждом OPEN_POSITION!
-Определяй TP по стратегии: уровни сопротивления, волатильность актива, тренд. TP может быть 5%, 15%, 30%+ — решай по ситуации.
-SL ставь по ближайшему уровню поддержки или 3-7% от входа.
+ПРАВИЛА SL/TP (ВАЖНО!):
+- SL ставь по ATR: 1.5-2x ATR от входа (или ближайший уровень S/R или whale wall)
+- TP ставь по уровням: ближайшее сопротивление (для LONG) или поддержка (для SHORT)
+- Минимальный R:R = 1:2 (TP должен быть минимум в 2 раза дальше SL)
+- Whale walls = зоны S/R: ставь SL за wall, TP к следующему wall
+- Используй данные из TA: Bollinger bands, EMA levels, support/resistance
 
-Важно: кэш доступен ${portfolio['cash']:.2f}. Максимум на позицию — 30% от кэша. Не открывать позиции если кэш < $10.
-Доступные активы: {', '.join(available_syms)}
+RISK MANAGEMENT (автоматически проверяется системой):
+- Макс 2 позиции одного направления
+- Дневной лимит убытков: $10 (10% от капитала)
+- Trailing Stop автоматически подтягивается
+- RSI > 75 блокирует LONG, RSI < 25 блокирует SHORT
+- Score < -30 = не открывать LONG, Score > +30 = не открывать SHORT
+- Funding > 0.01% = осторожно с LONG (crowd is long)
+- Funding < -0.01% = осторожно с SHORT (crowd is short)
+- OI at cap = не открывать новые позиции на этом активе
 
-6. ПРОГНОЗ на 24-48 часов по портфелю
+Кэш: ${portfolio['cash']:.2f}. Максимум 30% кэша на позицию. Не открывать если кэш < $10.
+Активы: {', '.join(available_syms)}
 
-Будь объективен. Называй риски. Не давай пустых советов."""
+6. **ПРОГНОЗ** — 24-48 часов, конкретные уровни
+
+Будь объективен. Конкретные числа. Без воды."""
 
     return prompt
 
@@ -541,10 +783,36 @@ def parse_trading_decisions(claude_output, portfolio, prices):
 
     return actions
 
-def execute_trades(actions, portfolio, prices):
-    """Применяем торговые решения к бумажному портфелю"""
+def _daily_loss(portfolio) -> float:
+    """Calculate total realized loss for today's closed trades."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    daily = 0.0
+    for t in portfolio.get("closed_trades", []):
+        closed_at = t.get("closed_at", "")
+        if closed_at.startswith(today):
+            pnl = t.get("pnl_usd", 0)
+            if pnl < 0:
+                daily += pnl  # negative
+    return daily
+
+
+DAILY_LOSS_LIMIT = -10.0  # Max $10 loss per day (10% of $100 capital)
+MAX_SAME_DIRECTION = 2    # Max 2 positions in the same direction
+
+
+def execute_trades(actions, portfolio, prices, hl_market=None, ta_data=None, extended_data=None):
+    """Применяем торговые решения к бумажному портфелю с risk management.
+    ta_data: {coin: analysis_dict} from technical_analysis module.
+    extended_data: full extended market data (OI caps, cascades, etc.)."""
     trade_log = []
     now = datetime.now().isoformat()
+
+    # --- Daily Loss Limit Check ---
+    today_loss = _daily_loss(portfolio)
+    if today_loss <= DAILY_LOSS_LIMIT:
+        trade_log.append(f"🛑 DAILY LOSS LIMIT: потери сегодня ${today_loss:.2f} ≥ лимит ${DAILY_LOSS_LIMIT:.2f}. Новые сделки заблокированы.")
+        # Still process CLOSE and HOLD, but block OPEN
+        actions = [(t, d) for t, d in actions if t != "OPEN"]
 
     for action_type, data in actions:
         if action_type == "OPEN":
@@ -552,6 +820,12 @@ def execute_trades(actions, portfolio, prices):
             side = data.get("side", "LONG").upper()
             size_usd = float(data.get("size_usd", 0))
             reason = data.get("reason", "")
+
+            # --- Correlation Filter: max 2 same-direction positions ---
+            same_dir = sum(1 for p in portfolio["positions"] if p.get("side", "LONG").upper() == side)
+            if same_dir >= MAX_SAME_DIRECTION:
+                trade_log.append(f"⚠️ SKIP OPEN {side} {asset}: уже {same_dir} позиций {side} (лимит {MAX_SAME_DIRECTION})")
+                continue
 
             # Проверки
             if size_usd <= 0 or size_usd > portfolio["cash"]:
@@ -564,25 +838,93 @@ def execute_trades(actions, portfolio, prices):
                 log.warning("OPEN %s: size_usd $%.0f превышает 30%% лимит $%.0f, обрезаем", asset, size_usd, max_position)
                 size_usd = round(max_position, 2)
 
-            # Найти цену
-            cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == asset), None)
-            if not cg_id or cg_id not in prices:
+            # Найти цену — Hyperliquid first, then CoinGecko
+            cur_price = _get_price(asset, prices, hl_market)
+            if cur_price <= 0:
                 trade_log.append(f"❌ OPEN {asset}: цена не найдена")
                 continue
 
-            cur_price = prices[cg_id]["usd"]
+            # RSI/Score блокировка из TA данных
+            coin_ta = (ta_data or {}).get(asset)
+            if coin_ta:
+                ta_rsi = coin_ta.get("rsi")
+                ta_score = coin_ta.get("score", 0)
+                if ta_rsi and ta_rsi > 75 and side == "LONG":
+                    trade_log.append(f"⚠️ SKIP OPEN LONG {asset}: RSI={ta_rsi} >75 (overbought)")
+                    continue
+                if ta_rsi and ta_rsi < 25 and side == "SHORT":
+                    trade_log.append(f"⚠️ SKIP OPEN SHORT {asset}: RSI={ta_rsi} <25 (oversold)")
+                    continue
+                if ta_score < -30 and side == "LONG":
+                    trade_log.append(f"⚠️ SKIP OPEN LONG {asset}: TA Score={ta_score} (bearish)")
+                    continue
+                if ta_score > 30 and side == "SHORT":
+                    trade_log.append(f"⚠️ SKIP OPEN SHORT {asset}: TA Score={ta_score} (bullish)")
+                    continue
 
-            # SL/TP — берём из данных Claude или адаптивные по волатильности
+            # Funding rate warning (from Hyperliquid)
+            hl_info = (hl_market or {}).get(asset, {})
+            fr = hl_info.get("funding_rate", 0)
+            if fr > 0.01 and side == "LONG":
+                trade_log.append(f"⚠️ WARNING {asset}: Funding {fr:+.4f}% — longs paying (crowd is long)")
+            elif fr < -0.01 and side == "SHORT":
+                trade_log.append(f"⚠️ WARNING {asset}: Funding {fr:+.4f}% — shorts paying (crowd is short)")
+
+            # OI Cap check (from extended data)
+            oi_info = (extended_data or {}).get("oi_analysis", {}).get(asset, {})
+            if oi_info.get("at_cap"):
+                trade_log.append(f"🛑 SKIP OPEN {side} {asset}: OI at cap — no new positions allowed on HL")
+                continue
+            elif oi_info.get("pct_of_cap", 0) > 95:
+                trade_log.append(f"⚠️ WARNING {asset}: OI at {oi_info['pct_of_cap']:.0f}% of cap — near limit")
+
+            # SL/TP — use ATR-based if available, else Claude's values, else volatility fallback
             sl = data.get("stop_loss")
             tp = data.get("take_profit")
             if not sl or not tp:
-                vol_24h = abs(prices[cg_id].get("usd_24h_change", 5) or 5)
-                sl_pct = max(0.03, min(vol_24h / 100 * 1.5, 0.10))  # 3-10% от волатильности
-                tp_pct = max(0.05, min(vol_24h / 100 * 3.0, 0.30))  # 5-30%, R:R ~2:1
-                if not sl:
-                    sl = cur_price * ((1 - sl_pct) if side == "LONG" else (1 + sl_pct))
-                if not tp:
-                    tp = cur_price * ((1 + tp_pct) if side == "LONG" else (1 - tp_pct))
+                # ATR-based SL/TP (best)
+                if coin_ta and coin_ta.get("atr"):
+                    atr_val = coin_ta["atr"]["atr"]
+                    if not sl:
+                        sl = cur_price - (1.5 * atr_val) if side == "LONG" else cur_price + (1.5 * atr_val)
+                    if not tp:
+                        # Use support/resistance levels if available
+                        levels = coin_ta.get("levels", {})
+                        if side == "LONG" and levels and levels.get("nearest_resistance"):
+                            tp = levels["nearest_resistance"]
+                        elif side == "SHORT" and levels and levels.get("nearest_support"):
+                            tp = levels["nearest_support"]
+                        else:
+                            tp = cur_price + (3.0 * atr_val) if side == "LONG" else cur_price - (3.0 * atr_val)
+                else:
+                    # Fallback to volatility-based
+                    cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == asset), None)
+                    vol_24h = abs(hl_info.get("price_change_24h", 5) or
+                                 (prices.get(cg_id, {}).get("usd_24h_change", 5) if cg_id else 5))
+                    sl_pct = max(0.03, min(vol_24h / 100 * 1.5, 0.10))
+                    tp_pct = max(0.05, min(vol_24h / 100 * 3.0, 0.30))
+                    if not sl:
+                        sl = cur_price * ((1 - sl_pct) if side == "LONG" else (1 + sl_pct))
+                    if not tp:
+                        tp = cur_price * ((1 + tp_pct) if side == "LONG" else (1 - tp_pct))
+
+            # Ensure minimum R:R = 1:2
+            sl_dist = abs(cur_price - float(sl))
+            tp_dist = abs(float(tp) - cur_price)
+            if sl_dist > 0 and tp_dist / sl_dist < 1.5:
+                # Adjust TP to meet minimum R:R
+                if side == "LONG":
+                    tp = cur_price + (sl_dist * 2.0)
+                else:
+                    tp = cur_price - (sl_dist * 2.0)
+                trade_log.append(f"📐 Adjusted TP for {asset}: R:R was < 1.5, now 1:2.0")
+
+            # Trailing stop: ATR-based or volatility-based
+            if coin_ta and coin_ta.get("atr"):
+                trailing_pct = max(2.0, min(coin_ta["atr"]["atr_pct"] * 1.2, 5.0))
+            else:
+                vol_24h = abs(hl_info.get("price_change_24h", 3) or 3)
+                trailing_pct = max(2.0, min(vol_24h * 0.8, 5.0))
 
             # Открываем позицию
             portfolio["cash"] -= size_usd
@@ -593,9 +935,10 @@ def execute_trades(actions, portfolio, prices):
                 "entry_price": cur_price,
                 "stop_loss": round(float(sl), 2),
                 "take_profit": round(float(tp), 2),
+                "trailing_stop_pct": round(trailing_pct, 1),
                 "opened_at": now
             })
-            trade_log.append(f"✅ ОТКРЫТА {side} {asset} ${size_usd:.0f} @ ${cur_price:.2f} SL:${sl:.2f} TP:${tp:.2f} | {reason}")
+            trade_log.append(f"✅ ОТКРЫТА {side} {asset} ${size_usd:.0f} @ ${cur_price:.2f} SL:${sl:.2f} TP:${tp:.2f} Trail:{trailing_pct:.0f}% | {reason}")
 
         elif action_type == "CLOSE":
             asset = data.get("asset", "").upper()
@@ -607,25 +950,28 @@ def execute_trades(actions, portfolio, prices):
                 trade_log.append(f"❌ CLOSE {asset}: позиция не найдена")
                 continue
 
-            # Найти текущую цену
-            cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == asset), None)
-            if not cg_id or cg_id not in prices:
+            # Найти текущую цену — Hyperliquid first
+            cur_price = _get_price(asset, prices, hl_market)
+            if cur_price <= 0:
                 trade_log.append(f"❌ CLOSE {asset}: цена не найдена")
                 continue
-
-            cur_price = prices[cg_id]["usd"]
             entry = pos.get("entry_price", 0)
             size_usd = pos.get("size_usd", 0)
+            side_close = pos.get("side", "LONG").upper()
             if entry <= 0 or size_usd <= 0:
                 trade_log.append(f"❌ CLOSE {asset}: некорректные данные позиции")
                 continue
             qty = size_usd / entry
             cur_value = qty * cur_price
-            pnl_usd = cur_value - size_usd
+            # SHORT: profit when price drops; LONG: profit when price rises
+            if side_close == "SHORT":
+                pnl_usd = size_usd - cur_value
+            else:
+                pnl_usd = cur_value - size_usd
             pnl_pct = (pnl_usd / size_usd) * 100
 
-            # Закрываем
-            portfolio["cash"] += cur_value
+            # Закрываем — cash returned = original + P&L
+            portfolio["cash"] += size_usd + pnl_usd
             portfolio["positions"] = [p for p in portfolio["positions"] if p["asset"] != asset]
             portfolio.setdefault("closed_trades", []).append({
                 "asset": asset,
@@ -660,7 +1006,7 @@ def ask_claude(prompt):
     """Вызываем Claude через CLI"""
     try:
         result = subprocess.run(
-            [CLAUDE_PATH, "-p", prompt, "--model", "claude-sonnet-4-6", "--output-format", "text"],
+            [CLAUDE_PATH, "-p", prompt, "--model", "claude-sonnet-4-6", "--output-format", "text", "--max-turns", "15"],
             capture_output=True, text=True, timeout=180,
             cwd="/Users/vladimirprihodko/Папка тест/fixcraftvp"
         )
@@ -747,12 +1093,14 @@ def save_log(scan_result):
         old.unlink()
 
 # ─── Форматирование Telegram сообщения ────────────────────────────────────────
-def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, total_value, fear_greed, btc_dom):
+def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, total_value,
+                            fear_greed, btc_dom, hl_market=None, ta_data=None,
+                            confluence_data=None, extended_data=None):
     now = datetime.now().strftime("%d.%m.%Y %H:%M")
 
     # Экранируем HTML спецсимволы в анализе Claude (< > & ломают parse_mode=HTML)
     analysis_safe = html_mod.escape(analysis)
-    analysis_short = analysis_safe[:3500] + "\n..." if len(analysis_safe) > 3500 else analysis_safe
+    analysis_short = analysis_safe[:3000] + "\n..." if len(analysis_safe) > 3000 else analysis_safe
 
     trades_text = "\n".join(trade_log) if trade_log else "Действий не выполнено"
     pnl_text = "\n".join(pnl_lines) if pnl_lines else "Нет открытых позиций"
@@ -761,23 +1109,73 @@ def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, t
     pnl_pct = ((total_value / portfolio["initial_capital"]) - 1) * 100
     pnl_emoji = "📈" if pnl_total >= 0 else "📉"
 
-    # Ключевые цены
+    # Цены — Hyperliquid (приоритет) + CoinGecko fallback
     prices_mini = ""
-    for cg_id, sym in [("bitcoin","BTC"),("ethereum","ETH"),("solana","SOL")]:
-        if cg_id in prices:
-            ch = prices[cg_id].get("usd_24h_change", 0) or 0
-            prices_mini += f"{sym} ${prices[cg_id]['usd']:,.0f} ({'+' if ch >= 0 else ''}{ch:.1f}%)\n"
+    for coin in ["BTC", "ETH", "SOL", "BNB", "AVAX"]:
+        if hl_market and coin in hl_market:
+            info = hl_market[coin]
+            ch = info.get("price_change_24h", 0)
+            fr = info.get("funding_rate", 0)
+            prices_mini += f"{coin} ${info['price']:,.0f} ({ch:+.1f}%) FR:{fr:+.4f}%\n"
+        else:
+            cg_id = next((k for k, v in ASSET_SYMBOLS.items() if v == coin), None)
+            if cg_id and cg_id in prices:
+                ch = prices[cg_id].get("usd_24h_change", 0) or 0
+                prices_mini += f"{coin} ${prices[cg_id]['usd']:,.0f} ({ch:+.1f}%)\n"
 
-    msg = f"""🤖 <b>ВАСИЛИЙ MARKET SCAN</b> — {now}
+    # TA Summary with multi-TF confluence
+    ta_mini = ""
+    if ta_data:
+        for coin in ["BTC", "ETH", "SOL", "BNB", "AVAX"]:
+            ta = ta_data.get(coin)
+            if ta:
+                score = ta.get("score", 0)
+                rec = ta.get("recommendation", "?")
+                rsi = ta.get("rsi", "?")
+                macd = ta.get("macd", {})
+                macd_trend = macd.get("trend", "?") if macd else "?"
+                conf = (confluence_data or {}).get(coin, {})
+                conf_str = ""
+                if conf:
+                    conf_pct = conf.get("confluence_score", 0)
+                    conf_dir = conf.get("direction", "?")
+                    if conf_pct >= 60:
+                        conf_str = f" MTF:{conf_dir}({conf_pct}%)"
+                ta_mini += f"  {coin}: {score:+d} ({rec}) RSI:{rsi} MACD:{macd_trend}{conf_str}\n"
 
-💰 <b>Цены:</b>
+    # Extended data mini summary
+    ext_mini = ""
+    if extended_data:
+        casc = extended_data.get("liquidation_cascades", {})
+        risky = [c for c, d in casc.items() if d.get("cascade_risk") != "LOW"]
+        if risky:
+            ext_mini += f"  Cascade risk: {', '.join(risky)}\n"
+        walls = extended_data.get("whale_walls", {})
+        if walls:
+            ext_mini += f"  Whale walls: {', '.join(f'{c}({len(v)})' for c, v in walls.items())}\n"
+        oi = extended_data.get("oi_analysis", {})
+        at_cap = [c for c, d in oi.items() if d.get("at_cap")]
+        if at_cap:
+            ext_mini += f"  OI AT CAP: {', '.join(at_cap)}\n"
+
+    # Data source indicator
+    source = "📡 Hyperliquid Extended" if extended_data else ("📡 Hyperliquid" if hl_market else "🔶 CoinGecko")
+
+    msg = f"""🤖 <b>ВАСИЛИЙ MARKET SCAN v3</b> — {now}
+{source}
+
+💰 <b>Цены + Funding:</b>
 {prices_mini}
-😱 Fear&Greed: {fear_greed} | BTC Dom: {btc_dom}%
+😱 F&amp;G: {fear_greed} | BTC Dom: {btc_dom}%
+
+📊 <b>Тех.анализ (Multi-TF):</b>
+{ta_mini if ta_mini else "  N/A"}
+{ext_mini}
 
 {pnl_emoji} <b>Портфель:</b>
 {pnl_text}
 Кэш: ${portfolio['cash']:.2f}
-Итого: ${total_value:.2f} | P&L: {'+' if pnl_total >= 0 else ''}{pnl_total:.2f}$ ({'+' if pnl_pct >= 0 else ''}{pnl_pct:.1f}%)
+Итого: ${total_value:.2f} | P&amp;L: {'+' if pnl_total >= 0 else ''}{pnl_total:.2f}$ ({'+' if pnl_pct >= 0 else ''}{pnl_pct:.1f}%)
 
 🔄 <b>Сделки:</b>
 {trades_text}
@@ -789,16 +1187,26 @@ def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, t
 
 # ─── Главная функция ───────────────────────────────────────────────────────────
 def main():
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] === VASILY MARKET SCAN STARTED ===")
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] === VASILY MARKET SCAN v3 (HYPERLIQUID EXTENDED) STARTED ===")
 
     # 1. Загружаем портфель
     portfolio = load_portfolio()
     print("[*] Портфель загружен")
 
-    # 2. Рыночные данные
-    print("[*] Получаем цены...")
+    # 2. Рыночные данные — Hyperliquid (PRIMARY) + CoinGecko (FALLBACK)
+    print("[*] Получаем данные с Hyperliquid...")
+    hl_market = fetch_market_summary(TA_COINS)
+    if hl_market:
+        print(f"[+] Hyperliquid: получены данные для {len(hl_market)} активов")
+        for coin, info in sorted(hl_market.items(), key=lambda x: -x[1]["day_volume_usd"])[:5]:
+            print(f"    {coin}: ${info['price']:,.2f} | 24h: {info['price_change_24h']:+.2f}% | "
+                  f"Funding: {info['funding_rate']:+.4f}% | OI: ${info['open_interest_usd']/1e6:.0f}M")
+    else:
+        print("[!] Hyperliquid unavailable, falling back to CoinGecko")
+
+    print("[*] Получаем цены CoinGecko (fallback + дополнение)...")
     prices = fetch_prices()
-    if not prices:
+    if not prices and not hl_market:
         send_telegram("❌ Василий: не удалось получить рыночные данные. Скан отменён.")
         sys.exit(1)
 
@@ -811,54 +1219,214 @@ def main():
     print("[*] BTC dominance...")
     btc_dom, total_mcap = fetch_btc_dominance()
 
+    # 2b. Extended Hyperliquid data (OI, predicted funding, cascades, whale walls, funding history)
+    print("[*] Расширенные данные Hyperliquid (OI, predicted funding, cascades, whales)...")
+    extended_data = None
+    try:
+        extended_data = fetch_extended_market(TA_COINS)
+        if extended_data:
+            pred = extended_data.get("predicted_funding", {})
+            oi = extended_data.get("oi_analysis", {})
+            casc = extended_data.get("liquidation_cascades", {})
+            walls = extended_data.get("whale_walls", {})
+            fh = extended_data.get("funding_history", {})
+            print(f"[+] Predicted funding: {len(pred)} coins")
+            print(f"[+] OI analysis: {len(oi)} coins")
+            print(f"[+] Cascade risk: {sum(1 for d in casc.values() if d.get('cascade_risk') != 'LOW')} at risk")
+            print(f"[+] Whale walls: {sum(len(v) for v in walls.values())} detected")
+            print(f"[+] Funding history: {len(fh)} coins (72h)")
+    except Exception as e:
+        log.warning("Extended market data failed: %s", e)
+
+    # 2c. Полный тех.анализ по свечам Hyperliquid — MULTI-TIMEFRAME
+    print("[*] Тех.анализ Multi-TF (1h + 4h + 1d)...")
+    ta_data = {}  # {coin: analysis_dict} (1h primary)
+    ta_4h = {}    # {coin: analysis_dict}
+    ta_1d = {}    # {coin: analysis_dict}
+    ta_reports = []  # formatted strings for Claude prompt
+    confluence_data = {}  # {coin: confluence_result}
+
+    for coin in TA_COINS[:7]:  # Top 7 by importance
+        try:
+            # Fetch all timeframes
+            mtf = fetch_multi_timeframe(coin)
+
+            # 1h (primary)
+            candles_1h = mtf.get("1h", [])
+            if candles_1h and len(candles_1h) >= 30:
+                analysis = full_analysis(candles_1h)
+                if analysis:
+                    ta_data[coin] = analysis
+                    ta_reports.append(format_ta_report(coin, analysis))
+                    rec = analysis.get("recommendation", "?")
+                    score = analysis.get("score", 0)
+                    print(f"    {coin} 1h: Score={score:+d} → {rec}", end="")
+
+            # 4h
+            candles_4h = mtf.get("4h", [])
+            if candles_4h and len(candles_4h) >= 30:
+                analysis_4h = full_analysis(candles_4h)
+                if analysis_4h:
+                    ta_4h[coin] = analysis_4h
+                    ta_reports.append(format_ta_report(f"{coin} (4h)", analysis_4h))
+                    print(f" | 4h: {analysis_4h.get('score', 0):+d}", end="")
+
+            # 1d
+            candles_1d = mtf.get("1d", [])
+            if candles_1d and len(candles_1d) >= 30:
+                analysis_1d = full_analysis(candles_1d)
+                if analysis_1d:
+                    ta_1d[coin] = analysis_1d
+                    ta_reports.append(format_ta_report(f"{coin} (1d)", analysis_1d))
+                    print(f" | 1d: {analysis_1d.get('score', 0):+d}", end="")
+
+            # Multi-TF confluence
+            conf = analyze_multi_timeframe(
+                ta_data.get(coin, {}),
+                ta_4h.get(coin),
+                ta_1d.get(coin),
+            )
+            if conf.get("confluence_score", 0) > 0:
+                confluence_data[coin] = conf
+                print(f" | Confluence: {conf['confluence_score']}% {conf['direction']}", end="")
+
+            print()  # newline
+
+        except Exception as e:
+            log.warning("TA for %s failed: %s", coin, e)
+            print()
+
+    # 2d. Strategy Intelligence — combine all signals
+    print("[*] Strategy Intelligence...")
+    strategy_report = ""
+    try:
+        funding_data = hl_market or {}
+        pred_funding = extended_data.get("predicted_funding", {}) if extended_data else {}
+        funding_hist = extended_data.get("funding_history", {}) if extended_data else {}
+        oi_analysis = extended_data.get("oi_analysis", {}) if extended_data else {}
+        cascades = extended_data.get("liquidation_cascades", {}) if extended_data else {}
+        whale_walls_data = extended_data.get("whale_walls", {}) if extended_data else {}
+
+        funding_signals = analyze_funding_extremes(funding_data, pred_funding, funding_hist)
+        oi_signals = analyze_oi_divergence(funding_data, oi_analysis, cascades)
+        whale_signals = analyze_whale_walls(whale_walls_data, funding_data)
+
+        # Vault signals (optional — may be slow)
+        vault_signals = []
+        try:
+            vaults = fetch_vault_summaries()
+            if vaults:
+                vault_positions = {}
+                for v in vaults[:3]:  # Top 3 vaults only
+                    addr = v.get("vault_address", "")
+                    if addr:
+                        positions = fetch_vault_positions(addr)
+                        if positions:
+                            vault_positions[addr] = positions
+                        time.sleep(0.2)
+                vault_signals = analyze_vault_signals(vaults, vault_positions)
+                if vault_signals:
+                    print(f"[+] Vault signals: {len(vault_signals)} coins")
+        except Exception as e:
+            log.warning("Vault analysis failed: %s", e)
+
+        combined = combine_strategies(
+            funding_signals, oi_signals, whale_signals, vault_signals,
+            confluence_data, ta_data,
+        )
+        if combined:
+            strategy_report = format_strategy_report(combined)
+            for r in combined[:3]:
+                print(f"    {r['coin']}: {r['recommendation']} (net: {r['net_score']:+d}) via {', '.join(r['strategies'])}")
+    except Exception as e:
+        log.warning("Strategy intelligence failed: %s", e)
+
+    # Legacy RSI (from TA data)
+    rsi_data = {}
+    for coin in TA_COINS[:5]:
+        if coin in ta_data and ta_data[coin].get("rsi") is not None:
+            rsi_data[coin] = ta_data[coin]["rsi"]
+
     # 3. Проверяем SL/TP — автоматическое закрытие позиций
     print("[*] Проверяем SL/TP...")
-    auto_closed = check_sl_tp(portfolio, prices)
+    auto_closed = check_sl_tp(portfolio, prices, hl_market)
     if auto_closed:
         print(f"[!] Автоматически закрыто {len(auto_closed)} позиций по SL/TP")
         save_portfolio(portfolio)
 
     # 3b. P&L оставшихся позиций
-    pnl_lines, total_value = calc_pnl(portfolio, prices)
+    pnl_lines, total_value = calc_pnl(portfolio, prices, hl_market)
 
-    # 4. Промпт и анализ Claude
-    print("[*] Строим промпт...")
-    prompt = build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_lines, total_value)
+    # 4. Промпт и анализ Claude — с ПОЛНЫМИ данными Hyperliquid
+    print("[*] Строим промпт (Hyperliquid Extended + Multi-TF TA + Strategies + News)...")
+    prompt = build_prompt(
+        prices, news, fear_greed, btc_dom, total_mcap,
+        portfolio, pnl_lines, total_value,
+        rsi_data=rsi_data, hl_market=hl_market, ta_reports=ta_reports,
+        strategy_report=strategy_report, extended_data=extended_data,
+    )
+    log.info("Prompt length: %d chars", len(prompt))
 
     print("[*] Спрашиваем Claude...")
-    analysis = ask_claude(prompt)
+    analysis_text = ask_claude(prompt)
 
-    if not analysis:
-        analysis = "⚠️ Claude не ответил. Данные получены, анализ недоступен."
+    if not analysis_text:
+        analysis_text = "⚠️ Claude не ответил. Данные получены, анализ недоступен."
 
     # 5. Парсим торговые решения
     print("[*] Парсим торговые решения...")
-    actions = parse_trading_decisions(analysis, portfolio, prices)
+    actions = parse_trading_decisions(analysis_text, portfolio, prices)
 
-    # 6. Исполняем сделки
-    print("[*] Исполняем сделки...")
-    trade_log = auto_closed + execute_trades(actions, portfolio, prices)
+    # 6. Исполняем сделки — с TA validation
+    print("[*] Исполняем сделки (с TA валидацией)...")
+    trade_log = auto_closed + execute_trades(actions, portfolio, prices, hl_market, ta_data, extended_data)
 
     # 7. Сохраняем портфель
-    # Пересчитываем финальный P&L и детали для истории
-    pnl_lines_final, total_value_final = calc_pnl(portfolio, prices)
+    pnl_lines_final, total_value_final = calc_pnl(portfolio, prices, hl_market)
     total_pnl = total_value_final - portfolio["initial_capital"]
 
-    # Определяем настроение рынка из анализа
-    analysis_lower = (analysis or "").lower()
-    if any(w in analysis_lower for w in ["bullish", "бычий", "рост", "покупать"]):
-        sentiment = "bullish"
-    elif any(w in analysis_lower for w in ["bearish", "медвежий", "падение", "продавать"]):
-        sentiment = "bearish"
+    # Определяем настроение рынка — из TA scores (объективнее чем из текста Claude)
+    if ta_data:
+        avg_score = sum(d.get("score", 0) for d in ta_data.values()) / len(ta_data)
+        if avg_score > 20:
+            sentiment = "bullish"
+        elif avg_score < -20:
+            sentiment = "bearish"
+        else:
+            sentiment = "neutral"
     else:
-        sentiment = "neutral"
+        analysis_lower = (analysis_text or "").lower()
+        if any(w in analysis_lower for w in ["bullish", "бычий", "рост", "покупать"]):
+            sentiment = "bullish"
+        elif any(w in analysis_lower for w in ["bearish", "медвежий", "падение", "продавать"]):
+            sentiment = "bearish"
+        else:
+            sentiment = "neutral"
 
     actions_count = sum(1 for t in trade_log if t.startswith("✅"))
     summary_text = ""
-    for line in (analysis or "").split("\n"):
+    for line in (analysis_text or "").split("\n"):
         if line.strip() and len(line.strip()) > 20:
             summary_text = line.strip()[:150]
             break
+
+    # TA summary for history
+    ta_summary = {}
+    for coin, ta in ta_data.items():
+        ta_summary[coin] = {
+            "score": ta.get("score", 0),
+            "rec": ta.get("recommendation", "?"),
+            "rsi": ta.get("rsi"),
+        }
+
+    # Confluence summary for history
+    conf_summary = {}
+    for coin, conf in confluence_data.items():
+        conf_summary[coin] = {
+            "confluence": conf.get("confluence_score", 0),
+            "direction": conf.get("direction", "?"),
+            "weighted": conf.get("weighted_score", 0),
+        }
 
     portfolio.setdefault("scan_history", []).append({
         "time": datetime.now().isoformat(),
@@ -868,36 +1436,45 @@ def main():
         "sentiment": sentiment,
         "actions_taken": actions_count,
         "summary": summary_text,
-        "trades": trade_log
+        "trades": trade_log,
+        "ta_scores": ta_summary,
+        "confluence": conf_summary,
+        "data_source": "hyperliquid_extended" if extended_data else ("hyperliquid" if hl_market else "coingecko"),
     })
-    # Оставляем последние 50 записей истории
     portfolio["scan_history"] = portfolio["scan_history"][-50:]
     save_portfolio(portfolio)
     print("[*] Портфель сохранён")
 
     # 8. Лог
+    hl_prices = {coin: info["price"] for coin, info in (hl_market or {}).items()}
     scan_result = {
         "time": datetime.now().isoformat(),
         "fear_greed": fear_greed,
         "btc_dom": btc_dom,
-        "prices": {ASSET_SYMBOLS.get(k,k): v.get("usd") for k,v in prices.items()},
+        "prices_hl": hl_prices,
+        "prices_cg": {ASSET_SYMBOLS.get(k, k): v.get("usd") for k, v in prices.items()},
         "news_count": len(news),
-        "analysis_len": len(analysis),
+        "analysis_len": len(analysis_text),
         "trades": trade_log,
-        "portfolio_value": round(total_value, 2),
-        "cash": portfolio["cash"]
+        "portfolio_value": round(total_value_final, 2),
+        "cash": portfolio["cash"],
+        "ta_scores": ta_summary,
+        "confluence": {c: {"score": d.get("confluence_score"), "dir": d.get("direction")} for c, d in confluence_data.items()},
+        "extended_data_available": bool(extended_data),
     }
     save_log(scan_result)
 
-    # 9. Пересчитываем P&L после сделок (портфель изменился)
-    pnl_lines_final, total_value_final = calc_pnl(portfolio, prices)
+    # 9. Пересчитываем P&L после сделок
+    pnl_lines_final, total_value_final = calc_pnl(portfolio, prices, hl_market)
 
-    # 10. Telegram
+    # 10. Telegram — enhanced message
     print("[*] Отправляем в Telegram...")
-    msg = format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines_final, total_value_final, fear_greed, btc_dom)
+    msg = format_telegram_message(analysis_text, trade_log, portfolio, prices, pnl_lines_final,
+                                  total_value_final, fear_greed, btc_dom, hl_market, ta_data,
+                                  confluence_data, extended_data)
     send_telegram(msg)
 
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] === SCAN COMPLETE ===")
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] === SCAN v3 COMPLETE ===")
     if trade_log:
         print("Сделки:")
         for t in trade_log:

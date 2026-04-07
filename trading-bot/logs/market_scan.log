@@ -88,3 +88,50 @@ HOLD: {
 
 OPEN_POSITION: {
   asse
+2026-04-07 01:16:41,573 [WARNING] vasily_hl: Failed to parse ctx for MATIC: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,575 [WARNING] vasily_hl: Failed to parse ctx for RNDR: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,575 [WARNING] vasily_hl: Failed to parse ctx for FTM: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,575 [WARNING] vasily_hl: Failed to parse ctx for MKR: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,575 [WARNING] vasily_hl: Failed to parse ctx for FXS: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,575 [WARNING] vasily_hl: Failed to parse ctx for HPOS: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,575 [WARNING] vasily_hl: Failed to parse ctx for RLB: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for UNIBOT: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for OX: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for FRIEND: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for SHIA: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for CYBER: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for BLZ: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for LOOM: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,576 [WARNING] vasily_hl: Failed to parse ctx for OGN: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,577 [WARNING] vasily_hl: Failed to parse ctx for RDNT: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,577 [WARNING] vasily_hl: Failed to parse ctx for BNT: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,577 [WARNING] vasily_hl: Failed to parse ctx for CANTO: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,577 [WARNING] vasily_hl: Failed to parse ctx for REQ: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,577 [WARNING] vasily_hl: Failed to parse ctx for ORBS: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,577 [WARNING] vasily_hl: Failed to parse ctx for STG: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,578 [WARNING] vasily_hl: Failed to parse ctx for STRAX: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,578 [WARNING] vasily_hl: Failed to parse ctx for BADGER: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,578 [WARNING] vasily_hl: Failed to parse ctx for ILV: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,578 [WARNING] vasily_hl: Failed to parse ctx for NFTI: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,578 [WARNING] vasily_hl: Failed to parse ctx for NTRN: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,579 [WARNING] vasily_hl: Failed to parse ctx for PANDORA: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,579 [WARNING] vasily_hl: Failed to parse ctx for PIXEL: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,579 [WARNING] vasily_hl: Failed to parse ctx for AI: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,579 [WARNING] vasily_hl: Failed to parse ctx for MYRO: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,579 [WARNING] vasily_hl: Failed to parse ctx for OMNI: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,580 [WARNING] vasily_hl: Failed to parse ctx for LISTA: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,580 [WARNING] vasily_hl: Failed to parse ctx for kDOGS: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,580 [WARNING] vasily_hl: Failed to parse ctx for CATI: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,580 [WARNING] vasily_hl: Failed to parse ctx for NEIROETH: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,580 [WARNING] vasily_hl: Failed to parse ctx for AI16Z: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,581 [WARNING] vasily_hl: Failed to parse ctx for JELLY: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,581 [WARNING] vasily_hl: Failed to parse ctx for OM: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:16:41,581 [WARNING] vasily_hl: Failed to parse ctx for LAUNCHCOIN: float() argument must be a string or a number, not 'NoneType'
+2026-04-07 01:17:09,089 [INFO] vasily_scan: Prompt length: 10522 chars
+2026-04-07 01:54:12,459 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 01:54:35,023 [INFO] vasily_scan: Trailing SL SOL SHORT: $81.60 → $81.05 (price $79.46)
+2026-04-07 01:54:35,025 [INFO] vasily_scan: Prompt length: 18977 chars
+2026-04-07 03:00:11,029 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 03:00:31,883 [INFO] vasily_scan: Trailing SL ETH LONG: $1986.99 → $2050.18 (price $2102.75)
+2026-04-07 03:00:31,883 [INFO] vasily_scan: Trailing SL BTC SHORT: $70500.00 → $69894.99 (price $68524.50)
+2026-04-07 03:00:31,884 [INFO] vasily_scan: Prompt length: 20614 chars

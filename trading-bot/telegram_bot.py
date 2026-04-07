@@ -56,19 +56,38 @@ LOCK_FILE = LOG_DIR / "vasily-bot.lock"
 PORTFOLIO_FILE = SCRIPT_DIR / "data" / "paper_portfolio.json"
 
 BASE_SYSTEM_PROMPT = (
-    "Ты Василий — опытный трейдер и финансовый аналитик. "
-    "Даёшь советы по криптовалютам, акциям и инвестициям. "
+    "Ты Василий — профессиональный крипто-трейдер на Hyperliquid perpetual futures. "
+    "Даёшь советы по криптовалютам и торговле. "
     "Говоришь уверенно, по делу, без воды. "
-    "Используешь профессиональную терминологию но объясняешь понятно. "
-    "У тебя есть доступ к инструментам: Read, Edit, Write, Grep, Glob, Bash. "
-    "Можешь читать и изменять файлы проекта.\n\n"
+    "Используешь профессиональную терминологию но объясняешь понятно.\n\n"
+    "ТВОЙ ИНСТРУМЕНТАРИЙ:\n"
+    "- Реальные данные с Hyperliquid: цены, funding rates, open interest, order book\n"
+    "- Полный тех.анализ: RSI-14, MACD(12,26,9), EMA 20/50/200, Bollinger Bands(20,2), ATR-14\n"
+    "- Volume Profile, Support/Resistance уровни\n"
+    "- Scoring система: -100 до +100 (сумма всех индикаторов)\n"
+    "- Новости RSS (CoinDesk, Cointelegraph, Decrypt)\n"
+    "- Fear & Greed Index, BTC Dominance\n"
+    "- У тебя есть доступ к инструментам: Read, Edit, Write, Grep, Glob, Bash.\n\n"
+    "КОМАНДЫ TELEGRAM:\n"
+    "- /scan — полный скан рынка (Hyperliquid + TA + Claude анализ)\n"
+    "- /ta — быстрый тех.анализ без Claude\n"
+    "- /funding — funding rates и OI\n"
+    "- /portfolio — портфель и P&L\n\n"
     "ПРАВИЛА УПРАВЛЕНИЯ РИСКАМИ:\n"
     "- При открытии КАЖДОЙ позиции ОБЯЗАТЕЛЬНО ставь stop_loss и take_profit.\n"
-    "- Stop Loss: процент убытка, при котором позиция закрывается автоматически (обычно 3-7%).\n"
-    "- Take Profit: процент прибыли, при котором позиция закрывается автоматически (обычно 5-15%).\n"
-    "- При сканировании рынка проверяй текущие цены и срабатывание SL/TP.\n"
+    "- SL ставится по ATR: 1.5-2x ATR от входа или ближайший уровень поддержки.\n"
+    "- TP ставится по уровням сопротивления. Минимальный R:R = 1:2.\n"
+    "- Trailing Stop автоматически подтягивается.\n"
+    "- Дневной лимит убытков: $10 (10% от капитала).\n"
+    "- Макс 2 позиции одного направления.\n"
+    "- RSI > 75 = блок LONG, RSI < 25 = блок SHORT.\n"
     "- Формат в JSON позиции: \"stop_loss\": цена, \"take_profit\": цена.\n"
     "- Если видишь позицию без SL/TP — предупреди и предложи установить.\n\n"
+    "СТРАТЕГИИ:\n"
+    "- Trend Following: вход по тренду на откатах к EMA20/50\n"
+    "- Mean Reversion: покупка на oversold, продажа на overbought\n"
+    "- Breakout: прорыв уровня с объёмом\n"
+    "- Funding Arb: SHORT при extreme positive funding, LONG при negative\n\n"
     "== КОМАНДА НА MAC MINI ==\n"
     "Ты часть команды ботов Владимира. Умей делегировать коллегам:\n\n"
     "• Костя (@KostyaCoderBot) — программист-архитектор.\n"
@@ -87,8 +106,8 @@ START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False  # True while Claude request is in flight
 _processing_lock = asyncio.Lock()
-_last_message_time: float = 0.0
-_rate_limit_lock = asyncio.Lock()
+_message_queue: deque = deque(maxlen=5)  # Message queue for sequential processing
+_queue_task: asyncio.Task | None = None
 
 
 def _get_claude_env() -> dict:
@@ -175,7 +194,7 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
 # User history (persistent, saved to disk)
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque[dict] = deque(maxlen=40)
+user_history: deque[dict] = deque(maxlen=30)
 
 
 # Full conversation log (never truncated, appends forever)
@@ -205,7 +224,7 @@ def _load_history():
         data = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
         if not isinstance(data, list):
             raise ValueError("history is not a list")
-        for item in data[-40:]:
+        for item in data[-30:]:
             if isinstance(item, dict) and "role" in item and "text" in item:
                 user_history.append(item)
         log.info("Loaded %d history messages from disk", len(user_history))
@@ -288,7 +307,7 @@ def _portfolio_summary() -> str:
         sl = pos.get("stop_loss")
         tp = pos.get("take_profit")
         sl_tp = f" SL:${sl:.2f} TP:${tp:.2f}" if sl and tp else " [БЕЗ SL/TP!]"
-        lines.append(f"  {pos.get('direction','LONG')} {pos['asset']}: ${pos.get('size_usd',0):.0f} @ ${entry:.2f}{sl_tp}")
+        lines.append(f"  {pos.get('side','LONG')} {pos['asset']}: ${pos.get('size_usd',0):.0f} @ ${entry:.2f}{sl_tp}")
     if not p.get("positions"):
         lines.append("  Нет открытых позиций")
     closed = p.get("closed_trades", [])
@@ -340,6 +359,7 @@ def _call_claude_once(full_prompt: str, extra_flags: list[str] | None = None) ->
         "--system-prompt", _build_system_prompt(),
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
+        "--max-turns", "15",
     ]
     if extra_flags:
         cmd.extend(extra_flags)
@@ -454,11 +474,13 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
     await update.message.reply_text(
-        "Привет! Я Василий — твой торговый советник.\n\n"
-        "Спрашивай про крипту, акции, рынки — разберём по полочкам.\n\n"
+        "Привет! Я Василий — профессиональный крипто-трейдер.\n"
+        "Торгую на Hyperliquid perpetual futures.\n\n"
         "Команды:\n"
-        "/portfolio — текущий портфель и P&L\n"
-        "/scan — запустить скан рынка\n"
+        "/portfolio — портфель и P&L\n"
+        "/scan — полный скан (Hyperliquid + TA + Claude)\n"
+        "/ta — быстрый тех.анализ (RSI, MACD, EMA, Bollinger)\n"
+        "/funding — funding rates и OI с Hyperliquid\n"
         "/history — история сканов\n"
         "/status — статус бота\n"
         "/clear — очистить историю"
@@ -503,7 +525,7 @@ async def cmd_portfolio(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sl = pos.get("stop_loss")
             tp = pos.get("take_profit")
             lines.append(
-                f"  {pos.get('direction','LONG')} {pos['asset']}: "
+                f"  {pos.get('side','LONG')} {pos['asset']}: "
                 f"${pos.get('size_usd',0):.0f} @ ${entry:.2f}"
             )
             if sl and tp:
@@ -555,11 +577,99 @@ async def cmd_history(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("\n".join(lines))
 
 
+async def cmd_ta(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Show quick technical analysis for top coins."""
+    if not is_allowed(update):
+        return
+    await update.message.reply_text("Считаю тех.анализ...")
+
+    async def _run_ta():
+        try:
+            from hyperliquid_api import fetch_candles
+            from technical_analysis import full_analysis, format_ta_report
+            import time as _time
+
+            coins = ["BTC", "ETH", "SOL", "BNB", "AVAX"]
+            reports = []
+            for coin in coins:
+                candles = fetch_candles(coin, "1h", 100)
+                if candles and len(candles) >= 30:
+                    ta = full_analysis(candles)
+                    if ta:
+                        reports.append(format_ta_report(coin, ta))
+                _time.sleep(0.2)
+
+            if reports:
+                text = "📊 ТЕХНИЧЕСКИЙ АНАЛИЗ (1h свечи Hyperliquid)\n\n" + "\n\n".join(reports)
+            else:
+                text = "Не удалось получить данные для тех.анализа."
+
+            for chunk in _split_message(text):
+                try:
+                    await update.message.reply_text(chunk)
+                except Exception as e:
+                    log.error("TA send error: %s", e)
+        except Exception as e:
+            log.error("cmd_ta error: %s", e, exc_info=True)
+            await update.message.reply_text(f"Ошибка тех.анализа: {e}")
+
+    asyncio.create_task(_run_ta())
+
+
+async def cmd_funding(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Show current Hyperliquid funding rates."""
+    if not is_allowed(update):
+        return
+    await update.message.reply_text("Получаю funding rates с Hyperliquid...")
+
+    async def _run_funding():
+        try:
+            from hyperliquid_api import fetch_market_summary
+
+            data = fetch_market_summary(["BTC", "ETH", "SOL", "BNB", "AVAX", "XRP", "LINK", "DOGE", "SUI", "ARB"])
+            if not data:
+                await update.message.reply_text("Не удалось получить данные с Hyperliquid.")
+                return
+
+            lines = ["📡 HYPERLIQUID — Funding & Market Data\n"]
+            for coin in sorted(data.keys(), key=lambda c: -data[c]["day_volume_usd"]):
+                info = data[coin]
+                fr = info["funding_rate"]
+                ann = info.get("funding_annual", 0)
+                oi = info["open_interest_usd"]
+                vol = info["day_volume_usd"]
+                ch = info["price_change_24h"]
+                spread = info.get("spread_pct", 0)
+                imb = info.get("book_imbalance", 0)
+
+                fr_emoji = "🔴" if abs(fr) > 0.01 else "🟡" if abs(fr) > 0.005 else "🟢"
+
+                lines.append(
+                    f"{coin}: ${info['price']:,.2f} ({ch:+.1f}%)\n"
+                    f"  {fr_emoji} Funding: {fr:+.4f}% (ann: {ann:+.1f}%)\n"
+                    f"  OI: ${oi/1e6:.0f}M | Vol: ${vol/1e6:.0f}M"
+                    + (f" | Spread: {spread:.4f}%" if spread > 0 else "")
+                    + (f" | Book: {imb:+.0f}%" if abs(imb) > 5 else "")
+                )
+
+            text = "\n".join(lines)
+            for chunk in _split_message(text):
+                try:
+                    await update.message.reply_text(chunk)
+                except Exception as e:
+                    log.error("Funding send error: %s", e)
+        except Exception as e:
+            log.error("cmd_funding error: %s", e, exc_info=True)
+            await update.message.reply_text(f"Ошибка: {e}")
+
+    asyncio.create_task(_run_funding())
+
+
 async def cmd_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Trigger manual market scan."""
     if not is_allowed(update):
         return
-    await update.message.reply_text("Запускаю скан рынка... Результат придёт отдельным сообщением.")
+    await update.message.reply_text("🔍 Запускаю скан v3 (Hyperliquid Extended + TA)... Результат придёт через 1-2 мин.")
 
     async def _run_scan():
         try:
@@ -583,34 +693,12 @@ async def cmd_scan(update: Update, context: ContextTypes.DEFAULT_TYPE):
     asyncio.create_task(_run_scan())
 
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not is_allowed(update):
-        return
-
-    user_text = update.message.text
-    if not user_text:
-        return
-
-    log.info("Message from %s: %.100s", update.effective_user.id, user_text)
-
-    global _processing, _last_message_time
-    async with _rate_limit_lock:
-        now_ts = time.time()
-        if now_ts - _last_message_time < RATE_LIMIT_SEC:
-            await update.message.reply_text("Слишком быстро, подожди пару секунд.")
-            return
-        _last_message_time = now_ts
-
-    async with _processing_lock:
-        if _processing:
-            await update.message.reply_text("Подожди, обрабатываю предыдущий запрос...")
-            return
-        _processing = True
-
+async def _process_single_message(update: Update, user_text: str, is_photo: bool = False, image_path: str | None = None):
+    """Process a single message from the queue."""
     thinking_msg = None
     status_task = None
     try:
-        thinking_msg = await update.message.reply_text("Думаю...")
+        thinking_msg = await update.message.reply_text("Думаю..." if not is_photo else "Смотрю скрин...")
 
         async def _status_updater():
             msgs = [
@@ -633,7 +721,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_history.append({"role": "user", "text": user_text[:2000]})
         _log_conversation("user", user_text, update.effective_user.id)
 
-        success, answer = await ask_claude(user_text)
+        if is_photo and image_path:
+            caption = update.message.caption or ""
+            success, answer = await ask_claude(caption, image_path=image_path)
+        else:
+            success, answer = await ask_claude(user_text)
 
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
@@ -659,7 +751,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     break
 
     except Exception as e:
-        log.error("handle_message error: %s", e, exc_info=True)
+        log.error("_process_single_message error: %s", e, exc_info=True)
         try:
             if thinking_msg:
                 await thinking_msg.delete()
@@ -672,29 +764,69 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     finally:
         if status_task:
             status_task.cancel()
+        # Clean up temp photo file
+        if image_path:
+            try:
+                os.unlink(image_path)
+            except OSError:
+                pass
+
+
+async def _queue_worker():
+    """Process messages from the queue one by one."""
+    global _processing
+    while _message_queue:
+        item = _message_queue.popleft()
         async with _processing_lock:
-            _processing = False
+            _processing = True
+        try:
+            await _process_single_message(**item)
+        finally:
+            async with _processing_lock:
+                _processing = False
+    # Reset queue task reference
+    global _queue_task
+    _queue_task = None
+
+
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+
+    user_text = update.message.text
+    if not user_text:
+        return
+
+    log.info("Message from %s: %.100s", update.effective_user.id, user_text)
+
+    # Add to queue
+    _message_queue.append({
+        "update": update,
+        "user_text": user_text,
+    })
+
+    # If queue has more than 1 item, notify user
+    if len(_message_queue) > 1:
+        remaining = len(_message_queue) - 1
+        try:
+            await update.message.reply_text(f"Ещё {remaining} в очереди, обрабатываю...")
+        except Exception:
+            pass
+
+    # Start worker if not running
+    global _queue_task
+    if _queue_task is None or _queue_task.done():
+        _queue_task = asyncio.create_task(_queue_worker())
 
 
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle photos/screenshots — download, save to temp, ask Claude to read."""
+    """Handle photos/screenshots — download, save to temp, add to queue."""
     if not is_allowed(update):
         return
 
     log.info("Photo from %s", update.effective_user.id)
 
-    global _processing
-    async with _processing_lock:
-        if _processing:
-            await update.message.reply_text("Подожди, обрабатываю предыдущий запрос...")
-            return
-        _processing = True
-
-    thinking_msg = None
-    tmp_path = None
     try:
-        thinking_msg = await update.message.reply_text("Смотрю скрин...")
-
         # Get highest resolution photo
         photo = update.message.photo[-1]
         tg_file = await photo.get_file()
@@ -708,55 +840,33 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Caption from user or default
         caption = update.message.caption or ""
-        user_text_for_history = f"[скриншот] {caption}" if caption else "[скриншот]"
-        user_history.append({"role": "user", "text": user_text_for_history[:2000]})
-        _log_conversation("user", user_text_for_history, update.effective_user.id)
+        user_text = f"[скриншот] {caption}" if caption else "[скриншот]"
 
-        success, answer = await ask_claude(caption, image_path=tmp_path)
+        # Add to queue (photo cleanup handled in _process_single_message)
+        _message_queue.append({
+            "update": update,
+            "user_text": user_text,
+            "is_photo": True,
+            "image_path": tmp_path,
+        })
 
-        if success:
-            user_history.append({"role": "assistant", "text": answer[:2000]})
-            _log_conversation("assistant", answer, update.effective_user.id)
-        else:
-            _log_conversation("error", answer or "no response", update.effective_user.id)
-        _save_history()
+        if len(_message_queue) > 1:
+            remaining = len(_message_queue) - 1
+            try:
+                await update.message.reply_text(f"Ещё {remaining} в очереди, обрабатываю...")
+            except Exception:
+                pass
 
-        try:
-            await thinking_msg.delete()
-        except Exception:
-            pass
-
-        chunks = _split_message(answer)
-        if not chunks:
-            await update.message.reply_text("Не получил ответ. Попробуй ещё раз.")
-        else:
-            for chunk in chunks:
-                try:
-                    await update.message.reply_text(chunk)
-                except Exception as e:
-                    log.error("Send error: %s", e)
-                    break
+        global _queue_task
+        if _queue_task is None or _queue_task.done():
+            _queue_task = asyncio.create_task(_queue_worker())
 
     except Exception as e:
         log.error("handle_photo error: %s", e, exc_info=True)
         try:
-            if thinking_msg:
-                await thinking_msg.delete()
+            await update.message.reply_text("Не удалось загрузить скриншот. Попробуй ещё раз.")
         except Exception:
             pass
-        try:
-            await update.message.reply_text("Не удалось обработать скриншот. Попробуй ещё раз.")
-        except Exception:
-            pass
-    finally:
-        # Cleanup temp file
-        if tmp_path:
-            try:
-                os.unlink(tmp_path)
-            except OSError:
-                pass
-        async with _processing_lock:
-            _processing = False
 
 
 # ---------------------------------------------------------------------------
@@ -789,10 +899,8 @@ def _cleanup():
             _lock_fd.close()
     except Exception:
         pass
-    try:
-        PID_FILE.unlink(missing_ok=True)
-    except Exception:
-        pass
+    # Don't delete PID_FILE — LaunchAgent restarts immediately,
+    # and cron needs the PID to detect the bot between restarts.
     # Don't delete LOCK_FILE — fcntl auto-releases on process exit.
     # Deleting it creates a race where a new instance starts before lock is freed.
 
@@ -832,6 +940,8 @@ def main():
     app.add_handler(CommandHandler("portfolio", cmd_portfolio))
     app.add_handler(CommandHandler("history", cmd_history))
     app.add_handler(CommandHandler("scan", cmd_scan))
+    app.add_handler(CommandHandler("ta", cmd_ta))
+    app.add_handler(CommandHandler("funding", cmd_funding))
 
     # Text messages
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
