@@ -293,10 +293,17 @@ def history_prompt() -> str:
     if not user_history:
         return ""
     lines = []
+    total_chars = 0
+    max_total = 8000  # лимит чтобы не забить контекст
     recent = list(user_history)[-20:]
-    for msg in recent:
+    for msg in reversed(recent):
         role = "Пользователь" if msg["role"] == "user" else "Филип"
-        lines.append(f"{role}: {msg['text'][:2000]}")
+        line = f"{role}: {msg['text'][:1500]}"
+        total_chars += len(line)
+        if total_chars > max_total:
+            break
+        lines.append(line)
+    lines.reverse()
     return "\n".join(lines)
 
 
@@ -308,13 +315,21 @@ async def _safe_reply(message, text: str):
 
 
 def _split_message(text: str, limit: int = 4096) -> list[str]:
+    """Smart split: сначала по пустой строке, потом по \n, потом жёстко."""
     chunks = []
     while text:
         if len(text) <= limit:
             chunks.append(text)
             break
-        split_at = text.rfind("\n", 0, limit)
+        # 1) Ищем пустую строку (граница секции)
+        split_at = text.rfind("\n\n", 0, limit)
+        if split_at > 0:
+            split_at += 1  # включаем один \n
+        else:
+            # 2) Ищем любой перенос строки
+            split_at = text.rfind("\n", 0, limit)
         if split_at <= 0:
+            # 3) Жёсткий разрез
             split_at = limit
         chunks.append(text[:split_at])
         text = text[split_at:].lstrip("\n")
@@ -336,6 +351,7 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
         "--system-prompt", system,
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
+        "--max-turns", "15",
     ]
     if extra_flags:
         cmd.extend(extra_flags)
@@ -592,18 +608,16 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
 
 async def _drain_queue(update: Update):
-    global _processing
     while True:
         async with _processing_lock:
             if not _message_queue:
-                _processing = False
                 return
             queued_update, queued_text, queued_image = _message_queue.popleft()
 
         remaining = len(_message_queue)
         if remaining > 0:
             try:
-                await queued_update.message.reply_text(f"Подожди {remaining}с.")
+                await queued_update.message.reply_text(f"Ещё {remaining} в очереди, обрабатываю...")
             except Exception:
                 pass
 
@@ -632,8 +646,14 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             return
         _processing = True
 
-    await _process_single_message(update, user_text)
-    await _drain_queue(update)
+    try:
+        await _process_single_message(update, user_text)
+        await _drain_queue(update)
+    except Exception as e:
+        log.error("handle_message pipeline error: %s", e, exc_info=True)
+    finally:
+        async with _processing_lock:
+            _processing = False
 
 
 async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -673,8 +693,14 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             return
         _processing = True
 
-    await _process_single_message(update, caption, image_path=tmp_path)
-    await _drain_queue(update)
+    try:
+        await _process_single_message(update, caption, image_path=tmp_path)
+        await _drain_queue(update)
+    except Exception as e:
+        log.error("handle_photo pipeline error: %s", e, exc_info=True)
+    finally:
+        async with _processing_lock:
+            _processing = False
 
 
 # ---------------------------------------------------------------------------
@@ -802,7 +828,7 @@ def main():
     log.info("Мыслитель Филип polling started")
     try:
         app.run_polling(
-            drop_pending_updates=False,
+            drop_pending_updates=True,
             allowed_updates=Update.ALL_TYPES,
         )
     finally:
