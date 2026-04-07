@@ -114,6 +114,19 @@ BOTS_REGISTRY = {
         "launchagent": "com.vladimir.kostya-bot",
         "notes": "",
     },
+    "philip": {
+        "label": "Мыслитель Филип",
+        "handle": "@PhilipThinkerBot",
+        "role": "промт-инженер, полиглот, улучшает и создаёт промты",
+        "dir": str(PROJECT_ROOT / "philip-bot"),
+        "main_file": "bot.py",
+        "pid_file": str(LOG_DIR / "philip-bot.pid"),
+        "log_file": str(LOG_DIR / "philip-bot.log"),
+        "heartbeat": str(LOG_DIR / "philip-heartbeat"),
+        "launcher": str(Path.home() / "philip-launcher.sh"),
+        "launchagent": "com.vladimir.philip-bot",
+        "notes": "ask-philip.sh — делегировать промт-задачи Филипу",
+    },
 }
 
 # ---------------------------------------------------------------------------
