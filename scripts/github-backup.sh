@@ -1,30 +1,44 @@
 #!/bin/bash
-# GitHub auto-backup for fixcraftvp bots
-# Runs daily via cron
+# GitHub auto-backup for fixcraftvp + agents
+# Runs daily via LaunchAgent at 03:00
 
 REPO_DIR="/Users/vladimirprihodko/Папка тест/fixcraftvp"
+AGENTS_DIR="/Users/vladimirprihodko/Папка тест/fixcraftvp/agents"
 LOG_FILE="$HOME/logs/github-backup.log"
 DATE=$(date '+%Y-%m-%d %H:%M')
 
-cd "$REPO_DIR" || exit 1
+# --- Push main repo ---
+cd "$REPO_DIR" || { echo "[$DATE] ERROR: main repo not found" >> "$LOG_FILE"; exit 1; }
 
-# Stage all changes (respects .gitignore)
 git add -A
 
-# Check if there's anything to commit
 if git diff --cached --quiet; then
-    echo "[$DATE] No changes to backup" >> "$LOG_FILE"
-    exit 0
+    echo "[$DATE] fixcraftvp: nothing to commit" >> "$LOG_FILE"
+else
+    git commit -m "Auto-backup $DATE" >> "$LOG_FILE" 2>&1
 fi
 
-# Commit with date
-git commit -m "Auto-backup $DATE"
-
-# Push via SSH key
 GIT_SSH_COMMAND="ssh -i ~/.ssh/github_key" git push origin main >> "$LOG_FILE" 2>&1
-
 if [ $? -eq 0 ]; then
-    echo "[$DATE] Backup OK" >> "$LOG_FILE"
+    echo "[$DATE] fixcraftvp: push OK" >> "$LOG_FILE"
 else
-    echo "[$DATE] Backup FAILED" >> "$LOG_FILE"
+    echo "[$DATE] fixcraftvp: push FAILED" >> "$LOG_FILE"
+fi
+
+# --- Push agents repo ---
+cd "$AGENTS_DIR" || { echo "[$DATE] ERROR: agents repo not found" >> "$LOG_FILE"; exit 1; }
+
+git add -A
+
+if git diff --cached --quiet; then
+    echo "[$DATE] agents: nothing to commit" >> "$LOG_FILE"
+else
+    git commit -m "Auto-backup $DATE" >> "$LOG_FILE" 2>&1
+fi
+
+GIT_SSH_COMMAND="ssh -i ~/.ssh/github_key" git push origin main >> "$LOG_FILE" 2>&1
+if [ $? -eq 0 ]; then
+    echo "[$DATE] agents: push OK" >> "$LOG_FILE"
+else
+    echo "[$DATE] agents: push FAILED" >> "$LOG_FILE"
 fi
