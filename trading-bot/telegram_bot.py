@@ -119,6 +119,13 @@ def _get_claude_env() -> dict:
         versions = sorted(nvm_dir.iterdir(), reverse=True)
         if versions:
             nvm_node_bin = str(versions[0] / "bin")
+            # Ensure node is reachable via ~/.local/bin (no sudo needed)
+            local_bin = home / ".local" / "bin"
+            local_bin.mkdir(parents=True, exist_ok=True)
+            local_node = local_bin / "node"
+            nvm_node = Path(nvm_node_bin) / "node"
+            if not local_node.exists() and nvm_node.exists():
+                local_node.symlink_to(nvm_node)
     base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
     extra = f"{home}/.local/bin:{nvm_node_bin}:{home}/.bun/bin" if nvm_node_bin else f"{home}/.local/bin:{home}/.bun/bin"
     env = {
