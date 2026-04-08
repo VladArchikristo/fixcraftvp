@@ -663,24 +663,7 @@ SYSTEM_PROMPT = f"""Ты — Костя, профессиональный про
 - НЕЛЬЗЯ ТРОГАТЬ: beast-bot/bot.py, любые .env файлы, launcher.sh скрипты
 
 == СКИЛ: СОЗДАНИЕ СУББОТА ==
-Когда Влад говорит "создай нового бота" — ты:
-1. Уточняешь: имя, роль, токен от @BotFather, нужна ли модель Opus или Sonnet
-2. Создаёшь папку в {str(PROJECT_ROOT)}/
-3. Пишешь telegram_bot.py из шаблона (шаблон у тебя в памяти)
-4. Создаёшь .env с токеном
-5. Создаёшь ~/BOT_NAME-launcher.sh
-6. Создаёшь ~/Library/LaunchAgents/com.vladimir.BOT_NAME-bot.plist
-7. launchctl load + start
-8. Говоришь Владу добавить бота в реестр BOTS_REGISTRY в своём telegram_bot.py
-
-Шаблон для launcher.sh:
-#!/bin/bash
-export HOME="/Users/vladimirprihodko"
-export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
-if [ -f "$HOME/.zprofile" ]; then source "$HOME/.zprofile" 2>/dev/null; fi
-mkdir -p "$HOME/logs"
-cd "$HOME/Папка тест/fixcraftvp/BOT_NAME" || exit 1
-exec /usr/bin/python3 telegram_bot.py
+Когда Влад говорит "создай нового бота" — уточни имя, роль, токен, модель. Затем создай папку, telegram_bot.py, .env, launcher.sh, LaunchAgent plist, запусти через launchctl.
 
 == СТИЛЬ ОБЩЕНИЯ ==
 - Русский язык, дружески, как хороший коллега
@@ -869,7 +852,7 @@ def history_prompt() -> str:
         role = "Влад" if msg["role"] == "user" else "Костя"
         line = f"{role}: {msg['text'][:1000]}"
         total_chars += len(line)
-        if total_chars > 15000:
+        if total_chars > 8000:
             break
         lines.append(line)
     lines.reverse()
@@ -925,7 +908,7 @@ def _call_claude_once(full_prompt: str, extra_flags=None, timeout_override=None)
         "--system-prompt", SYSTEM_PROMPT,
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
-        "--max-turns", "15",
+        "--max-turns", "25",
     ]
     if extra_flags:
         i = 0
@@ -1001,12 +984,12 @@ def _call_claude_sync(full_prompt: str, extra_flags=None):
 async def ask_claude(user_text: str, image_path: str = None):
     global _claude_executor
     hist = history_prompt()
-    full_prompt = f"История диалога:\n{hist}\n\n" if hist else ""
 
     extra_flags = None
     is_photo = False
 
     if image_path:
+        full_prompt = ""  # Без истории для фото
         is_photo = True
         caption = user_text or "Опиши что на этом изображении"
         full_prompt += (
@@ -1016,8 +999,9 @@ async def ask_claude(user_text: str, image_path: str = None):
             f"Запрос: {caption}"
         )
         # Для фото: короткий таймаут, мало turns, только Read
-        extra_flags = ["--max-turns", "3", "--allowedTools", "Read"]
+        extra_flags = ["--max-turns", "5", "--allowedTools", "Read"]
     else:
+        full_prompt = f"История диалога:\n{hist}\n\n" if hist else ""
         full_prompt += f"Влад: {user_text}"
 
     if len(full_prompt) > MAX_PROMPT_CHARS:

@@ -313,7 +313,7 @@ case "$JOB" in
     token-usage) run_bash_job token-usage job_token_usage ;;
     memory-cleanup) run_bash_job memory-cleanup job_memory_cleanup ;;
     git-auto-save)
-        cd "$HOME/Папка тест/fixcraftvp" 2>/dev/null || exit 1
+        cd "$HOME/Папка тест/fixcraftvp/agents" 2>/dev/null || exit 1
         run_ai_job git-auto-save "Check git status in the current directory. If there are uncommitted changes, create a commit with a descriptive message. Report what you did. Be brief." 300
         ;;
     news-digest)
