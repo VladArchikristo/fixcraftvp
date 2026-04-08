@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-04-08T12:02:41.033138",
+  "updated_at": "2026-04-08T15:02:10.698286",
   "initial_capital": 100,
-  "cash": 77.1250317691372,
+  "cash": 54.125031769137195,
   "positions": [
     {
       "asset": "BTC",
@@ -12,6 +12,16 @@
       "take_profit": 72750.0,
       "trailing_stop_pct": 2.0,
       "opened_at": "2026-04-08T12:02:41.032359"
+    },
+    {
+      "asset": "ETH",
+      "side": "LONG",
+      "size_usd": 23.0,
+      "entry_price": 2199.25,
+      "stop_loss": 2164.0,
+      "take_profit": 2268.0,
+      "trailing_stop_pct": 2.0,
+      "opened_at": "2026-04-08T15:02:10.697891"
     }
   ],
   "closed_trades": [
@@ -1540,6 +1550,94 @@
           "confluence": 100,
           "direction": "LONG",
           "weighted": 18.3
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-08T15:02:10.698255",
+      "total_value": 99.47,
+      "portfolio_value": 99.47,
+      "pnl": -0.53,
+      "sentiment": "neutral",
+      "actions_taken": 1,
+      "summary": "# АНАЛИЗ РЫНКА | 2026-04-08 15:00 UTC",
+      "trades": [
+        "✅ ОТКРЫТА LONG ETH $23 @ $2199.25 SL:$2164.00 TP:$2268.00 Trail:2% | Сильнейший сигнал: LEAN_LONG +22, 100% MTF confluence (1h/4h/1d все BUY+). StochRSI 12.7 oversold, Bollinger oversold. Whale walls $1.2M на $2,197-2,197.70 = пол. Funding +0.0013% умеренный. SL ниже support $2,186 (1.5x ATR = $32.75 от входа). TP = resistance $2,268. R:R = (2268-2199)/(2199-2164) = 69/35 = 1.97:1 ≈ 2:1.",
+        "🔄 HOLD BTC | Позиция в рамках нормы (-0.4%). Whale walls $70,986-70,988 дают поддержку. 4h STRONG_BUY, ADX 36.6 STRONG. SL $70,450 технически обоснован. R:R 3:1 сохраняется."
+      ],
+      "ta_scores": {
+        "BTC": {
+          "score": 20,
+          "rec": "BUY",
+          "rsi": 50.8
+        },
+        "ETH": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 48.6
+        },
+        "SOL": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 46.2
+        },
+        "BNB": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 40.5
+        },
+        "AVAX": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 45.0
+        },
+        "XRP": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 43.9
+        },
+        "LINK": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 42.7
+        }
+      },
+      "confluence": {
+        "BTC": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 28.3
+        },
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 32.5
+        },
+        "SOL": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "BNB": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": 3.3
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 19.2
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 5.8
+        },
+        "LINK": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 23.3
         }
       },
       "data_source": "hyperliquid_extended"

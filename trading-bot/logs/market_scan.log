@@ -168,3 +168,9 @@ OPEN_POSITION: {
 2026-04-08 09:00:09,448 [INFO] vasily_hl: Fetching extended market data for 10 coins...
 2026-04-08 09:00:32,676 [INFO] vasily_scan: Trailing SL XRP LONG: $1.35 → $1.35 (price $1.38)
 2026-04-08 09:00:32,677 [INFO] vasily_scan: Prompt length: 20593 chars
+2026-04-08 12:00:10,312 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-08 12:00:32,272 [INFO] vasily_scan: Auto-closed LONG LINK by STOP_LOSS @ $9.02
+2026-04-08 12:00:32,280 [INFO] vasily_scan: Prompt length: 20181 chars
+2026-04-08 12:02:41,032 [WARNING] vasily_scan: OPEN BTC: size_usd $29 превышает 30% лимит $22, обрезаем
+2026-04-08 15:00:12,283 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-08 15:00:35,684 [INFO] vasily_scan: Prompt length: 22181 chars

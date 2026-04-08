@@ -273,6 +273,46 @@ job_memory_cleanup() {
     echo "$(date): cleanup done" >> "$LOG_DIR/cleanup.log"
 }
 
+job_git_auto_save() {
+    local status="💾 *Git Auto-Save* $(date '+%H:%M')\n"
+    local saved=0
+
+    # Save main fixcraftvp repo
+    local main_repo="$HOME/Папка тест/fixcraftvp"
+    if [ -d "$main_repo/.git" ]; then
+        cd "$main_repo"
+        if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+            git add -A 2>/dev/null
+            git commit -m "auto-save: $(date '+%Y-%m-%d %H:%M')" 2>/dev/null && {
+                status+="✅ fixcraftvp: committed\n"
+                saved=$((saved + 1))
+            }
+        else
+            status+="⏭ fixcraftvp: clean\n"
+        fi
+    fi
+
+    # Save agents repo
+    local agents_repo="$HOME/Папка тест/fixcraftvp/agents"
+    if [ -d "$agents_repo/.git" ]; then
+        cd "$agents_repo"
+        if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+            git add -A 2>/dev/null
+            git commit -m "auto-save: $(date '+%Y-%m-%d %H:%M')" 2>/dev/null && {
+                status+="✅ agents: committed\n"
+                saved=$((saved + 1))
+            }
+        else
+            status+="⏭ agents: clean\n"
+        fi
+    fi
+
+    if [ $saved -gt 0 ]; then
+        send_telegram "$status"
+    fi
+    echo "$(date): git-auto-save done ($saved repos saved)" >> "$LOG_DIR/git-auto-save.log"
+}
+
 job_watchdog() {
     # Kill stale locks (>5 min old)
     for lock in "$LOCK_DIR"/*/; do
@@ -312,10 +352,7 @@ case "$JOB" in
     auto-save) run_bash_job auto-save job_auto_save ;;
     token-usage) run_bash_job token-usage job_token_usage ;;
     memory-cleanup) run_bash_job memory-cleanup job_memory_cleanup ;;
-    git-auto-save)
-        cd "$HOME/Папка тест/fixcraftvp/agents" 2>/dev/null || exit 1
-        run_ai_job git-auto-save "Check git status in the current directory. If there are uncommitted changes, create a commit with a descriptive message. Report what you did. Be brief." 300
-        ;;
+    git-auto-save) run_bash_job git-auto-save job_git_auto_save ;;
     news-digest)
         run_ai_job news-digest "Give a brief digest of the most important tech and crypto news today. 5-7 items max, in Russian. Keep it under 500 characters." 300
         ;;
