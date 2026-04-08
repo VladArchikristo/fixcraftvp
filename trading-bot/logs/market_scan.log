@@ -174,3 +174,6 @@ OPEN_POSITION: {
 2026-04-08 12:02:41,032 [WARNING] vasily_scan: OPEN BTC: size_usd $29 превышает 30% лимит $22, обрезаем
 2026-04-08 15:00:12,283 [INFO] vasily_hl: Fetching extended market data for 10 coins...
 2026-04-08 15:00:35,684 [INFO] vasily_scan: Prompt length: 22181 chars
+2026-04-08 18:00:09,287 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-08 18:00:33,320 [INFO] vasily_scan: Trailing SL ETH LONG: $2164.00 → $2169.57 (price $2213.85)
+2026-04-08 18:00:33,321 [INFO] vasily_scan: Prompt length: 22160 chars
