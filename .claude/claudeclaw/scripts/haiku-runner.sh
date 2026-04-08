@@ -5,7 +5,32 @@
 set -euo pipefail
 
 export HOME="/Users/vladimirprihodko"
+
+# Load nvm for node access (needed by Claude CLI hooks)
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    source "$NVM_DIR/nvm.sh" 2>/dev/null
+fi
+
 export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+# macOS doesn't have GNU timeout — use bash replacement
+run_with_timeout() {
+    local timeout_secs="$1"
+    shift
+    "$@" &
+    local cmd_pid=$!
+    (
+        sleep "$timeout_secs"
+        kill "$cmd_pid" 2>/dev/null
+    ) &
+    local watchdog_pid=$!
+    wait "$cmd_pid" 2>/dev/null
+    local exit_code=$?
+    kill "$watchdog_pid" 2>/dev/null
+    wait "$watchdog_pid" 2>/dev/null
+    return $exit_code
+}
 
 # Token loaded from config — NEVER hardcode secrets in scripts
 CRON_SECRETS="$HOME/cron-secrets.conf"
@@ -77,20 +102,23 @@ release_lock() {
 run_ai_job() {
     local job_name="$1"
     local prompt="$2"
-    local timeout="${3:-300}"
+    local job_timeout="${3:-300}"
 
     if ! acquire_lock "$job_name"; then
         echo "$(date): $job_name — locked, skipping" >> "$LOG_DIR/skipped.log"
         return 0
     fi
 
+    echo "$(date): $job_name — starting (timeout=${job_timeout}s)" >> "$LOG_DIR/$job_name.log"
+
     local result
-    result=$(timeout "$timeout" "$HOME/.local/bin/claude" -p "$prompt" --model claude-haiku-4-5 --output-format text 2>/dev/null) || {
+    result=$(run_with_timeout "$job_timeout" "$HOME/.local/bin/claude" -p "$prompt" --model claude-haiku-4-5 --output-format text 2>>"$LOG_DIR/$job_name.log") || {
         local exit_code=$?
         release_lock "$job_name"
-        if [ $exit_code -eq 124 ]; then
+        echo "$(date): $job_name — failed (exit=$exit_code)" >> "$LOG_DIR/$job_name.log"
+        if [ $exit_code -eq 143 ]; then
             echo "$prompt" > "$RETRY_DIR/$job_name"
-            echo "$(date): $job_name — timeout" >> "$LOG_DIR/errors.log"
+            echo "$(date): $job_name — timeout, queued for retry" >> "$LOG_DIR/errors.log"
         fi
         return 1
     }
@@ -98,6 +126,9 @@ run_ai_job() {
     if [ -n "$result" ]; then
         send_telegram "🤖 *$job_name*
 $result"
+        echo "$(date): $job_name — success, sent to Telegram" >> "$LOG_DIR/$job_name.log"
+    else
+        echo "$(date): $job_name — empty result" >> "$LOG_DIR/$job_name.log"
     fi
 
     release_lock "$job_name"
@@ -283,16 +314,16 @@ case "$JOB" in
     memory-cleanup) run_bash_job memory-cleanup job_memory_cleanup ;;
     git-auto-save)
         cd "$HOME/Папка тест/fixcraftvp" 2>/dev/null || exit 1
-        run_ai_job git-auto-save "Check git status in the current directory. If there are uncommitted changes, create a commit with a descriptive message. Report what you did." 300
+        run_ai_job git-auto-save "Check git status in the current directory. If there are uncommitted changes, create a commit with a descriptive message. Report what you did. Be brief." 300
         ;;
     news-digest)
-        run_ai_job news-digest "Give a brief digest of the most important tech and crypto news today. 5-7 items max, in Russian." 300
+        run_ai_job news-digest "Give a brief digest of the most important tech and crypto news today. 5-7 items max, in Russian. Keep it under 500 characters." 300
         ;;
     daily-report)
-        run_ai_job daily-report "Create a brief evening report: summarize system status, any issues found, and what was accomplished today. In Russian." 300
+        run_ai_job daily-report "Create a brief evening report: summarize system status, any issues found, and what was accomplished today. In Russian. Keep under 500 characters." 300
         ;;
     security-scan)
-        run_ai_job security-scan "Run a quick security check: verify no suspicious processes, check open ports with lsof, verify no unauthorized SSH access. Report findings in Russian." 300
+        run_ai_job security-scan "Run a quick security check: verify no suspicious processes, check open ports with lsof, verify no unauthorized SSH access. Report findings in Russian. Keep under 500 characters." 300
         ;;
     *)
         echo "Usage: $0 {watchdog|monitor|self-check|auto-save|token-usage|memory-cleanup|git-auto-save|news-digest|daily-report|security-scan}"
