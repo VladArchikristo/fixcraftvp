@@ -1,0 +1,55 @@
+{
+  "time": "2026-04-07T18:18:07.159288",
+  "elapsed_sec": 24.9,
+  "signals_count": 7,
+  "strong_count": 0,
+  "top_signals": [
+    {
+      "coin": "SOL",
+      "direction": "SHORT",
+      "net_score": -28,
+      "rec": "LEAN_SHORT",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "WHALE_WALLS"
+      ]
+    },
+    {
+      "coin": "ETH",
+      "direction": "LONG",
+      "net_score": 24,
+      "rec": "LEAN_LONG",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "DOGE",
+      "direction": "LONG",
+      "net_score": 23,
+      "rec": "LEAN_LONG",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "BTC",
+      "direction": "SHORT",
+      "net_score": -16,
+      "rec": "LEAN_SHORT",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "WHALE_WALLS"
+      ]
+    },
+    {
+      "coin": "BNB",
+      "direction": "NEUTRAL",
+      "net_score": 12,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    }
+  ]
+}

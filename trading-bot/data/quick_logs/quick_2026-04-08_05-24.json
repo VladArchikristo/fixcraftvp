@@ -1,0 +1,54 @@
+{
+  "time": "2026-04-08T05:24:17.380782",
+  "elapsed_sec": 26.2,
+  "signals_count": 7,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "SOL",
+      "direction": "LONG",
+      "net_score": 61,
+      "rec": "STRONG_BUY",
+      "strategies": [
+        "WHALE_WALLS",
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "XRP",
+      "direction": "LONG",
+      "net_score": 21,
+      "rec": "LEAN_LONG",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "DOGE",
+      "direction": "LONG",
+      "net_score": 21,
+      "rec": "LEAN_LONG",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "SUI",
+      "direction": "LONG",
+      "net_score": 18,
+      "rec": "LEAN_LONG",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "BNB",
+      "direction": "NEUTRAL",
+      "net_score": 14,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "MTF_CONFLUENCE"
+      ]
+    }
+  ]
+}

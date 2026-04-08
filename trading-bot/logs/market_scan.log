@@ -135,3 +135,30 @@ OPEN_POSITION: {
 2026-04-07 03:00:31,883 [INFO] vasily_scan: Trailing SL ETH LONG: $1986.99 → $2050.18 (price $2102.75)
 2026-04-07 03:00:31,883 [INFO] vasily_scan: Trailing SL BTC SHORT: $70500.00 → $69894.99 (price $68524.50)
 2026-04-07 03:00:31,884 [INFO] vasily_scan: Prompt length: 20614 chars
+2026-04-07 06:00:08,499 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 06:00:32,463 [INFO] vasily_scan: Trailing SL ETH LONG: $2050.18 → $2074.26 (price $2127.45)
+2026-04-07 06:00:32,465 [INFO] vasily_scan: Prompt length: 19222 chars
+2026-04-07 09:00:12,459 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 09:00:36,123 [INFO] vasily_scan: Trailing SL SOL SHORT: $81.05 → $80.66 (price $79.08)
+2026-04-07 09:00:36,123 [INFO] vasily_scan: Auto-closed LONG BNB by STOP_LOSS @ $598.07
+2026-04-07 09:00:36,128 [INFO] vasily_scan: Prompt length: 18986 chars
+2026-04-07 12:00:10,606 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 12:00:35,932 [INFO] vasily_scan: Trailing SL SOL SHORT: $80.66 → $80.40 (price $78.82)
+2026-04-07 12:00:35,933 [INFO] vasily_scan: Trailing SL AVAX SHORT: $8.82 → $8.75 (price $8.58)
+2026-04-07 12:00:35,934 [INFO] vasily_scan: Prompt length: 20341 chars
+2026-04-07 15:00:12,920 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 15:00:35,627 [INFO] vasily_scan: Prompt length: 18706 chars
+2026-04-07 18:00:10,039 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 18:00:33,764 [INFO] vasily_scan: Auto-closed SHORT SOL by STOP_LOSS @ $82.92
+2026-04-07 18:00:33,772 [INFO] vasily_scan: Prompt length: 21442 chars
+2026-04-07 19:09:33,838 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 19:09:53,872 [INFO] vasily_scan: Prompt length: 20565 chars
+2026-04-07 21:00:07,663 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-07 21:00:29,624 [INFO] vasily_scan: Prompt length: 19967 chars
+2026-04-08 00:00:10,026 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-08 00:00:33,519 [INFO] vasily_scan: Trailing SL XRP LONG: $1.33 → $1.34 (price $1.37)
+2026-04-08 00:00:33,520 [INFO] vasily_scan: Prompt length: 20601 chars
+2026-04-08 00:03:33,558 [ERROR] vasily_scan: Claude timeout после 180 сек
+2026-04-08 03:00:08,301 [INFO] vasily_hl: Fetching extended market data for 10 coins...
+2026-04-08 03:00:30,790 [INFO] vasily_scan: Trailing SL XRP LONG: $1.34 → $1.35 (price $1.38)
+2026-04-08 03:00:30,792 [INFO] vasily_scan: Prompt length: 19523 chars

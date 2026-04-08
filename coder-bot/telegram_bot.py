@@ -16,6 +16,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import subprocess
 import asyncio
+import threading
 from pathlib import Path
 from datetime import datetime
 from collections import deque
@@ -45,7 +46,8 @@ ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 PROJECT_ROOT = Path("/Users/vladimirprihodko/Папка тест/fixcraftvp")
 WORKING_DIR = str(PROJECT_ROOT)
-CLAUDE_TIMEOUT = 3600
+CLAUDE_TIMEOUT = 1800
+CLAUDE_PHOTO_TIMEOUT = 120  # Фото — макс 2 минуты
 RATE_LIMIT_SEC = 3
 MAX_PROMPT_CHARS = 60000
 
@@ -170,7 +172,7 @@ BOT_TOKEN = os.getenv("{ENV_TOKEN_KEY}", "")
 ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
-CLAUDE_TIMEOUT = 3600
+CLAUDE_TIMEOUT = 600
 RATE_LIMIT_SEC = 3
 MAX_PROMPT_CHARS = 60000
 MODEL = "{MODEL}"
@@ -195,9 +197,18 @@ _rate_limit_lock = asyncio.Lock()
 
 
 def _get_claude_env() -> dict:
+    home = Path.home()
+    nvm_node_bin = ""
+    nvm_dir = home / ".nvm" / "versions" / "node"
+    if nvm_dir.exists():
+        versions = sorted(nvm_dir.iterdir(), reverse=True)
+        if versions:
+            nvm_node_bin = str(versions[0] / "bin")
+    base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
+    extra = f"{{home}}/.local/bin:{{nvm_node_bin}}:{{home}}/.bun/bin" if nvm_node_bin else f"{{home}}/.local/bin:{{home}}/.bun/bin"
     env = {{
-        "HOME": str(Path.home()),
-        "PATH": os.environ.get("PATH", "/usr/bin:/usr/local/bin"),
+        "HOME": str(home),
+        "PATH": f"{{extra}}:{{base_path}}",
         "USER": os.environ.get("USER", ""),
         "LANG": os.environ.get("LANG", "en_US.UTF-8"),
         "TERM": os.environ.get("TERM", "xterm-256color"),
@@ -251,7 +262,7 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
 
 
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque = deque(maxlen=40)
+user_history: deque = deque(maxlen=30)
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 
 
@@ -271,7 +282,7 @@ def _load_history():
         data = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
         if not isinstance(data, list):
             raise ValueError("history is not a list")
-        for item in data[-40:]:
+        for item in data[-30:]:
             if isinstance(item, dict) and "role" in item and "text" in item:
                 user_history.append(item)
     except (json.JSONDecodeError, ValueError) as e:
@@ -450,6 +461,8 @@ async def _thinking_ticker(msg, start: float, prefix: str = "⚙️ Костя �
         while True:
             await asyncio.sleep(5)
             elapsed = int(time.monotonic() - start)
+            if elapsed > CLAUDE_TIMEOUT + 30:
+                break
             try:
                 await msg.edit_text(f"{prefix}... {elapsed} сек")
             except Exception:
@@ -686,12 +699,24 @@ _processing = False
 _processing_lock = asyncio.Lock()
 _last_message_time: float = 0.0
 _rate_limit_lock = asyncio.Lock()
+_current_proc: "subprocess.Popen | None" = None
+_current_proc_lock = threading.Lock()
 
 
 def _get_claude_env() -> dict:
+    home = Path.home()
+    # Find active nvm node bin dir (if any)
+    nvm_node_bin = ""
+    nvm_dir = home / ".nvm" / "versions" / "node"
+    if nvm_dir.exists():
+        versions = sorted(nvm_dir.iterdir(), reverse=True)
+        if versions:
+            nvm_node_bin = str(versions[0] / "bin")
+    base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
+    extra = f"{home}/.local/bin:{nvm_node_bin}:{home}/.bun/bin" if nvm_node_bin else f"{home}/.local/bin:{home}/.bun/bin"
     env = {
-        "HOME": str(Path.home()),
-        "PATH": os.environ.get("PATH", "/usr/bin:/usr/local/bin"),
+        "HOME": str(home),
+        "PATH": f"{extra}:{base_path}",
         "USER": os.environ.get("USER", ""),
         "LANG": os.environ.get("LANG", "en_US.UTF-8"),
         "TERM": os.environ.get("TERM", "xterm-256color"),
@@ -706,13 +731,12 @@ def _get_claude_env() -> dict:
 # Logging
 # ---------------------------------------------------------------------------
 _log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-_stdout_handler = logging.StreamHandler(sys.stdout)
-_stdout_handler.setFormatter(_log_formatter)
 _file_handler = RotatingFileHandler(
     LOG_DIR / "kostya-bot-main.log", maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
 )
 _file_handler.setFormatter(_log_formatter)
-logging.basicConfig(level=logging.INFO, handlers=[_stdout_handler, _file_handler])
+# Только file handler — LaunchAgent redirects stdout to the same file, causing duplicates
+logging.basicConfig(level=logging.INFO, handlers=[_file_handler])
 log = logging.getLogger("kostya")
 
 # ---------------------------------------------------------------------------
@@ -755,7 +779,7 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
 # History
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque = deque(maxlen=40)
+user_history: deque = deque(maxlen=30)
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 
 
@@ -780,7 +804,7 @@ def _load_history():
         data = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
         if not isinstance(data, list):
             raise ValueError("history is not a list")
-        for item in data[-40:]:
+        for item in data[-30:]:
             if isinstance(item, dict) and "role" in item and "text" in item:
                 user_history.append(item)
         log.info("Loaded %d history messages", len(user_history))
@@ -851,7 +875,25 @@ def _split_message(text: str, limit: int = 4096) -> list:
 CLAUDE_TOOLS = "Read,Edit,Write,Grep,Glob,Bash"
 
 
-def _call_claude_once(full_prompt: str, extra_flags=None):
+def _kill_current_proc():
+    """Kill current Claude subprocess — вызывается при asyncio timeout."""
+    with _current_proc_lock:
+        proc = _current_proc
+    if proc is None:
+        return
+    try:
+        os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        log.warning("Killed stuck Claude subprocess (pid=%d)", proc.pid)
+    except (ProcessLookupError, PermissionError):
+        try:
+            proc.kill()
+        except (ProcessLookupError, PermissionError):
+            pass
+
+
+def _call_claude_once(full_prompt: str, extra_flags=None, timeout_override=None):
+    global _current_proc
+    effective_timeout = timeout_override or CLAUDE_TIMEOUT
     cmd = [
         CLAUDE_PATH, "-p",
         "--model", "claude-opus-4-6",
@@ -859,9 +901,22 @@ def _call_claude_once(full_prompt: str, extra_flags=None):
         "--system-prompt", SYSTEM_PROMPT,
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
+        "--max-turns", "15",
     ]
     if extra_flags:
-        cmd.extend(extra_flags)
+        i = 0
+        while i < len(extra_flags):
+            flag = extra_flags[i]
+            if flag.startswith("--") and flag in cmd:
+                idx = cmd.index(flag)
+                if i + 1 < len(extra_flags) and not extra_flags[i + 1].startswith("--"):
+                    cmd[idx + 1] = extra_flags[i + 1]
+                    i += 2
+                else:
+                    i += 1
+            else:
+                cmd.append(extra_flags[i])
+                i += 1
     proc = None
     try:
         proc = subprocess.Popen(
@@ -874,7 +929,9 @@ def _call_claude_once(full_prompt: str, extra_flags=None):
             text=True,
             start_new_session=True,
         )
-        stdout, stderr = proc.communicate(input=full_prompt, timeout=CLAUDE_TIMEOUT)
+        with _current_proc_lock:
+            _current_proc = proc
+        stdout, stderr = proc.communicate(input=full_prompt, timeout=effective_timeout)
         if proc.returncode != 0:
             log.error("Claude exited %d: %s", proc.returncode, stderr.strip())
             return False, ""
@@ -893,11 +950,15 @@ def _call_claude_once(full_prompt: str, extra_flags=None):
                 proc.wait(timeout=5)
             except (ChildProcessError, subprocess.TimeoutExpired):
                 pass
-        log.warning("Claude timed out after %d sec", CLAUDE_TIMEOUT)
+        log.warning("Claude timed out after %d sec", effective_timeout)
         return False, "TIMEOUT"
     except Exception as e:
         log.error("Claude call error: %s", e)
         return False, ""
+    finally:
+        with _current_proc_lock:
+            if _current_proc is proc:
+                _current_proc = None
 
 
 def _call_claude_sync(full_prompt: str, extra_flags=None):
@@ -917,14 +978,20 @@ async def ask_claude(user_text: str, image_path: str = None):
     hist = history_prompt()
     full_prompt = f"История диалога:\n{hist}\n\n" if hist else ""
 
+    extra_flags = None
+    is_photo = False
+
     if image_path:
+        is_photo = True
         caption = user_text or "Опиши что на этом изображении"
         full_prompt += (
-            f"Пользователь прислал изображение. "
-            f"Используй инструмент Read чтобы прочитать файл: {image_path} "
-            f"(Claude умеет читать изображения через Read). "
-            f"Затем ответь на запрос.\n\nЗапрос: {caption}"
+            f"Пользователь прислал скриншот/фото.\n"
+            f"ПЕРВЫМ ДЕЛОМ прочитай файл: {image_path}\n"
+            f"Затем кратко ответь на запрос. НЕ используй другие инструменты, только Read для этого файла.\n\n"
+            f"Запрос: {caption}"
         )
+        # Для фото: короткий таймаут, мало turns, только Read
+        extra_flags = ["--max-turns", "3", "--allowedTools", "Read"]
     else:
         full_prompt += f"Влад: {user_text}"
 
@@ -938,10 +1005,33 @@ async def ask_claude(user_text: str, image_path: str = None):
         log.warning("Prompt truncated to %d chars", len(full_prompt))
 
     loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(
-        _claude_executor,
-        lambda: _call_claude_sync(full_prompt),
-    )
+    if is_photo:
+        # Для фото: без retry, короткий таймаут + жёсткий asyncio deadline
+        try:
+            return await asyncio.wait_for(
+                loop.run_in_executor(
+                    _claude_executor,
+                    lambda: _call_claude_once(full_prompt, extra_flags=extra_flags,
+                                               timeout_override=CLAUDE_PHOTO_TIMEOUT),
+                ),
+                timeout=CLAUDE_PHOTO_TIMEOUT + 30,  # 150 сек жёсткий лимит
+            )
+        except asyncio.TimeoutError:
+            log.error("Photo processing hard timeout (%d sec)", CLAUDE_PHOTO_TIMEOUT + 30)
+            _kill_current_proc()
+            return False, "Таймаут обработки фото. Попробуй ещё раз или опиши текстом."
+    try:
+        return await asyncio.wait_for(
+            loop.run_in_executor(
+                _claude_executor,
+                lambda: _call_claude_sync(full_prompt, extra_flags=extra_flags),
+            ),
+            timeout=CLAUDE_TIMEOUT + 60,
+        )
+    except asyncio.TimeoutError:
+        log.error("Claude hard timeout (%d sec)", CLAUDE_TIMEOUT + 60)
+        _kill_current_proc()
+        return False, "Таймаут. Попробуй ещё раз или разбей задачу на части."
 
 
 # ---------------------------------------------------------------------------
@@ -1127,6 +1217,8 @@ async def _thinking_ticker(msg, start: float, prefix: str = "⚙️ Костя �
         while True:
             await asyncio.sleep(5)
             elapsed = int(time.monotonic() - start)
+            if elapsed > CLAUDE_TIMEOUT + 30:
+                break
             try:
                 await msg.edit_text(f"{prefix}... {elapsed} сек")
             except Exception:

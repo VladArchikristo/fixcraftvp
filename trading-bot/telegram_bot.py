@@ -112,9 +112,18 @@ _queue_task: asyncio.Task | None = None
 
 def _get_claude_env() -> dict:
     """Clean env for Claude CLI — only essentials, no stale tokens."""
+    home = Path.home()
+    nvm_node_bin = ""
+    nvm_dir = home / ".nvm" / "versions" / "node"
+    if nvm_dir.exists():
+        versions = sorted(nvm_dir.iterdir(), reverse=True)
+        if versions:
+            nvm_node_bin = str(versions[0] / "bin")
+    base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
+    extra = f"{home}/.local/bin:{nvm_node_bin}:{home}/.bun/bin" if nvm_node_bin else f"{home}/.local/bin:{home}/.bun/bin"
     env = {
-        "HOME": str(Path.home()),
-        "PATH": os.environ.get("PATH", "/usr/bin:/usr/local/bin"),
+        "HOME": str(home),
+        "PATH": f"{extra}:{base_path}",
         "USER": os.environ.get("USER", ""),
         "LANG": os.environ.get("LANG", "en_US.UTF-8"),
         "TERM": os.environ.get("TERM", "xterm-256color"),
