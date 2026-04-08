@@ -57,7 +57,7 @@ load_dotenv(Path(__file__).parent / ".env")
 TOKEN = os.environ["BEAST_BOT_TOKEN"]
 ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
-CLAUDE_CWD = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
+CLAUDE_CWD = "/Users/vladimirprihodko/Папка тест/fixcraftvp/beast-bot/"
 LOGS_DIR = Path.home() / "logs"
 LOCK_FILE = LOGS_DIR / "beast-bot.lock"
 PID_FILE = LOGS_DIR / "beast-bot.pid"
@@ -432,6 +432,7 @@ async def call_claude(prompt: str) -> str:
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
         "--max-turns", "10",
+        "--add-dir", "/Users/vladimirprihodko/Папка тест/fixcraftvp/beast-bot/",
     ]
 
     ctx = build_system_context()

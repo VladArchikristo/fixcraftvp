@@ -323,7 +323,7 @@ def history_prompt() -> str:
         role = "Влад" if msg["role"] == "user" else "{BOT_LABEL}"
         line = f"{{role}}: {{msg[\'text\'][:1000]}}"
         total_chars += len(line)
-        if total_chars > 15000:
+        if total_chars > 8000:
             break
         lines.append(line)
     lines.reverse()
@@ -1307,6 +1307,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             _last_message_time = time.monotonic()
         async with _processing_lock:
             _processing = False
+            _processing_started = 0.0
 
 
 PHOTO_DOWNLOAD_TIMEOUT = 30  # макс 30 сек на скачивание фото с Telegram

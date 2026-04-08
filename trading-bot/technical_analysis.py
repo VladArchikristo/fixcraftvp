@@ -209,6 +209,184 @@ def calc_atr(highs: list[float], lows: list[float], closes: list[float], period:
     }
 
 
+# ─── ADX (Average Directional Index) ───────────────────────────────────────
+
+def calc_adx(highs: list[float], lows: list[float], closes: list[float], period: int = 14) -> Optional[dict]:
+    """Calculate ADX — trend strength indicator.
+    ADX > 25 = strong trend, ADX < 20 = sideways/weak.
+    Returns {adx, plus_di, minus_di, trend_strength}.
+    """
+    if len(closes) < period * 2 + 1:
+        return None
+
+    # Step 1: Calculate +DM, -DM, TR
+    plus_dm_list = []
+    minus_dm_list = []
+    tr_list = []
+
+    for i in range(1, len(closes)):
+        high_diff = highs[i] - highs[i - 1]
+        low_diff = lows[i - 1] - lows[i]
+
+        plus_dm = high_diff if high_diff > low_diff and high_diff > 0 else 0
+        minus_dm = low_diff if low_diff > high_diff and low_diff > 0 else 0
+
+        tr = max(
+            highs[i] - lows[i],
+            abs(highs[i] - closes[i - 1]),
+            abs(lows[i] - closes[i - 1])
+        )
+        plus_dm_list.append(plus_dm)
+        minus_dm_list.append(minus_dm)
+        tr_list.append(tr)
+
+    if len(tr_list) < period:
+        return None
+
+    # Step 2: Wilder's smoothed averages
+    smoothed_plus_dm = sum(plus_dm_list[:period])
+    smoothed_minus_dm = sum(minus_dm_list[:period])
+    smoothed_tr = sum(tr_list[:period])
+
+    dx_list = []
+
+    for i in range(period, len(tr_list)):
+        smoothed_plus_dm = smoothed_plus_dm - (smoothed_plus_dm / period) + plus_dm_list[i]
+        smoothed_minus_dm = smoothed_minus_dm - (smoothed_minus_dm / period) + minus_dm_list[i]
+        smoothed_tr = smoothed_tr - (smoothed_tr / period) + tr_list[i]
+
+        if smoothed_tr == 0:
+            continue
+
+        plus_di = (smoothed_plus_dm / smoothed_tr) * 100
+        minus_di = (smoothed_minus_dm / smoothed_tr) * 100
+
+        di_sum = plus_di + minus_di
+        if di_sum == 0:
+            continue
+
+        dx = abs(plus_di - minus_di) / di_sum * 100
+        dx_list.append(dx)
+
+    if len(dx_list) < period:
+        return None
+
+    # Step 3: ADX = smoothed average of DX
+    adx = sum(dx_list[:period]) / period
+    for i in range(period, len(dx_list)):
+        adx = (adx * (period - 1) + dx_list[i]) / period
+
+    # Final DI values
+    final_plus_di = (smoothed_plus_dm / smoothed_tr) * 100 if smoothed_tr > 0 else 0
+    final_minus_di = (smoothed_minus_dm / smoothed_tr) * 100 if smoothed_tr > 0 else 0
+
+    # Classify trend strength
+    if adx > 40:
+        trend_strength = "VERY_STRONG"
+    elif adx > 25:
+        trend_strength = "STRONG"
+    elif adx > 20:
+        trend_strength = "MODERATE"
+    else:
+        trend_strength = "WEAK"
+
+    return {
+        "adx": round(adx, 1),
+        "plus_di": round(final_plus_di, 1),
+        "minus_di": round(final_minus_di, 1),
+        "trend_strength": trend_strength,
+    }
+
+
+# ─── Stochastic RSI ────────────────────────────────────────────────────────
+
+def calc_stochastic_rsi(closes: list[float], rsi_period: int = 14, stoch_period: int = 14,
+                         k_smooth: int = 3, d_smooth: int = 3) -> Optional[dict]:
+    """Stochastic RSI — faster than regular RSI for overbought/oversold detection.
+    Returns {stoch_rsi_k, stoch_rsi_d, zone}.
+    """
+    if len(closes) < rsi_period + stoch_period + k_smooth + 5:
+        return None
+
+    # Calculate RSI series
+    changes = [closes[i] - closes[i - 1] for i in range(1, len(closes))]
+    gains = [max(c, 0) for c in changes]
+    losses = [max(-c, 0) for c in changes]
+
+    rsi_values = []
+    avg_gain = sum(gains[:rsi_period]) / rsi_period
+    avg_loss = sum(losses[:rsi_period]) / rsi_period
+
+    for i in range(rsi_period, len(gains)):
+        avg_gain = (avg_gain * (rsi_period - 1) + gains[i]) / rsi_period
+        avg_loss = (avg_loss * (rsi_period - 1) + losses[i]) / rsi_period
+        if avg_loss == 0:
+            rsi_values.append(100.0)
+        else:
+            rs = avg_gain / avg_loss
+            rsi_values.append(100 - (100 / (1 + rs)))
+
+    if len(rsi_values) < stoch_period:
+        return None
+
+    # Stochastic of RSI
+    stoch_raw = []
+    for i in range(stoch_period - 1, len(rsi_values)):
+        window = rsi_values[i - stoch_period + 1:i + 1]
+        low = min(window)
+        high = max(window)
+        if high == low:
+            stoch_raw.append(50.0)
+        else:
+            stoch_raw.append(((rsi_values[i] - low) / (high - low)) * 100)
+
+    if len(stoch_raw) < k_smooth:
+        return None
+
+    # %K = SMA of raw stochastic
+    k_values = _sma(stoch_raw, k_smooth)
+    k_valid = [v for v in k_values if v is not None]
+    if len(k_valid) < d_smooth:
+        return None
+
+    # %D = SMA of %K
+    d_values = _sma(k_valid, d_smooth)
+    d_valid = [v for v in d_values if v is not None]
+
+    if not k_valid or not d_valid:
+        return None
+
+    k = k_valid[-1]
+    d = d_valid[-1]
+
+    # Zone classification
+    if k > 80:
+        zone = "OVERBOUGHT"
+    elif k < 20:
+        zone = "OVERSOLD"
+    elif k > 50:
+        zone = "BULLISH"
+    else:
+        zone = "BEARISH"
+
+    # Cross detection
+    cross = "NONE"
+    if len(k_valid) >= 2 and len(d_valid) >= 2:
+        prev_k = k_valid[-2]
+        prev_d = d_valid[-2]
+        if prev_k <= prev_d and k > d:
+            cross = "BULLISH_CROSS"
+        elif prev_k >= prev_d and k < d:
+            cross = "BEARISH_CROSS"
+
+    return {
+        "stoch_rsi_k": round(k, 1),
+        "stoch_rsi_d": round(d, 1),
+        "zone": zone,
+        "cross": cross,
+    }
+
+
 # ─── EMA Trend ───────────────────────────────────────────────────────────────
 
 def calc_ema_trend(closes: list[float]) -> Optional[dict]:
@@ -389,9 +567,11 @@ def full_analysis(candles: list[dict]) -> Optional[dict]:
 
     result = {
         "rsi": calc_rsi(closes),
+        "stoch_rsi": calc_stochastic_rsi(closes),
         "macd": calc_macd(closes),
         "bollinger": calc_bollinger(closes),
         "atr": calc_atr(highs, lows, closes),
+        "adx": calc_adx(highs, lows, closes),
         "ema": calc_ema_trend(closes),
         "volume": calc_volume_profile(candles),
         "levels": calc_support_resistance(candles),
@@ -448,6 +628,39 @@ def full_analysis(candles: list[dict]) -> Optional[dict]:
         if ema.get("death_cross"):
             score -= 20
             signals.append("Death Cross (EMA20 < EMA50)")
+
+    # ADX contribution — trend strength filter (-15 to +15)
+    adx_data = result["adx"]
+    if adx_data:
+        adx_val = adx_data["adx"]
+        plus_di = adx_data["plus_di"]
+        minus_di = adx_data["minus_di"]
+        if adx_val > 25:
+            # Strong trend — add directional bias
+            if plus_di > minus_di:
+                score += 15
+                signals.append(f"ADX {adx_val} STRONG trend — bulls in control (DI+ {plus_di} > DI- {minus_di})")
+            else:
+                score -= 15
+                signals.append(f"ADX {adx_val} STRONG trend — bears in control (DI- {minus_di} > DI+ {plus_di})")
+        elif adx_val < 20:
+            signals.append(f"ADX {adx_val} WEAK trend — range-bound market")
+
+    # StochRSI contribution (-10 to +10)
+    stoch = result["stoch_rsi"]
+    if stoch:
+        if stoch["zone"] == "OVERSOLD":
+            score += 10
+            signals.append(f"StochRSI {stoch['stoch_rsi_k']:.0f} OVERSOLD")
+        elif stoch["zone"] == "OVERBOUGHT":
+            score -= 10
+            signals.append(f"StochRSI {stoch['stoch_rsi_k']:.0f} OVERBOUGHT")
+        if stoch["cross"] == "BULLISH_CROSS":
+            score += 10
+            signals.append("StochRSI bullish cross (%K > %D)")
+        elif stoch["cross"] == "BEARISH_CROSS":
+            score -= 10
+            signals.append("StochRSI bearish cross (%K < %D)")
 
     # Bollinger contribution (-15 to +15)
     bb = result["bollinger"]
@@ -520,6 +733,18 @@ def format_ta_report(coin: str, analysis: dict) -> str:
     atr = analysis.get("atr")
     if atr:
         lines.append(f"  ATR-14: {atr['atr']:.4f} ({atr['atr_pct']:.2f}%) Vol: {atr['volatility_level']}")
+
+    adx = analysis.get("adx")
+    if adx:
+        di_arrow = "↑" if adx["plus_di"] > adx["minus_di"] else "↓"
+        lines.append(f"  ADX-14: {adx['adx']:.1f} ({adx['trend_strength']}) "
+                     f"DI+={adx['plus_di']:.1f} DI-={adx['minus_di']:.1f} {di_arrow}")
+
+    stoch = analysis.get("stoch_rsi")
+    if stoch:
+        cross_txt = f" {stoch['cross']}" if stoch["cross"] != "NONE" else ""
+        lines.append(f"  StochRSI: K={stoch['stoch_rsi_k']:.1f} D={stoch['stoch_rsi_d']:.1f} "
+                     f"Zone: {stoch['zone']}{cross_txt}")
 
     vol = analysis.get("volume")
     if vol:

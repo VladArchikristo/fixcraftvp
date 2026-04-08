@@ -413,9 +413,21 @@ def combine_strategies(
     - Strategy signals (funding, OI, whale, vault)
     - TA confluence (multi-timeframe)
     - TA score from technical analysis
+    - ADX anti-trend filter: penalizes signals that go against a strong trend
 
     Returns sorted list of {coin, direction, total_score, strategies, recommendation}.
     """
+    # Build ADX trend filter from TA data
+    adx_filter = {}  # {coin: {"adx": float, "trend_dir": "LONG"|"SHORT"|None}}
+    if ta_data:
+        for coin, ta in ta_data.items():
+            adx_info = ta.get("adx")
+            if adx_info and adx_info.get("adx", 0) > 25:
+                if adx_info["plus_di"] > adx_info["minus_di"]:
+                    adx_filter[coin] = {"adx": adx_info["adx"], "trend_dir": "LONG"}
+                else:
+                    adx_filter[coin] = {"adx": adx_info["adx"], "trend_dir": "SHORT"}
+
     # Aggregate by coin
     coin_scores = {}
 
@@ -474,6 +486,24 @@ def combine_strategies(
                 coin_scores[coin]["long"] += bonus
             elif score < -15:
                 coin_scores[coin]["short"] += bonus
+
+    # Apply ADX anti-trend filter: penalize signals going against strong trend
+    for coin, data in coin_scores.items():
+        if coin in adx_filter:
+            trend_dir = adx_filter[coin]["trend_dir"]
+            adx_val = adx_filter[coin]["adx"]
+            penalty = int(adx_val * 0.5)  # Stronger trend = bigger penalty
+
+            if trend_dir == "LONG" and data["short"] > data["long"]:
+                # Trying to SHORT in strong uptrend — penalize
+                data["short"] = max(0, data["short"] - penalty)
+                data["reasons"].append(f"[ADX_FILTER] Anti-trend penalty -{penalty} on SHORT (ADX={adx_val}, trend=UP)")
+                data["strategies"].append("ADX_FILTER")
+            elif trend_dir == "SHORT" and data["long"] > data["short"]:
+                # Trying to LONG in strong downtrend — penalize
+                data["long"] = max(0, data["long"] - penalty)
+                data["reasons"].append(f"[ADX_FILTER] Anti-trend penalty -{penalty} on LONG (ADX={adx_val}, trend=DOWN)")
+                data["strategies"].append("ADX_FILTER")
 
     # Build final recommendations
     results = []
