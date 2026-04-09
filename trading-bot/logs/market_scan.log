@@ -206,3 +206,9 @@ OPEN_POSITION: {
 2026-04-09 15:00:09,866 [INFO] vasily_hl: Fetching extended market data for 3 coins...
 2026-04-09 15:00:22,969 [INFO] vasily_scan: Prompt length: 13566 chars
 2026-04-09 15:01:26,564 [WARNING] vasily_scan: Telegram HTML parse failed, retrying as plain text
+2026-04-09 15:10:01,761 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-09 15:10:16,216 [INFO] vasily_scan: Trailing SL AVAX LONG: $9.03 → $9.12 (price $9.31)
+2026-04-09 15:10:16,217 [INFO] vasily_scan: Prompt length: 13680 chars
+2026-04-09 18:00:08,891 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-09 18:00:22,325 [INFO] vasily_scan: Trailing SL AVAX LONG: $9.12 → $9.23 (price $9.42)
+2026-04-09 18:00:22,326 [INFO] vasily_scan: Prompt length: 15023 chars
