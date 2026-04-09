@@ -28,7 +28,7 @@ from technical_analysis import full_analysis
 from strategies import (
     analyze_funding_extremes, analyze_oi_divergence,
     analyze_whale_walls, analyze_multi_timeframe,
-    combine_strategies,
+    combine_strategies, validate_signals,
 )
 
 # ─── Конфиг ───────────────────────────────────────────────────────────────────
@@ -229,6 +229,7 @@ def main():
         funding_signals, oi_signals, whale_signals, [],
         confluence_data, ta_data,
     )
+    combined = validate_signals(combined, ta_data)
 
     # 5. Фильтруем по порогу
     strong_signals = [s for s in combined if abs(s["net_score"]) >= ALERT_THRESHOLD]

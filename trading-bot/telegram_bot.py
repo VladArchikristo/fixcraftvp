@@ -498,6 +498,8 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/scan — полный скан (Hyperliquid + TA + Claude)\n"
         "/ta — быстрый тех.анализ (RSI, MACD, EMA, Bollinger)\n"
         "/funding — funding rates и OI с Hyperliquid\n"
+        "/daily — P&L за последние 7 дней\n"
+        "/stats — win rate, profit factor, статистика\n"
         "/history — история сканов\n"
         "/status — статус бота\n"
         "/clear — очистить историю"
@@ -592,6 +594,87 @@ async def cmd_history(update: Update, context: ContextTypes.DEFAULT_TYPE):
             lines.append(f"  {s['summary'][:100]}")
 
     await update.message.reply_text("\n".join(lines))
+
+
+async def cmd_daily(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """P&L за последние 7 дней."""
+    if not is_allowed(update):
+        return
+    pnl_path = SCRIPT_DIR / "data" / "daily_pnl.json"
+    if not pnl_path.exists():
+        await update.message.reply_text("Нет данных по дневному P&L. Данные появятся после первых закрытых сделок.")
+        return
+    try:
+        snapshots = json.loads(pnl_path.read_text())
+    except (json.JSONDecodeError, OSError):
+        await update.message.reply_text("Ошибка чтения daily_pnl.json")
+        return
+
+    last7 = snapshots[-7:]
+    if not last7:
+        await update.message.reply_text("Нет записей.")
+        return
+
+    lines = ["📊 P&L за последние дни:\n"]
+    lines.append(f"{'Дата':<12} {'Баланс':>8} {'P&L':>8} {'%':>6} {'Сделок':>6}")
+    lines.append("─" * 44)
+    for s in last7:
+        pnl_str = f"{s['pnl_day']:+.2f}"
+        lines.append(
+            f"{s['date']:<12} ${s['balance']:>7.2f} {pnl_str:>8} {s['pnl_pct']:>+5.1f}% {s['trades']:>5}"
+        )
+
+    total_pnl = sum(s["pnl_day"] for s in last7)
+    lines.append("─" * 44)
+    lines.append(f"Итого P&L: ${total_pnl:+.2f}")
+    await update.message.reply_text(f"```\n{chr(10).join(lines)}\n```", parse_mode="Markdown")
+
+
+async def cmd_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Win rate, средний профит/убыток, profit factor."""
+    if not is_allowed(update):
+        return
+    p = _load_portfolio()
+    closed = p.get("closed_trades", [])
+    if not closed:
+        await update.message.reply_text("Нет закрытых сделок для статистики.")
+        return
+
+    wins = [t for t in closed if t.get("pnl_usd", 0) > 0]
+    losses = [t for t in closed if t.get("pnl_usd", 0) <= 0]
+    total = len(closed)
+    win_rate = len(wins) / total * 100
+
+    avg_win = sum(t["pnl_usd"] for t in wins) / len(wins) if wins else 0
+    avg_loss = sum(t["pnl_usd"] for t in losses) / len(losses) if losses else 0
+    gross_profit = sum(t["pnl_usd"] for t in wins)
+    gross_loss = abs(sum(t["pnl_usd"] for t in losses))
+    profit_factor = gross_profit / gross_loss if gross_loss > 0 else float("inf")
+    total_pnl = sum(t.get("pnl_usd", 0) for t in closed)
+
+    lines = [
+        "📈 Статистика торговли\n",
+        f"Всего сделок: {total}",
+        f"Выигрышных: {len(wins)} | Убыточных: {len(losses)}",
+        f"Win Rate: {win_rate:.1f}%\n",
+        f"Средний профит: ${avg_win:+.2f}",
+        f"Средний убыток: ${avg_loss:+.2f}",
+        f"Profit Factor: {profit_factor:.2f}",
+        f"\nОбщий P&L: ${total_pnl:+.2f}",
+    ]
+    await update.message.reply_text("\n".join(lines))
+
+
+async def daily_snapshot_job(context: ContextTypes.DEFAULT_TYPE):
+    """Ежедневный snapshot баланса (раз в 24 часа)."""
+    try:
+        from trading_execution import get_executor
+        executor = get_executor()
+        if hasattr(executor, '_trader') and hasattr(executor._trader, 'save_daily_snapshot'):
+            executor._trader.save_daily_snapshot()
+            log.info("Daily snapshot job executed")
+    except Exception as e:
+        log.error("Daily snapshot job failed: %s", e)
 
 
 async def cmd_ta(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -922,6 +1005,34 @@ def _cleanup():
     # Deleting it creates a race where a new instance starts before lock is freed.
 
 
+async def cmd_mode(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Команда /mode — показать или переключить режим торговли (paper/real)."""
+    if not _check_user(update):
+        return
+    try:
+        from trading_execution import get_executor
+        executor = get_executor()
+        status = executor.get_status()
+        mode_emoji = {"paper": "\U0001f4dd", "testnet": "\U0001f9ea", "mainnet": "\U0001f534"}
+        emoji = mode_emoji.get(status["mode"], "\u2753")
+        msg = (
+            f"{emoji} **Режим:** `{status['mode']}`\n"
+            f"\U0001f4b0 Баланс: `${status['balance']:.2f}`\n"
+            f"\U0001f4ca Открытых позиций: `{status['open_positions']}`\n"
+            f"\n**Risk Manager:**\n"
+            f"  Дневной лимит убытков: `{status['risk']['daily_loss_limit']}`\n"
+            f"  Макс размер позиции: `{status['risk']['max_position_size']}`\n"
+            f"  Макс позиций: `{status['risk']['max_positions']}`\n"
+            f"  Emergency stop: `{status['risk']['emergency_stop']}`\n"
+            f"  Дневной PnL: `${status['risk']['daily_pnl']}`\n"
+            f"  Emergency: `{'ДА' if status['risk']['emergency_triggered'] else 'нет'}`"
+        )
+        await update.message.reply_text(msg, parse_mode="Markdown")
+    except Exception as e:
+        log.error("cmd_mode error: %s", e)
+        await update.message.reply_text(f"Ошибка: {e}")
+
+
 def main():
     if not BOT_TOKEN:
         log.error("VASILY_BOT_TOKEN not set in .env")
@@ -959,6 +1070,9 @@ def main():
     app.add_handler(CommandHandler("scan", cmd_scan))
     app.add_handler(CommandHandler("ta", cmd_ta))
     app.add_handler(CommandHandler("funding", cmd_funding))
+    app.add_handler(CommandHandler("mode", cmd_mode))
+    app.add_handler(CommandHandler("daily", cmd_daily))
+    app.add_handler(CommandHandler("stats", cmd_stats))
 
     # Text messages
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
@@ -971,6 +1085,9 @@ def main():
 
     # Heartbeat every 60 sec
     app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+
+    # Daily snapshot — раз в 24 часа
+    app.job_queue.run_repeating(daily_snapshot_job, interval=86400, first=60)
 
     log.info("Василий polling started")
     app.run_polling(

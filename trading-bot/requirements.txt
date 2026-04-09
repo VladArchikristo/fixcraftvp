@@ -2,3 +2,5 @@ python-telegram-bot[job-queue]==22.*
 httpx
 python-dotenv
 requests
+hyperliquid-python-sdk
+eth_account

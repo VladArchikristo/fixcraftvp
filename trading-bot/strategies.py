@@ -512,7 +512,7 @@ def combine_strategies(
         short_score = data["short"]
         net = long_score - short_score
 
-        if abs(net) < 15:
+        if abs(net) < 25:
             rec = "NEUTRAL"
             direction = "NEUTRAL"
         elif net > 0:
@@ -537,6 +537,64 @@ def combine_strategies(
         })
 
     return sorted(results, key=lambda x: -abs(x["net_score"]))
+
+
+def validate_signals(results: list[dict], ta_data: dict = None) -> list[dict]:
+    """
+    Validation layer — фильтрует сигналы от combine_strategies() по 4 правилам:
+    1. MinimumConsensus: минимум 2 настоящих стратегии (не считать ADX_FILTER)
+    2. ADX Blocker: ADX > 30 И контртренд → полностью блокировать сигнал
+    3. StochRSI Filter: LONG при k > 80 или SHORT при k < 20 → блокировать
+    4. Net score: уже обработан в combine_strategies (порог 25)
+    """
+
+    REAL_STRATEGIES = {"FUNDING_EXTREME", "OI_DIVERGENCE", "WHALE_WALLS", "VAULT_COPY", "MTF_CONFLUENCE"}
+
+    validated = []
+    for r in results:
+        notes = []
+        blocked = False
+
+        # 1. MinimumConsensus
+        real_count = len([s for s in r.get("strategies", []) if s in REAL_STRATEGIES])
+        if real_count < 2:
+            notes.append(f"BLOCKED: only {real_count} real strategy (need 2+)")
+            blocked = True
+
+        # 2. ADX Blocker (только если не заблокирован)
+        if not blocked and ta_data:
+            coin = r["coin"]
+            ta = ta_data.get(coin, {})
+            adx_info = ta.get("adx", {})
+            adx_val = adx_info.get("adx", 0)
+            if adx_val > 30:
+                plus_di = adx_info.get("plus_di", 0)
+                minus_di = adx_info.get("minus_di", 0)
+                trend_dir = "LONG" if plus_di > minus_di else "SHORT"
+                if r["direction"] != trend_dir and r["direction"] != "NEUTRAL":
+                    notes.append(f"BLOCKED: counter-trend vs ADX={adx_val:.1f} trend={trend_dir}")
+                    blocked = True
+
+        # 3. StochRSI Filter
+        if not blocked and ta_data:
+            coin = r["coin"]
+            ta = ta_data.get(coin, {})
+            stoch = ta.get("stoch_rsi", {})
+            k = stoch.get("k", None)
+            if k is not None:
+                if r["direction"] == "LONG" and k > 80:
+                    notes.append(f"BLOCKED: LONG but StochRSI k={k:.1f} overbought (>80)")
+                    blocked = True
+                elif r["direction"] == "SHORT" and k < 20:
+                    notes.append(f"BLOCKED: SHORT but StochRSI k={k:.1f} oversold (<20)")
+                    blocked = True
+
+        r["validation_notes"] = notes
+        r["validation_passed"] = not blocked
+        if not blocked:
+            validated.append(r)
+
+    return validated
 
 
 def format_strategy_report(results: list[dict]) -> str:

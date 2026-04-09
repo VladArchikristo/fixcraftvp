@@ -34,7 +34,7 @@ from strategies import (
     analyze_funding_extremes, analyze_oi_divergence,
     analyze_whale_walls, analyze_vault_signals,
     analyze_multi_timeframe, combine_strategies,
-    format_strategy_report,
+    format_strategy_report, validate_signals,
 )
 
 # ─── Конфиг ───────────────────────────────────────────────────────────────────
@@ -1334,6 +1334,7 @@ def main():
             funding_signals, oi_signals, whale_signals, vault_signals,
             confluence_data, ta_data,
         )
+        combined = validate_signals(combined, ta_data)
         if combined:
             strategy_report = format_strategy_report(combined)
             for r in combined[:3]:
