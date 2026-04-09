@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-08T18:02:14.296816",
+  "updated_at": "2026-04-08T21:02:22.919942",
   "initial_capital": 100,
   "cash": 54.125031769137195,
   "positions": [
@@ -1727,6 +1727,95 @@
           "confluence": 100,
           "direction": "LONG",
           "weighted": 25.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-08T21:02:22.919903",
+      "total_value": 99.23,
+      "portfolio_value": 99.23,
+      "pnl": -0.77,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "# Анализ Василий | 2026-04-08 21:00 UTC",
+      "trades": [
+        "🔄 HOLD BTC | 4h STRONG BUY ADX 40.5, MTF 100% confluence, whale walls $97K-$180K под ценой у $70,804-70,836 держат поддержку, negative funding поддерживает лонгистов",
+        "🔄 HOLD ETH | Whale wall $357K у $2,183.40 прямо под ценой, 4h/1d BUY, SL $2,169.57 за поддержкой, R:R 2.3 — держим",
+        "⏸️ NO_ACTION | Кэш $54.13, 2 открытых LONG позиции. Extreme Fear 14 — рынок давит вниз. SOL/LINK/AVAX не дают R:R >= 1:2 при текущих уровнях. BNB/AVAX/LINK — SELL сигналы на 4h. Ждём либо отскок существующих позиций, либо чёткий пробой поддержки для принятия решений"
+      ],
+      "ta_scores": {
+        "BTC": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 47.5
+        },
+        "ETH": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 43.9
+        },
+        "SOL": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 40.8
+        },
+        "BNB": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 36.8
+        },
+        "AVAX": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 36.5
+        },
+        "XRP": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 41.2
+        },
+        "LINK": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 33.4
+        }
+      },
+      "confluence": {
+        "BTC": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 30.0
+        },
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 19.2
+        },
+        "SOL": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 7.5
+        },
+        "BNB": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": 1.7
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -6.7
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 7.5
+        },
+        "LINK": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -6.7
         }
       },
       "data_source": "hyperliquid_extended"
