@@ -61,16 +61,15 @@ BOT_TOKEN = os.getenv("VASILY_BOT_TOKEN", "")
 CHAT_ID = int(os.getenv("VASILY_CHAT_ID", "244710532"))
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 
-ASSETS = ["bitcoin", "ethereum", "solana", "binancecoin", "ripple",
-          "cardano", "avalanche-2", "polkadot", "chainlink", "uniswap"]
+ASSETS = ["ethereum", "ripple",
+          "cardano", "avalanche-2", "polkadot", "injective-protocol", "uniswap"]
 
 # Coins to do full TA on (top by volume on HL)
-TA_COINS = ["ETH", "SOL", "XRP", "AVAX", "LINK", "INJ"]
+TA_COINS = ["ETH", "XRP", "AVAX"]
 
 ASSET_SYMBOLS = {
-    "bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL",
-    "binancecoin": "BNB", "ripple": "XRP", "cardano": "ADA",
-    "avalanche-2": "AVAX", "polkadot": "DOT", "chainlink": "LINK", "uniswap": "UNI"
+    "ethereum": "ETH", "ripple": "XRP", "cardano": "ADA",
+    "avalanche-2": "AVAX", "polkadot": "DOT", "injective-protocol": "INJ", "uniswap": "UNI"
 }
 
 # ─── Портфель ─────────────────────────────────────────────────────────────────
@@ -247,7 +246,7 @@ def fetch_rsi(asset_id: str, days: int = 14):
 def fetch_all_rsi() -> dict:
     """Fetch RSI for key assets. Returns {symbol: rsi_value}."""
     rsi_data = {}
-    key_assets = ["bitcoin", "ethereum", "solana", "binancecoin", "avalanche-2"]
+    key_assets = ["ethereum", "ripple", "avalanche-2", "injective-protocol"]
     for asset_id in key_assets:
         rsi = fetch_rsi(asset_id)
         if rsi is not None:
@@ -1211,7 +1210,7 @@ def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, t
 
     # Цены — Hyperliquid (приоритет) + CoinGecko fallback
     prices_mini = ""
-    for coin in ["BTC", "ETH", "SOL", "BNB", "AVAX"]:
+    for coin in ["ETH", "XRP", "AVAX", "INJ"]:
         if hl_market and coin in hl_market:
             info = hl_market[coin]
             ch = info.get("price_change_24h", 0)
@@ -1226,7 +1225,7 @@ def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, t
     # TA Summary with multi-TF confluence
     ta_mini = ""
     if ta_data:
-        for coin in ["BTC", "ETH", "SOL", "BNB", "AVAX"]:
+        for coin in ["ETH", "XRP", "AVAX", "INJ"]:
             ta = ta_data.get(coin)
             if ta:
                 score = ta.get("score", 0)

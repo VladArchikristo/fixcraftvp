@@ -3,75 +3,51 @@
     {
       "asset": "ETH",
       "side": "LONG",
-      "size_usd": 210.0,
-      "entry_price": 2182.15,
-      "stop_loss": 2157.0,
-      "take_profit": 2268.0,
+      "size_usd": 300.0,
+      "entry_price": 2218.05,
+      "stop_loss": 2193.0,
+      "take_profit": 2268.7,
       "trailing_stop_pct": 2.0,
-      "opened_at": "2026-04-09T09:02:23.709765"
+      "opened_at": "2026-04-09T12:02:52.153045"
     }
   ],
   "history": [],
-  "created": "2026-04-09T03:33:20.288712+00:00",
-  "cash": 840.2189719250489,
-  "closed_trades": [
-    {
-      "asset": "BTC",
-      "side": "LONG",
-      "size_usd": 50,
-      "entry_price": 70899.5,
-      "exit_price": 71210,
-      "pnl_usd": 0.22,
-      "pnl_pct": 0.44,
-      "opened_at": "2026-04-09T03:33:46.006332+00:00",
-      "closed_at": "2026-04-09T08:56:39.515945",
-      "reason": "Auto STOP_LOSS: SL @ $71210.00"
-    }
-  ],
-  "updated_at": "2026-04-09T09:02:23.710091",
-  "initial_capital": 1050.218971925049,
+  "created": "2026-04-09T13:05:57.135886+00:00",
+  "cash": 700.0,
+  "initial_capital": 1000.0,
+  "closed_trades": [],
   "scan_history": [
     {
-      "time": "2026-04-09T08:58:12.234277",
-      "total_value": 1050.22,
-      "portfolio_value": 1050.22,
+      "time": "2026-04-09T09:11:02.236779",
+      "total_value": 1000.0,
+      "portfolio_value": 1000.0,
       "pnl": 0.0,
       "sentiment": "neutral",
       "actions_taken": 0,
-      "summary": "## ВАСИЛИЙ — MARKET REPORT | 2026-04-09 08:57 UTC",
+      "summary": "## 📊 ВАСИЛИЙ — АНАЛИЗ РЫНКА | 09.04.2026 09:10 UTC",
       "trades": [
-        "⏸️ NO_ACTION | Extreme Fear Index 14, ASK-heavy order books (ETH -95%, SOL -74.7%), все TA scores слабые или отрицательные на краткосрочных TF. AVAX — единственный кандидат с bullish crosses, но R:R не достигает минимума 1:2 при текущих уровнях. Ждём либо: (а) откат к более глубоким поддержкам $8.81/$8.74 AVAX для лучшего входа, (б) разворотные сигналы на ETH с пробоем $2,200 с объёмом. Кэш $1,050.22 — сохраняем."
+        "⏸️ NO_ACTION | Extreme Fear (14), системная распродажа всех активов -3-4%, ETH order book -83% ASK-heavy, конфликт ТФ по всем активам. Ждём: 1) стабилизацию ETH выше $2176 whale wall зоны, 2) снижение ASK давления в стакане, 3) макро данные по инфляции США. AVAX 4h показывает bullish cross но фандинг +0.0013% и macro против. INJ — нет ликвидности."
       ],
       "ta_scores": {
         "ETH": {
-          "score": -25,
-          "rec": "SELL",
-          "rsi": 44.6
-        },
-        "SOL": {
           "score": -15,
           "rec": "SELL",
-          "rsi": 44.0
+          "rsi": 43.2
         },
         "XRP": {
           "score": -30,
           "rec": "SELL",
-          "rsi": 39.0
+          "rsi": 39.4
         },
         "AVAX": {
           "score": -5,
           "rec": "NEUTRAL",
-          "rsi": 49.0
-        },
-        "LINK": {
-          "score": 5,
-          "rec": "NEUTRAL",
-          "rsi": 40.6
+          "rsi": 48.9
         },
         "INJ": {
           "score": -5,
           "rec": "NEUTRAL",
-          "rsi": 48.1
+          "rsi": 48.3
         }
       },
       "confluence": {
@@ -79,11 +55,6 @@
           "confluence": 60,
           "direction": "LONG",
           "weighted": 9.2
-        },
-        "SOL": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": 2.5
         },
         "XRP": {
           "confluence": 20,
@@ -94,11 +65,6 @@
           "confluence": 20,
           "direction": "NEUTRAL",
           "weighted": 4.2
-        },
-        "LINK": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": -2.5
         },
         "INJ": {
           "confluence": 20,
@@ -109,82 +75,56 @@
       "data_source": "hyperliquid_extended"
     },
     {
-      "time": "2026-04-09T09:02:23.710072",
-      "total_value": 1050.22,
-      "portfolio_value": 1050.22,
+      "time": "2026-04-09T12:02:52.153458",
+      "total_value": 1000.0,
+      "portfolio_value": 1000.0,
       "pnl": 0.0,
       "sentiment": "neutral",
       "actions_taken": 1,
-      "summary": "## ВАСИЛИЙ | DAILY REPORT | 2026-04-09 09:00 UTC",
+      "summary": "## РЫНОЧНЫЙ АНАЛИЗ — 09.04.2026 12:00 UTC",
       "trades": [
-        "✅ ОТКРЫТА LONG ETH $210 @ $2182.15 SL:$2157.00 TP:$2268.00 Trail:2% | 1d BUY signal (+20), whale BID wall $424K @ $2183.90 под ценой, order book 99.5% BID-heavy, RSI нейтральный (место для роста), SL ниже support $2161 (1.7x ATR=14.88), TP=сопротивление $2268, R:R = 86/25 = 3.4:1. Extreme Fear = потенциал отскока.",
-        "⏸️ NO_ACTION | Слабый тренд (ADX 14.1), declining volume, Score -10 на 1h. BID-heavy интересен, но недостаточно сигналов. Жду подтверждения отскока ETH перед SOL."
+        "✅ ОТКРЫТА LONG ETH $300 @ $2218.05 SL:$2193.00 TP:$2268.70 Trail:2% | Whale walls $394K+$137K @ $2218-2219 как поддержка, BID-HEAVY 99.4%, EMA STRONG_BULL на 1h/4h/1d, MACD bullish, funding умеренный +0.0013%, OI не у лимита. R:R 2.03:1. Риск: краткосрочный перегрев StochRSI 84.7, ждём от стенок.",
+        "⏸️ NO_ACTION | AVAX StochRSI=100 — максимальный перегрев, Bollinger OVERBOUGHT, объём мал ($6M), declining volume на 4h. Жду откат к поддержке $9.15-9.05 для лонга с нормальным R:R.",
+        "⏸️ NO_ACTION | AVAX StochRSI=100 — максимальный перегрев, Bollinger OVERBOUGHT, объём мал ($6M), declining volume на 4h. Жду откат к поддержке $9.15-9.05 для лонга с нормальным R:R.",
+        "⏸️ NO_ACTION | XRP нет чёткого тренда, EMA SIDEWAYS, 1d buy% 41%, StochRSI 90.8 OB. Нет торгового сигнала.",
+        "⏸️ NO_ACTION | XRP нет чёткого тренда, EMA SIDEWAYS, 1d buy% 41%, StochRSI 90.8 OB. Нет торгового сигнала."
       ],
       "ta_scores": {
         "ETH": {
-          "score": 5,
-          "rec": "NEUTRAL",
-          "rsi": 46.6
-        },
-        "SOL": {
-          "score": -10,
-          "rec": "NEUTRAL",
-          "rsi": 45.2
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 60.6
         },
         "XRP": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 40.4
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 61.2
         },
         "AVAX": {
-          "score": -5,
-          "rec": "NEUTRAL",
-          "rsi": 49.2
-        },
-        "LINK": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 41.5
-        },
-        "INJ": {
-          "score": -5,
-          "rec": "NEUTRAL",
-          "rsi": 48.8
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 67.6
         }
       },
       "confluence": {
         "ETH": {
           "confluence": 100,
           "direction": "LONG",
-          "weighted": 14.2
-        },
-        "SOL": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": 3.3
+          "weighted": 18.3
         },
         "XRP": {
           "confluence": 20,
           "direction": "NEUTRAL",
-          "weighted": -1.7
+          "weighted": 1.7
         },
         "AVAX": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": 4.2
-        },
-        "LINK": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": -3.3
-        },
-        "INJ": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": 0.8
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 20.0
         }
       },
       "data_source": "hyperliquid_extended"
     }
-  ]
+  ],
+  "updated_at": "2026-04-09T12:02:52.153491"
 }

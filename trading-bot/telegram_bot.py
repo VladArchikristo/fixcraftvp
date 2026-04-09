@@ -731,7 +731,7 @@ async def cmd_ta(update: Update, context: ContextTypes.DEFAULT_TYPE):
             from technical_analysis import full_analysis, format_ta_report
             import time as _time
 
-            coins = ["BTC", "ETH", "SOL", "BNB", "AVAX"]
+            coins = ["ETH", "XRP", "AVAX"]
             reports = []
             for coin in coins:
                 candles = fetch_candles(coin, "1h", 100)
@@ -768,7 +768,7 @@ async def cmd_funding(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             from hyperliquid_api import fetch_market_summary
 
-            data = fetch_market_summary(["BTC", "ETH", "SOL", "BNB", "AVAX", "XRP", "LINK", "DOGE", "SUI", "ARB"])
+            data = fetch_market_summary(["ETH", "XRP", "AVAX"])
             if not data:
                 await update.message.reply_text("Не удалось получить данные с Hyperliquid.")
                 return

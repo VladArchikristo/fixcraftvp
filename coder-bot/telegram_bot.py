@@ -130,6 +130,32 @@ BOTS_REGISTRY = {
         "launchagent": "com.vladimir.philip-bot",
         "notes": "ask-philip.sh — делегировать промт-задачи Филипу",
     },
+    "peter": {
+        "label": "Пётр",
+        "handle": "@PeterMedBot",
+        "role": "медицинский ассистент, память здоровья",
+        "dir": str(PROJECT_ROOT / "peter-bot"),
+        "main_file": "telegram_bot.py",
+        "pid_file": str(LOG_DIR / "peter-bot.pid"),
+        "log_file": str(LOG_DIR / "peter-bot.log"),
+        "heartbeat": str(LOG_DIR / "peter-heartbeat"),
+        "launcher": str(Path.home() / "peter-launcher.sh"),
+        "launchagent": "com.vladimir.peter-bot",
+        "notes": "SQLite medical_memory, автоизвлечение, /memory /remember",
+    },
+    "zina": {
+        "label": "Зина",
+        "handle": "@ZinaAstroBot",
+        "role": "астролог, нумеролог, гороскопы",
+        "dir": str(PROJECT_ROOT / "zina-bot"),
+        "main_file": "telegram_bot.py",
+        "pid_file": str(LOG_DIR / "zina-bot.pid"),
+        "log_file": str(LOG_DIR / "zina-bot.log"),
+        "heartbeat": str(LOG_DIR / "zina-heartbeat"),
+        "launcher": str(Path.home() / "zina-launcher.sh"),
+        "launchagent": "com.vladimir.zina-bot",
+        "notes": "sonnet-4-6, астро/нумерология, только Влад",
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -1395,6 +1421,8 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 pass
         await update.message.reply_text("Ошибка при обработке фото.")
     finally:
+        async with _rate_limit_lock:
+            _last_message_time = time.monotonic()
         async with _processing_lock:
             _processing = False
             _processing_started = 0.0
