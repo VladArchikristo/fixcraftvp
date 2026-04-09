@@ -65,7 +65,7 @@ ASSETS = ["bitcoin", "ethereum", "solana", "binancecoin", "ripple",
           "cardano", "avalanche-2", "polkadot", "chainlink", "uniswap"]
 
 # Coins to do full TA on (top by volume on HL)
-TA_COINS = ["BTC", "ETH", "SOL", "BNB", "AVAX", "XRP", "LINK", "DOGE", "SUI", "ARB"]
+TA_COINS = ["BTC", "ETH", "SOL", "BNB", "AVAX", "XRP"]
 
 ASSET_SYMBOLS = {
     "bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL",
@@ -360,6 +360,96 @@ def check_sl_tp(portfolio, prices, hl_market=None):
 
     portfolio["positions"] = remaining
     return auto_closed
+
+
+# ─── Пересчёт сигналов для открытых позиций ─────────────────────────────────
+def check_signal_validity(portfolio, combined_signals, prices, hl_market=None):
+    """Пересчитать сигналы для открытых позиций.
+    Закрыть если сигнал развернулся или ослаб."""
+    closed_log = []
+    remaining = []
+    now = datetime.now().isoformat()
+
+    if not combined_signals:
+        return closed_log
+
+    # Построить словарь combined по монете
+    sig_by_coin = {}
+    for sig in combined_signals:
+        coin = sig.get("coin", "")
+        sig_by_coin[coin] = sig
+
+    for pos in portfolio["positions"]:
+        asset = pos["asset"]
+        side = pos.get("side", "LONG").upper()
+        signal = sig_by_coin.get(asset)
+
+        if not signal:
+            remaining.append(pos)
+            continue
+
+        net_score = signal.get("net_score", 0)
+        direction = signal.get("direction", "NEUTRAL")
+        close_reason = None
+
+        # 1. Противоположный сигнал (обязательный выход)
+        if side == "LONG" and direction == "SHORT" and abs(net_score) > 25:
+            close_reason = "SIGNAL_REVERSAL"
+        elif side == "SHORT" and direction == "LONG" and abs(net_score) > 25:
+            close_reason = "SIGNAL_REVERSAL"
+        # 2. Сигнал ослаб (score упал ниже порога)
+        elif abs(net_score) < 15 and direction != side.replace("LONG", "LONG").replace("SHORT", "SHORT"):
+            close_reason = "SIGNAL_EXPIRED"
+
+        if close_reason:
+            cur_price = _get_price(asset, prices, hl_market)
+            if cur_price <= 0:
+                remaining.append(pos)
+                continue
+
+            entry = pos.get("entry_price", 0)
+            size_usd = pos.get("size_usd", 0)
+            if entry <= 0 or size_usd <= 0:
+                remaining.append(pos)
+                continue
+
+            qty = size_usd / entry
+            cur_value = qty * cur_price
+            if side == "SHORT":
+                pnl_usd = size_usd - cur_value
+            else:
+                pnl_usd = cur_value - size_usd
+            pnl_pct = (pnl_usd / size_usd) * 100
+
+            portfolio["cash"] += size_usd + pnl_usd
+            portfolio.setdefault("closed_trades", []).append({
+                "asset": asset,
+                "side": side,
+                "size_usd": size_usd,
+                "entry_price": entry,
+                "exit_price": cur_price,
+                "pnl_usd": round(pnl_usd, 2),
+                "pnl_pct": round(pnl_pct, 2),
+                "opened_at": pos.get("opened_at", ""),
+                "closed_at": now,
+                "reason": close_reason
+            })
+
+            if close_reason == "SIGNAL_REVERSAL":
+                emoji = "⚡"
+                msg = f"{emoji} SIGNAL REVERSAL: {side} {asset} закрыта @ ${cur_price:.2f} | Новый сигнал: {direction} (score: {net_score:+d}) | P&L: {'+' if pnl_usd >= 0 else ''}{pnl_usd:.2f}$ ({'+' if pnl_pct >= 0 else ''}{pnl_pct:.1f}%)"
+            else:
+                emoji = "📉"
+                msg = f"{emoji} SIGNAL EXPIRED: {side} {asset} закрыта @ ${cur_price:.2f} | Score ослаб до {net_score:+d} | P&L: {'+' if pnl_usd >= 0 else ''}{pnl_usd:.2f}$ ({'+' if pnl_pct >= 0 else ''}{pnl_pct:.1f}%)"
+
+            closed_log.append(msg)
+            log.info("Signal check closed %s %s: %s (score=%d, dir=%s)", side, asset, close_reason, net_score, direction)
+        else:
+            log.debug("Signal valid for %s %s: score=%d, dir=%s", side, asset, net_score, direction)
+            remaining.append(pos)
+
+    portfolio["positions"] = remaining
+    return closed_log
 
 
 def calc_pnl(portfolio, prices, hl_market=None):
@@ -1354,6 +1444,14 @@ def main():
     if auto_closed:
         print(f"[!] Автоматически закрыто {len(auto_closed)} позиций по SL/TP")
         save_portfolio(portfolio)
+
+    # 3a. Пересчёт сигналов для открытых позиций (выход по развороту / ослаблению)
+    print("[*] Проверяем актуальность сигналов для открытых позиций...")
+    signal_closed = check_signal_validity(portfolio, combined, prices, hl_market)
+    if signal_closed:
+        print(f"[!] Закрыто {len(signal_closed)} позиций по сигналу (reversal/expired)")
+        save_portfolio(portfolio)
+        auto_closed.extend(signal_closed)
 
     # 3b. P&L оставшихся позиций
     pnl_lines, total_value = calc_pnl(portfolio, prices, hl_market)

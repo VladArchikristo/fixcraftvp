@@ -47,17 +47,20 @@ class RiskManager:
         daily_loss_limit_pct: float = 2.0,
         max_position_size_pct: float = 10.0,
         max_open_positions: int = 3,
+        max_trades_per_day: int = 3,
         emergency_stop_pct: float = 50.0,
     ):
         self.daily_loss_limit_pct = daily_loss_limit_pct
         self.max_position_size_pct = max_position_size_pct
         self.max_open_positions = max_open_positions
+        self.max_trades_per_day = max_trades_per_day
         self.emergency_stop_pct = emergency_stop_pct
 
         # State
         self._start_of_day_balance: float = 0.0
         self._current_day: date | None = None
         self._daily_realized_pnl: float = 0.0
+        self._daily_trades_opened: int = 0
         self._emergency_triggered: bool = False
 
     def reset_day(self, balance: float) -> None:
@@ -66,11 +69,16 @@ class RiskManager:
             self._current_day = today
             self._start_of_day_balance = balance
             self._daily_realized_pnl = 0.0
+            self._daily_trades_opened = 0
             self._emergency_triggered = False
             log.info("RiskManager day reset: balance=%.2f", balance)
 
     def record_pnl(self, pnl: float) -> None:
         self._daily_realized_pnl += pnl
+
+    def track_trade_opened(self) -> None:
+        """Отслеживать открытие новой сделки в текущий день."""
+        self._daily_trades_opened += 1
 
     def check_order(
         self,
@@ -107,6 +115,10 @@ class RiskManager:
         # Max open positions
         if open_positions >= self.max_open_positions:
             return False, f"Уже {open_positions} открытых позиций (макс {self.max_open_positions})"
+
+        # Max trades per day
+        if self._daily_trades_opened >= self.max_trades_per_day:
+            return False, f"Уже открыто {self._daily_trades_opened} сделок сегодня (макс {self.max_trades_per_day})"
 
         return True, "OK"
 
@@ -560,6 +572,10 @@ class TradingExecutor:
         # Record PnL if closing resulted in PnL (paper)
         if result.get("ok") and result.get("total_pnl"):
             self.risk.record_pnl(result["total_pnl"])
+
+        # Track new trade
+        if result.get("ok"):
+            self.risk.track_trade_opened()
 
         return result
 

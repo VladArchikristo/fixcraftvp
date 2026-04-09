@@ -512,7 +512,7 @@ def combine_strategies(
         short_score = data["short"]
         net = long_score - short_score
 
-        if abs(net) < 25:
+        if abs(net) < 40:
             rec = "NEUTRAL"
             direction = "NEUTRAL"
         elif net > 0:
