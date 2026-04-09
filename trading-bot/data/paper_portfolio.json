@@ -1,18 +1,190 @@
 {
-  "balance": 1000.0,
   "positions": [
     {
-      "coin": "BTC",
+      "asset": "ETH",
       "side": "LONG",
-      "size_usd": 50,
-      "size_coin": 0.000705,
-      "entry_price": 70899.5,
-      "leverage": 5,
-      "stop_loss": 72317.49,
-      "take_profit": 68063.52,
-      "opened_at": "2026-04-09T03:33:46.006332+00:00"
+      "size_usd": 210.0,
+      "entry_price": 2182.15,
+      "stop_loss": 2157.0,
+      "take_profit": 2268.0,
+      "trailing_stop_pct": 2.0,
+      "opened_at": "2026-04-09T09:02:23.709765"
     }
   ],
   "history": [],
-  "created": "2026-04-09T03:33:20.288712+00:00"
+  "created": "2026-04-09T03:33:20.288712+00:00",
+  "cash": 840.2189719250489,
+  "closed_trades": [
+    {
+      "asset": "BTC",
+      "side": "LONG",
+      "size_usd": 50,
+      "entry_price": 70899.5,
+      "exit_price": 71210,
+      "pnl_usd": 0.22,
+      "pnl_pct": 0.44,
+      "opened_at": "2026-04-09T03:33:46.006332+00:00",
+      "closed_at": "2026-04-09T08:56:39.515945",
+      "reason": "Auto STOP_LOSS: SL @ $71210.00"
+    }
+  ],
+  "updated_at": "2026-04-09T09:02:23.710091",
+  "initial_capital": 1050.218971925049,
+  "scan_history": [
+    {
+      "time": "2026-04-09T08:58:12.234277",
+      "total_value": 1050.22,
+      "portfolio_value": 1050.22,
+      "pnl": 0.0,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ — MARKET REPORT | 2026-04-09 08:57 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | Extreme Fear Index 14, ASK-heavy order books (ETH -95%, SOL -74.7%), все TA scores слабые или отрицательные на краткосрочных TF. AVAX — единственный кандидат с bullish crosses, но R:R не достигает минимума 1:2 при текущих уровнях. Ждём либо: (а) откат к более глубоким поддержкам $8.81/$8.74 AVAX для лучшего входа, (б) разворотные сигналы на ETH с пробоем $2,200 с объёмом. Кэш $1,050.22 — сохраняем."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -25,
+          "rec": "SELL",
+          "rsi": 44.6
+        },
+        "SOL": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 44.0
+        },
+        "XRP": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 39.0
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 49.0
+        },
+        "LINK": {
+          "score": 5,
+          "rec": "NEUTRAL",
+          "rsi": 40.6
+        },
+        "INJ": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 48.1
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 9.2
+        },
+        "SOL": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 2.5
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -3.3
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 4.2
+        },
+        "LINK": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -2.5
+        },
+        "INJ": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.8
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-09T09:02:23.710072",
+      "total_value": 1050.22,
+      "portfolio_value": 1050.22,
+      "pnl": 0.0,
+      "sentiment": "neutral",
+      "actions_taken": 1,
+      "summary": "## ВАСИЛИЙ | DAILY REPORT | 2026-04-09 09:00 UTC",
+      "trades": [
+        "✅ ОТКРЫТА LONG ETH $210 @ $2182.15 SL:$2157.00 TP:$2268.00 Trail:2% | 1d BUY signal (+20), whale BID wall $424K @ $2183.90 под ценой, order book 99.5% BID-heavy, RSI нейтральный (место для роста), SL ниже support $2161 (1.7x ATR=14.88), TP=сопротивление $2268, R:R = 86/25 = 3.4:1. Extreme Fear = потенциал отскока.",
+        "⏸️ NO_ACTION | Слабый тренд (ADX 14.1), declining volume, Score -10 на 1h. BID-heavy интересен, но недостаточно сигналов. Жду подтверждения отскока ETH перед SOL."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 5,
+          "rec": "NEUTRAL",
+          "rsi": 46.6
+        },
+        "SOL": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 45.2
+        },
+        "XRP": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 40.4
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 49.2
+        },
+        "LINK": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 41.5
+        },
+        "INJ": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 48.8
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "SOL": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 3.3
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -1.7
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 4.2
+        },
+        "LINK": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -3.3
+        },
+        "INJ": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.8
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    }
+  ]
 }

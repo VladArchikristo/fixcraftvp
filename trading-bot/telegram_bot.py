@@ -40,6 +40,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 load_dotenv(SCRIPT_DIR / ".env")
 
 BOT_TOKEN = os.getenv("VASILY_BOT_TOKEN", "")
+CHAT_ID = int(os.getenv("VASILY_CHAT_ID", "244710532"))
 ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
@@ -298,6 +299,9 @@ def _load_portfolio() -> dict:
         lock_fd = open(lock_path, "w")
         fcntl.flock(lock_fd, fcntl.LOCK_SH)  # Shared lock — safe concurrent reads
         data = json.loads(PORTFOLIO_FILE.read_text(encoding="utf-8"))
+        # Normalize: "balance" → "cash" (backward compat)
+        if "cash" not in data and "balance" in data:
+            data["cash"] = data.pop("balance")
         data.setdefault("initial_capital", 100)
         data.setdefault("cash", 100)
         data.setdefault("positions", [])
@@ -675,6 +679,44 @@ async def daily_snapshot_job(context: ContextTypes.DEFAULT_TYPE):
             log.info("Daily snapshot job executed")
     except Exception as e:
         log.error("Daily snapshot job failed: %s", e)
+
+
+# ---------------------------------------------------------------------------
+# Periodic market scan job (runs every 3 hours)
+# ---------------------------------------------------------------------------
+async def periodic_scan_job(context: ContextTypes.DEFAULT_TYPE):
+    """Запускает market_scan.py каждые 3 часа и отправляет отчёт в Telegram."""
+    log.info("Periodic scan job started (3h interval)")
+    try:
+        scan_script = str(SCRIPT_DIR / "market_scan.py")
+        proc = await asyncio.create_subprocess_exec(
+            sys.executable, scan_script,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=str(SCRIPT_DIR),
+        )
+        try:
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=300)
+        except asyncio.TimeoutError:
+            proc.kill()
+            log.error("Periodic scan job timed out after 5 min")
+            await context.bot.send_message(
+                chat_id=CHAT_ID,
+                text="⚠️ Вася: плановый скан рынка завис (>5 мин), завершён принудительно."
+            )
+            return
+        if proc.returncode != 0:
+            err = stderr.decode("utf-8", errors="replace")[:500]
+            log.error("Periodic scan failed (rc=%d): %s", proc.returncode, err)
+            await context.bot.send_message(
+                chat_id=CHAT_ID,
+                text=f"⚠️ Вася: плановый скан завершился с ошибкой.\n<code>{err}</code>",
+                parse_mode="HTML"
+            )
+        else:
+            log.info("Periodic scan completed successfully")
+    except Exception as e:
+        log.error("Periodic scan job error: %s", e, exc_info=True)
 
 
 async def cmd_ta(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1088,6 +1130,9 @@ def main():
 
     # Daily snapshot — раз в 24 часа
     app.job_queue.run_repeating(daily_snapshot_job, interval=86400, first=60)
+
+    # Periodic market scan + report — каждые 3 часа
+    app.job_queue.run_repeating(periodic_scan_job, interval=10800, first=300)
 
     log.info("Василий polling started")
     app.run_polling(

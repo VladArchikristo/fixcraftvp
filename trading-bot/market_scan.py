@@ -95,7 +95,17 @@ def load_portfolio():
         lock_fd = open(lock_path, "w")
         fcntl.flock(lock_fd, fcntl.LOCK_SH)  # Shared lock — multiple readers OK
         with open(PORTFOLIO_FILE, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+        # Normalize: "balance" → "cash" (backward compat with telegram_bot.py)
+        if "cash" not in data and "balance" in data:
+            data["cash"] = data.pop("balance")
+        # Ensure all required keys exist
+        data.setdefault("cash", 1000.0)
+        data.setdefault("initial_capital", data["cash"])
+        data.setdefault("positions", [])
+        data.setdefault("closed_trades", [])
+        data.setdefault("scan_history", [])
+        return data
     except (json.JSONDecodeError, ValueError) as e:
         log.error("Portfolio file corrupted: %s", e)
         backup = PORTFOLIO_FILE.with_suffix(".json.bak")
@@ -279,7 +289,7 @@ def check_sl_tp(portfolio, prices, hl_market=None):
     now = datetime.now().isoformat()
 
     for pos in portfolio["positions"]:
-        asset = pos["asset"]
+        asset = pos.get("asset") or pos.get("coin", "UNKNOWN")
         cur_price = _get_price(asset, prices, hl_market)
         if cur_price <= 0:
             remaining.append(pos)
@@ -380,7 +390,7 @@ def check_signal_validity(portfolio, combined_signals, prices, hl_market=None):
         sig_by_coin[coin] = sig
 
     for pos in portfolio["positions"]:
-        asset = pos["asset"]
+        asset = pos.get("asset") or pos.get("coin", "UNKNOWN")
         side = pos.get("side", "LONG").upper()
         signal = sig_by_coin.get(asset)
 
@@ -457,7 +467,7 @@ def calc_pnl(portfolio, prices, hl_market=None):
     total_value = portfolio["cash"]
 
     for pos in portfolio["positions"]:
-        asset = pos["asset"]
+        asset = pos.get("asset") or pos.get("coin", "UNKNOWN")
         cur_price = _get_price(asset, prices, hl_market)
         if cur_price <= 0:
             continue

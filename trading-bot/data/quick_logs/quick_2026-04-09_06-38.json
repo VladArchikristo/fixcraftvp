@@ -1,0 +1,18 @@
+{
+  "time": "2026-04-09T06:38:55.122253",
+  "elapsed_sec": 23.4,
+  "signals_count": 1,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "SOL",
+      "direction": "NEUTRAL",
+      "net_score": -39,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "WHALE_WALLS"
+      ]
+    }
+  ]
+}
