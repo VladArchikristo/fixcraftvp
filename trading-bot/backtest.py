@@ -17,18 +17,29 @@ from technical_analysis import full_analysis
 from strategies import analyze_multi_timeframe
 
 # ─── Конфигурация ─────────────────────────────────────────────────────────────
-COINS = ["BTC", "ETH", "SOL", "BNB", "XRP", "AVAX"]
+COINS = ["ETH", "XRP", "AVAX", "BTC"]
 HL_INFO_URL = "https://api.hyperliquid.xyz/info"
 HL_TIMEOUT = 20
 INITIAL_BALANCE = 1000.0
-POSITION_SIZE_PCT = 0.10       # 10% от баланса
+POSITION_SIZE_PCT = 0.10       # 10% от баланса (стандарт, net_score 50–69)
+POSITION_SIZE_HIGH_PCT = 0.20  # 20% от баланса при net_score ≥ 70
 LEVERAGE = 5
-SL_PCT = 0.02                  # 2% stop loss
-TP_PCT = 0.04                  # 4% take profit
+SL_PCT = 0.02                  # 2% stop loss (фиксированный)
+TP_PCT = 0.04                  # 4% take profit (фиксированный)
 MAX_HOLD_HOURS = 24
 COOLDOWN_HOURS = 2
 NET_SCORE_THRESHOLD = 50       # минимальный порог для входа
+NET_SCORE_HIGH = 70            # порог для удвоения позиции
 MIN_CANDLES_FOR_TA = 200       # минимум свечей для расчёта индикаторов
+
+# ─── Новые фильтры ──────────────────────────────────────────────────────────
+TIME_FILTER_ENABLED = False
+TIME_FILTER_START_UTC = 2       # запрет торговли с 02:00 UTC
+TIME_FILTER_END_UTC = 6         # ... до 06:00 UTC
+
+VOLUME_FILTER_ENABLED = False
+VOLUME_FILTER_MULTIPLIER = 1.5  # объём > среднего × 1.5
+VOLUME_LOOKBACK = 20            # скользящее среднее за 20 свечей (1h)
 
 _session = requests.Session()
 _session.headers.update({"Content-Type": "application/json"})
@@ -124,17 +135,18 @@ def resample_candles(candles_1h: list, factor: int) -> list:
 
 def run_backtest():
     print("=" * 60)
-    print("   VASILY BACKTEST — 3 MONTHS 1H CANDLES")
+    print("   VASILY BACKTEST — 7 MONTHS 1H CANDLES")
     print("=" * 60)
 
     now_ms = int(time.time() * 1000)
-    # 3 месяца назад
-    start_ms = now_ms - (90 * 24 * 3_600_000)
+    # 7 месяцев назад
+    start_ms = now_ms - (210 * 24 * 3_600_000)
     start_dt = datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc)
     end_dt   = datetime.fromtimestamp(now_ms / 1000, tz=timezone.utc)
 
     print(f"Период: {start_dt.strftime('%d.%m.%Y')} — {end_dt.strftime('%d.%m.%Y')}")
     print(f"Монеты: {len(COINS)}")
+    print(f"Фильтры: Time={TIME_FILTER_START_UTC:02d}-{TIME_FILTER_END_UTC:02d}UTC, Volume=avg×{VOLUME_FILTER_MULTIPLIER}")
     print()
 
     # ── 1. Загрузка данных ─────────────────────────────────────────────────
@@ -252,6 +264,26 @@ def run_backtest():
             if coin in cooldowns and (coin_idx - cooldowns[coin]) < COOLDOWN_HOURS:
                 continue
 
+            # ── Временной фильтр: не торговать 02:00–06:00 UTC ─────────
+            if TIME_FILTER_ENABLED:
+                candle_dt = datetime.fromtimestamp(current_candle["time"] / 1000, tz=timezone.utc)
+                hour_utc = candle_dt.hour
+                if TIME_FILTER_START_UTC <= hour_utc < TIME_FILTER_END_UTC:
+                    continue
+
+            # ── Фильтр объёма: текущий объём > avg(20) × 1.5 ─────────
+            if VOLUME_FILTER_ENABLED:
+                lookback_start = max(0, coin_idx - VOLUME_LOOKBACK)
+                vol_window = candles[lookback_start:coin_idx]
+                if vol_window:
+                    volumes = [c["volume"] for c in vol_window if c.get("volume", 0) > 0]
+                    if volumes:
+                        avg_vol = sum(volumes) / len(volumes)
+                        current_vol = current_candle.get("volume", 0)
+                        if avg_vol > 0 and current_vol < avg_vol * VOLUME_FILTER_MULTIPLIER:
+                            continue
+                    # Если volumes пустой — объём недоступен, пропускаем условие
+
             # ── Рассчитать TA на 1h ──────────────────────────────────────
             window_1h = candles[max(0, coin_idx - MIN_CANDLES_FOR_TA):coin_idx + 1]
             ta_1h = full_analysis(window_1h)
@@ -280,14 +312,23 @@ def run_backtest():
             if entry_price <= 0:
                 continue
 
-            size_usd = balance * POSITION_SIZE_PCT  # 10% от баланса
+            # Динамический размер позиции: net_score ≥ 70 → 20%, иначе 10%
+            if net_score >= NET_SCORE_HIGH:
+                size_pct = POSITION_SIZE_HIGH_PCT
+            else:
+                size_pct = POSITION_SIZE_PCT
+            size_usd = balance * size_pct
+
+            # Фиксированный % SL/TP
+            sl_dist = entry_price * SL_PCT
+            tp_dist = entry_price * TP_PCT
 
             if direction == "LONG":
-                sl = entry_price * (1 - SL_PCT)
-                tp = entry_price * (1 + TP_PCT)
+                sl = entry_price - sl_dist
+                tp = entry_price + tp_dist
             else:  # SHORT
-                sl = entry_price * (1 + SL_PCT)
-                tp = entry_price * (1 - TP_PCT)
+                sl = entry_price + sl_dist
+                tp = entry_price - tp_dist
 
             open_positions[coin] = {
                 "entry_price": entry_price,
@@ -410,6 +451,8 @@ def run_backtest():
             "max_hold_hours": MAX_HOLD_HOURS,
             "cooldown_hours": COOLDOWN_HOURS,
             "net_score_threshold": NET_SCORE_THRESHOLD,
+            "time_filter": f"{TIME_FILTER_START_UTC:02d}:00-{TIME_FILTER_END_UTC:02d}:00 UTC" if TIME_FILTER_ENABLED else "disabled",
+            "volume_filter": f"vol > avg({VOLUME_LOOKBACK}) × {VOLUME_FILTER_MULTIPLIER}" if VOLUME_FILTER_ENABLED else "disabled",
         },
         "summary": {
             "total_trades": total_trades,

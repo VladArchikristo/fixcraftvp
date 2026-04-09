@@ -1,0 +1,19 @@
+{
+  "time": "2026-04-09T01:57:48.576626",
+  "elapsed_sec": 26.0,
+  "signals_count": 1,
+  "strong_count": 0,
+  "top_signals": [
+    {
+      "coin": "BTC",
+      "direction": "NEUTRAL",
+      "net_score": -9,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "WHALE_WALLS",
+        "MTF_CONFLUENCE",
+        "ADX_FILTER"
+      ]
+    }
+  ]
+}

@@ -39,7 +39,7 @@ BOT_TOKEN = os.getenv("VASILY_BOT_TOKEN", "")
 CHAT_ID = int(os.getenv("VASILY_CHAT_ID", "244710532"))
 
 # Монеты для быстрого скана (только самые ликвидные)
-QUICK_COINS = ["BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "SUI", "AVAX", "LINK", "ARB"]
+QUICK_COINS = ["ETH", "SOL", "XRP", "DOGE", "SUI", "AVAX", "LINK", "ARB", "OP", "INJ"]
 
 # Пороги сигналов
 ALERT_THRESHOLD = 30       # Минимальный net_score для алерта в Telegram

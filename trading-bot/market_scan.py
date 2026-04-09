@@ -65,7 +65,7 @@ ASSETS = ["bitcoin", "ethereum", "solana", "binancecoin", "ripple",
           "cardano", "avalanche-2", "polkadot", "chainlink", "uniswap"]
 
 # Coins to do full TA on (top by volume on HL)
-TA_COINS = ["BTC", "ETH", "SOL", "BNB", "AVAX", "XRP"]
+TA_COINS = ["ETH", "SOL", "XRP", "AVAX", "LINK", "INJ"]
 
 ASSET_SYMBOLS = {
     "bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL",

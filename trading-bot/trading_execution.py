@@ -47,7 +47,7 @@ class RiskManager:
         daily_loss_limit_pct: float = 2.0,
         max_position_size_pct: float = 10.0,
         max_open_positions: int = 3,
-        max_trades_per_day: int = 3,
+        max_trades_per_day: int = 999,  # отключено — без лимита на день
         emergency_stop_pct: float = 50.0,
     ):
         self.daily_loss_limit_pct = daily_loss_limit_pct

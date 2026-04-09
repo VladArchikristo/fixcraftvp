@@ -1,0 +1,29 @@
+{
+  "time": "2026-04-09T02:19:27.301507",
+  "elapsed_sec": 24.9,
+  "signals_count": 2,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "SOL",
+      "direction": "SHORT",
+      "net_score": -42,
+      "rec": "SELL",
+      "strategies": [
+        "WHALE_WALLS",
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "BTC",
+      "direction": "NEUTRAL",
+      "net_score": -3,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "WHALE_WALLS",
+        "ADX_FILTER",
+        "MTF_CONFLUENCE"
+      ]
+    }
+  ]
+}
