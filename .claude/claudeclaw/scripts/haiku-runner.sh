@@ -203,22 +203,37 @@ job_self_check() {
     local status="🔍 *Self-Check* $(date '+%H:%M')\n\n"
     local problems=""
 
-    # Check bots via PID files (reliable method)
-    for bot_entry in "Beast:beast-bot" "Вася:vasily-bot" "Маша:masha-bot" "Костя:kostya-bot" "Филип:philip-bot"; do
+    # Check bots via heartbeat files (reliable — updated every ~60s by live bots)
+    for bot_entry in "Beast:beast" "Вася:vasily" "Маша:masha" "Костя:kostya" "Филип:philip" "Питер:peter"; do
         local label="${bot_entry%%:*}"
-        local pid_name="${bot_entry##*:}"
-        local pid_file="$HOME/logs/${pid_name}.pid"
-        if [ -f "$pid_file" ]; then
-            local pid=$(cat "$pid_file" 2>/dev/null | tr -d ' \n')
-            if [ -n "$pid" ] && ps -p "$pid" -o pid= > /dev/null 2>&1; then
-                status+="✅ $label: PID $pid\n"
+        local hb_name="${bot_entry##*:}"
+        local hb_file="$HOME/logs/${hb_name}-heartbeat"
+        if [ -f "$hb_file" ]; then
+            local raw_hb=$(cat "$hb_file" 2>/dev/null)
+            local last_hb
+            if echo "$raw_hb" | grep -qE '^[0-9]+$'; then
+                last_hb=$raw_hb
+            elif echo "$raw_hb" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}T'; then
+                local clean_hb
+                clean_hb=$(echo "$raw_hb" | sed 's/\.[0-9]*//' | sed 's/[+-][0-9:]*$//')
+                last_hb=$(date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_hb" +%s 2>/dev/null || echo 0)
             else
-                status+="❌ $label\n"
-                problems+="$label мёртв\n"
+                last_hb=0
+            fi
+            local now=$(date +%s)
+            local diff=$((now - last_hb))
+            if [ $diff -lt 300 ]; then
+                status+="✅ $label: alive (${diff}s ago)\n"
+            elif [ $diff -lt 3600 ]; then
+                status+="⚠️ $label: stale (${diff}s)\n"
+                problems+="$label — нет ответа ${diff}с\n"
+            else
+                status+="❌ $label: мёртв\n"
+                problems+="$label мёртв (нет heartbeat)\n"
             fi
         else
-            status+="❌ $label: no PID\n"
-            problems+="$label — нет PID файла\n"
+            status+="❌ $label: no heartbeat\n"
+            problems+="$label — нет heartbeat файла\n"
         fi
     done
 

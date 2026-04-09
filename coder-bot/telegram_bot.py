@@ -141,7 +141,7 @@ BOTS_REGISTRY = {
         "heartbeat": str(LOG_DIR / "peter-heartbeat"),
         "launcher": str(Path.home() / "peter-launcher.sh"),
         "launchagent": "com.vladimir.peter-bot",
-        "notes": "SQLite medical_memory, автоизвлечение, /memory /remember",
+        "notes": "SQLite medical_memory, /memory /remember. Вызов: echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-peter.sh'",
     },
     "zina": {
         "label": "Зина",
@@ -154,7 +154,7 @@ BOTS_REGISTRY = {
         "heartbeat": str(LOG_DIR / "zina-heartbeat"),
         "launcher": str(Path.home() / "zina-launcher.sh"),
         "launchagent": "com.vladimir.zina-bot",
-        "notes": "sonnet-4-6, астро/нумерология, только Влад",
+        "notes": "sonnet-4-6, астро/нумерология, только Влад. Вызов: echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-zina.sh'",
     },
 }
 

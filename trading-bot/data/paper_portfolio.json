@@ -124,7 +124,55 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-09T12:12:20.435282",
+      "total_value": 999.69,
+      "portfolio_value": 999.69,
+      "pnl": -0.31,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА — Василий | 2026-04-09 12:10 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Whale walls $1.6M @ $2216 держат уровень. EMA STRONG_BULL.               SL $2193 за EMA20. TP $2268.7 = R:R 2:1.               Риск: ASK-HEAVY стакан, следить за пробоем $2216 вниз.",
+        "⏸️ NO_ACTION | AVAX — multi-TF bullish, но StochRSI 1h=100, R:R на входе сейчас 0.97:1 (ниже минимума 2:1).               Ждём отката к $9.15-9.20 (EMA20 4h $9.13).              XRP — neutral на всех TF, нет сигнала.              Кэш $700 резервируем для AVAX при откате."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 59.5
+        },
+        "XRP": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 62.2
+        },
+        "AVAX": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 67.1
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 18.3
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 1.7
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 20.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-09T12:02:52.153491"
+  "updated_at": "2026-04-09T12:12:20.435311"
 }
