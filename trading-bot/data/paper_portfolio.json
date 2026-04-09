@@ -9,11 +9,21 @@
       "take_profit": 2268.7,
       "trailing_stop_pct": 2.0,
       "opened_at": "2026-04-09T12:02:52.153045"
+    },
+    {
+      "asset": "AVAX",
+      "side": "LONG",
+      "size_usd": 200.0,
+      "entry_price": 9.2819,
+      "stop_loss": 9.03,
+      "take_profit": 9.79,
+      "trailing_stop_pct": 2.0,
+      "opened_at": "2026-04-09T15:01:25.606035"
     }
   ],
   "history": [],
   "created": "2026-04-09T13:05:57.135886+00:00",
-  "cash": 700.0,
+  "cash": 500.0,
   "initial_capital": 1000.0,
   "closed_trades": [],
   "scan_history": [
@@ -172,7 +182,57 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-09T15:01:25.606286",
+      "total_value": 998.36,
+      "portfolio_value": 998.36,
+      "pnl": -1.64,
+      "sentiment": "bullish",
+      "actions_taken": 1,
+      "summary": "## АНАЛИЗ РЫНКА — 2026-04-09 15:00 UTC",
+      "trades": [
+        "📐 Adjusted TP for AVAX: R:R was < 1.5, now 1:2.0",
+        "✅ ОТКРЫТА LONG AVAX $200 @ $9.28 SL:$9.03 TP:$9.79 Trail:2% | Единственный актив с BUY-конфлюэнцией на 1h+4h+1d. BID-HEAVY стакан +27.8%. EMA bull на всех TF. MACD 1h и 4h bullish. SL за EMA20 1h ($9.15) и поддержкой ($9.05), на 1.5x ATR-4h (~0.31 от входа). TP к сопротивлению $9.56. R:R = 0.25 риск / 0.28 прибыль = ~1.1 — МИНИМАЛЬНО. Пересчёт: вход $9.28, SL $9.03 (риск $0.25, 2.7%), TP $9.56 (прибыль $0.28, 3.0%). R:R = 1.12 — ниже минимума 1:2.",
+        "⚠️ SKIP OPEN LONG AVAX: уже 2 позиций LONG (лимит 2)",
+        "🔄 HOLD ETH | Бычья EMA-структура на всех TF сохранена. Whale wall $2,204 (~$1.18M bid) держит поддержку. SL $2,193 за уровнем, TP $2,268 = R:R 2.3:1. Главный риск — ASK-HEAVY стакан (-98.5%), но фандинг умеренный. Ждём пробоя $2,227."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 40,
+          "rec": "STRONG_BUY",
+          "rsi": 53.4
+        },
+        "XRP": {
+          "score": 55,
+          "rec": "STRONG_BUY",
+          "rsi": 59.4
+        },
+        "AVAX": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 58.2
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 20.0
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 12.5
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 22.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-09T12:12:20.435311"
+  "updated_at": "2026-04-09T15:01:25.606304"
 }
