@@ -93,7 +93,8 @@ _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False
 _processing_lock = asyncio.Lock()
 _processing_since: float | None = None  # timestamp when _processing became True
-_WATCHDOG_TIMEOUT = 660  # 11 minutes — auto-reset if stuck longer
+_WATCHDOG_TIMEOUT = 300  # 5 min — soft reset if no Claude running
+_WATCHDOG_HARD_LIMIT = 600  # 10 min — hard reset even if Claude is alive
 _message_queue: deque = deque(maxlen=5)  # queue up to 5 messages
 
 
@@ -189,7 +190,7 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
 
 
 async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
-    """Auto-reset _processing if stuck for longer than _WATCHDOG_TIMEOUT."""
+    """Auto-reset _processing if stuck. Soft limit 5min, hard limit 10min."""
     global _processing, _processing_since
     try:
         async with _processing_lock:
@@ -198,35 +199,76 @@ async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
             elapsed = time.time() - _processing_since
             if elapsed < _WATCHDOG_TIMEOUT:
                 return
-            # Check if Claude subprocess is actually running
-            has_active_claude = False
-            try:
-                import psutil
-                for child in psutil.Process(os.getpid()).children(recursive=True):
-                    if "claude" in child.name().lower():
-                        has_active_claude = True
-                        break
-            except Exception:
-                # psutil not available — check via subprocess
-                try:
-                    result = subprocess.run(
-                        ["pgrep", "-P", str(os.getpid()), "-f", "claude"],
-                        capture_output=True, text=True, timeout=5,
-                    )
-                    has_active_claude = result.returncode == 0
-                except Exception:
-                    pass
 
-            if has_active_claude:
-                log.info("Watchdog: _processing stuck %.0fs but Claude still running, extending", elapsed)
+            # Find Claude child processes
+            claude_pids = _find_claude_children()
+
+            if elapsed >= _WATCHDOG_HARD_LIMIT:
+                # Hard limit — kill everything, no mercy
+                log.warning("Watchdog HARD LIMIT: _processing stuck %.0fs — killing Claude and resetting!", elapsed)
+                _kill_claude_children(claude_pids)
+                _processing = False
+                _processing_since = None
+                # Notify about dropped messages
+                dropped = len(_message_queue)
+                _message_queue.clear()
+                if dropped:
+                    log.warning("Watchdog: dropped %d queued messages after hard reset", dropped)
                 return
 
-            log.warning("Watchdog: _processing stuck for %.0fs with no active Claude — force reset!", elapsed)
+            if claude_pids:
+                log.info("Watchdog: _processing stuck %.0fs, Claude PIDs %s still running — waiting for hard limit", elapsed, claude_pids)
+                return
+
+            # Soft limit — no Claude running, reset
+            log.warning("Watchdog: _processing stuck %.0fs with no active Claude — force reset!", elapsed)
             _processing = False
             _processing_since = None
+            dropped = len(_message_queue)
             _message_queue.clear()
+            if dropped:
+                log.warning("Watchdog: dropped %d queued messages after soft reset", dropped)
     except Exception as e:
         log.error("Watchdog error: %s", e)
+
+
+def _find_claude_children() -> list[int]:
+    """Find Claude child process PIDs."""
+    pids = []
+    try:
+        import psutil
+        for child in psutil.Process(os.getpid()).children(recursive=True):
+            if "claude" in child.name().lower():
+                pids.append(child.pid)
+    except Exception:
+        try:
+            result = subprocess.run(
+                ["pgrep", "-P", str(os.getpid()), "-f", "claude"],
+                capture_output=True, text=True, timeout=5,
+            )
+            if result.returncode == 0:
+                for line in result.stdout.strip().splitlines():
+                    try:
+                        pids.append(int(line.strip()))
+                    except ValueError:
+                        pass
+        except Exception:
+            pass
+    return pids
+
+
+def _kill_claude_children(pids: list[int]):
+    """Kill Claude child processes by PID."""
+    for pid in pids:
+        try:
+            os.killpg(os.getpgid(pid), signal.SIGKILL)
+            log.info("Watchdog: killed Claude process group (PID %d)", pid)
+        except (ProcessLookupError, PermissionError):
+            try:
+                os.kill(pid, signal.SIGKILL)
+                log.info("Watchdog: killed Claude process (PID %d)", pid)
+            except (ProcessLookupError, PermissionError):
+                pass
 
 
 # ---------------------------------------------------------------------------
@@ -410,17 +452,19 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
 
 
 def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | None = None) -> tuple[bool, str]:
-    for attempt in range(2):
+    backoff = [3, 5, 10]  # exponential backoff between retries
+    for attempt in range(3):
         ok, text = _call_claude_once(full_prompt, system, extra_flags=extra_flags)
         if ok:
             return True, text
         if text == "TIMEOUT":
             return False, "Таймаут (10 мин). Задача оказалась слишком объёмной. Попробуй разбить на части."
-        if attempt == 0:
-            log.info("Claude attempt 1 failed, retrying in 3 sec...")
-            time.sleep(3)
+        if attempt < 2:
+            delay = backoff[attempt]
+            log.info("Claude attempt %d/3 failed, retrying in %d sec...", attempt + 1, delay)
+            time.sleep(delay)
 
-    return False, "Произошла ошибка при обработке запроса. Попробуй ещё раз через минуту."
+    return False, "Произошла ошибка при обработке запроса (3 попытки). Попробуй ещё раз через минуту."
 
 
 def build_system_prompt(user_id: int) -> str:
@@ -663,11 +707,18 @@ async def _drain_queue(update: Update):
         remaining = len(_message_queue)
         if remaining > 0:
             try:
-                await queued_update.message.reply_text(f"Подожди {remaining}с.")
+                await queued_update.message.reply_text(f"В очереди ещё {remaining}. Подожди.")
             except Exception:
                 pass
 
-        await _process_single_message(queued_update, queued_text, queued_image)
+        try:
+            await _process_single_message(queued_update, queued_text, queued_image)
+        except Exception as e:
+            log.error("_drain_queue: error processing queued message: %s", e, exc_info=True)
+            try:
+                await queued_update.message.reply_text("Ошибка при обработке сообщения из очереди. Попробуй ещё раз.")
+            except Exception:
+                pass
 
 
 async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):

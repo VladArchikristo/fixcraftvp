@@ -152,7 +152,8 @@ _message_queue: deque = deque(maxlen=5)
 _last_message_time: float = 0.0  # rate limiting — monotonic
 RATE_LIMIT_SEC = 3  # minimum seconds between messages
 WATCHDOG_INTERVAL = 60  # check every 60 sec
-WATCHDOG_TIMEOUT = 660  # 11 minutes — reset _processing if stuck
+WATCHDOG_TIMEOUT_SOFT = 300  # 5 minutes — reset if no Claude alive
+WATCHDOG_TIMEOUT_HARD = 600  # 10 minutes — force reset even if Claude alive
 
 
 def _get_claude_env() -> dict:
@@ -243,43 +244,76 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
         log.error("Heartbeat write failed: %s", e)
 
 
+def _find_claude_children() -> list[int]:
+    """Find Claude child processes spawned by this bot."""
+    pids = []
+    my_pid = os.getpid()
+    try:
+        result = subprocess.run(
+            ["pgrep", "-P", str(my_pid), "-f", "claude"],
+            capture_output=True, text=True, timeout=5,
+        )
+        if result.returncode == 0:
+            for line in result.stdout.strip().split("\n"):
+                line = line.strip()
+                if line.isdigit():
+                    pids.append(int(line))
+    except Exception as e:
+        log.warning("_find_claude_children error: %s", e)
+    return pids
+
+
+def _kill_claude_children():
+    """Kill all Claude child processes spawned by this bot."""
+    pids = _find_claude_children()
+    for pid in pids:
+        try:
+            os.killpg(os.getpgid(pid), signal.SIGKILL)
+            log.info("Killed Claude child process group (PID %d)", pid)
+        except (ProcessLookupError, PermissionError):
+            try:
+                os.kill(pid, signal.SIGKILL)
+                log.info("Killed Claude child process (PID %d)", pid)
+            except (ProcessLookupError, PermissionError):
+                pass
+        except Exception as e:
+            log.warning("Failed to kill Claude PID %d: %s", pid, e)
+
+
 async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
-    """Reset _processing if stuck too long without active Claude subprocess."""
+    """Reset _processing if stuck too long. Hard limit kills even active Claude."""
     global _processing, _processing_since
     try:
         if not _processing:
             return
         elapsed = time.monotonic() - _processing_since
-        if elapsed < WATCHDOG_TIMEOUT:
-            return
-        # Check if Claude subprocess is still running
-        claude_alive = False
-        try:
-            import psutil
-            for proc in psutil.process_iter(["name", "cmdline"]):
-                if "claude" in (proc.info.get("name") or "").lower():
-                    claude_alive = True
-                    break
-        except ImportError:
-            # No psutil — check via subprocess
-            result = subprocess.run(
-                ["pgrep", "-f", "claude.*--model"],
-                capture_output=True, text=True, timeout=5,
-            )
-            claude_alive = result.returncode == 0
-        except Exception:
-            pass
 
-        if claude_alive:
-            log.info("Watchdog: _processing stuck %.0fs but Claude is alive, skipping reset", elapsed)
+        # Hard limit — force reset even if Claude is alive
+        if elapsed >= WATCHDOG_TIMEOUT_HARD:
+            dropped = len(_message_queue)
+            log.warning("Watchdog HARD LIMIT: _processing stuck %.0fs — force killing Claude and resetting!", elapsed)
+            _kill_claude_children()
+            async with _processing_lock:
+                _processing = False
+                _processing_since = 0.0
+                _message_queue.clear()
+            log.info("Watchdog: hard reset done. Dropped %d queued messages. Philip is unblocked.", dropped)
             return
 
-        log.warning("Watchdog: _processing stuck %.0fs with no Claude subprocess — resetting!", elapsed)
-        async with _processing_lock:
-            _processing = False
-            _processing_since = 0.0
-            _message_queue.clear()
-        log.info("Watchdog: _processing reset, queue cleared. Philip is unblocked.")
+        # Soft limit — reset only if no Claude subprocess alive
+        if elapsed >= WATCHDOG_TIMEOUT_SOFT:
+            claude_pids = _find_claude_children()
+            if claude_pids:
+                log.info("Watchdog: _processing stuck %.0fs but Claude alive (PIDs: %s), waiting for hard limit", elapsed, claude_pids)
+                return
+            dropped = len(_message_queue)
+            log.warning("Watchdog SOFT LIMIT: _processing stuck %.0fs with no Claude subprocess — resetting!", elapsed)
+            async with _processing_lock:
+                _processing = False
+                _processing_since = 0.0
+                _message_queue.clear()
+            log.info("Watchdog: soft reset done. Dropped %d queued messages. Philip is unblocked.", dropped)
+            return
     except Exception as e:
         log.error("Watchdog error: %s", e)
 
@@ -380,11 +414,41 @@ def history_prompt() -> str:
     return "\n".join(lines)
 
 
+import re as _re
+
+
+def _sanitize_markdown(text: str) -> str:
+    """Clean up Markdown so Telegram can parse it without errors."""
+    # Remove MarkdownV2 escape sequences (\* \[ \] etc)
+    text = _re.sub(r'\\([*_\[\]()~`>#+\-=|{}.!])', r'\1', text)
+    # Remove markdown links [text](url) → text
+    text = _re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)
+    # Fix orphan [ that aren't part of links
+    text = text.replace('[', '').replace(']', '')
+    # Fix bold/italic combos (***text*** → *text*)
+    text = _re.sub(r'\*{3,}([^*]+)\*{3,}', r'*\1*', text)
+    # Ensure paired markers: **, *, _, `
+    for marker in ['**', '*', '_', '`']:
+        count = text.count(marker)
+        if marker == '**':
+            count = len(_re.findall(r'(?<!\*)\*\*(?!\*)', text))
+        if count % 2 != 0:
+            text = text.replace(marker, '', 1)
+    # Fix unclosed code blocks
+    if text.count('```') % 2 != 0:
+        text += '\n```'
+    return text
+
+
 async def _safe_reply(message, text: str):
     try:
         await message.reply_text(text, parse_mode=ParseMode.MARKDOWN)
     except Exception:
-        await message.reply_text(text)
+        try:
+            sanitized = _sanitize_markdown(text)
+            await message.reply_text(sanitized, parse_mode=ParseMode.MARKDOWN)
+        except Exception:
+            await message.reply_text(text, parse_mode=None)
 
 
 def _split_message(text: str, limit: int = 4096) -> list[str]:
@@ -728,7 +792,14 @@ async def _drain_queue(update: Update):
             except Exception:
                 pass
 
-        await _process_single_message(queued_update, queued_text, queued_image)
+        try:
+            await _process_single_message(queued_update, queued_text, queued_image)
+        except Exception as e:
+            log.error("_drain_queue: _process_single_message crashed: %s", e, exc_info=True)
+            try:
+                await queued_update.message.reply_text("Произошла ошибка при обработке сообщения из очереди.")
+            except Exception:
+                pass
 
 
 async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):

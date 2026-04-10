@@ -1,16 +1,6 @@
 {
   "positions": [
     {
-      "asset": "ETH",
-      "side": "LONG",
-      "size_usd": 250.0,
-      "entry_price": 2188.95,
-      "stop_loss": 2203.58,
-      "take_profit": 2250.85,
-      "trailing_stop_pct": 2.0,
-      "opened_at": "2026-04-10T00:43:20.863581"
-    },
-    {
       "asset": "AVAX",
       "side": "LONG",
       "size_usd": 220.0,
@@ -19,13 +9,36 @@
       "take_profit": 9.78,
       "trailing_stop_pct": 2.0,
       "opened_at": "2026-04-10T03:02:03.342750"
+    },
+    {
+      "asset": "ETH",
+      "side": "LONG",
+      "size_usd": 200.0,
+      "entry_price": 2253.85,
+      "stop_loss": 2207.19,
+      "take_profit": 2347.17,
+      "trailing_stop_pct": 2.0,
+      "opened_at": "2026-04-10T18:02:00.279371"
     }
   ],
   "history": [],
   "created": "2026-04-10T04:34:37.944182+00:00",
-  "cash": 530.0,
+  "cash": 587.4122296078028,
   "initial_capital": 1000.0,
-  "closed_trades": [],
+  "closed_trades": [
+    {
+      "asset": "ETH",
+      "side": "LONG",
+      "size_usd": 250.0,
+      "entry_price": 2188.95,
+      "exit_price": 2253.85,
+      "pnl_usd": 7.41,
+      "pnl_pct": 2.96,
+      "opened_at": "2026-04-10T00:43:20.863581",
+      "closed_at": "2026-04-10T18:00:52.784576",
+      "reason": "Auto TAKE_PROFIT: TP @ $2253.85"
+    }
+  ],
   "scan_history": [
     {
       "time": "2026-04-10T00:43:20.863794",
@@ -517,7 +530,107 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-10T15:43:21.030242",
+      "total_value": 1010.89,
+      "portfolio_value": 1010.89,
+      "pnl": 10.89,
+      "sentiment": "bullish",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА | 2026-04-10 15:42 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Позиция +2.5%, whale wall $1.73M поддерживает цену. Multi-TF bulls согласны на 1h/4h. Подтянуть SL с $2,203 до $2,215 для защиты прибыли. TP $2,250 актуален.",
+        "🔄 HOLD AVAX | Позиция +2.1%, TA бычий на 1h/4h. Но ASK-heavy стакан -74.5% — тревожный сигнал. Подтянуть SL с $9.33 до $9.38. TP $9.78 сохраняем, цель сопротивление $9.56 → $9.70.",
+        "⏸️ NO_ACTION | XRP — нет сигнала: 4h/1d NEUTRAL, ADX слабый, buy% 47%. AVAX и ETH уже в портфеле — добавлять не нужно. Fear & Greed 16 = не наращивать экспозицию. Сохранить кэш $530 для возможных откатов."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 62.8
+        },
+        "XRP": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 62.5
+        },
+        "AVAX": {
+          "score": 40,
+          "rec": "STRONG_BUY",
+          "rsi": 63.7
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 18.3
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 5.8
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 25.8
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-10T18:02:00.279600",
+      "total_value": 1011.05,
+      "portfolio_value": 1011.05,
+      "pnl": 11.05,
+      "sentiment": "bullish",
+      "actions_taken": 1,
+      "summary": "## ВАСИЛИЙ — АНАЛИЗ 2026-04-10 18:00 UTC",
+      "trades": [
+        "🎯 AUTO-CLOSE TAKE_PROFIT LONG ETH @ $2253.85 | P&L: +7.41$ (+3.0%)",
+        "📐 Adjusted TP for ETH: R:R was < 1.5, now 1:2.0",
+        "✅ ОТКРЫТА LONG ETH $200 @ $2253.85 SL:$2207.19 TP:$2347.17 Trail:2% | Multi-TF confluence: 1h+4h STRONG_BUY, ADX 38.4 (strong trend), MACD bullish.   Whale walls $2252-2253 дают поддержку. SL за EMA50 $2207 (2.0x ATR=33 от текущей).   TP к resistance $2271.9 (4h). R:R = ($2253-$2207) vs ($2271-$2253) = 46 risk / 18 reward   — пересчёт: вход ждать на откат к $2230-2235 (EMA20 зона), тогда R:R улучшится.   Funding +0.0013% нейтральный, CPI позитивный катализатор.",
+        "🔄 HOLD AVAX | Позиция +1.7% в прибыли. Поднять SL с $9.33 до $9.38 (безубыток +margin).    Тренд EMA бычий на всех TF, 1h score +55. Но ASK-HEAVY -25% и StochRSI 4h=92    предупреждают. TP $9.78 у ближайшего сопротивления. Не усиливать.",
+        "⏸️ NO_ACTION | 1d NEUTRAL + StochRSI bearish cross 1h. Whale walls держат $1.36,    но upside ограничен ($1.37-1.39 resistance). Нет чёткого входа. Ждать пробоя $1.37    с объёмом или откат к $1.33-1.34 для лонга."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 66.7
+        },
+        "XRP": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 60.5
+        },
+        "AVAX": {
+          "score": 55,
+          "rec": "STRONG_BUY",
+          "rsi": 57.8
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 26.7
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 20.8
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 28.3
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-10T15:02:51.414461"
+  "updated_at": "2026-04-10T18:02:00.279620"
 }
