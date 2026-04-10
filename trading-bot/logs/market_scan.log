@@ -243,3 +243,9 @@ OPEN_POSITION: {
 2026-04-10 09:00:23,372 [INFO] vasily_scan: Trailing SL ETH LONG: $2158.00 → $2173.39 (price $2217.75)
 2026-04-10 09:00:23,372 [INFO] vasily_scan: Trailing SL AVAX LONG: $9.04 → $9.19 (price $9.38)
 2026-04-10 09:00:23,373 [INFO] vasily_scan: Prompt length: 13660 chars
+2026-04-10 09:42:05,855 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-10 09:42:21,223 [INFO] vasily_scan: Prompt length: 13569 chars
+2026-04-10 12:00:11,997 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-10 12:00:28,645 [INFO] vasily_scan: Trailing SL ETH LONG: $2173.39 → $2179.08 (price $2223.55)
+2026-04-10 12:00:28,645 [INFO] vasily_scan: Trailing SL AVAX LONG: $9.19 → $9.24 (price $9.43)
+2026-04-10 12:00:28,646 [INFO] vasily_scan: Prompt length: 13719 chars

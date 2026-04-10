@@ -1,0 +1,28 @@
+{
+  "time": "2026-04-10T10:16:20.243676",
+  "elapsed_sec": 15.5,
+  "signals_count": 2,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "XRP",
+      "direction": "LONG",
+      "net_score": 62,
+      "rec": "STRONG_BUY",
+      "strategies": [
+        "WHALE_WALLS",
+        "MTF_CONFLUENCE"
+      ]
+    },
+    {
+      "coin": "ETH",
+      "direction": "NEUTRAL",
+      "net_score": 26,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "OI_DIVERGENCE"
+      ]
+    }
+  ]
+}
