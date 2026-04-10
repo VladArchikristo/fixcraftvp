@@ -17,7 +17,7 @@ from technical_analysis import full_analysis
 from strategies import analyze_multi_timeframe
 
 # ─── Конфигурация ─────────────────────────────────────────────────────────────
-COINS = ["ETH", "XRP", "AVAX", "BTC"]
+COINS = ["ETH", "XRP", "AVAX"]
 HL_INFO_URL = "https://api.hyperliquid.xyz/info"
 HL_TIMEOUT = 20
 INITIAL_BALANCE = 1000.0

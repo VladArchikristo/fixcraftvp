@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-09T05:59:33.625981+00:00",
-  "period_start": "2025-09-11T05:58:38.889000+00:00",
-  "period_end": "2026-04-09T05:58:38.889000+00:00",
+  "generated_at": "2026-04-10T03:24:46.418296+00:00",
+  "period_start": "2025-09-12T03:23:50.322000+00:00",
+  "period_end": "2026-04-10T03:23:50.322000+00:00",
   "config": {
     "coins": [
       "ETH",
@@ -22,41 +22,41 @@
   },
   "summary": {
     "total_trades": 114,
-    "winning_trades": 53,
-    "losing_trades": 61,
-    "win_rate": 46.49,
-    "profit_factor": 1.4372,
-    "total_pnl": 274.8136,
-    "total_pnl_pct": 27.48,
-    "final_balance": 1274.8136,
-    "max_drawdown_pct": 23.12,
-    "avg_win": 17.0459,
-    "avg_loss": -10.3053
+    "winning_trades": 52,
+    "losing_trades": 62,
+    "win_rate": 45.61,
+    "profit_factor": 1.4059,
+    "total_pnl": 250.1276,
+    "total_pnl_pct": 25.01,
+    "final_balance": 1250.1276,
+    "max_drawdown_pct": 22.39,
+    "avg_win": 16.66,
+    "avg_loss": -9.9386
   },
   "coin_stats": {
     "XRP": {
-      "trades": 35,
-      "wins": 16,
-      "win_rate": 45.7,
-      "pnl": 64.7606
+      "trades": 34,
+      "wins": 15,
+      "win_rate": 44.1,
+      "pnl": 43.2701
     },
     "AVAX": {
       "trades": 36,
       "wins": 17,
       "win_rate": 47.2,
-      "pnl": 125.4361
+      "pnl": 123.3141
     },
     "BTC": {
-      "trades": 24,
+      "trades": 25,
       "wins": 9,
-      "win_rate": 37.5,
-      "pnl": 19.0148
+      "win_rate": 36.0,
+      "pnl": 19.1146
     },
     "ETH": {
       "trades": 19,
       "wins": 11,
       "win_rate": 57.9,
-      "pnl": 65.6016
+      "pnl": 64.4288
     }
   },
   "best_trade": {
@@ -67,9 +67,9 @@
     "entry_date": "28.03.2026 23:00",
     "exit_date": "29.03.2026 22:00",
     "hold_hours": 23,
-    "pnl": 25.4366,
+    "pnl": 24.9461,
     "exit_reason": "TP",
-    "balance_after": 1297.2667
+    "balance_after": 1272.2522
   },
   "worst_trade": {
     "coin": "AVAX",
@@ -79,22 +79,22 @@
     "entry_date": "02.04.2026 09:00",
     "exit_date": "02.04.2026 14:00",
     "hold_hours": 5,
-    "pnl": -13.0065,
+    "pnl": -12.7557,
     "exit_reason": "SL",
-    "balance_after": 1287.6409
+    "balance_after": 1262.812
   },
   "trades": [
     {
       "coin": "XRP",
       "direction": "SHORT",
-      "entry_price": 2.9661,
-      "exit_price": 2.8474559999999998,
-      "entry_date": "21.09.2025 16:00",
-      "exit_date": "22.09.2025 08:00",
-      "hold_hours": 13,
-      "pnl": 20.0,
-      "exit_reason": "TP",
-      "balance_after": 1020.0
+      "entry_price": 2.8327,
+      "exit_price": 2.889354,
+      "entry_date": "22.09.2025 18:00",
+      "exit_date": "23.09.2025 15:00",
+      "hold_hours": 22,
+      "pnl": -10.0,
+      "exit_reason": "SL",
+      "balance_after": 990.0
     },
     {
       "coin": "AVAX",
@@ -104,21 +104,9 @@
       "entry_date": "23.09.2025 11:00",
       "exit_date": "23.09.2025 15:00",
       "hold_hours": 4,
-      "pnl": 20.4,
+      "pnl": 20.0,
       "exit_reason": "TP",
-      "balance_after": 1040.4
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 2.8327,
-      "exit_price": 2.889354,
-      "entry_date": "22.09.2025 18:00",
-      "exit_date": "23.09.2025 19:00",
-      "hold_hours": 22,
-      "pnl": -10.2,
-      "exit_reason": "SL",
-      "balance_after": 1030.2
+      "balance_after": 1010.0
     },
     {
       "coin": "BTC",
@@ -128,9 +116,9 @@
       "entry_date": "23.09.2025 22:00",
       "exit_date": "24.09.2025 22:00",
       "hold_hours": 24,
-      "pnl": -5.31,
+      "pnl": -5.2059,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1024.89
+      "balance_after": 1004.7941
     },
     {
       "coin": "ETH",
@@ -140,9 +128,9 @@
       "entry_date": "23.09.2025 23:00",
       "exit_date": "24.09.2025 23:00",
       "hold_hours": 24,
-      "pnl": 1.3859,
+      "pnl": 1.3587,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1026.2759
+      "balance_after": 1006.1529
     },
     {
       "coin": "XRP",
@@ -150,11 +138,11 @@
       "entry_price": 2.7584,
       "exit_price": 2.7925,
       "entry_date": "25.09.2025 19:00",
-      "exit_date": "26.09.2025 22:00",
+      "exit_date": "26.09.2025 18:00",
       "hold_hours": 24,
-      "pnl": -6.3435,
+      "pnl": -6.2192,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1019.9324
+      "balance_after": 999.9337
     },
     {
       "coin": "AVAX",
@@ -164,9 +152,9 @@
       "entry_date": "27.09.2025 10:00",
       "exit_date": "27.09.2025 22:00",
       "hold_hours": 12,
-      "pnl": -10.1993,
+      "pnl": -9.9993,
       "exit_reason": "SL",
-      "balance_after": 1009.7331
+      "balance_after": 989.9344
     },
     {
       "coin": "BTC",
@@ -176,9 +164,9 @@
       "entry_date": "30.09.2025 20:00",
       "exit_date": "01.10.2025 20:00",
       "hold_hours": 24,
-      "pnl": 12.804,
+      "pnl": 12.5529,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1022.537
+      "balance_after": 1002.4873
     },
     {
       "coin": "XRP",
@@ -186,11 +174,11 @@
       "entry_price": 3.0629,
       "exit_price": 3.001642,
       "entry_date": "03.10.2025 16:00",
-      "exit_date": "04.10.2025 11:00",
+      "exit_date": "04.10.2025 07:00",
       "hold_hours": 16,
-      "pnl": -10.2254,
+      "pnl": -10.0249,
       "exit_reason": "SL",
-      "balance_after": 1012.3117
+      "balance_after": 992.4624
     },
     {
       "coin": "XRP",
@@ -198,10 +186,22 @@
       "entry_price": 2.8256,
       "exit_price": 2.8163,
       "entry_date": "09.10.2025 06:00",
-      "exit_date": "10.10.2025 09:00",
+      "exit_date": "10.10.2025 05:00",
       "hold_hours": 24,
-      "pnl": 1.6659,
+      "pnl": 1.6333,
       "exit_reason": "TIMEOUT",
+      "balance_after": 994.0957
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 2.476,
+      "exit_price": 2.37696,
+      "entry_date": "11.10.2025 10:00",
+      "exit_date": "11.10.2025 19:00",
+      "hold_hours": 10,
+      "pnl": 19.8819,
+      "exit_reason": "TP",
       "balance_after": 1013.9776
     },
     {
@@ -212,21 +212,9 @@
       "entry_date": "11.10.2025 17:00",
       "exit_date": "11.10.2025 19:00",
       "hold_hours": 2,
-      "pnl": 20.2796,
+      "pnl": 19.8819,
       "exit_reason": "TP",
-      "balance_after": 1034.2571
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 2.476,
-      "exit_price": 2.37696,
-      "entry_date": "11.10.2025 10:00",
-      "exit_date": "11.10.2025 23:00",
-      "hold_hours": 10,
-      "pnl": 20.2796,
-      "exit_reason": "TP",
-      "balance_after": 1054.5367
+      "balance_after": 1033.8595
     },
     {
       "coin": "ETH",
@@ -236,9 +224,21 @@
       "entry_date": "16.10.2025 01:00",
       "exit_date": "16.10.2025 20:00",
       "hold_hours": 19,
-      "pnl": 21.0907,
+      "pnl": 20.6772,
       "exit_reason": "TP",
-      "balance_after": 1075.6274
+      "balance_after": 1054.5367
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 2.3504,
+      "exit_price": 2.256384,
+      "entry_date": "16.10.2025 18:00",
+      "exit_date": "17.10.2025 06:00",
+      "hold_hours": 13,
+      "pnl": 20.6772,
+      "exit_reason": "TP",
+      "balance_after": 1075.2139
     },
     {
       "coin": "AVAX",
@@ -248,21 +248,9 @@
       "entry_date": "17.10.2025 03:00",
       "exit_date": "17.10.2025 06:00",
       "hold_hours": 3,
-      "pnl": 21.5125,
+      "pnl": 21.0907,
       "exit_reason": "TP",
-      "balance_after": 1097.14
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 2.3504,
-      "exit_price": 2.256384,
-      "entry_date": "16.10.2025 18:00",
-      "exit_date": "17.10.2025 10:00",
-      "hold_hours": 13,
-      "pnl": 21.5125,
-      "exit_reason": "TP",
-      "balance_after": 1118.6525
+      "balance_after": 1096.3046
     },
     {
       "coin": "BTC",
@@ -272,9 +260,9 @@
       "entry_date": "16.10.2025 21:00",
       "exit_date": "17.10.2025 10:00",
       "hold_hours": 13,
-      "pnl": 21.5125,
+      "pnl": 21.0907,
       "exit_reason": "TP",
-      "balance_after": 1140.1651
+      "balance_after": 1117.3954
     },
     {
       "coin": "AVAX",
@@ -284,9 +272,9 @@
       "entry_date": "22.10.2025 03:00",
       "exit_date": "22.10.2025 21:00",
       "hold_hours": 18,
-      "pnl": 22.8033,
+      "pnl": 22.3479,
       "exit_reason": "TP",
-      "balance_after": 1162.9684
+      "balance_after": 1139.7433
     },
     {
       "coin": "ETH",
@@ -296,9 +284,9 @@
       "entry_date": "22.10.2025 03:00",
       "exit_date": "23.10.2025 03:00",
       "hold_hours": 24,
-      "pnl": 4.7296,
+      "pnl": 4.6352,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1167.698
+      "balance_after": 1144.3784
     },
     {
       "coin": "AVAX",
@@ -308,9 +296,9 @@
       "entry_date": "24.10.2025 00:00",
       "exit_date": "24.10.2025 04:00",
       "hold_hours": 4,
-      "pnl": -11.677,
+      "pnl": -11.4438,
       "exit_reason": "SL",
-      "balance_after": 1156.021
+      "balance_after": 1132.9347
     },
     {
       "coin": "XRP",
@@ -318,11 +306,11 @@
       "entry_price": 2.689,
       "exit_price": 2.63522,
       "entry_date": "27.10.2025 18:00",
-      "exit_date": "27.10.2025 23:00",
+      "exit_date": "27.10.2025 19:00",
       "hold_hours": 2,
-      "pnl": -11.5602,
+      "pnl": -11.3293,
       "exit_reason": "SL",
-      "balance_after": 1144.4608
+      "balance_after": 1121.6053
     },
     {
       "coin": "AVAX",
@@ -332,9 +320,9 @@
       "entry_date": "31.10.2025 18:00",
       "exit_date": "31.10.2025 19:00",
       "hold_hours": 1,
-      "pnl": -11.4446,
+      "pnl": -11.2161,
       "exit_reason": "SL",
-      "balance_after": 1133.0162
+      "balance_after": 1110.3893
     },
     {
       "coin": "BTC",
@@ -344,9 +332,9 @@
       "entry_date": "31.10.2025 18:00",
       "exit_date": "01.11.2025 18:00",
       "hold_hours": 24,
-      "pnl": -4.7103,
+      "pnl": -4.6162,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1128.3059
+      "balance_after": 1105.773
     },
     {
       "coin": "ETH",
@@ -356,9 +344,9 @@
       "entry_date": "03.11.2025 08:00",
       "exit_date": "03.11.2025 15:00",
       "hold_hours": 7,
-      "pnl": 22.5661,
+      "pnl": 22.1155,
       "exit_reason": "TP",
-      "balance_after": 1150.872
+      "balance_after": 1127.8885
     },
     {
       "coin": "AVAX",
@@ -368,9 +356,9 @@
       "entry_date": "04.11.2025 03:00",
       "exit_date": "04.11.2025 05:00",
       "hold_hours": 2,
-      "pnl": 23.0174,
+      "pnl": 22.5578,
       "exit_reason": "TP",
-      "balance_after": 1173.8895
+      "balance_after": 1150.4463
     },
     {
       "coin": "ETH",
@@ -380,9 +368,21 @@
       "entry_date": "04.11.2025 04:00",
       "exit_date": "04.11.2025 06:00",
       "hold_hours": 2,
-      "pnl": 23.0174,
+      "pnl": 22.5578,
       "exit_reason": "TP",
-      "balance_after": 1196.9069
+      "balance_after": 1173.004
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 2.2634,
+      "exit_price": 2.308668,
+      "entry_date": "04.11.2025 12:00",
+      "exit_date": "04.11.2025 13:00",
+      "hold_hours": 2,
+      "pnl": -11.73,
+      "exit_reason": "SL",
+      "balance_after": 1161.274
     },
     {
       "coin": "ETH",
@@ -392,9 +392,9 @@
       "entry_date": "04.11.2025 12:00",
       "exit_date": "04.11.2025 15:00",
       "hold_hours": 3,
-      "pnl": -11.9691,
+      "pnl": -11.73,
       "exit_reason": "SL",
-      "balance_after": 1184.9378
+      "balance_after": 1149.5439
     },
     {
       "coin": "BTC",
@@ -404,21 +404,9 @@
       "entry_date": "04.11.2025 02:00",
       "exit_date": "04.11.2025 16:00",
       "hold_hours": 14,
-      "pnl": 23.0174,
+      "pnl": 22.5578,
       "exit_reason": "TP",
-      "balance_after": 1207.9553
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 2.2634,
-      "exit_price": 2.308668,
-      "entry_date": "04.11.2025 12:00",
-      "exit_date": "04.11.2025 17:00",
-      "hold_hours": 2,
-      "pnl": -11.8494,
-      "exit_reason": "SL",
-      "balance_after": 1196.1059
+      "balance_after": 1172.1017
     },
     {
       "coin": "AVAX",
@@ -428,9 +416,9 @@
       "entry_date": "04.11.2025 12:00",
       "exit_date": "04.11.2025 17:00",
       "hold_hours": 5,
-      "pnl": 23.9381,
+      "pnl": 23.4601,
       "exit_reason": "TP",
-      "balance_after": 1220.044
+      "balance_after": 1195.5618
     },
     {
       "coin": "AVAX",
@@ -440,9 +428,21 @@
       "entry_date": "04.11.2025 20:00",
       "exit_date": "04.11.2025 22:00",
       "hold_hours": 2,
-      "pnl": -12.2004,
+      "pnl": -11.9556,
       "exit_reason": "SL",
-      "balance_after": 1207.8436
+      "balance_after": 1183.6062
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 2.2041,
+      "exit_price": 2.115936,
+      "entry_date": "04.11.2025 23:00",
+      "exit_date": "05.11.2025 00:00",
+      "hold_hours": 2,
+      "pnl": 23.9112,
+      "exit_reason": "TP",
+      "balance_after": 1207.5174
     },
     {
       "coin": "AVAX",
@@ -452,21 +452,21 @@
       "entry_date": "05.11.2025 00:00",
       "exit_date": "05.11.2025 02:00",
       "hold_hours": 2,
-      "pnl": -12.0784,
+      "pnl": -12.0752,
       "exit_reason": "SL",
-      "balance_after": 1195.7652
+      "balance_after": 1195.4422
     },
     {
       "coin": "XRP",
       "direction": "SHORT",
-      "entry_price": 2.2041,
-      "exit_price": 2.115936,
-      "entry_date": "04.11.2025 23:00",
-      "exit_date": "05.11.2025 04:00",
-      "hold_hours": 2,
-      "pnl": 24.1569,
-      "exit_reason": "TP",
-      "balance_after": 1219.922
+      "entry_price": 2.2366,
+      "exit_price": 2.2813320000000004,
+      "entry_date": "05.11.2025 09:00",
+      "exit_date": "05.11.2025 12:00",
+      "hold_hours": 4,
+      "pnl": -11.9544,
+      "exit_reason": "SL",
+      "balance_after": 1183.4878
     },
     {
       "coin": "AVAX",
@@ -476,9 +476,9 @@
       "entry_date": "05.11.2025 09:00",
       "exit_date": "05.11.2025 13:00",
       "hold_hours": 4,
-      "pnl": -12.1992,
+      "pnl": -11.9544,
       "exit_reason": "SL",
-      "balance_after": 1207.7228
+      "balance_after": 1171.5334
     },
     {
       "coin": "BTC",
@@ -488,9 +488,9 @@
       "entry_date": "05.11.2025 08:00",
       "exit_date": "05.11.2025 15:00",
       "hold_hours": 7,
-      "pnl": -12.1992,
+      "pnl": -11.9544,
       "exit_reason": "SL",
-      "balance_after": 1195.5236
+      "balance_after": 1159.579
     },
     {
       "coin": "ETH",
@@ -500,21 +500,9 @@
       "entry_date": "05.11.2025 13:00",
       "exit_date": "05.11.2025 16:00",
       "hold_hours": 3,
-      "pnl": -12.1992,
+      "pnl": -11.8349,
       "exit_reason": "SL",
-      "balance_after": 1183.3244
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 2.2366,
-      "exit_price": 2.2813320000000004,
-      "entry_date": "05.11.2025 09:00",
-      "exit_date": "05.11.2025 16:00",
-      "hold_hours": 4,
-      "pnl": -12.1992,
-      "exit_reason": "SL",
-      "balance_after": 1171.1252
+      "balance_after": 1147.7441
     },
     {
       "coin": "XRP",
@@ -522,11 +510,11 @@
       "entry_price": 2.233,
       "exit_price": 2.27766,
       "entry_date": "07.11.2025 07:00",
-      "exit_date": "07.11.2025 19:00",
+      "exit_date": "07.11.2025 15:00",
       "hold_hours": 9,
-      "pnl": -11.7113,
+      "pnl": -11.4774,
       "exit_reason": "SL",
-      "balance_after": 1159.4139
+      "balance_after": 1136.2667
     },
     {
       "coin": "BTC",
@@ -536,9 +524,9 @@
       "entry_date": "06.11.2025 21:00",
       "exit_date": "07.11.2025 19:00",
       "hold_hours": 22,
-      "pnl": -11.7113,
+      "pnl": -11.4774,
       "exit_reason": "SL",
-      "balance_after": 1147.7027
+      "balance_after": 1124.7892
     },
     {
       "coin": "ETH",
@@ -548,9 +536,9 @@
       "entry_date": "11.11.2025 03:00",
       "exit_date": "11.11.2025 06:00",
       "hold_hours": 3,
-      "pnl": -11.477,
+      "pnl": -11.2479,
       "exit_reason": "SL",
-      "balance_after": 1136.2256
+      "balance_after": 1113.5413
     },
     {
       "coin": "BTC",
@@ -560,9 +548,9 @@
       "entry_date": "16.11.2025 00:00",
       "exit_date": "17.11.2025 00:00",
       "hold_hours": 24,
-      "pnl": 0.2681,
+      "pnl": 0.2627,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1136.4937
+      "balance_after": 1113.804
     },
     {
       "coin": "XRP",
@@ -570,11 +558,11 @@
       "entry_price": 2.2169,
       "exit_price": 2.261238,
       "entry_date": "16.11.2025 13:00",
-      "exit_date": "17.11.2025 06:00",
+      "exit_date": "17.11.2025 02:00",
       "hold_hours": 14,
-      "pnl": -11.3623,
+      "pnl": -11.1354,
       "exit_reason": "SL",
-      "balance_after": 1125.1314
+      "balance_after": 1102.6686
     },
     {
       "coin": "ETH",
@@ -584,9 +572,9 @@
       "entry_date": "18.11.2025 02:00",
       "exit_date": "18.11.2025 08:00",
       "hold_hours": 6,
-      "pnl": -11.2513,
+      "pnl": -11.0267,
       "exit_reason": "SL",
-      "balance_after": 1113.8801
+      "balance_after": 1091.6419
     },
     {
       "coin": "XRP",
@@ -594,11 +582,11 @@
       "entry_price": 2.1594,
       "exit_price": 2.2025880000000004,
       "entry_date": "18.11.2025 05:00",
-      "exit_date": "18.11.2025 14:00",
+      "exit_date": "18.11.2025 10:00",
       "hold_hours": 6,
-      "pnl": -11.1388,
+      "pnl": -11.0267,
       "exit_reason": "SL",
-      "balance_after": 1102.7413
+      "balance_after": 1080.6152
     },
     {
       "coin": "BTC",
@@ -608,9 +596,9 @@
       "entry_date": "18.11.2025 13:00",
       "exit_date": "18.11.2025 16:00",
       "hold_hours": 3,
-      "pnl": -11.1388,
+      "pnl": -10.8062,
       "exit_reason": "SL",
-      "balance_after": 1091.6025
+      "balance_after": 1069.8091
     },
     {
       "coin": "AVAX",
@@ -620,9 +608,9 @@
       "entry_date": "21.11.2025 04:00",
       "exit_date": "21.11.2025 07:00",
       "hold_hours": 3,
-      "pnl": 21.8321,
+      "pnl": 21.3962,
       "exit_reason": "TP",
-      "balance_after": 1113.4346
+      "balance_after": 1091.2053
     },
     {
       "coin": "BTC",
@@ -632,9 +620,21 @@
       "entry_date": "20.11.2025 21:00",
       "exit_date": "21.11.2025 07:00",
       "hold_hours": 10,
-      "pnl": 21.8321,
+      "pnl": 21.3962,
       "exit_reason": "TP",
-      "balance_after": 1135.2666
+      "balance_after": 1112.6015
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 1.9473,
+      "exit_price": 1.9271,
+      "entry_date": "21.11.2025 19:00",
+      "exit_date": "22.11.2025 18:00",
+      "hold_hours": 24,
+      "pnl": 5.7707,
+      "exit_reason": "TIMEOUT",
+      "balance_after": 1118.3722
     },
     {
       "coin": "BTC",
@@ -644,21 +644,9 @@
       "entry_date": "21.11.2025 18:00",
       "exit_date": "22.11.2025 18:00",
       "hold_hours": 24,
-      "pnl": -0.4296,
+      "pnl": -0.421,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1134.837
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 1.9473,
-      "exit_price": 1.9271,
-      "entry_date": "21.11.2025 19:00",
-      "exit_date": "22.11.2025 22:00",
-      "hold_hours": 24,
-      "pnl": 5.8883,
-      "exit_reason": "TIMEOUT",
-      "balance_after": 1140.7253
+      "balance_after": 1117.9511
     },
     {
       "coin": "XRP",
@@ -666,11 +654,11 @@
       "entry_price": 2.2204,
       "exit_price": 2.175992,
       "entry_date": "27.11.2025 00:00",
-      "exit_date": "27.11.2025 15:00",
+      "exit_date": "27.11.2025 11:00",
       "hold_hours": 12,
-      "pnl": -11.4073,
+      "pnl": -11.1795,
       "exit_reason": "SL",
-      "balance_after": 1129.318
+      "balance_after": 1106.7716
     },
     {
       "coin": "AVAX",
@@ -680,9 +668,9 @@
       "entry_date": "08.12.2025 00:00",
       "exit_date": "08.12.2025 01:00",
       "hold_hours": 1,
-      "pnl": -11.2932,
+      "pnl": -11.0677,
       "exit_reason": "SL",
-      "balance_after": 1118.0249
+      "balance_after": 1095.7039
     },
     {
       "coin": "BTC",
@@ -692,9 +680,9 @@
       "entry_date": "12.12.2025 03:00",
       "exit_date": "12.12.2025 15:00",
       "hold_hours": 12,
-      "pnl": -11.1802,
+      "pnl": -10.957,
       "exit_reason": "SL",
-      "balance_after": 1106.8446
+      "balance_after": 1084.7469
     },
     {
       "coin": "XRP",
@@ -702,11 +690,11 @@
       "entry_price": 2.0191,
       "exit_price": 1.9875,
       "entry_date": "13.12.2025 19:00",
-      "exit_date": "14.12.2025 22:00",
+      "exit_date": "14.12.2025 18:00",
       "hold_hours": 24,
-      "pnl": 8.6614,
+      "pnl": 8.4884,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1115.506
+      "balance_after": 1093.2353
     },
     {
       "coin": "ETH",
@@ -716,9 +704,9 @@
       "entry_date": "17.12.2025 10:00",
       "exit_date": "17.12.2025 14:00",
       "hold_hours": 4,
-      "pnl": -11.1551,
+      "pnl": -10.9324,
       "exit_reason": "SL",
-      "balance_after": 1104.3509
+      "balance_after": 1082.303
     },
     {
       "coin": "AVAX",
@@ -728,9 +716,21 @@
       "entry_date": "17.12.2025 08:00",
       "exit_date": "17.12.2025 14:00",
       "hold_hours": 6,
-      "pnl": -11.1551,
+      "pnl": -10.9324,
       "exit_reason": "SL",
-      "balance_after": 1093.1958
+      "balance_after": 1071.3706
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 1.8617,
+      "exit_price": 1.898934,
+      "entry_date": "17.12.2025 23:00",
+      "exit_date": "18.12.2025 12:00",
+      "hold_hours": 14,
+      "pnl": -10.7137,
+      "exit_reason": "SL",
+      "balance_after": 1060.6569
     },
     {
       "coin": "AVAX",
@@ -740,21 +740,21 @@
       "entry_date": "17.12.2025 19:00",
       "exit_date": "18.12.2025 13:00",
       "hold_hours": 18,
-      "pnl": -10.932,
+      "pnl": -10.7137,
       "exit_reason": "SL",
-      "balance_after": 1082.2639
+      "balance_after": 1049.9432
     },
     {
       "coin": "XRP",
       "direction": "SHORT",
-      "entry_price": 1.8617,
-      "exit_price": 1.898934,
-      "entry_date": "17.12.2025 23:00",
-      "exit_date": "18.12.2025 16:00",
-      "hold_hours": 14,
-      "pnl": -10.932,
+      "entry_price": 1.8059,
+      "exit_price": 1.8420180000000002,
+      "entry_date": "18.12.2025 19:00",
+      "exit_date": "19.12.2025 02:00",
+      "hold_hours": 8,
+      "pnl": -10.4994,
       "exit_reason": "SL",
-      "balance_after": 1071.3319
+      "balance_after": 1039.4438
     },
     {
       "coin": "AVAX",
@@ -764,21 +764,9 @@
       "entry_date": "18.12.2025 22:00",
       "exit_date": "19.12.2025 03:00",
       "hold_hours": 5,
-      "pnl": -10.7133,
+      "pnl": -10.4994,
       "exit_reason": "SL",
-      "balance_after": 1060.6186
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 1.8059,
-      "exit_price": 1.8420180000000002,
-      "entry_date": "18.12.2025 19:00",
-      "exit_date": "19.12.2025 06:00",
-      "hold_hours": 8,
-      "pnl": -10.7133,
-      "exit_reason": "SL",
-      "balance_after": 1049.9053
+      "balance_after": 1028.9443
     },
     {
       "coin": "BTC",
@@ -788,9 +776,21 @@
       "entry_date": "26.12.2025 01:00",
       "exit_date": "26.12.2025 02:00",
       "hold_hours": 1,
-      "pnl": -10.4991,
+      "pnl": -10.2894,
       "exit_reason": "SL",
-      "balance_after": 1039.4062
+      "balance_after": 1018.6549
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 1.8361,
+      "exit_price": 1.8486,
+      "entry_date": "26.12.2025 15:00",
+      "exit_date": "27.12.2025 14:00",
+      "hold_hours": 24,
+      "pnl": -3.4675,
+      "exit_reason": "TIMEOUT",
+      "balance_after": 1015.1874
     },
     {
       "coin": "ETH",
@@ -800,21 +800,9 @@
       "entry_date": "26.12.2025 16:00",
       "exit_date": "27.12.2025 16:00",
       "hold_hours": 24,
-      "pnl": -1.9117,
+      "pnl": -1.8736,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1037.4945
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 1.8361,
-      "exit_price": 1.8486,
-      "entry_date": "26.12.2025 15:00",
-      "exit_date": "27.12.2025 18:00",
-      "hold_hours": 24,
-      "pnl": -3.5381,
-      "exit_reason": "TIMEOUT",
-      "balance_after": 1033.9564
+      "balance_after": 1013.3139
     },
     {
       "coin": "XRP",
@@ -822,11 +810,11 @@
       "entry_price": 1.8498,
       "exit_price": 1.874,
       "entry_date": "30.12.2025 00:00",
-      "exit_date": "31.12.2025 03:00",
+      "exit_date": "30.12.2025 23:00",
       "hold_hours": 24,
-      "pnl": -6.7634,
+      "pnl": -6.6283,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1027.1931
+      "balance_after": 1006.6855
     },
     {
       "coin": "BTC",
@@ -836,9 +824,9 @@
       "entry_date": "03.01.2026 05:00",
       "exit_date": "04.01.2026 05:00",
       "hold_hours": 24,
-      "pnl": 8.2347,
+      "pnl": 8.0703,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1035.4277
+      "balance_after": 1014.7558
     },
     {
       "coin": "XRP",
@@ -846,11 +834,11 @@
       "entry_price": 2.002,
       "exit_price": 2.08208,
       "entry_date": "03.01.2026 12:00",
-      "exit_date": "04.01.2026 11:00",
+      "exit_date": "04.01.2026 07:00",
       "hold_hours": 20,
-      "pnl": 20.5439,
+      "pnl": 20.1337,
       "exit_reason": "TP",
-      "balance_after": 1055.9716
+      "balance_after": 1034.8895
     },
     {
       "coin": "AVAX",
@@ -860,9 +848,9 @@
       "entry_date": "04.01.2026 12:00",
       "exit_date": "05.01.2026 12:00",
       "hold_hours": 24,
-      "pnl": 3.7574,
+      "pnl": 3.6824,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1059.729
+      "balance_after": 1038.5719
     },
     {
       "coin": "ETH",
@@ -872,9 +860,9 @@
       "entry_date": "04.01.2026 17:00",
       "exit_date": "05.01.2026 17:00",
       "hold_hours": 24,
-      "pnl": 12.5927,
+      "pnl": 12.3413,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1072.3217
+      "balance_after": 1050.9132
     },
     {
       "coin": "XRP",
@@ -882,11 +870,11 @@
       "entry_price": 2.1488,
       "exit_price": 2.234752,
       "entry_date": "05.01.2026 14:00",
-      "exit_date": "05.01.2026 21:00",
+      "exit_date": "05.01.2026 17:00",
       "hold_hours": 4,
-      "pnl": 21.4464,
+      "pnl": 20.7714,
       "exit_reason": "TP",
-      "balance_after": 1093.7681
+      "balance_after": 1071.6846
     },
     {
       "coin": "BTC",
@@ -896,9 +884,9 @@
       "entry_date": "06.01.2026 03:00",
       "exit_date": "06.01.2026 17:00",
       "hold_hours": 14,
-      "pnl": -10.9377,
+      "pnl": -10.7168,
       "exit_reason": "SL",
-      "balance_after": 1082.8304
+      "balance_after": 1060.9678
     },
     {
       "coin": "ETH",
@@ -908,9 +896,9 @@
       "entry_date": "06.01.2026 06:00",
       "exit_date": "07.01.2026 06:00",
       "hold_hours": 24,
-      "pnl": 1.857,
+      "pnl": 1.8196,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1084.6875
+      "balance_after": 1062.7873
     },
     {
       "coin": "XRP",
@@ -918,11 +906,11 @@
       "entry_price": 2.257,
       "exit_price": 2.21186,
       "entry_date": "06.01.2026 20:00",
-      "exit_date": "07.01.2026 17:00",
+      "exit_date": "07.01.2026 13:00",
       "hold_hours": 18,
-      "pnl": -10.8283,
+      "pnl": -10.6097,
       "exit_reason": "SL",
-      "balance_after": 1073.8592
+      "balance_after": 1052.1777
     },
     {
       "coin": "ETH",
@@ -932,9 +920,21 @@
       "entry_date": "15.01.2026 12:00",
       "exit_date": "15.01.2026 15:00",
       "hold_hours": 3,
-      "pnl": -10.7386,
+      "pnl": -10.5218,
       "exit_reason": "SL",
-      "balance_after": 1063.1206
+      "balance_after": 1041.6559
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 1.9684,
+      "exit_price": 1.889664,
+      "entry_date": "20.01.2026 02:00",
+      "exit_date": "20.01.2026 20:00",
+      "hold_hours": 19,
+      "pnl": 20.8331,
+      "exit_reason": "TP",
+      "balance_after": 1062.489
     },
     {
       "coin": "AVAX",
@@ -944,21 +944,9 @@
       "entry_date": "20.01.2026 10:00",
       "exit_date": "20.01.2026 22:00",
       "hold_hours": 12,
-      "pnl": 21.2624,
+      "pnl": 20.8331,
       "exit_reason": "TP",
-      "balance_after": 1084.383
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 1.9684,
-      "exit_price": 1.889664,
-      "entry_date": "20.01.2026 02:00",
-      "exit_date": "21.01.2026 00:00",
-      "hold_hours": 19,
-      "pnl": 21.2624,
-      "exit_reason": "TP",
-      "balance_after": 1105.6454
+      "balance_after": 1083.3221
     },
     {
       "coin": "AVAX",
@@ -968,9 +956,9 @@
       "entry_date": "26.01.2026 05:00",
       "exit_date": "26.01.2026 15:00",
       "hold_hours": 10,
-      "pnl": -11.0565,
+      "pnl": -10.8332,
       "exit_reason": "SL",
-      "balance_after": 1094.589
+      "balance_after": 1072.4889
     },
     {
       "coin": "BTC",
@@ -980,9 +968,9 @@
       "entry_date": "26.01.2026 06:00",
       "exit_date": "27.01.2026 06:00",
       "hold_hours": 24,
-      "pnl": -2.4465,
+      "pnl": -2.3971,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1092.1425
+      "balance_after": 1070.0918
     },
     {
       "coin": "XRP",
@@ -990,11 +978,11 @@
       "entry_price": 1.7011,
       "exit_price": 1.633056,
       "entry_date": "31.01.2026 11:00",
-      "exit_date": "31.01.2026 17:00",
+      "exit_date": "31.01.2026 13:00",
       "hold_hours": 3,
-      "pnl": 21.8428,
+      "pnl": 21.4018,
       "exit_reason": "TP",
-      "balance_after": 1113.9853
+      "balance_after": 1091.4937
     },
     {
       "coin": "BTC",
@@ -1004,9 +992,21 @@
       "entry_date": "31.01.2026 12:00",
       "exit_date": "31.01.2026 17:00",
       "hold_hours": 5,
-      "pnl": 21.8428,
+      "pnl": 21.4018,
       "exit_reason": "TP",
-      "balance_after": 1135.8282
+      "balance_after": 1112.8955
+    },
+    {
+      "coin": "XRP",
+      "direction": "SHORT",
+      "entry_price": 1.6682,
+      "exit_price": 1.601472,
+      "entry_date": "01.02.2026 02:00",
+      "exit_date": "01.02.2026 13:00",
+      "hold_hours": 12,
+      "pnl": 22.2579,
+      "exit_reason": "TP",
+      "balance_after": 1135.1534
     },
     {
       "coin": "AVAX",
@@ -1016,21 +1016,9 @@
       "entry_date": "01.02.2026 03:00",
       "exit_date": "01.02.2026 15:00",
       "hold_hours": 12,
-      "pnl": 22.7166,
+      "pnl": 22.2579,
       "exit_reason": "TP",
-      "balance_after": 1158.5447
-    },
-    {
-      "coin": "XRP",
-      "direction": "SHORT",
-      "entry_price": 1.6682,
-      "exit_price": 1.601472,
-      "entry_date": "01.02.2026 02:00",
-      "exit_date": "01.02.2026 17:00",
-      "hold_hours": 12,
-      "pnl": 22.7166,
-      "exit_reason": "TP",
-      "balance_after": 1181.2613
+      "balance_after": 1157.4113
     },
     {
       "coin": "AVAX",
@@ -1040,9 +1028,9 @@
       "entry_date": "01.02.2026 17:00",
       "exit_date": "02.02.2026 01:00",
       "hold_hours": 8,
-      "pnl": -11.8126,
+      "pnl": -11.5741,
       "exit_reason": "SL",
-      "balance_after": 1169.4487
+      "balance_after": 1145.8372
     },
     {
       "coin": "XRP",
@@ -1050,11 +1038,11 @@
       "entry_price": 1.5991,
       "exit_price": 1.535136,
       "entry_date": "01.02.2026 19:00",
-      "exit_date": "02.02.2026 06:00",
+      "exit_date": "02.02.2026 02:00",
       "hold_hours": 8,
-      "pnl": 23.6252,
+      "pnl": 23.1482,
       "exit_reason": "TP",
-      "balance_after": 1193.0739
+      "balance_after": 1168.9854
     },
     {
       "coin": "AVAX",
@@ -1064,9 +1052,9 @@
       "entry_date": "04.02.2026 12:00",
       "exit_date": "04.02.2026 16:00",
       "hold_hours": 4,
-      "pnl": 23.8615,
+      "pnl": 23.3797,
       "exit_reason": "TP",
-      "balance_after": 1216.9354
+      "balance_after": 1192.3651
     },
     {
       "coin": "XRP",
@@ -1074,11 +1062,11 @@
       "entry_price": 1.3017,
       "exit_price": 1.327734,
       "entry_date": "06.02.2026 06:00",
-      "exit_date": "06.02.2026 12:00",
+      "exit_date": "06.02.2026 08:00",
       "hold_hours": 3,
-      "pnl": -12.1694,
+      "pnl": -11.9237,
       "exit_reason": "SL",
-      "balance_after": 1204.766
+      "balance_after": 1180.4415
     },
     {
       "coin": "AVAX",
@@ -1088,9 +1076,9 @@
       "entry_date": "06.02.2026 11:00",
       "exit_date": "06.02.2026 14:00",
       "hold_hours": 3,
-      "pnl": -12.1694,
+      "pnl": -11.8044,
       "exit_reason": "SL",
-      "balance_after": 1192.5967
+      "balance_after": 1168.6371
     },
     {
       "coin": "BTC",
@@ -1100,9 +1088,9 @@
       "entry_date": "06.02.2026 12:00",
       "exit_date": "06.02.2026 14:00",
       "hold_hours": 2,
-      "pnl": -12.0477,
+      "pnl": -11.8044,
       "exit_reason": "SL",
-      "balance_after": 1180.549
+      "balance_after": 1156.8327
     },
     {
       "coin": "AVAX",
@@ -1112,9 +1100,9 @@
       "entry_date": "07.02.2026 07:00",
       "exit_date": "07.02.2026 12:00",
       "hold_hours": 5,
-      "pnl": -11.8055,
+      "pnl": -11.5683,
       "exit_reason": "SL",
-      "balance_after": 1168.7435
+      "balance_after": 1145.2643
     },
     {
       "coin": "BTC",
@@ -1124,9 +1112,9 @@
       "entry_date": "07.02.2026 07:00",
       "exit_date": "07.02.2026 12:00",
       "hold_hours": 5,
-      "pnl": -11.8055,
+      "pnl": -11.5683,
       "exit_reason": "SL",
-      "balance_after": 1156.9381
+      "balance_after": 1133.696
     },
     {
       "coin": "AVAX",
@@ -1136,9 +1124,9 @@
       "entry_date": "10.02.2026 19:00",
       "exit_date": "11.02.2026 03:00",
       "hold_hours": 8,
-      "pnl": -11.5694,
+      "pnl": -11.337,
       "exit_reason": "SL",
-      "balance_after": 1145.3687
+      "balance_after": 1122.359
     },
     {
       "coin": "AVAX",
@@ -1148,9 +1136,9 @@
       "entry_date": "11.02.2026 12:00",
       "exit_date": "11.02.2026 14:00",
       "hold_hours": 2,
-      "pnl": -11.4537,
+      "pnl": -11.2236,
       "exit_reason": "SL",
-      "balance_after": 1133.915
+      "balance_after": 1111.1354
     },
     {
       "coin": "ETH",
@@ -1160,9 +1148,9 @@
       "entry_date": "18.02.2026 14:00",
       "exit_date": "19.02.2026 14:00",
       "hold_hours": 24,
-      "pnl": 10.8296,
+      "pnl": 10.612,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1144.7445
+      "balance_after": 1121.7474
     },
     {
       "coin": "AVAX",
@@ -1172,9 +1160,9 @@
       "entry_date": "23.02.2026 13:00",
       "exit_date": "23.02.2026 17:00",
       "hold_hours": 4,
-      "pnl": 22.8949,
+      "pnl": 22.4349,
       "exit_reason": "TP",
-      "balance_after": 1167.6394
+      "balance_after": 1144.1824
     },
     {
       "coin": "ETH",
@@ -1184,9 +1172,9 @@
       "entry_date": "23.02.2026 15:00",
       "exit_date": "24.02.2026 01:00",
       "hold_hours": 10,
-      "pnl": 22.8949,
+      "pnl": 22.4349,
       "exit_reason": "TP",
-      "balance_after": 1190.5343
+      "balance_after": 1166.6173
     },
     {
       "coin": "XRP",
@@ -1194,11 +1182,11 @@
       "entry_price": 1.3628,
       "exit_price": 1.3589,
       "entry_date": "23.02.2026 17:00",
-      "exit_date": "24.02.2026 20:00",
+      "exit_date": "24.02.2026 16:00",
       "hold_hours": 24,
-      "pnl": 1.6707,
+      "pnl": 1.6051,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1192.2051
+      "balance_after": 1168.2224
     },
     {
       "coin": "AVAX",
@@ -1208,9 +1196,9 @@
       "entry_date": "24.02.2026 03:00",
       "exit_date": "25.02.2026 01:00",
       "hold_hours": 22,
-      "pnl": -11.9053,
+      "pnl": -11.6662,
       "exit_reason": "SL",
-      "balance_after": 1180.2997
+      "balance_after": 1156.5563
     },
     {
       "coin": "BTC",
@@ -1220,9 +1208,9 @@
       "entry_date": "24.02.2026 01:00",
       "exit_date": "25.02.2026 01:00",
       "hold_hours": 24,
-      "pnl": -11.9053,
+      "pnl": -11.6662,
       "exit_reason": "SL",
-      "balance_after": 1168.3944
+      "balance_after": 1144.8901
     },
     {
       "coin": "BTC",
@@ -1232,9 +1220,9 @@
       "entry_date": "09.03.2026 00:00",
       "exit_date": "09.03.2026 05:00",
       "hold_hours": 5,
-      "pnl": -11.6839,
+      "pnl": -11.4489,
       "exit_reason": "SL",
-      "balance_after": 1156.7104
+      "balance_after": 1133.4412
     },
     {
       "coin": "AVAX",
@@ -1244,9 +1232,9 @@
       "entry_date": "11.03.2026 14:00",
       "exit_date": "12.03.2026 02:00",
       "hold_hours": 12,
-      "pnl": -11.5671,
+      "pnl": -11.3344,
       "exit_reason": "SL",
-      "balance_after": 1145.1433
+      "balance_after": 1122.1068
     },
     {
       "coin": "AVAX",
@@ -1256,9 +1244,9 @@
       "entry_date": "12.03.2026 10:00",
       "exit_date": "13.03.2026 02:00",
       "hold_hours": 16,
-      "pnl": 22.9029,
+      "pnl": 22.4421,
       "exit_reason": "TP",
-      "balance_after": 1168.0462
+      "balance_after": 1144.5489
     },
     {
       "coin": "BTC",
@@ -1268,9 +1256,9 @@
       "entry_date": "12.03.2026 10:00",
       "exit_date": "13.03.2026 10:00",
       "hold_hours": 24,
-      "pnl": 16.9566,
+      "pnl": 16.6155,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1185.0029
+      "balance_after": 1161.1644
     },
     {
       "coin": "XRP",
@@ -1278,11 +1266,23 @@
       "entry_price": 1.4132,
       "exit_price": 1.3991,
       "entry_date": "13.03.2026 01:00",
-      "exit_date": "14.03.2026 04:00",
+      "exit_date": "14.03.2026 00:00",
       "hold_hours": 24,
-      "pnl": -5.827,
+      "pnl": -5.5978,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1179.1758
+      "balance_after": 1155.5666
+    },
+    {
+      "coin": "XRP",
+      "direction": "LONG",
+      "entry_price": 1.4192,
+      "exit_price": 1.475968,
+      "entry_date": "15.03.2026 11:00",
+      "exit_date": "16.03.2026 02:00",
+      "hold_hours": 16,
+      "pnl": 23.1113,
+      "exit_reason": "TP",
+      "balance_after": 1178.6779
     },
     {
       "coin": "AVAX",
@@ -1292,21 +1292,9 @@
       "entry_date": "16.03.2026 02:00",
       "exit_date": "16.03.2026 03:00",
       "hold_hours": 1,
-      "pnl": 23.5835,
+      "pnl": 23.5736,
       "exit_reason": "TP",
-      "balance_after": 1202.7594
-    },
-    {
-      "coin": "XRP",
-      "direction": "LONG",
-      "entry_price": 1.4192,
-      "exit_price": 1.475968,
-      "entry_date": "15.03.2026 11:00",
-      "exit_date": "16.03.2026 06:00",
-      "hold_hours": 16,
-      "pnl": 23.5835,
-      "exit_reason": "TP",
-      "balance_after": 1226.3429
+      "balance_after": 1202.2515
     },
     {
       "coin": "BTC",
@@ -1316,9 +1304,9 @@
       "entry_date": "16.03.2026 02:00",
       "exit_date": "17.03.2026 00:00",
       "hold_hours": 22,
-      "pnl": 23.5835,
+      "pnl": 23.5736,
       "exit_reason": "TP",
-      "balance_after": 1249.9264
+      "balance_after": 1225.8251
     },
     {
       "coin": "AVAX",
@@ -1328,9 +1316,9 @@
       "entry_date": "16.03.2026 16:00",
       "exit_date": "17.03.2026 16:00",
       "hold_hours": 24,
-      "pnl": 1.0175,
+      "pnl": 0.9975,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1250.9439
+      "balance_after": 1226.8225
     },
     {
       "coin": "BTC",
@@ -1340,9 +1328,9 @@
       "entry_date": "17.03.2026 07:00",
       "exit_date": "18.03.2026 07:00",
       "hold_hours": 24,
-      "pnl": -3.0318,
+      "pnl": -2.9733,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1247.9121
+      "balance_after": 1223.8492
     },
     {
       "coin": "ETH",
@@ -1352,9 +1340,9 @@
       "entry_date": "17.03.2026 14:00",
       "exit_date": "18.03.2026 11:00",
       "hold_hours": 21,
-      "pnl": -12.4993,
+      "pnl": -12.2583,
       "exit_reason": "SL",
-      "balance_after": 1235.4128
+      "balance_after": 1211.591
     },
     {
       "coin": "XRP",
@@ -1362,11 +1350,11 @@
       "entry_price": 1.5039,
       "exit_price": 1.473822,
       "entry_date": "17.03.2026 12:00",
-      "exit_date": "18.03.2026 15:00",
+      "exit_date": "18.03.2026 11:00",
       "hold_hours": 24,
-      "pnl": -12.4993,
+      "pnl": -12.2583,
       "exit_reason": "SL",
-      "balance_after": 1222.9136
+      "balance_after": 1199.3327
     },
     {
       "coin": "ETH",
@@ -1376,9 +1364,9 @@
       "entry_date": "21.03.2026 22:00",
       "exit_date": "22.03.2026 00:00",
       "hold_hours": 2,
-      "pnl": 24.4583,
+      "pnl": 23.9867,
       "exit_reason": "TP",
-      "balance_after": 1247.3718
+      "balance_after": 1223.3194
     },
     {
       "coin": "AVAX",
@@ -1388,9 +1376,9 @@
       "entry_date": "21.03.2026 10:00",
       "exit_date": "22.03.2026 00:00",
       "hold_hours": 14,
-      "pnl": 24.4583,
+      "pnl": 23.9867,
       "exit_reason": "TP",
-      "balance_after": 1271.8301
+      "balance_after": 1247.306
     },
     {
       "coin": "AVAX",
@@ -1400,9 +1388,9 @@
       "entry_date": "28.03.2026 23:00",
       "exit_date": "29.03.2026 22:00",
       "hold_hours": 23,
-      "pnl": 25.4366,
+      "pnl": 24.9461,
       "exit_reason": "TP",
-      "balance_after": 1297.2667
+      "balance_after": 1272.2522
     },
     {
       "coin": "ETH",
@@ -1412,9 +1400,9 @@
       "entry_date": "28.03.2026 23:00",
       "exit_date": "29.03.2026 23:00",
       "hold_hours": 24,
-      "pnl": 3.3807,
+      "pnl": 3.3155,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1300.6474
+      "balance_after": 1275.5676
     },
     {
       "coin": "AVAX",
@@ -1424,9 +1412,9 @@
       "entry_date": "02.04.2026 09:00",
       "exit_date": "02.04.2026 14:00",
       "hold_hours": 5,
-      "pnl": -13.0065,
+      "pnl": -12.7557,
       "exit_reason": "SL",
-      "balance_after": 1287.6409
+      "balance_after": 1262.812
     },
     {
       "coin": "XRP",
@@ -1434,11 +1422,11 @@
       "entry_price": 1.3109,
       "exit_price": 1.3108,
       "entry_date": "02.04.2026 09:00",
-      "exit_date": "03.04.2026 12:00",
+      "exit_date": "03.04.2026 08:00",
       "hold_hours": 24,
-      "pnl": 0.0496,
+      "pnl": 0.0487,
       "exit_reason": "TIMEOUT",
-      "balance_after": 1287.6905
+      "balance_after": 1262.8606
     },
     {
       "coin": "XRP",
@@ -1446,11 +1434,23 @@
       "entry_price": 1.3689,
       "exit_price": 1.341522,
       "entry_date": "08.04.2026 01:00",
-      "exit_date": "09.04.2026 02:00",
+      "exit_date": "08.04.2026 22:00",
       "hold_hours": 22,
-      "pnl": -12.8769,
+      "pnl": -12.6286,
       "exit_reason": "SL",
-      "balance_after": 1274.8136
+      "balance_after": 1250.232
+    },
+    {
+      "coin": "BTC",
+      "direction": "LONG",
+      "entry_price": 71854.0,
+      "exit_price": 71842.0,
+      "entry_date": "09.04.2026 18:00",
+      "exit_date": "10.04.2026 03:00",
+      "hold_hours": 9,
+      "pnl": -0.1044,
+      "exit_reason": "END_OF_DATA",
+      "balance_after": 1250.1276
     }
   ]
 }

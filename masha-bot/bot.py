@@ -44,7 +44,7 @@ ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
-CLAUDE_TIMEOUT = 3600  # 1 hour for complex tasks with tools
+CLAUDE_TIMEOUT = 600  # 10 min — consistent with other bots
 
 LOG_DIR = Path.home() / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -415,7 +415,7 @@ def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | No
         if ok:
             return True, text
         if text == "TIMEOUT":
-            return False, "Таймаут (1 час). Задача оказалась слишком объёмной. Попробуй разбить на части."
+            return False, "Таймаут (10 мин). Задача оказалась слишком объёмной. Попробуй разбить на части."
         if attempt == 0:
             log.info("Claude attempt 1 failed, retrying in 3 sec...")
             time.sleep(3)

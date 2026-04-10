@@ -25,8 +25,8 @@ def analyze_funding_extremes(
     funding_data: dict,
     predicted_funding: dict = None,
     funding_history: dict = None,
-    threshold_high: float = 0.01,   # 0.01% per 8h = extreme
-    threshold_low: float = -0.01,
+    threshold_high: float = 0.05,   # 0.05% per 8h = meaningful extreme (не шум)
+    threshold_low: float = -0.05,
 ) -> list[dict]:
     """Detect funding rate extremes — potential mean reversion opportunities.
 
@@ -207,7 +207,9 @@ def analyze_whale_walls(whale_walls: dict, market_data: dict = None) -> list[dic
         ask_usd = sum(w["usd_size"] for w in walls if w["side"] == "ASK")
         total = bid_usd + ask_usd
 
-        if total < 100_000:  # Minimum $100k in walls
+        # Per-coin minimum wall thresholds (при $22B дневном объёме HL $100K — пыль)
+        min_wall = {"BTC": 500_000, "ETH": 300_000}.get(coin, 150_000)
+        if total < min_wall:  # ETH ≥$300K, AVAX/XRP ≥$150K
             continue
 
         strength = 0
@@ -567,7 +569,7 @@ def validate_signals(results: list[dict], ta_data: dict = None) -> list[dict]:
             ta = ta_data.get(coin, {})
             adx_info = ta.get("adx", {})
             adx_val = adx_info.get("adx", 0)
-            if adx_val > 30:
+            if adx_val > 25:  # Согласован с penalty-фильтром в combine_strategies
                 plus_di = adx_info.get("plus_di", 0)
                 minus_di = adx_info.get("minus_di", 0)
                 trend_dir = "LONG" if plus_di > minus_di else "SHORT"

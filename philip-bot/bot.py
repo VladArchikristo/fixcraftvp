@@ -46,7 +46,7 @@ WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
 CLAUDE_MODEL_OPUS = "claude-opus-4-6"
 COMPLEX_THRESHOLD = 250  # chars — longer messages use Opus
-CLAUDE_TIMEOUT = 3600
+CLAUDE_TIMEOUT = 600
 
 LOG_DIR = Path.home() / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -146,8 +146,13 @@ MODE_PREFIXES = {
 START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False
+_processing_since: float = 0.0  # monotonic timestamp when processing started
 _processing_lock = asyncio.Lock()
 _message_queue: deque = deque(maxlen=5)
+_last_message_time: float = 0.0  # rate limiting — monotonic
+RATE_LIMIT_SEC = 3  # minimum seconds between messages
+WATCHDOG_INTERVAL = 60  # check every 60 sec
+WATCHDOG_TIMEOUT = 660  # 11 minutes — reset _processing if stuck
 
 
 def _get_claude_env() -> dict:
@@ -236,6 +241,47 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
         write_heartbeat()
     except Exception as e:
         log.error("Heartbeat write failed: %s", e)
+
+
+async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
+    """Reset _processing if stuck too long without active Claude subprocess."""
+    global _processing, _processing_since
+    try:
+        if not _processing:
+            return
+        elapsed = time.monotonic() - _processing_since
+        if elapsed < WATCHDOG_TIMEOUT:
+            return
+        # Check if Claude subprocess is still running
+        claude_alive = False
+        try:
+            import psutil
+            for proc in psutil.process_iter(["name", "cmdline"]):
+                if "claude" in (proc.info.get("name") or "").lower():
+                    claude_alive = True
+                    break
+        except ImportError:
+            # No psutil — check via subprocess
+            result = subprocess.run(
+                ["pgrep", "-f", "claude.*--model"],
+                capture_output=True, text=True, timeout=5,
+            )
+            claude_alive = result.returncode == 0
+        except Exception:
+            pass
+
+        if claude_alive:
+            log.info("Watchdog: _processing stuck %.0fs but Claude is alive, skipping reset", elapsed)
+            return
+
+        log.warning("Watchdog: _processing stuck %.0fs with no Claude subprocess — resetting!", elapsed)
+        async with _processing_lock:
+            _processing = False
+            _processing_since = 0.0
+            _message_queue.clear()
+        log.info("Watchdog: _processing reset, queue cleared. Philip is unblocked.")
+    except Exception as e:
+        log.error("Watchdog error: %s", e)
 
 
 # ---------------------------------------------------------------------------
@@ -433,7 +479,7 @@ def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | No
         if ok:
             return True, text
         if text == "TIMEOUT":
-            return False, "Таймаут (1 час). Попробуй разбить задачу на части."
+            return False, "Таймаут (10 мин). Попробуй разбить задачу на части."
         if attempt == 0:
             log.info("Claude attempt 1 failed, retrying in 3 sec...")
             time.sleep(3)
@@ -664,11 +710,13 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
 
 async def _drain_queue(update: Update):
+    global _processing_since
     while True:
         async with _processing_lock:
             if not _message_queue:
                 return
             queued_update, queued_text, queued_image = _message_queue.popleft()
+            _processing_since = time.monotonic()  # reset watchdog timer for each queued item
 
         remaining = len(_message_queue)
         if remaining > 0:
@@ -688,9 +736,16 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not user_text:
         return
 
+    # Rate limiting
+    global _processing, _processing_since, _last_message_time
+    now = time.monotonic()
+    if now - _last_message_time < RATE_LIMIT_SEC:
+        log.info("Rate limited message from %s", update.effective_user.id)
+        # Still allow queueing, just log it
+    _last_message_time = now
+
     log.info("Message from %s: %.100s", update.effective_user.id, user_text)
 
-    global _processing
     async with _processing_lock:
         if _processing:
             if len(_message_queue) >= 5:
@@ -701,6 +756,7 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"В очереди ({pos}). Дойду скоро.")
             return
         _processing = True
+        _processing_since = time.monotonic()
 
     try:
         await _process_single_message(update, user_text)
@@ -710,6 +766,7 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     finally:
         async with _processing_lock:
             _processing = False
+            _processing_since = 0.0
 
 
 async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -733,7 +790,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     caption = update.message.caption or ""
 
-    global _processing
+    global _processing, _processing_since
     async with _processing_lock:
         if _processing:
             if len(_message_queue) >= 5:
@@ -748,6 +805,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"В очереди ({pos}). Дойду скоро.")
             return
         _processing = True
+        _processing_since = time.monotonic()
 
     try:
         await _process_single_message(update, caption, image_path=tmp_path)
@@ -757,6 +815,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     finally:
         async with _processing_lock:
             _processing = False
+            _processing_since = 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -879,6 +938,7 @@ def main():
     app.add_error_handler(error_handler)
 
     app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+    app.job_queue.run_repeating(watchdog_job, interval=WATCHDOG_INTERVAL, first=30)
 
     _app_ref = app
 

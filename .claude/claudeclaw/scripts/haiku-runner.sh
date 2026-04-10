@@ -143,6 +143,7 @@ run_bash_job() {
     fi
 
     "$@" 2>&1 | head -50
+    echo "$(date): $job_name — done"
     release_lock "$job_name"
 }
 

@@ -99,12 +99,67 @@ def generate_horoscope(today: str) -> str:
 # ---------------------------------------------------------------------------
 # Отправка в Telegram
 # ---------------------------------------------------------------------------
+def sanitize_markdown(text: str) -> str:
+    """Фиксит сломанный Markdown от Claude — закрывает незакрытые сущности."""
+    import re
+
+    # Убираем MarkdownV2 escape-символы, которые Telegram Markdown v1 не понимает
+    # Заменяем ``` блоки на безопасные (часто ломают парсер)
+    text = re.sub(r'```[\s\S]*?```', lambda m: m.group(0).replace('*', '✱').replace('_', '⎽'), text)
+
+    # Проверяем парность * и _ (базовый Markdown v1)
+    for char in ['*', '_', '`']:
+        count = text.count(char)
+        # Для ** (bold) — считаем пары
+        if char == '*':
+            # Убираем тройные *** (bold+italic) — Telegram не поддерживает
+            text = text.replace('***', '**')
+            # Считаем ** пары
+            double_count = text.count('**')
+            if double_count % 2 != 0:
+                # Незакрытый bold — убираем последний **
+                idx = text.rfind('**')
+                text = text[:idx] + text[idx+2:]
+            # Теперь одинарные * (italic)
+            # Убираем * которые являются частью ** (уже обработаны)
+            temp = text.replace('**', '')
+            single_count = temp.count('*')
+            if single_count % 2 != 0:
+                # Незакрытый italic — убираем последний одинарный *
+                idx = text.rfind('*')
+                # Проверяем что это не часть **
+                if idx > 0 and text[idx-1] == '*':
+                    idx = text.rfind('*', 0, idx-1)
+                if idx >= 0:
+                    text = text[:idx] + text[idx+1:]
+        elif char == '_':
+            if count % 2 != 0:
+                idx = text.rfind('_')
+                text = text[:idx] + text[idx+1:]
+        elif char == '`':
+            # Убираем ``` сначала
+            triple = text.count('```')
+            if triple % 2 != 0:
+                idx = text.rfind('```')
+                text = text[:idx] + text[idx+3:]
+            # Потом одинарные
+            temp = text.replace('```', '')
+            if temp.count('`') % 2 != 0:
+                idx = text.rfind('`')
+                text = text[:idx] + text[idx+1:]
+
+    return text
+
+
 def send_telegram(text: str) -> bool:
     if not BOT_TOKEN:
         log("BOT_TOKEN не найден!")
         return False
 
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+
+    # Санитизируем Markdown перед отправкой
+    text = sanitize_markdown(text)
 
     # Telegram лимит — 4096 символов. Режем если надо.
     chunks = []
@@ -124,14 +179,16 @@ def send_telegram(text: str) -> bool:
                 "parse_mode": "Markdown",
             }, timeout=30)
             if not resp.ok:
-                log(f"Telegram error [{i+1}]: {resp.text[:200]}")
-                # Пробуем без Markdown
+                log(f"Telegram Markdown error [{i+1}]: {resp.text[:200]}")
+                # Пробуем без Markdown — гарантированная доставка
                 resp2 = requests.post(url, json={
                     "chat_id": CHAT_ID,
                     "text": chunk,
                 }, timeout=30)
                 if not resp2.ok:
+                    log(f"Telegram plain error [{i+1}]: {resp2.text[:200]}")
                     return False
+                log(f"Chunk [{i+1}] доставлен без форматирования")
         except Exception as e:
             log(f"Ошибка отправки в Telegram: {e}")
             return False

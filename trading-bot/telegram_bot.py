@@ -44,7 +44,7 @@ CHAT_ID = int(os.getenv("VASILY_CHAT_ID", "244710532"))
 ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
-CLAUDE_TIMEOUT = 3600  # 1 hour for complex tasks with tools
+CLAUDE_TIMEOUT = 600  # 10 min — как у всех ботов
 RATE_LIMIT_SEC = 5  # min seconds between messages
 MAX_PROMPT_CHARS = 50000  # max total prompt size to Claude
 
@@ -109,6 +109,8 @@ BASE_SYSTEM_PROMPT = (
 START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False  # True while Claude request is in flight
+_processing_since: float | None = None  # timestamp when processing started
+_last_message_time: float = 0.0  # for rate limiting
 _processing_lock = asyncio.Lock()
 _message_queue: deque = deque(maxlen=5)  # Message queue for sequential processing
 _queue_task: asyncio.Task | None = None
@@ -208,6 +210,31 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
         write_heartbeat()
     except Exception as e:
         log.error("Heartbeat write failed: %s", e)
+
+
+async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
+    """Watchdog: сбрасывает _processing если Claude завис > 11 мин без subprocess."""
+    global _processing, _processing_since
+    if not _processing or _processing_since is None:
+        return
+    elapsed = time.time() - _processing_since
+    if elapsed < 660:  # 11 min — даём Claude 10 мин + 1 мин буфер
+        return
+    # Проверяем есть ли живой Claude subprocess
+    try:
+        result = subprocess.run(
+            ["pgrep", "-f", "claude.*-p"],
+            capture_output=True, timeout=5
+        )
+        if result.returncode == 0:
+            log.warning("Watchdog: processing for %.0fs but Claude subprocess alive, skipping reset", elapsed)
+            return
+    except Exception:
+        pass
+    log.warning("Watchdog: _processing stuck for %.0fs with no Claude subprocess — force reset!", elapsed)
+    async with _processing_lock:
+        _processing = False
+        _processing_since = None
 
 
 # ---------------------------------------------------------------------------
@@ -437,7 +464,7 @@ def _call_claude_sync(full_prompt: str, extra_flags: list[str] | None = None) ->
         if ok:
             return True, text
         if text == "TIMEOUT":
-            return False, "Таймаут (1 час). Задача оказалась слишком объёмной. Попробуй разбить на части."
+            return False, "Таймаут (10 мин). Задача оказалась слишком объёмной. Попробуй разбить на части."
         if attempt == 0:
             log.info("Claude attempt 1 failed, retrying in 3 sec...")
             time.sleep(3)
@@ -918,16 +945,18 @@ async def _process_single_message(update: Update, user_text: str, is_photo: bool
 
 async def _queue_worker():
     """Process messages from the queue one by one."""
-    global _processing
+    global _processing, _processing_since
     while _message_queue:
         item = _message_queue.popleft()
         async with _processing_lock:
             _processing = True
+            _processing_since = time.time()
         try:
             await _process_single_message(**item)
         finally:
             async with _processing_lock:
                 _processing = False
+                _processing_since = None
     # Reset queue task reference
     global _queue_task
     _queue_task = None
@@ -940,6 +969,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     if not user_text:
         return
+
+    # Rate limiting
+    global _last_message_time
+    now = time.time()
+    if now - _last_message_time < RATE_LIMIT_SEC:
+        log.info("Rate limited message from %s", update.effective_user.id)
+        return
+    _last_message_time = now
 
     log.info("Message from %s: %.100s", update.effective_user.id, user_text)
 
@@ -1051,7 +1088,7 @@ def _cleanup():
 
 async def cmd_mode(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Команда /mode — показать или переключить режим торговли (paper/real)."""
-    if not _check_user(update):
+    if not is_allowed(update):
         return
     try:
         from trading_execution import get_executor
@@ -1129,6 +1166,9 @@ def main():
 
     # Heartbeat every 60 sec
     app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+
+    # Watchdog every 60 sec — сбрасывает зависший _processing
+    app.job_queue.run_repeating(watchdog_job, interval=60, first=30)
 
     # Daily snapshot — раз в 24 часа
     app.job_queue.run_repeating(daily_snapshot_job, interval=86400, first=60)
