@@ -17,7 +17,7 @@
 
 ---
 
-## 📊 6 СТРАТЕГИЙ (все обязательны к расчёту)
+## 📊 7 СТРАТЕГИЙ (все обязательны к расчёту)
 
 | # | Стратегия | Файл | Что ищет |
 |---|-----------|------|----------|
@@ -27,6 +27,7 @@
 | 4 | VAULT_COPY | strategies.py | Копируем топ-фонды Hyperliquid |
 | 5 | MTF_CONFLUENCE | strategies.py | Совпадение на 1h + 4h + 1d |
 | 6 | LIQUIDATION_CASCADE | hyperliquid_api.py | Каскадные ликвидации |
+| 7 | BTC_NEUTRAL_MR | strategies.py | Z-score residuals монеты за вычетом BTC-беты |
 
 ---
 
@@ -34,7 +35,7 @@
 
 ### Правило 1: Минимальный консенсус
 - **Минимум 2 реальных стратегии** должны давать одинаковый сигнал
-- Считается: FUNDING_EXTREME, OI_DIVERGENCE, WHALE_WALLS, VAULT_COPY, MTF_CONFLUENCE
+- Считается: FUNDING_EXTREME, OI_DIVERGENCE, WHALE_WALLS, VAULT_COPY, MTF_CONFLUENCE, BTC_NEUTRAL_MR
 - НЕ считается: ADX_FILTER (вспомогательный)
 - `real_count < 2` → **БЛОК**
 

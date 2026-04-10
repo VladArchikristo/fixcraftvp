@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-04-10T04:25:52.598793+00:00",
+  "sentiment": "bearish",
+  "score": -0.56,
+  "fear_greed": {
+    "value": 16,
+    "label": "Extreme Fear",
+    "trend": "rising"
+  },
+  "key_events": [
+    "Mythos AI threat prompts Bessent, Powell to convene bank CEOs for urgent talks",
+    "U.S. Treasury to loop in crypto sector on hacker warnings shared with traditional firms",
+    "OKX Ventures, HashKey back VPBank-linked CAEX for Vietnam crypto pilot push",
+    "Quantum-safe bitcoin now possible without a soft fork, but costs $200 a pop, new research shows",
+    "OKX and HashKey invest in new Vietnam exchange ahead of crypto licensing push"
+  ],
+  "affected_assets": [
+    "ETH",
+    "OP",
+    "LINK"
+  ],
+  "trending_coins": [
+    "TAO",
+    "RAVE",
+    "MON",
+    "PENGU",
+    "SN3",
+    "SIREN",
+    "ZEC"
+  ],
+  "risk_level": "CRITICAL",
+  "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
+  "news_count": 20,
+  "hacks_detected": 0,
+  "fetch_time_sec": 2.33,
+  "cached_at": 1775795152.59903
+}

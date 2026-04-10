@@ -100,53 +100,67 @@ def generate_horoscope(today: str) -> str:
 # Отправка в Telegram
 # ---------------------------------------------------------------------------
 def sanitize_markdown(text: str) -> str:
-    """Фиксит сломанный Markdown от Claude — закрывает незакрытые сущности."""
+    """Фиксит сломанный Markdown от Claude — закрывает незакрытые сущности.
+
+    Более надёжная версия: обрабатывает [] ссылки, вложенный markdown,
+    escape-символы MarkdownV2, и edge cases с byte offset ошибками.
+    """
     import re
 
-    # Убираем MarkdownV2 escape-символы, которые Telegram Markdown v1 не понимает
-    # Заменяем ``` блоки на безопасные (часто ломают парсер)
+    # 1. Убираем MarkdownV2 escape-символы (\* \_ \[ \] и т.д.)
+    #    Telegram Markdown v1 их НЕ понимает — они вызывают parse error
+    text = re.sub(r'\\([*_`\[\]()~>#+\-=|{}.!])', r'\1', text)
+
+    # 2. Защищаем ``` блоки — заменяем спец-символы внутри
     text = re.sub(r'```[\s\S]*?```', lambda m: m.group(0).replace('*', '✱').replace('_', '⎽'), text)
 
-    # Проверяем парность * и _ (базовый Markdown v1)
-    for char in ['*', '_', '`']:
-        count = text.count(char)
-        # Для ** (bold) — считаем пары
-        if char == '*':
-            # Убираем тройные *** (bold+italic) — Telegram не поддерживает
-            text = text.replace('***', '**')
-            # Считаем ** пары
-            double_count = text.count('**')
-            if double_count % 2 != 0:
-                # Незакрытый bold — убираем последний **
-                idx = text.rfind('**')
-                text = text[:idx] + text[idx+2:]
-            # Теперь одинарные * (italic)
-            # Убираем * которые являются частью ** (уже обработаны)
-            temp = text.replace('**', '')
-            single_count = temp.count('*')
-            if single_count % 2 != 0:
-                # Незакрытый italic — убираем последний одинарный *
-                idx = text.rfind('*')
-                # Проверяем что это не часть **
-                if idx > 0 and text[idx-1] == '*':
-                    idx = text.rfind('*', 0, idx-1)
-                if idx >= 0:
-                    text = text[:idx] + text[idx+1:]
-        elif char == '_':
-            if count % 2 != 0:
-                idx = text.rfind('_')
-                text = text[:idx] + text[idx+1:]
-        elif char == '`':
-            # Убираем ``` сначала
-            triple = text.count('```')
-            if triple % 2 != 0:
-                idx = text.rfind('```')
-                text = text[:idx] + text[idx+3:]
-            # Потом одинарные
-            temp = text.replace('```', '')
-            if temp.count('`') % 2 != 0:
-                idx = text.rfind('`')
-                text = text[:idx] + text[idx+1:]
+    # 3. Убираем тройные *** (bold+italic) — Telegram v1 не поддерживает
+    text = text.replace('***', '**')
+
+    # 4. Фиксим незакрытые [] ссылки — частая причина byte offset ошибок
+    #    Убираем [text](url) формат — Telegram Markdown v1 не поддерживает inline links
+    text = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)
+    #    Одинокие [ или ] — убираем
+    bracket_open = text.count('[')
+    bracket_close = text.count(']')
+    if bracket_open != bracket_close:
+        text = text.replace('[', '').replace(']', '')
+
+    # 5. Проверяем парность * _ `
+    # ** (bold)
+    double_count = text.count('**')
+    if double_count % 2 != 0:
+        idx = text.rfind('**')
+        text = text[:idx] + text[idx+2:]
+
+    # Одинарные * (italic) — считаем без **
+    temp = text.replace('**', '')
+    if temp.count('*') % 2 != 0:
+        # Ищем последний одинарный * (не часть **)
+        for i in range(len(text) - 1, -1, -1):
+            if text[i] == '*':
+                # Не часть **
+                is_double = (i > 0 and text[i-1] == '*') or (i < len(text)-1 and text[i+1] == '*')
+                if not is_double:
+                    text = text[:i] + text[i+1:]
+                    break
+
+    # _ (italic)
+    if text.count('_') % 2 != 0:
+        idx = text.rfind('_')
+        text = text[:idx] + text[idx+1:]
+
+    # ``` (code blocks)
+    triple = text.count('```')
+    if triple % 2 != 0:
+        idx = text.rfind('```')
+        text = text[:idx] + text[idx+3:]
+
+    # ` (inline code) — считаем без ```
+    temp = text.replace('```', '')
+    if temp.count('`') % 2 != 0:
+        idx = text.rfind('`')
+        text = text[:idx] + text[idx+1:]
 
     return text
 

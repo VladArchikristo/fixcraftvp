@@ -23,6 +23,13 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 import tempfile
 from dotenv import load_dotenv
+
+# NewsAgent — внутренний суб-агент новостей (может отсутствовать при первом запуске)
+try:
+    from news_agent import get_news_signal, format_signal_for_vasily, format_signal_for_telegram as _fmt_news_tg
+    _NEWS_AGENT_AVAILABLE = True
+except ImportError:
+    _NEWS_AGENT_AVAILABLE = False
 from telegram import Update
 from telegram.error import Conflict, NetworkError, TimedOut
 from telegram.ext import (
@@ -369,13 +376,21 @@ def _portfolio_summary() -> str:
 
 
 def _build_system_prompt() -> str:
-    """System prompt with current portfolio context."""
+    """System prompt with current portfolio context and news signal."""
     portfolio_ctx = _portfolio_summary()
+    news_block = ""
+    if _NEWS_AGENT_AVAILABLE:
+        try:
+            signal = get_news_signal()
+            news_block = f"\n\nНОВОСТНОЙ ФОН (NewsAgent):\n{format_signal_for_vasily(signal)}"
+        except Exception as e:
+            log.warning("NewsAgent failed: %s", e)
     return (
         f"{BASE_SYSTEM_PROMPT}\n\n"
         f"ТЕКУЩИЙ ПОРТФЕЛЬ (paper trading):\n{portfolio_ctx}\n\n"
         f"Файл портфеля: {PORTFOLIO_FILE}\n"
         f"Если пользователь просит изменить портфель — обнови JSON через Edit."
+        f"{news_block}"
     )
 
 
@@ -534,6 +549,7 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/daily — P&L за последние 7 дней\n"
         "/stats — win rate, profit factor, статистика\n"
         "/history — история сканов\n"
+        "/news — новостной сентимент (Fear&Greed, RSS, хаки)\n"
         "/status — статус бота\n"
         "/clear — очистить историю"
     )
@@ -1086,6 +1102,23 @@ def _cleanup():
     # Deleting it creates a race where a new instance starts before lock is freed.
 
 
+async def cmd_news(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Show current news sentiment from NewsAgent."""
+    if not is_allowed(update):
+        return
+    if not _NEWS_AGENT_AVAILABLE:
+        await update.message.reply_text("❌ NewsAgent недоступен — библиотеки не установлены.")
+        return
+    await update.message.reply_text("📡 Собираю новостной фон...")
+    try:
+        signal = get_news_signal(force_refresh=True)
+        text = _fmt_news_tg(signal)
+        await update.message.reply_text(text, parse_mode="Markdown")
+    except Exception as e:
+        log.error("cmd_news error: %s", e)
+        await update.message.reply_text(f"Ошибка NewsAgent: {e}")
+
+
 async def cmd_mode(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Команда /mode — показать или переключить режим торговли (paper/real)."""
     if not is_allowed(update):
@@ -1151,6 +1184,7 @@ def main():
     app.add_handler(CommandHandler("scan", cmd_scan))
     app.add_handler(CommandHandler("ta", cmd_ta))
     app.add_handler(CommandHandler("funding", cmd_funding))
+    app.add_handler(CommandHandler("news", cmd_news))
     app.add_handler(CommandHandler("mode", cmd_mode))
     app.add_handler(CommandHandler("daily", cmd_daily))
     app.add_handler(CommandHandler("stats", cmd_stats))

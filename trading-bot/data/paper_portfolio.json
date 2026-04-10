@@ -1,62 +1,73 @@
 {
   "positions": [
     {
+      "asset": "ETH",
+      "side": "LONG",
+      "size_usd": 250.0,
+      "entry_price": 2188.95,
+      "stop_loss": 2158.0,
+      "take_profit": 2250.85,
+      "trailing_stop_pct": 2.0,
+      "opened_at": "2026-04-10T00:43:20.863581"
+    },
+    {
       "asset": "AVAX",
       "side": "LONG",
-      "size_usd": 200.0,
-      "entry_price": 9.3078,
-      "stop_loss": 9.15,
-      "take_profit": 9.64,
+      "size_usd": 220.0,
+      "entry_price": 9.3081,
+      "stop_loss": 9.04,
+      "take_profit": 9.78,
       "trailing_stop_pct": 2.0,
-      "opened_at": "2026-04-09T23:25:55.247318"
+      "opened_at": "2026-04-10T03:02:03.342750"
     }
   ],
   "history": [],
-  "created": "2026-04-10T03:20:33.225774+00:00",
-  "cash": 800.0,
+  "created": "2026-04-10T04:34:37.944182+00:00",
+  "cash": 530.0,
   "initial_capital": 1000.0,
   "closed_trades": [],
   "scan_history": [
     {
-      "time": "2026-04-09T23:25:55.247569",
+      "time": "2026-04-10T00:43:20.863794",
       "total_value": 1000.0,
       "portfolio_value": 1000.0,
       "pnl": 0.0,
       "sentiment": "neutral",
       "actions_taken": 1,
-      "summary": "## АНАЛИЗ РЫНКА | Василий | 2026-04-09 23:24 UTC",
+      "summary": "## АНАЛИЗ РЫНКА | 2026-04-10 00:42 UTC",
       "trades": [
-        "✅ ОТКРЫТА LONG AVAX $200 @ $9.31 SL:$9.15 TP:$9.64 Trail:2% | Strongest signal in dataset: ADX 31 STRONG trend, EMA alignment STRONG BULL on 1h (price > EMA20 > EMA50 > EMA200), MACD bullish, multi-TF confluence 1h/4h/1d all BUY. SL at EMA50/200 confluence support. TP at resistance above 9.56. R:R 2.06:1. Risk 2% position = $4.",
-        "⏸️ NO_ACTION | Order book imbalance -99.8% ASK-HEAVY is critical warning against long. 1h MACD bearish, score -10. Despite daily bullish EMA, short-term pressure dominates. Whale bids at 2184 may not hold against extreme ask pressure. Wait for OB normalization or clear breakout above 2200.",
-        "⏸️ NO_ACTION | All timeframes neutral (scores -10/-5/0), no trend (ADX 15 weak), volume 0.1x declining, StochRSI bearish cross on 4h. No directional edge."
+        "📐 Adjusted TP for ETH: R:R was < 1.5, now 1:2.0",
+        "✅ ОТКРЫТА LONG ETH $250 @ $2188.95 SL:$2158.00 TP:$2250.85 Trail:2% | 4h+1d бычий тренд, StochRSI перепродан на 4h (6.0), whale walls $2188-2189 держат поддержку. SL за уровень $2158 (2x ATR 19.2 = ~38 pt). TP к сопротивлению $2227. R:R = 30pt SL / 38pt TP = 1:1.3 — чуть ниже идеала, но whale support очень сильный.",
+        "⏸️ NO_ACTION | XRP в полном боковике, ADX 8-14, BB сжатые. Нет сигнала для входа. Ждём пробоя компрессии с объёмом.",
+        "⏸️ NO_ACTION | Несмотря на бычий технический профиль (ADX 30.8, STRONG_BULL EMA), стакан ASK-HEAVY -76.4% — критический красный флаг. Продавцы доминируют. Вероятно, кто-то раздаёт позицию на техническом отскоке. Не входим против такого дисбаланса."
       ],
       "ta_scores": {
         "ETH": {
-          "score": -10,
+          "score": 0,
           "rec": "NEUTRAL",
-          "rsi": 45.0
+          "rsi": 47.2
         },
         "XRP": {
           "score": -10,
           "rec": "NEUTRAL",
-          "rsi": 46.0
+          "rsi": 48.2
         },
         "AVAX": {
-          "score": 50,
-          "rec": "STRONG_BUY",
-          "rsi": 53.2
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 56.2
         }
       },
       "confluence": {
         "ETH": {
           "confluence": 60,
           "direction": "LONG",
-          "weighted": 10.0
+          "weighted": 15.0
         },
         "XRP": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -3.3
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.0
         },
         "AVAX": {
           "confluence": 100,
@@ -67,32 +78,33 @@
       "data_source": "hyperliquid_extended"
     },
     {
-      "time": "2026-04-10T00:01:13.394195",
-      "total_value": 999.97,
-      "portfolio_value": 999.97,
-      "pnl": -0.03,
+      "time": "2026-04-10T03:02:03.343081",
+      "total_value": 999.66,
+      "portfolio_value": 999.66,
+      "pnl": -0.34,
       "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "## АНАЛИЗ РЫНКА — Василий | 2026-04-10 00:00 UTC",
+      "actions_taken": 1,
+      "summary": "## ПРОФЕССИОНАЛЬНЫЙ АНАЛИЗ — 2026-04-10 03:00 UTC",
       "trades": [
-        "🔄 HOLD AVAX | Strong uptrend (ADX 30.7, EMA alignment), StochRSI oversold на 1h даёт потенциал отскока к $9.39-9.64. SL $9.15 за EMA200. R:R 2:1. Order book давление краткосрочное.",
-        "⏸️ NO_ACTION | ETH и XRP в боковике без объёма и тренда. Extreme Fear (16) = высокий риск ложных пробоев. Кэш $800 — сохраняем резерв. Ждём либо пробой ETH выше $2200 с объёмом, либо подтверждение AVAX выше $9.44 для добавления."
+        "✅ ОТКРЫТА LONG AVAX $220 @ $9.31 SL:$9.04 TP:$9.78 Trail:2% | Сильнейший сигнал: STRONG_BUY 1h + BUY 4h + BUY 1d. ADX 30.1 подтверждает тренд. EMA STRONG_BULL на 1h (все три выровнены). StochRSI 10 OVERSOLD = вход на откате внутри восходящего тренда. SL за поддержкой $9.05 (2.87% риска). TP у дневного сопротивления $9.80 (R:R = 1:1.7 почти). Funding +0.0013% — не экстремальный.",
+        "🔄 HOLD ETH | Позиция в пределах нормы (-0.1%), whale walls $2183-2185 поддерживают. StochRSI oversold на 4h, multi-TF BUY. SL/TP корректны. Ждём пробой $2200.",
+        "⏸️ NO_ACTION | XRP — нет тренда (ADX<15 везде), объём сухой, скор NEUTRAL на всех TF."
       ],
       "ta_scores": {
         "ETH": {
           "score": 0,
           "rec": "NEUTRAL",
-          "rsi": 45.7
+          "rsi": 45.6
         },
         "XRP": {
           "score": 0,
           "rec": "NEUTRAL",
-          "rsi": 45.8
+          "rsi": 46.5
         },
         "AVAX": {
-          "score": 25,
-          "rec": "BUY",
-          "rsi": 53.7
+          "score": 40,
+          "rec": "STRONG_BUY",
+          "rsi": 52.0
         }
       },
       "confluence": {
@@ -109,11 +121,11 @@
         "AVAX": {
           "confluence": 100,
           "direction": "LONG",
-          "weighted": 21.7
+          "weighted": 24.2
         }
       },
       "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-10T00:01:13.394217"
+  "updated_at": "2026-04-10T03:02:03.343111"
 }

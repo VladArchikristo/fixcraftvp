@@ -10,10 +10,13 @@ Hyperliquid Local Strategies — Василий Trading Intelligence.
 4. Multi-Timeframe Confluence — совпадение сигналов на 1h/4h/1d
 5. Vault Copy Signals — что делают топ-фонды на Hyperliquid
 6. Liquidation Cascade — каскадные ликвидации = быстрые движения
+7. BTC-Neutral Mean Reversion — торговля residuals монеты за вычетом BTC-беты
 """
 from __future__ import annotations
 
 import logging
+import math
+import statistics
 from typing import Optional
 
 log = logging.getLogger("vasily_strat")
@@ -399,6 +402,102 @@ def analyze_vault_signals(vaults: list[dict], vault_positions: dict = None) -> l
     return sorted(signals, key=lambda x: -x["strength"])
 
 
+# ─── 7. BTC-Neutral Mean Reversion ────────────────────────────────────────
+
+def analyze_btc_neutral(
+    coin: str,
+    coin_prices: list[float],      # закрытия монеты (хронологически, >= 30 точек)
+    btc_prices: list[float],       # закрытия BTC за те же периоды
+    z_threshold: float = 2.0,      # порог Z-score для входа
+    adx_max: float = 25.0,         # торгуем только в боковике (ADX < 25)
+    adx_info: dict | None = None,  # {"adx": float, "plus_di": float, "minus_di": float}
+) -> list[dict]:
+    """BTC-Neutral Mean Reversion — 7-я стратегия Василия.
+
+    Алгоритм:
+    1. Считаем логарифмические доходности монеты и BTC.
+    2. Скользящая бета (20 периодов): beta = cov(coin, btc) / var(btc).
+    3. Residual = coin_return - beta × btc_return (монета без BTC-шума).
+    4. Z-score residuals за 20 периодов.
+    5. Вход:
+       - Z < -z_threshold → монета недооценена vs BTC → LONG
+       - Z >  z_threshold → монета переоценена  vs BTC → SHORT
+    6. Блок при ADX >= adx_max (сильный тренд — MR не работает).
+
+    Возвращает list[dict] с одним сигналом (или пустой список).
+    """
+    if len(coin_prices) < 30 or len(btc_prices) < 30:
+        return []
+
+    n = min(len(coin_prices), len(btc_prices))
+    cp = coin_prices[-n:]
+    bp = btc_prices[-n:]
+
+    # Логарифмические доходности
+    try:
+        coin_ret = [math.log(cp[i] / cp[i - 1]) for i in range(1, n)]
+        btc_ret  = [math.log(bp[i] / bp[i - 1]) for i in range(1, n)]
+    except (ValueError, ZeroDivisionError):
+        return []
+
+    if len(coin_ret) < 22:
+        return []
+
+    # Скользящая бета и residuals за последние 20 периодов
+    residuals = []
+    window = 20
+    for i in range(window, len(coin_ret)):
+        wc = coin_ret[i - window:i]
+        wb = btc_ret[i - window:i]
+        mean_c = sum(wc) / window
+        mean_b = sum(wb) / window
+        cov = sum((wc[j] - mean_c) * (wb[j] - mean_b) for j in range(window)) / window
+        var_b = sum((wb[j] - mean_b) ** 2 for j in range(window)) / window
+        beta = cov / var_b if var_b > 0 else 0.0
+        residuals.append(coin_ret[i] - beta * btc_ret[i])
+
+    if len(residuals) < 20:
+        return []
+
+    # Z-score последних 20 residuals
+    last_window = residuals[-20:]
+    try:
+        mean_r = sum(last_window) / 20
+        std_r = statistics.stdev(last_window)
+    except statistics.StatisticsError:
+        return []
+
+    if std_r == 0:
+        return []
+
+    z = (residuals[-1] - mean_r) / std_r
+
+    # Блок при сильном тренде
+    if adx_info and adx_info.get("adx", 0) >= adx_max:
+        return []
+
+    if abs(z) < z_threshold:
+        return []
+
+    direction = "LONG" if z < -z_threshold else "SHORT"
+    strength = min(45, int(abs(z) * 10))   # Z=2 → 20, Z=3 → 30, Z=4 → 40
+    reason = (
+        f"BTC-Neutral Z-score={z:+.2f} "
+        f"({'недооценена' if direction == 'LONG' else 'переоценена'} vs BTC); "
+        f"beta={coin_ret[-1] / btc_ret[-1]:.2f}" if btc_ret[-1] != 0 else
+        f"BTC-Neutral Z-score={z:+.2f}"
+    )
+
+    return [{
+        "coin": coin,
+        "signal": direction,
+        "strategy": "BTC_NEUTRAL_MR",
+        "z_score": round(z, 2),
+        "strength": strength,
+        "reason": reason,
+    }]
+
+
 # ─── Master Strategy Combiner ──────────────────────────────────────────────
 
 def combine_strategies(
@@ -406,8 +505,9 @@ def combine_strategies(
     oi_signals: list[dict],
     whale_signals: list[dict],
     vault_signals: list[dict],
-    confluence_data: dict[str, dict] = None,  # {coin: confluence_result}
-    ta_data: dict[str, dict] = None,  # {coin: ta_analysis}
+    confluence_data: dict[str, dict] = None,   # {coin: confluence_result}
+    ta_data: dict[str, dict] = None,           # {coin: ta_analysis}
+    btc_neutral_signals: list[dict] = None,    # из analyze_btc_neutral()
 ) -> list[dict]:
     """Combine all strategy signals into final recommendations.
 
@@ -438,7 +538,8 @@ def combine_strategies(
         [(s, "funding") for s in funding_signals] +
         [(s, "oi") for s in oi_signals] +
         [(s, "whale") for s in whale_signals] +
-        [(s, "vault") for s in vault_signals]
+        [(s, "vault") for s in vault_signals] +
+        [(s, "btc_neutral") for s in (btc_neutral_signals or [])]
     )
 
     for signal, source in all_signals:
@@ -550,7 +651,7 @@ def validate_signals(results: list[dict], ta_data: dict = None) -> list[dict]:
     4. Net score: уже обработан в combine_strategies (порог 25)
     """
 
-    REAL_STRATEGIES = {"FUNDING_EXTREME", "OI_DIVERGENCE", "WHALE_WALLS", "VAULT_COPY", "MTF_CONFLUENCE"}
+    REAL_STRATEGIES = {"FUNDING_EXTREME", "OI_DIVERGENCE", "WHALE_WALLS", "VAULT_COPY", "MTF_CONFLUENCE", "BTC_NEUTRAL_MR"}
 
     validated = []
     for r in results:

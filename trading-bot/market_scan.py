@@ -23,6 +23,7 @@ from dotenv import load_dotenv
 import html as html_mod
 
 # ─── Local modules ──────────────────────────────────────────────────────────
+from news_agent import get_news_signal, format_signal_for_vasily
 from hyperliquid_api import (
     fetch_market_summary, fetch_candles, fetch_funding_rates,
     fetch_extended_market, fetch_multi_timeframe, fetch_vault_summaries,
@@ -33,8 +34,8 @@ from technical_analysis import full_analysis, format_ta_report
 from strategies import (
     analyze_funding_extremes, analyze_oi_divergence,
     analyze_whale_walls, analyze_vault_signals,
-    analyze_multi_timeframe, combine_strategies,
-    format_strategy_report, validate_signals,
+    analyze_multi_timeframe, analyze_btc_neutral,
+    combine_strategies, format_strategy_report, validate_signals,
 )
 
 # ─── Конфиг ───────────────────────────────────────────────────────────────────
@@ -504,7 +505,7 @@ def calc_pnl(portfolio, prices, hl_market=None):
 # ─── Сборка промпта для Claude ─────────────────────────────────────────────────
 def build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_lines, total_value,
                  rsi_data=None, hl_market=None, ta_reports=None, strategy_report=None,
-                 extended_data=None):
+                 extended_data=None, news_signal=None):
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     # === ЦЕНЫ: Hyperliquid (первичные) + CoinGecko (fallback) ===
@@ -614,6 +615,11 @@ def build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_l
     if strategy_report:
         strategy_block = f"\n{strategy_report}\n"
 
+    # === NEWS AGENT SIGNAL ===
+    news_signal_block = ""
+    if news_signal:
+        news_signal_block = "\n" + format_signal_for_vasily(news_signal) + "\n"
+
     # Новости
     news_block = ""
     for i, n in enumerate(news, 1):
@@ -636,7 +642,7 @@ def build_prompt(prices, news, fear_greed, btc_dom, total_mcap, portfolio, pnl_l
 Fear & Greed Index: {fear_greed}
 BTC Dominance: {btc_dom}%
 Total Market Cap: ${total_mcap}T
-{ta_block}{strategy_block}
+{ta_block}{strategy_block}{news_signal_block}
 ═══════════════ НОВОСТИ (последние 24ч) ═══════════════
 {news_block}
 ═══════════════ ТЕКУЩИЙ ПОРТФЕЛЬ ═══════════════
@@ -1429,9 +1435,33 @@ def main():
         except Exception as e:
             log.warning("Vault analysis failed: %s", e)
 
+        # BTC-Neutral Mean Reversion signals
+        btc_neutral_signals = []
+        try:
+            btc_candles = fetch_candles("BTC", interval="4h", limit=60)
+            btc_prices = [c["close"] for c in btc_candles if "close" in c]
+            if len(btc_prices) >= 30:
+                for coin in TA_COINS:
+                    try:
+                        coin_candles = fetch_candles(coin, interval="4h", limit=60)
+                        coin_prices = [c["close"] for c in coin_candles if "close" in c]
+                        adx_info = ta_data.get(coin, {}).get("adx")
+                        signals = analyze_btc_neutral(
+                            coin, coin_prices, btc_prices, adx_info=adx_info
+                        )
+                        btc_neutral_signals.extend(signals)
+                        if signals:
+                            print(f"[+] BTC-Neutral {coin}: {signals[0]['signal']} Z={signals[0]['z_score']:+.2f}")
+                        time.sleep(0.2)
+                    except Exception as e:
+                        log.warning("BTC-Neutral for %s failed: %s", coin, e)
+        except Exception as e:
+            log.warning("BTC-Neutral init failed: %s", e)
+
         combined = combine_strategies(
             funding_signals, oi_signals, whale_signals, vault_signals,
             confluence_data, ta_data,
+            btc_neutral_signals=btc_neutral_signals,
         )
         combined = validate_signals(combined, ta_data)
         if combined:

@@ -474,15 +474,18 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
 
 
 def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | None = None, model: str | None = None) -> tuple[bool, str]:
-    for attempt in range(2):
+    max_retries = 3
+    backoff = [3, 5, 10]  # exponential backoff seconds
+    for attempt in range(max_retries):
         ok, text = _call_claude_once(full_prompt, system, extra_flags=extra_flags, model=model)
         if ok:
             return True, text
         if text == "TIMEOUT":
             return False, "Таймаут (10 мин). Попробуй разбить задачу на части."
-        if attempt == 0:
-            log.info("Claude attempt 1 failed, retrying in 3 sec...")
-            time.sleep(3)
+        if attempt < max_retries - 1:
+            delay = backoff[attempt] if attempt < len(backoff) else 10
+            log.info("Claude attempt %d/%d failed, retrying in %d sec...", attempt + 1, max_retries, delay)
+            time.sleep(delay)
     return False, "Произошла ошибка. Попробуй ещё раз через минуту."
 
 
