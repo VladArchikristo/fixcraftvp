@@ -1,0 +1,18 @@
+{
+  "time": "2026-04-09T18:34:03.418631",
+  "elapsed_sec": 14.2,
+  "signals_count": 1,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "ETH",
+      "direction": "LONG",
+      "net_score": 58,
+      "rec": "BUY",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "WHALE_WALLS"
+      ]
+    }
+  ]
+}

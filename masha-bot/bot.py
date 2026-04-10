@@ -92,6 +92,8 @@ START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False
 _processing_lock = asyncio.Lock()
+_processing_since: float | None = None  # timestamp when _processing became True
+_WATCHDOG_TIMEOUT = 660  # 11 minutes — auto-reset if stuck longer
 _message_queue: deque = deque(maxlen=5)  # queue up to 5 messages
 
 
@@ -184,6 +186,47 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
         write_heartbeat()
     except Exception as e:
         log.error("Heartbeat write failed: %s", e)
+
+
+async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
+    """Auto-reset _processing if stuck for longer than _WATCHDOG_TIMEOUT."""
+    global _processing, _processing_since
+    try:
+        async with _processing_lock:
+            if not _processing or _processing_since is None:
+                return
+            elapsed = time.time() - _processing_since
+            if elapsed < _WATCHDOG_TIMEOUT:
+                return
+            # Check if Claude subprocess is actually running
+            has_active_claude = False
+            try:
+                import psutil
+                for child in psutil.Process(os.getpid()).children(recursive=True):
+                    if "claude" in child.name().lower():
+                        has_active_claude = True
+                        break
+            except Exception:
+                # psutil not available — check via subprocess
+                try:
+                    result = subprocess.run(
+                        ["pgrep", "-P", str(os.getpid()), "-f", "claude"],
+                        capture_output=True, text=True, timeout=5,
+                    )
+                    has_active_claude = result.returncode == 0
+                except Exception:
+                    pass
+
+            if has_active_claude:
+                log.info("Watchdog: _processing stuck %.0fs but Claude still running, extending", elapsed)
+                return
+
+            log.warning("Watchdog: _processing stuck for %.0fs with no active Claude — force reset!", elapsed)
+            _processing = False
+            _processing_since = None
+            _message_queue.clear()
+    except Exception as e:
+        log.error("Watchdog error: %s", e)
 
 
 # ---------------------------------------------------------------------------
@@ -607,13 +650,15 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
 async def _drain_queue(update: Update):
     """Process queued messages one by one after current message finishes."""
-    global _processing
+    global _processing, _processing_since
     while True:
         async with _processing_lock:
             if not _message_queue:
                 _processing = False
+                _processing_since = None
                 return
             queued_update, queued_text, queued_image = _message_queue.popleft()
+            _processing_since = time.time()  # refresh timer for each queued msg
 
         remaining = len(_message_queue)
         if remaining > 0:
@@ -635,7 +680,7 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     log.info("Message from %s: %.100s", update.effective_user.id, user_text)
 
-    global _processing
+    global _processing, _processing_since
     async with _processing_lock:
         if _processing:
             if len(_message_queue) >= 5:
@@ -646,10 +691,22 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"В очереди ({pos}). Дойду скоро.")
             return
         _processing = True
+        _processing_since = time.time()
 
-    await _process_single_message(update, user_text)
-    # Drain any queued messages
-    await _drain_queue(update)
+    try:
+        await _process_single_message(update, user_text)
+        # Drain any queued messages
+        await _drain_queue(update)
+    except Exception as e:
+        log.error("handle_message fatal error: %s", e, exc_info=True)
+        async with _processing_lock:
+            _processing = False
+            _processing_since = None
+            _message_queue.clear()
+        try:
+            await update.message.reply_text("Произошла критическая ошибка. Сбросила состояние, пиши снова.")
+        except Exception:
+            pass
 
 
 async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -675,7 +732,7 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     caption = update.message.caption or ""
 
-    global _processing
+    global _processing, _processing_since
     async with _processing_lock:
         if _processing:
             if len(_message_queue) >= 5:
@@ -690,9 +747,21 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"В очереди ({pos}). Дойду скоро.")
             return
         _processing = True
+        _processing_since = time.time()
 
-    await _process_single_message(update, caption, image_path=tmp_path)
-    await _drain_queue(update)
+    try:
+        await _process_single_message(update, caption, image_path=tmp_path)
+        await _drain_queue(update)
+    except Exception as e:
+        log.error("handle_photo fatal error: %s", e, exc_info=True)
+        async with _processing_lock:
+            _processing = False
+            _processing_since = None
+            _message_queue.clear()
+        try:
+            await update.message.reply_text("Произошла критическая ошибка. Сбросила состояние, пиши снова.")
+        except Exception:
+            pass
 
 
 # ---------------------------------------------------------------------------
@@ -826,6 +895,9 @@ def main():
 
     # Heartbeat every 60 sec
     app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+
+    # Watchdog — check every 60 sec if _processing is stuck
+    app.job_queue.run_repeating(watchdog_job, interval=60, first=30)
 
     _app_ref = app
 
