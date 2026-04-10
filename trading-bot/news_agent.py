@@ -149,32 +149,88 @@ def fetch_rss_news() -> list[dict]:
 
 
 def fetch_defi_llama_hacks() -> list[dict]:
-    """DeFi Llama — хаки и взломы за последние 72 часа."""
-    try:
-        r = requests.get("https://llama.fi/hacks", timeout=15)
-        data = r.json()
-        cutoff = time.time() - 72 * 3600
-        incidents = []
-        for item in data:
-            ts = item.get("date", 0)
-            if isinstance(ts, str):
-                try:
-                    ts = datetime.strptime(ts, "%Y-%m-%d").timestamp()
-                except Exception:
-                    ts = 0
-            if ts < cutoff:
+    """
+    Security RSS feeds — хаки, взломы и инциденты за последние 72 часа.
+
+    Источники:
+    - Chainalysis blog RSS (https://www.chainalysis.com/feed/)
+    - SlowMist Medium RSS (https://slowmist.medium.com/feed)
+
+    Примечание: DeFi Llama /hacks перешёл на платный план (paywall),
+    домен llama.fi не резолвится. Заменено на специализированные security RSS.
+    """
+    SECURITY_FEEDS = [
+        ("Chainalysis", "https://www.chainalysis.com/feed/"),
+        ("SlowMist", "https://slowmist.medium.com/feed"),
+    ]
+    HACK_KEYWORDS = [
+        "hack", "exploit", "breach", "stolen", "rugpull", "rug pull",
+        "phishing", "drained", "attack", "compromise", "theft", "heist",
+        "vulnerability", "flash loan", "flashloan",
+    ]
+    # Извлечение суммы из заголовка: $285 Million, $10M, $1.5B
+    AMOUNT_RE = re.compile(r"\$\s*(\d+(?:\.\d+)?)\s*(M|B|K|Million|Billion|Thousand)?", re.IGNORECASE)
+
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; VasilyNewsAgent/1.0)"}
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=72)
+    incidents = []
+
+    for source, url in SECURITY_FEEDS:
+        try:
+            r = requests.get(url, timeout=15, headers=headers)
+            root = ET.fromstring(r.text)
+            channel = root.find("channel")
+            if channel is None:
                 continue
-            amount = item.get("amount", 0) or 0
-            incidents.append({
-                "title": f"[HACK] {item.get('name', 'Unknown')}: ${amount/1e6:.1f}M stolen",
-                "body": item.get("description", ""),
-                "source": "DeFi Llama",
-                "severity": "HIGH" if amount > 1e6 else "MEDIUM",
-            })
-        return incidents[:5]
-    except Exception as e:
-        log.warning("defi_llama_hacks failed: %s", e)
-        return []
+            for item in channel.findall("item")[:20]:
+                # Очищаем CDATA если есть
+                raw_title = item.findtext("title", "")
+                title = re.sub(r"<!\[CDATA\[|\]\]>", "", raw_title).strip()
+                if not title:
+                    continue
+                title_lower = title.lower()
+                if not any(kw in title_lower for kw in HACK_KEYWORDS):
+                    continue
+
+                # Проверяем свежесть
+                pub = item.findtext("pubDate", "")
+                try:
+                    dt = parsedate_to_datetime(pub)
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=timezone.utc)
+                    if dt < cutoff:
+                        continue
+                except Exception:
+                    pass  # Если дата не парсится — включаем статью
+
+                # Пытаемся извлечь сумму ущерба
+                amount = 0.0
+                m = AMOUNT_RE.search(title)
+                if m:
+                    val = float(m.group(1))
+                    unit = (m.group(2) or "").upper()
+                    if unit in ("B", "BILLION"):
+                        amount = val * 1e9
+                    elif unit in ("M", "MILLION"):
+                        amount = val * 1e6
+                    elif unit in ("K", "THOUSAND"):
+                        amount = val * 1e3
+                    else:
+                        amount = val * 1e6  # без единицы — считаем миллионами
+
+                # Короткое имя до двоеточия или первые 60 символов
+                name = title.split(":")[0].strip() if ":" in title else title[:60]
+                amount_str = f": ${amount / 1e6:.1f}M stolen" if amount > 0 else ""
+                incidents.append({
+                    "title": f"[HACK] {name}{amount_str}",
+                    "body": title,
+                    "source": source,
+                    "severity": "HIGH" if amount > 1e6 else "MEDIUM",
+                })
+        except Exception as e:
+            log.warning("security_feed %s: %s", source, e)
+
+    return incidents[:5]
 
 
 def fetch_coingecko_trending() -> list[str]:

@@ -1207,8 +1207,8 @@ def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, t
     analysis_safe = html_mod.escape(analysis)
     analysis_short = analysis_safe[:3000] + "\n..." if len(analysis_safe) > 3000 else analysis_safe
 
-    trades_text = "\n".join(trade_log) if trade_log else "Действий не выполнено"
-    pnl_text = "\n".join(pnl_lines) if pnl_lines else "Нет открытых позиций"
+    trades_text = html_mod.escape("\n".join(trade_log) if trade_log else "Действий не выполнено")
+    pnl_text = html_mod.escape("\n".join(pnl_lines) if pnl_lines else "Нет открытых позиций")
 
     pnl_total = total_value - portfolio["initial_capital"]
     pnl_pct = ((total_value / portfolio["initial_capital"]) - 1) * 100
@@ -1262,6 +1262,11 @@ def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, t
         at_cap = [c for c, d in oi.items() if d.get("at_cap")]
         if at_cap:
             ext_mini += f"  OI AT CAP: {', '.join(at_cap)}\n"
+
+    # Экранируем динамические данные перед вставкой в HTML
+    prices_mini = html_mod.escape(prices_mini)
+    ta_mini = html_mod.escape(ta_mini)
+    ext_mini = html_mod.escape(ext_mini)
 
     # Data source indicator
     source = "📡 Hyperliquid Extended" if extended_data else ("📡 Hyperliquid" if hl_market else "🔶 CoinGecko")
