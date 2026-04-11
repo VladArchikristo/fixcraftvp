@@ -1084,7 +1084,56 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-11T09:01:38.468092",
+      "total_value": 1005.56,
+      "portfolio_value": 1005.56,
+      "pnl": 5.56,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## 📊 АНАЛИЗ ВАСИЛИЯ | 2026-04-11 09:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Бычий тренд 4h/1d (ADX STRONG), whale bid walls $2242-2243 держат, SL за поддержкой $2207. ASK-HEAVY и MACD отрицательный — краткосрочное давление, но тренд на стороне лонга. Цель $2347.",
+        "🔄 HOLD AVAX | 4h ADX 29.3 STRONG + StochRSI 15 OVERSOLD + BID-HEAVY +49.1% = сигналы разворота. Support $9.25 держит. Ждём отскока к TP $9.56.",
+        "⏸️ NO_ACTION | XRP — слабый ADX, нет направленного тренда, declining buy% на 1d. StochRSI oversold — тактически интересно, но нет качественного сигнала для входа. Extreme Fear + 2 открытые позиции. Кэш $565.80 сохраняем."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 56.4
+        },
+        "XRP": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 41.8
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 41.3
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 27.5
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.8
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 16.7
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-11T06:43:37.461648"
+  "updated_at": "2026-04-11T09:01:38.468123"
 }
