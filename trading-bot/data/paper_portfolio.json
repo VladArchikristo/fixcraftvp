@@ -937,7 +937,105 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-11T03:43:13.042417",
+      "total_value": 1005.11,
+      "portfolio_value": 1005.11,
+      "pnl": 5.11,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА — 2026-04-11 03:42 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Восходящий тренд жив на 4h/1D, ADX strong, whale walls $2,232 держат, SL не пробит. Ждём подтверждения возобновления роста.",
+        "🔄 HOLD AVAX | 4h ADX 31.3 бычий, стакан BID-HEAVY +72.9%, StochRSI oversold на 1h. SL $9.20 — триггер для выхода если пробьётся.",
+        "⏸️ NO_ACTION | XRP: Score нейтральный, ADX слабый, нет тренда. ETH: уже в позиции. AVAX: уже в позиции. Кэш $565.80 — доступно для новых позиций, но нет качественного сетапа с достаточной уверенностью. Macro: F&G 15, ASK-HEAVY на ETH, открывать новое в текущей неопределённости не рационально."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 51.9
+        },
+        "XRP": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 45.4
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 43.8
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 20.0
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.0
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 8.3
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-11T06:02:12.346247",
+      "total_value": 1005.65,
+      "portfolio_value": 1005.65,
+      "pnl": 5.65,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## ПОЛНЫЙ АНАЛИЗ — 2026-04-11 06:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Multi-TF BUY confluence (1h/4h/1d все +), whale bid walls $2242-2243 под ценой, фандинг -0.001% (толпа шортит = бычий), OB 99.8% bid-heavy. Держать до TP $2347.",
+        "🔄 HOLD AVAX | Позиция маленькая (-$1.14), SL $9.20 за поддержкой $9.25. MACD bearish cross на 4h настораживает, но SL уже защищает. Не стоит закрывать с убытком при живом стопе.",
+        "⏸️ NO_ACTION | Уже 2 LONG-позиции = лимит одного направления. XRP neutral/sideways без катализатора. Нет качественных SHORT-сигналов в доступных активах (ETH, XRP, ADA, AVAX, DOT, INJ, UNI). Дожидаемся движения по текущим позициям."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 57.4
+        },
+        "XRP": {
+          "score": 0,
+          "rec": "NEUTRAL",
+          "rsi": 46.6
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 42.2
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 24.2
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 1.7
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 8.3
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-11T03:02:25.523495"
+  "updated_at": "2026-04-11T06:02:12.346303"
 }
