@@ -630,7 +630,105 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-10T18:44:04.007727",
+      "total_value": 1008.3,
+      "portfolio_value": 1008.3,
+      "pnl": 8.3,
+      "sentiment": "bullish",
+      "actions_taken": 0,
+      "summary": "# Василий — Анализ рынка | 18:42 UTC | 10.04.2026",
+      "trades": [
+        "🔄 HOLD AVAX | Позиция в прибыли +1%. Тренд STRONG_BUY на 1h/4h. Bid-heavy +51.6%.               НО: немедленно поднять SL с $9.33 до $9.35 (за breakeven) — текущий               SL внутри 1x ATR, риск случайного выбивания высок.               Цена у resistance $9.42 — следим за пробоем.               Если пробьёт $9.42 с объёмом → TP $9.78 остаётся в силе.",
+        "🔄 HOLD ETH | Whale wall $327K на $2237.80 держит цену прямо сейчас.               Тренд 1h STRONG_BUY (+45), ADX 37.4 сильный. Funding +0.0006% нейтральный.               SL $2207.19 корректно поставлен (1.7x ATR).               Позиция временно в минусе -$1.35, но структура рынка бычья.               Выжидаем возврат к $2261 (resistance/TP направление).",
+        "⏸️ NO_ACTION | XRP: multi-TF не совпадает (1h BUY, 4h/1d NEUTRAL), StochRSI overbought               с bearish cross, 4h volume declining. Недостаточно confluence для входа.               Macro: Extreme Fear 16, BTC доминация 57.3%, геополитика (Иран).               Уже 2 открытых лонга. Новые позиции в текущем окружении — высокий риск.               Ждём подтверждения прорыва или откат с формированием нового уровня."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 58.0
+        },
+        "XRP": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 56.2
+        },
+        "AVAX": {
+          "score": 50,
+          "rec": "STRONG_BUY",
+          "rsi": 52.6
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 25.8
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 9.2
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 27.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-10T21:02:04.600303",
+      "total_value": 1007.0,
+      "portfolio_value": 1007.0,
+      "pnl": 7.0,
+      "sentiment": "bullish",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ | ТОРГОВЫЙ ОТЧЁТ | 2026-04-10 21:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Позиция в рамках SL/TP. Whale walls $262K BID поддерживают $2237.10.               StochRSI 1h oversold — ожидаем отскок. SL $2207.19 разумный.",
+        "🔄 HOLD AVAX | Позиция в плюсе. StochRSI oversold (4.5) на 1h + 4h MACD bullish.               КРИТИЧНО: текущий SL $9.33 слишком тесный — система должна               скорректировать до $9.22 (ниже поддержки $9.26, ~1.5x ATR).",
+        "⏸️ NO_ACTION | XRP Score +50 на 1h, мощные whale walls на $1.35 — сигнал есть.               НО: лимит 2 лонга достигнут (AVAX + ETH). Открытие 3-го LONG запрещено               правилами риск-менеджмента. Ожидаем закрытия одной из позиций."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 56.8
+        },
+        "XRP": {
+          "score": 50,
+          "rec": "STRONG_BUY",
+          "rsi": 53.0
+        },
+        "AVAX": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 47.9
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 20.0
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 11.7
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 24.2
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-10T18:02:00.279620"
+  "updated_at": "2026-04-10T21:02:04.600332"
 }

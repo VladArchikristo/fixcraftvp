@@ -262,3 +262,7 @@ OPEN_POSITION: {
 2026-04-10 18:00:52,784 [INFO] vasily_scan: Trailing SL ETH LONG: $2203.58 → $2208.77 (price $2253.85)
 2026-04-10 18:00:52,785 [INFO] vasily_scan: Auto-closed LONG ETH by TAKE_PROFIT @ $2253.85
 2026-04-10 18:00:52,790 [INFO] vasily_scan: Prompt length: 13599 chars
+2026-04-10 18:42:06,258 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-10 18:42:20,779 [INFO] vasily_scan: Prompt length: 13596 chars
+2026-04-10 21:00:10,466 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-10 21:00:24,973 [INFO] vasily_scan: Prompt length: 13505 chars
