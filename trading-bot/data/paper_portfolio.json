@@ -839,7 +839,105 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-11T00:43:21.216733",
+      "total_value": 1006.18,
+      "portfolio_value": 1006.18,
+      "pnl": 6.18,
+      "sentiment": "bullish",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ — АНАЛИЗ 2026-04-11 00:42 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Whale wall $801K прямо под ценой ($2,239.10), StochRSI 15 OVERSOLD на 1h, тренд STRONG_BULL на всех TF. SL $2207 за EMA50. Держать.",
+        "🔄 HOLD AVAX | 4h Score +40 STRONG_BUY, ADX 31.8 STRONG с DI+ доминированием, позиция практически безубыточна. TP $9.56 достижим.",
+        "⏸️ NO_ACTION | Кэш $565.80. Две открытые позиции уже есть. XRP: сигнал слабый, TF не согласованы. Новую позицию не открывать — Extreme Fear 15, объём сохнет на ETH, нужно подтверждение тренда. Ждать выхода из текущих позиций или подтверждающего объёма."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 55.7
+        },
+        "XRP": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 48.2
+        },
+        "AVAX": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 44.2
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 22.5
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.8
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 22.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-11T03:02:25.523465",
+      "total_value": 1004.64,
+      "portfolio_value": 1004.64,
+      "pnl": 4.64,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "# ВАСИЛИЙ — ТОРГОВЫЙ ОТЧЁТ | 2026-04-11 03:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Strong bull trend all TFs, ADX 33.6, whale walls $1.18M прямо под ценой ($2234.50-$2234.70), StochRSI 6 oversold → отскок. SL $2207.19 правильно за whale walls. R:R 4:1.",
+        "🔄 HOLD AVAX | StochRSI 1h = 2 (экстремальная перепроданность), 4h ADX 31.3 сильный бычий. Отскок вероятен. SL $9.20 остаётся. Если цена пробьёт $9.24 без разворота — пересмотр.",
+        "⏸️ NO_ACTION | Macro — Extreme Fear 15, BTC Dominance 57.3%. Добавлять экспозицию в этом окружении нецелесообразно. XRP signals смешанные (score -5), volume dying. Новых позиций не открывать. Кэш $565.80 сохраняем как резерв."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 40,
+          "rec": "STRONG_BUY",
+          "rsi": 53.1
+        },
+        "XRP": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 44.4
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 40.4
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 21.7
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -2.5
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 8.3
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-11T00:02:02.383791"
+  "updated_at": "2026-04-11T03:02:25.523495"
 }
