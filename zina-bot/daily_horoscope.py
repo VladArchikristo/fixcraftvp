@@ -12,6 +12,9 @@ import requests
 from datetime import datetime
 from pathlib import Path
 
+SCRIPT_DIR_ASTRO = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_DIR_ASTRO))
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -55,7 +58,22 @@ def log(msg: str):
 # ---------------------------------------------------------------------------
 # Генерация гороскопа через Claude CLI
 # ---------------------------------------------------------------------------
+def _get_astro_data() -> str:
+    """Получает реальные астро-данные через Swiss Ephemeris."""
+    try:
+        from astro_engine import get_full_astro_context
+        return get_full_astro_context(BIRTH_DATE, BIRTH_TIME, BIRTH_PLACE)
+    except Exception as e:
+        log(f"Astro engine unavailable: {e}")
+        return ""
+
+
 def generate_horoscope(today: str) -> str:
+    astro_data = _get_astro_data()
+    astro_block = ""
+    if astro_data:
+        astro_block = f"\n\n== РЕАЛЬНЫЕ АСТРОНОМИЧЕСКИЕ ДАННЫЕ (Swiss Ephemeris) ==\n{astro_data}\n\nОПЯТЬ: используй ТОЛЬКО эти точные позиции планет. Не придумывай транзиты."
+
     prompt = f"""Ты — Зина, мудрый астро-нумерологический наставник.
 
 Данные пользователя:
@@ -63,12 +81,12 @@ def generate_horoscope(today: str) -> str:
 - Дата рождения: {BIRTH_DATE}
 - Время рождения: {BIRTH_TIME}
 - Место рождения: {BIRTH_PLACE}
-- Сегодня: {today}
+- Сегодня: {today}{astro_block}
 
 Составь персональный прогноз на сегодня ({today}). Включи:
 
 1. **Нумерологический паттерн дня** — рассчитай личный день (с формулой), объясни его энергию
-2. **Астрологический акцент** — ключевой транзит или аспект дня, как он влияет лично на Владимира
+2. **Астрологический акцент** — ключевой транзит дня (из данных выше), как он влияет лично на Владимира
 3. **Главная задача дня** — одно ключевое действие, которое карта поддерживает сегодня
 4. **Чего остеречься** — одно предупреждение
 5. **Слово дня** — одно слово или короткая фраза-мантра

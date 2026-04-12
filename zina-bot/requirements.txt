@@ -1,3 +1,5 @@
 python-telegram-bot[webhooks]==21.*
 httpx
 python-dotenv
+kerykeion>=5.12
+ephem>=4.1

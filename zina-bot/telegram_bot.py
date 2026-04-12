@@ -437,12 +437,30 @@ def _call_claude_sync(full_prompt: str, system: str) -> tuple[bool, str]:
     return False, "Ошибка при обработке запроса. Попробуй ещё раз."
 
 
+def _get_astro_context(profile: dict | None) -> str:
+    """Получает реальные астро-данные для инъекции в промпт."""
+    try:
+        from astro_engine import get_full_astro_context
+        birth_date = profile.get("birth_date") if profile else None
+        birth_time = profile.get("birth_time") if profile else None
+        birth_place = profile.get("birth_place") if profile else None
+        return get_full_astro_context(birth_date, birth_time, birth_place)
+    except Exception as e:
+        log.warning("Astro engine error: %s", e)
+        return ""
+
+
 def build_system_prompt(user_id: int) -> str:
     mode = user_modes.get(user_id)
     profile = get_profile(user_id)
     extra = ""
     if profile:
         extra = f"\n\nПрофиль пользователя:\n{profile_summary(profile)}"
+
+    astro_ctx = _get_astro_context(profile)
+    if astro_ctx:
+        extra += f"\n\n== РЕАЛЬНЫЕ АСТРОНОМИЧЕСКИЕ ДАННЫЕ (Swiss Ephemeris) ==\n{astro_ctx}\n\nИспользуй эти ТОЧНЫЕ данные при астрологических расчётах. Не выдумывай позиции планет — они указаны выше."
+
     if mode and mode in MODE_PREFIXES:
         return f"{MODE_PREFIXES[mode]}\n\n{SYSTEM_PROMPT}{extra}"
     return SYSTEM_PROMPT + extra
