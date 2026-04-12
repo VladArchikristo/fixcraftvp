@@ -9,11 +9,21 @@
       "take_profit": 1.29,
       "trailing_stop_pct": 2.0,
       "opened_at": "2026-04-12T00:01:59.383789"
+    },
+    {
+      "asset": "AVAX",
+      "side": "SHORT",
+      "size_usd": 150.0,
+      "entry_price": 9.0183,
+      "stop_loss": 9.13,
+      "take_profit": 8.74,
+      "trailing_stop_pct": 2.0,
+      "opened_at": "2026-04-12T06:02:18.948850"
     }
   ],
   "history": [],
   "created": "2026-04-10T04:34:37.944182+00:00",
-  "cash": 758.1754109537452,
+  "cash": 608.1754109537452,
   "initial_capital": 1000.0,
   "closed_trades": [
     {
@@ -1756,7 +1766,104 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T03:43:59.404790",
+      "total_value": 1008.12,
+      "portfolio_value": 1008.12,
+      "pnl": 8.12,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "## РЫНОЧНЫЙ АНАЛИЗ — 2026-04-12 03:42 UTC",
+      "trades": [
+        "🔄 HOLD XRP | SHORT позиция подтверждается 1h тренд SELL (-30), макро медвежий               контекст, ADX 24 bears control. Whale walls $270K @ $1.33 — риск,               но SL $1.34 корректный. R:R 1:4. Держать до пробоя $1.32 или               срабатывания SL $1.34. Если цена не пробьёт $1.32 в течение               2 часов — пересмотреть позицию.",
+        "⏸️ NO_ACTION | ETH: конфликт TF (1h SELL vs 4h BUY), orderbook -93% ASK-HEAVY —               нет чёткого сигнала. AVAX: Score -35 блокирует LONG, StochRSI 1.8               даёт высокий риск отскока при открытии SHORT. Extreme Fear (16) —               новые позиции только при очень чётких сигналах. Cash $758 сохраняем."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 39.2
+        },
+        "XRP": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 37.2
+        },
+        "AVAX": {
+          "score": -35,
+          "rec": "SELL",
+          "rsi": 31.9
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 16.7
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -6.7
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -2.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T06:02:18.949068",
+      "total_value": 1008.16,
+      "portfolio_value": 1008.16,
+      "pnl": 8.16,
+      "sentiment": "bearish",
+      "actions_taken": 1,
+      "summary": "## АНАЛИЗ ВАСИЛИЯ | 2026-04-12 06:00 UTC",
+      "trades": [
+        "✅ ОТКРЫТА SHORT AVAX $150 @ $9.02 SL:$9.13 TP:$8.74 Trail:2% | 1h Score -35, ADX 30.4 STRONG нисходящий (DI- 33.6 > DI+ 12.8),               ASK-heavy -21.6%, funding crowd в лонге (+0.0011%).              SL по 1.5x ATR ($0.107 выше входа).              TP = поддержка 4h $8.74. R:R = 0.28/0.11 = 2.5:1 ✓              Риск: StochRSI bullish cross → размер ограничен 20% кэша.",
+        "🔄 HOLD XRP | 1h Score -30 поддерживает шорт, общий рынок медвежий, R:R=4:1 отличный.               Whale walls на $1.33 — временное препятствие, но должны пробиться.               SL $1.34 актуален по ATR.",
+        "⏸️ NO_ACTION | ETH: конфликт таймфреймов (1h -45 vs 4h +30 vs 1d +20).               Whale walls $340K на $2,212 — сильная поддержка против шорта.              4h и 1d бычьи блокируют новый шорт. Ждём разрешения дивергенции."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -45,
+          "rec": "STRONG_SELL",
+          "rsi": 38.0
+        },
+        "XRP": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 37.9
+        },
+        "AVAX": {
+          "score": -35,
+          "rec": "SELL",
+          "rsi": 32.0
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 12.5
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -6.7
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -7.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-12T03:02:12.331717"
+  "updated_at": "2026-04-12T06:02:18.949089"
 }
