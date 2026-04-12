@@ -358,157 +358,6 @@ job_watchdog() {
     done
 }
 
-
-job_news_digest() {
-    # Pure bash — no Claude CLI needed
-    # Crypto prices from CoinGecko free API
-    local status="📰 *Дайджест* $(date '+%H:%M')\n\n"
-
-    # Crypto prices
-    local prices
-    prices=$(curl -s --max-time 15 "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true" 2>/dev/null)
-    if [ -n "$prices" ] && echo "$prices" | python3 -c "import json,sys; json.load(sys.stdin)" 2>/dev/null; then
-        local btc=$(echo "$prices" | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"BTC: \${d['bitcoin']['usd']:,.0f} ({d['bitcoin']['usd_24h_change']:+.1f}%)\")" 2>/dev/null)
-        local eth=$(echo "$prices" | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"ETH: \${d['ethereum']['usd']:,.0f} ({d['ethereum']['usd_24h_change']:+.1f}%)\")" 2>/dev/null)
-        local sol=$(echo "$prices" | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"SOL: \${d['solana']['usd']:,.1f} ({d['solana']['usd_24h_change']:+.1f}%)\")" 2>/dev/null)
-        status+="💰 $btc\n💰 $eth\n💰 $sol\n"
-    else
-        status+="💰 Крипто: API недоступен\n"
-    fi
-
-    # Fear & Greed index
-    local fng
-    fng=$(curl -s --max-time 10 "https://api.alternative.me/fng/?limit=1" 2>/dev/null)
-    if [ -n "$fng" ]; then
-        local fng_val=$(echo "$fng" | python3 -c "import json,sys; d=json.load(sys.stdin); print(f\"{d['data'][0]['value']} — {d['data'][0]['value_classification']}\")" 2>/dev/null)
-        [ -n "$fng_val" ] && status+="😱 Fear/Greed: $fng_val\n"
-    fi
-
-    # System uptime
-    local up=$(uptime | sed 's/.*up /up /' | sed 's/,.*//')
-    status+="\n🖥 Mac Mini: $up"
-
-    send_telegram "$status"
-}
-
-job_daily_report() {
-    # Pure bash — evening summary from today's logs
-    local status="📊 *Вечерний отчёт* $(date '+%d.%m %H:%M')\n\n"
-    local today=$(date '+%b %_d')
-
-    # Bot status
-    local alive=0 dead=0
-    for bot_entry in "Beast:beast" "Вася:vasily" "Маша:masha" "Костя:kostya" "Филип:philip" "Питер:peter" "Зина:zina"; do
-        local label="${bot_entry%%:*}"
-        local hb_name="${bot_entry##*:}"
-        local hb_file="$HOME/logs/${hb_name}-heartbeat"
-        if [ -f "$hb_file" ]; then
-            local raw_hb=$(cat "$hb_file" 2>/dev/null)
-            local last_hb
-            if echo "$raw_hb" | grep -qE '^[0-9]+$'; then
-                last_hb=$raw_hb
-            elif echo "$raw_hb" | grep -qE '^[0-9]{4}-'; then
-                local clean_hb=$(echo "$raw_hb" | sed 's/\.[0-9]*//' | sed 's/[+-][0-9:]*$//')
-                last_hb=$(date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_hb" +%s 2>/dev/null || echo 0)
-            else
-                last_hb=0
-            fi
-            local now=$(date +%s)
-            if [ $((now - last_hb)) -lt 300 ]; then
-                alive=$((alive + 1))
-            else
-                dead=$((dead + 1))
-                status+="⚠️ $label — stale\n"
-            fi
-        else
-            dead=$((dead + 1))
-            status+="❌ $label — нет heartbeat\n"
-        fi
-    done
-    status+="🤖 Боты: ${alive} живых"
-    [ $dead -gt 0 ] && status+=", ${dead} проблемных"
-    status+="\n"
-
-    # Cron errors today
-    local cron_errors=0
-    for log in "$LOG_DIR"/*.log; do
-        [ -f "$log" ] || continue
-        local errs=$(grep -c "failed\|ERROR" "$log" 2>/dev/null | grep "$today" 2>/dev/null || echo 0)
-        cron_errors=$((cron_errors + errs))
-    done
-
-    # Git commits today
-    local git_commits=0
-    if [ -d "$HOME/Папка тест/fixcraftvp/.git" ]; then
-        git_commits=$(cd "$HOME/Папка тест/fixcraftvp" && git log --oneline --since="midnight" 2>/dev/null | wc -l | tr -d ' ')
-    fi
-    status+="📝 Git коммитов сегодня: $git_commits\n"
-
-    # Disk usage
-    local disk=$(df -h / | awk 'NR==2{print $5}')
-    local log_size=$(du -sh "$HOME/logs" 2>/dev/null | awk '{print $1}')
-    status+="💾 Диск: $disk | Логи: ${log_size:-?}"
-
-    send_telegram "$status"
-}
-
-job_security_scan() {
-    # Pure bash — no Claude CLI, direct system checks
-    local status="🔒 *Security Scan* $(date '+%H:%M')\n\n"
-    local issues=0
-
-    # 1. Check for suspicious processes (crypto miners, etc)
-    local sus_procs=$(ps aux | grep -iE "xmrig|cryptonight|minerd|coinhive|kworker.*mining" | grep -v grep | wc -l | tr -d ' ')
-    if [ "$sus_procs" -gt 0 ]; then
-        status+="🚨 Подозрительные процессы: $sus_procs\n"
-        issues=$((issues + 1))
-    else
-        status+="✅ Процессы: чисто\n"
-    fi
-
-    # 2. Check listening ports
-    local open_ports=$(lsof -iTCP -sTCP:LISTEN -P -n 2>/dev/null | awk 'NR>1{print $1":"$9}' | sort -u | head -10)
-    local port_count=$(echo "$open_ports" | grep -c "." 2>/dev/null || echo 0)
-    status+="🌐 Открытых портов: $port_count\n"
-
-    # 3. Check SSH attempts (if log exists)
-    local ssh_fails=0
-    if [ -f /var/log/system.log ]; then
-        ssh_fails=$(grep -c "sshd.*Failed" /var/log/system.log 2>/dev/null | tr -d "[:space:]" || echo 0)
-        [[ "$ssh_fails" =~ ^[0-9]+$ ]] || ssh_fails=0
-    fi
-    if [ "$ssh_fails" -gt 0 ]; then
-        status+="⚠️ SSH failed attempts: $ssh_fails\n"
-        issues=$((issues + 1))
-    else
-        status+="✅ SSH: чисто\n"
-    fi
-
-    # 4. Check for recently modified files in sensitive dirs
-    local recent_sensitive=$(find /usr/local/bin /usr/bin -newer "$HOME/.bashrc" -type f 2>/dev/null | wc -l | tr -d ' ')
-    if [ "$recent_sensitive" -gt 0 ]; then
-        status+="⚠️ Изменений в /usr/*/bin: $recent_sensitive файлов\n"
-        issues=$((issues + 1))
-    else
-        status+="✅ Системные бинарники: не изменены\n"
-    fi
-
-    # 5. Check .env files for world-readable
-    local world_readable=$(find "$HOME/Папка тест/fixcraftvp" -name ".env" -perm +004 2>/dev/null | wc -l | tr -d ' ')
-    if [ "$world_readable" -gt 0 ]; then
-        status+="⚠️ .env файлы world-readable: $world_readable\n"
-        issues=$((issues + 1))
-    fi
-
-    if [ $issues -eq 0 ]; then
-        status+="\n✅ Всё чисто"
-    else
-        status+="\n⚠️ Найдено проблем: $issues"
-    fi
-
-    send_telegram "$status"
-}
-
 # === MAIN ===
 JOB="${1:-}"
 
@@ -521,13 +370,13 @@ case "$JOB" in
     memory-cleanup) run_bash_job memory-cleanup job_memory_cleanup ;;
     git-auto-save) run_bash_job git-auto-save job_git_auto_save ;;
     news-digest)
-        run_bash_job news-digest job_news_digest
+        run_ai_job news-digest "Give a brief digest of the most important tech and crypto news today. 5-7 items max, in Russian. Keep it under 500 characters." 300
         ;;
     daily-report)
-        run_bash_job daily-report job_daily_report
+        run_ai_job daily-report "Create a brief evening report: summarize system status, any issues found, and what was accomplished today. In Russian. Keep under 500 characters." 300
         ;;
     security-scan)
-        run_bash_job security-scan job_security_scan
+        run_ai_job security-scan "Run a quick security check: verify no suspicious processes, check open ports with lsof, verify no unauthorized SSH access. Report findings in Russian. Keep under 500 characters." 300
         ;;
     *)
         echo "Usage: $0 {watchdog|monitor|self-check|auto-save|token-usage|memory-cleanup|git-auto-save|news-digest|daily-report|security-scan}"

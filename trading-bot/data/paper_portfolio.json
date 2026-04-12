@@ -1,29 +1,8 @@
 {
-  "positions": [
-    {
-      "asset": "XRP",
-      "side": "SHORT",
-      "size_usd": 250.0,
-      "entry_price": 1.32935,
-      "stop_loss": 1.34,
-      "take_profit": 1.29,
-      "trailing_stop_pct": 2.0,
-      "opened_at": "2026-04-12T00:01:59.383789"
-    },
-    {
-      "asset": "AVAX",
-      "side": "SHORT",
-      "size_usd": 150.0,
-      "entry_price": 9.0183,
-      "stop_loss": 9.13,
-      "take_profit": 8.74,
-      "trailing_stop_pct": 2.0,
-      "opened_at": "2026-04-12T06:02:18.948850"
-    }
-  ],
+  "positions": [],
   "history": [],
   "created": "2026-04-10T04:34:37.944182+00:00",
-  "cash": 608.1754109537452,
+  "cash": 1006.4830966112056,
   "initial_capital": 1000.0,
   "closed_trades": [
     {
@@ -97,6 +76,30 @@
       "opened_at": "2026-04-10T18:02:00.279371",
       "closed_at": "2026-04-11T21:42:23.606790",
       "reason": "Auto STOP_LOSS: SL @ $2235.55"
+    },
+    {
+      "asset": "AVAX",
+      "side": "SHORT",
+      "size_usd": 150.0,
+      "entry_price": 9.0183,
+      "exit_price": 9.111,
+      "pnl_usd": -1.54,
+      "pnl_pct": -1.03,
+      "opened_at": "2026-04-12T06:02:18.948850",
+      "closed_at": "2026-04-12T13:59:22.453593",
+      "reason": "Цена $9.11 в $0.02 от SL $9.13. BID-HEAVY стакан +12.3%, MACD bullish cross,               StochRSI oversold 4h — все сигналы против SHORT. Закрываю проактивно,               избегаю проскальзывания на стопе. Фиксирую убыток -$1.54."
+    },
+    {
+      "asset": "XRP",
+      "side": "SHORT",
+      "size_usd": 250.0,
+      "entry_price": 1.32935,
+      "exit_price": 1.33015,
+      "pnl_usd": -0.15,
+      "pnl_pct": -0.06,
+      "opened_at": "2026-04-12T00:01:59.383789",
+      "closed_at": "2026-04-12T15:01:46.874155",
+      "reason": "Три whale bid-стены прямо на $1.33, funding -0.0012% (толпа в шорте = сквиз-риск),    4h StochRSI oversold с bullish cross — bounce вероятен. SL в 0.075% от цены:    риск/доходность больше не оправдывает удержание. Убыток $0.15 — ничтожен."
     }
   ],
   "scan_history": [
@@ -2059,7 +2062,197 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T13:49:43.091263",
+      "total_value": 1007.75,
+      "portfolio_value": 1007.75,
+      "pnl": 7.75,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "⚠️ Claude не ответил. Данные получены, анализ недоступен.",
+      "trades": [],
+      "ta_scores": {
+        "ETH": {
+          "score": -45,
+          "rec": "STRONG_SELL",
+          "rsi": 37.4
+        },
+        "XRP": {
+          "score": -55,
+          "rec": "STRONG_SELL",
+          "rsi": 42.5
+        },
+        "AVAX": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 43.2
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 13.3
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -5.8
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T13:59:22.453856",
+      "total_value": 1006.03,
+      "portfolio_value": 1006.03,
+      "pnl": 6.03,
+      "sentiment": "bearish",
+      "actions_taken": 1,
+      "summary": "## АНАЛИЗ РЫНКА — 2026-04-12 13:58 UTC",
+      "trades": [
+        "✅ ЗАКРЫТА SHORT AVAX @ $9.11 | P&L: -1.54$ (-1.0%) | Цена $9.11 в $0.02 от SL $9.13. BID-HEAVY стакан +12.3%, MACD bullish cross,               StochRSI oversold 4h — все сигналы против SHORT. Закрываю проактивно,               избегаю проскальзывания на стопе. Фиксирую убыток -$1.54.",
+        "🔄 HOLD XRP | SL $1.34 активен. Macro жёстко медвежий (Hormuz, F&G 16). ADX 1h = 25.6               медвежий тренд. Whale walls на $1.33 — зона боя, при пробое вниз позиция               заработает. Позволяю SL управлять риском. Если пробивает $1.34 — выходим.",
+        "⏸️ NO_ACTION | NewsAgent директива STOP_NEW_ENTRIES. Risk level: CRITICAL.               Геополитический шок (Hormuz blockade). F&G = 16 Extreme Fear.               Все таймфреймы на ETH/XRP/AVAX конфликтуют. Рынок непредсказуем.               Новые позиции — только после стабилизации ситуации."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -45,
+          "rec": "STRONG_SELL",
+          "rsi": 43.0
+        },
+        "XRP": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 47.0
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 48.3
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 15.8
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.8
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 2.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T14:02:00.808334",
+      "total_value": 1006.01,
+      "portfolio_value": 1006.01,
+      "pnl": 6.01,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "**Экстремальный страх, геополитика рушит рынки:**",
+      "trades": [
+        "🔄 HOLD XRP | SHORT @ $1.33 в рамках стратегии. SL $1.34 защищает. Whale walls временная поддержка, bear тренд на 1h сохраняется. P&L -$0.62 допустимо. Ждём пробой $1.32.",
+        "⏸️ NO_ACTION | NewsAgent CRITICAL (Score -0.56, STOP_NEW_ENTRIES). Extreme Fear 16. Геополитика (блокада Ормуза) = повышенная волатильность. ETH конфликт таймфреймов. AVAX funding перегружен лонгами. Все новые входы заблокированы до снижения риска."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -55,
+          "rec": "STRONG_SELL",
+          "rsi": 43.2
+        },
+        "XRP": {
+          "score": -25,
+          "rec": "SELL",
+          "rsi": 47.3
+        },
+        "AVAX": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 48.6
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -0.8
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -1.7
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T15:01:46.874427",
+      "total_value": 1006.48,
+      "portfolio_value": 1006.48,
+      "pnl": 6.48,
+      "sentiment": "bearish",
+      "actions_taken": 1,
+      "summary": "## 📊 VASILY MARKET ANALYSIS — 2026-04-12 15:00 UTC",
+      "trades": [
+        "✅ ЗАКРЫТА SHORT XRP @ $1.33 | P&L: -0.15$ (-0.1%) | Три whale bid-стены прямо на $1.33, funding -0.0012% (толпа в шорте = сквиз-риск),    4h StochRSI oversold с bullish cross — bounce вероятен. SL в 0.075% от цены:    риск/доходность больше не оправдывает удержание. Убыток $0.15 — ничтожен.",
+        "⏸️ NO_ACTION | NewsAgent: STOP_NEW_ENTRIES (CRITICAL risk). Fear & Greed 16.    Геополитический шок (Ормуз блокада). ETH сигналы противоречивы (1h SELL vs 4h BUY).    AVAX: SELL на 1h. Нет высокоуверенных сетапов при текущем macro.    Капитал сохраняется в кэше до стабилизации."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -55,
+          "rec": "STRONG_SELL",
+          "rsi": 41.4
+        },
+        "XRP": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 44.8
+        },
+        "AVAX": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 48.0
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -1.7
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -1.7
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-12T12:01:30.874240"
+  "updated_at": "2026-04-12T15:01:46.874457"
 }

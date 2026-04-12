@@ -1,0 +1,20 @@
+# === Cron Bot @kronikronikroni_bot ===
+
+# --- System watchdog & monitoring ---
+*/5 * * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" watchdog >> /Users/vladimirprihodko/logs/cron/watchdog.log 2>&1
+17 * * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" monitor >> /Users/vladimirprihodko/logs/cron/monitor.log 2>&1
+7 * * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" self-check >> /Users/vladimirprihodko/logs/cron/self-check.log 2>&1
+
+# --- Backup & sync ---
+37 */2 * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" auto-save >> /Users/vladimirprihodko/logs/cron/auto-save.log 2>&1
+3 */3 * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" git-auto-save >> /Users/vladimirprihodko/logs/cron/git-auto-save.log 2>&1
+# sync-memory.sh removed — duplicate of LaunchAgent com.vladimir.memory-sync
+
+# --- Reports (pure bash, no AI) ---
+2 9,21 * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" news-digest >> /Users/vladimirprihodko/logs/cron/news-digest.log 2>&1
+52 22 * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" daily-report >> /Users/vladimirprihodko/logs/cron/daily-report.log 2>&1
+2 22 * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" token-usage >> /Users/vladimirprihodko/logs/cron/token-usage.log 2>&1
+
+# --- Maintenance ---
+2 4 * * * /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" security-scan >> /Users/vladimirprihodko/logs/cron/security-scan.log 2>&1
+2 3 * * 0 /bin/bash "/Users/vladimirprihodko/Папка тест/fixcraftvp/.claude/claudeclaw/scripts/haiku-runner.sh" memory-cleanup >> /Users/vladimirprihodko/logs/cron/memory-cleanup.log 2>&1
