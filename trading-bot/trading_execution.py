@@ -131,7 +131,13 @@ class PaperTrader:
 
     def __init__(self, initial_balance: float = 1000.0):
         self._data = self._load()
-        if not self._data.get("balance"):
+        # Normalize schema: market_scan uses "cash"/"closed_trades",
+        # PaperTrader uses "balance"/"history". Unify to PaperTrader keys.
+        if self._data.get("cash") and not self._data.get("balance"):
+            self._data["balance"] = self._data.pop("cash")
+        if self._data.get("closed_trades") and not self._data.get("history"):
+            self._data["history"] = self._data.get("closed_trades", [])
+        if not self._data.get("balance") and not self._data.get("positions"):
             self._data = {
                 "balance": initial_balance,
                 "positions": [],
@@ -141,16 +147,55 @@ class PaperTrader:
             self._save()
 
     def _load(self) -> dict:
+        import fcntl
         if PAPER_PORTFOLIO_PATH.exists():
+            lock_path = PAPER_PORTFOLIO_PATH.with_suffix(".json.lock")
+            lock_fd = None
             try:
+                lock_fd = open(lock_path, "w")
+                fcntl.flock(lock_fd, fcntl.LOCK_SH)
                 return json.loads(PAPER_PORTFOLIO_PATH.read_text())
             except (json.JSONDecodeError, OSError):
                 pass
+            finally:
+                if lock_fd:
+                    try:
+                        fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                        lock_fd.close()
+                    except Exception:
+                        pass
         return {}
 
     def _save(self) -> None:
+        """Atomic save with file lock — prevents race with market_scan.py."""
+        import fcntl
+        import tempfile
         PAPER_PORTFOLIO_PATH.parent.mkdir(parents=True, exist_ok=True)
-        PAPER_PORTFOLIO_PATH.write_text(json.dumps(self._data, indent=2, default=str))
+        lock_path = PAPER_PORTFOLIO_PATH.with_suffix(".json.lock")
+        lock_fd = None
+        tmp_path = None
+        try:
+            lock_fd = open(lock_path, "w")
+            fcntl.flock(lock_fd, fcntl.LOCK_EX)
+            fd, tmp_path = tempfile.mkstemp(dir=PAPER_PORTFOLIO_PATH.parent, suffix=".tmp")
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(self._data, f, indent=2, default=str)
+            os.replace(tmp_path, str(PAPER_PORTFOLIO_PATH))
+            tmp_path = None
+        except Exception as e:
+            log.error("PaperTrader._save failed: %s", e)
+            if tmp_path:
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+        finally:
+            if lock_fd:
+                try:
+                    fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                    lock_fd.close()
+                except Exception:
+                    pass
 
     def _get_price(self, coin: str) -> float:
         """Текущая mid-цена с Hyperliquid."""
@@ -162,7 +207,7 @@ class PaperTrader:
             return 0.0
 
     def get_balance(self) -> float:
-        return self._data.get("balance", 0.0)
+        return self._data.get("balance", self._data.get("cash", 0.0))
 
     def get_positions(self) -> list[dict]:
         return self._data.get("positions", [])
@@ -195,6 +240,8 @@ class PaperTrader:
             "take_profit": round(tp_price, 6),
             "opened_at": datetime.now(timezone.utc).isoformat(),
         }
+        # Deduct invested amount from balance
+        self._data["balance"] = self._data.get("balance", 0) - size_usd
         self._data.setdefault("positions", []).append(position)
         self._save()
         log.info("PAPER ORDER: %s %s $%.2f @ %.4f (SL=%.4f TP=%.4f)", side, coin, size_usd, price, sl_price, tp_price)
@@ -220,7 +267,8 @@ class PaperTrader:
             else:
                 pnl = (entry - price) * qty
 
-            self._data["balance"] = self._data.get("balance", 0) + pnl
+            # Return investment + PnL to balance
+            self._data["balance"] = self._data.get("balance", 0) + pos["size_usd"] + pnl
             self._data.setdefault("history", []).append({
                 **pos,
                 "close_price": round(price, 6),
@@ -250,11 +298,12 @@ class PaperTrader:
 
         today_str = date.today().isoformat()
         balance = self.get_balance()
-        history = self._data.get("history", [])
+        # Support both schemas: "history" (PaperTrader) and "closed_trades" (market_scan)
+        history = self._data.get("history", []) or self._data.get("closed_trades", [])
 
-        # Считаем сделки и P&L за сегодня
+        # Считаем сделки и P&L за сегодня (check both pnl key names)
         today_trades = [t for t in history if t.get("closed_at", "")[:10] == today_str]
-        pnl_day = sum(t.get("pnl", 0) for t in today_trades)
+        pnl_day = sum(t.get("pnl", t.get("pnl_usd", 0)) for t in today_trades)
         pnl_pct = (pnl_day / (balance - pnl_day) * 100) if (balance - pnl_day) > 0 else 0.0
 
         entry = {
@@ -275,7 +324,18 @@ class PaperTrader:
         if not updated:
             snapshots.append(entry)
 
-        pnl_path.write_text(json.dumps(snapshots, indent=2, default=str))
+        import tempfile
+        try:
+            fd, tmp_path = tempfile.mkstemp(dir=pnl_path.parent, suffix=".tmp")
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(snapshots, f, indent=2, default=str)
+            os.replace(tmp_path, str(pnl_path))
+        except Exception as e:
+            log.error("save_daily_snapshot failed: %s", e)
+            try:
+                os.unlink(tmp_path)
+            except (OSError, UnboundLocalError):
+                pass
         log.info("Daily snapshot saved: %s", entry)
 
 

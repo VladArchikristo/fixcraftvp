@@ -15,21 +15,21 @@
   },
   {
     "date": "2026-04-10",
-    "balance": 1000.0,
-    "pnl_day": 0,
-    "pnl_pct": 0.0,
-    "trades": 0
+    "balance": 1007.8,
+    "pnl_day": 7.8,
+    "pnl_pct": 0.78,
+    "trades": 2
   },
   {
     "date": "2026-04-11",
-    "balance": 1000.0,
-    "pnl_day": 0,
-    "pnl_pct": 0.0,
-    "trades": 0
+    "balance": 1008.18,
+    "pnl_day": 0.38,
+    "pnl_pct": 0.04,
+    "trades": 4
   },
   {
     "date": "2026-04-12",
-    "balance": 1000.0,
+    "balance": 1008.18,
     "pnl_day": 0,
     "pnl_pct": 0.0,
     "trades": 0
