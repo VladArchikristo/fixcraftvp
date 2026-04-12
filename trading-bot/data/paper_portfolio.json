@@ -2252,7 +2252,101 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T17:02:12.831152",
+      "total_value": 1006.48,
+      "portfolio_value": 1006.48,
+      "pnl": 6.48,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ ВАСИЛИЯ | 2026-04-12 17:00 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | NewsAgent CRITICAL/STOP_NEW_ENTRIES + активная геополитика (блокада Ормуза). ETH имеет интересный 4h oversold сетап с whale support, но риск дальнейшего dump при эскалации войны перевешивает. Фандинг отрицательный = SHORT тоже опасен (squeeze). Ждём разрешения геополитики или пробоя $2206 вниз как сигнала для решения."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 48.9
+        },
+        "XRP": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 52.0
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 52.4
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 15.0
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 1.7
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 4.2
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T18:01:36.670060",
+      "total_value": 1006.48,
+      "portfolio_value": 1006.48,
+      "pnl": 6.48,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА | Василий | 2026-04-12 18:00 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | NewsAgent STOP_NEW_ENTRIES + геополитический шок (блокада Ормуза) +    Fear&Greed 16 + ETH ASK-heavy 100% + конфликт сигналов на всех активах.    Рынок в режиме panic-sell, входить против толпы опасно, входить с толпой —    поздно (StochRSI 96 на 1h). Ждём стабилизации."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 46.8
+        },
+        "XRP": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 51.1
+        },
+        "AVAX": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 51.8
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 15.0
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -2.5
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -2.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-12T15:01:46.874457"
+  "updated_at": "2026-04-12T18:01:36.670112"
 }
