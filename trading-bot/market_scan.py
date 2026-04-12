@@ -23,7 +23,13 @@ from dotenv import load_dotenv
 import html as html_mod
 
 # ─── Local modules ──────────────────────────────────────────────────────────
-from news_agent import get_news_signal, format_signal_for_vasily
+try:
+    from news_agent import get_news_signal, format_signal_for_vasily
+    _NEWS_AGENT_AVAILABLE = True
+except ImportError:
+    _NEWS_AGENT_AVAILABLE = False
+    get_news_signal = None
+    format_signal_for_vasily = None
 from hyperliquid_api import (
     fetch_market_summary, fetch_candles, fetch_funding_rates,
     fetch_extended_market, fetch_multi_timeframe, fetch_vault_summaries,
@@ -109,9 +115,13 @@ def load_portfolio():
     except (json.JSONDecodeError, ValueError) as e:
         log.error("Portfolio file corrupted: %s", e)
         backup = PORTFOLIO_FILE.with_suffix(".json.bak")
-        PORTFOLIO_FILE.rename(backup)
-        log.warning("Backed up corrupted portfolio to %s", backup)
-        return load_portfolio()
+        try:
+            PORTFOLIO_FILE.rename(backup)
+            log.warning("Backed up corrupted portfolio to %s", backup)
+        except Exception:
+            pass
+        # Return fresh portfolio instead of recursion (avoids infinite loop)
+        return {"initial_capital": 100, "cash": 100, "positions": [], "closed_trades": [], "scan_history": []}
     finally:
         if lock_fd:
             try:
@@ -159,7 +169,7 @@ def fetch_prices():
         r = requests.get(url, timeout=15)
         return r.json()
     except Exception as e:
-        print(f"[ERROR] fetch_prices: {e}")
+        log.error("fetch_prices: %s", e)
         return {}
 
 def fetch_fear_greed():
@@ -1107,25 +1117,86 @@ def execute_trades(actions, portfolio, prices, hl_market=None, ta_data=None, ext
     return trade_log
 
 # ─── Claude CLI ────────────────────────────────────────────────────────────────
+def _get_claude_env() -> dict:
+    """Clean env for Claude CLI — only essentials, no stale tokens."""
+    home = Path.home()
+    nvm_node_bin = ""
+    nvm_dir = home / ".nvm" / "versions" / "node"
+    if nvm_dir.exists():
+        versions = sorted(nvm_dir.iterdir(), reverse=True)
+        if versions:
+            nvm_node_bin = str(versions[0] / "bin")
+    base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
+    extra = f"{home}/.local/bin:{nvm_node_bin}:{home}/.bun/bin" if nvm_node_bin else f"{home}/.local/bin:{home}/.bun/bin"
+    env = {
+        "HOME": str(home),
+        "PATH": f"{extra}:{base_path}",
+        "USER": os.environ.get("USER", ""),
+        "LANG": os.environ.get("LANG", "en_US.UTF-8"),
+        "TERM": os.environ.get("TERM", "xterm-256color"),
+    }
+    tmpdir = os.environ.get("TMPDIR")
+    if tmpdir:
+        env["TMPDIR"] = tmpdir
+    return env
+
+
 def ask_claude(prompt):
-    """Вызываем Claude через CLI"""
-    try:
-        result = subprocess.run(
-            [CLAUDE_PATH, "-p", prompt, "--model", "claude-sonnet-4-6", "--output-format", "text", "--max-turns", "15"],
-            capture_output=True, text=True, timeout=180,
-            cwd="/Users/vladimirprihodko/Папка тест/fixcraftvp"
-        )
-        if result.returncode == 0:
-            return result.stdout.strip()
-        else:
-            log.error("Claude stderr: %s", result.stderr[:500])
-            return None
-    except subprocess.TimeoutExpired:
-        log.error("Claude timeout после 180 сек")
-        return None
-    except Exception as e:
-        log.error("ask_claude error: %s", e)
-        return None
+    """Вызываем Claude через CLI с retry (3 попытки) и clean env.
+    Убивает process group при таймауте — нет зомби-процессов."""
+    import signal as _signal
+    backoff = [3, 5, 10]
+
+    for attempt in range(3):
+        proc = None
+        try:
+            proc = subprocess.Popen(
+                [CLAUDE_PATH, "-p",
+                 "--model", "claude-sonnet-4-6",
+                 "--output-format", "text",
+                 "--max-turns", "15"],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd="/Users/vladimirprihodko/Папка тест/fixcraftvp",
+                env=_get_claude_env(),
+                start_new_session=True,  # process group for clean kill
+            )
+            stdout, stderr = proc.communicate(input=prompt, timeout=180)
+
+            if proc.returncode == 0 and stdout.strip():
+                return stdout.strip()
+            else:
+                log.error("Claude attempt %d/3 exited %d: %s", attempt + 1, proc.returncode, (stderr or "")[:500])
+
+        except subprocess.TimeoutExpired:
+            log.warning("Claude attempt %d/3 timed out after 180 sec", attempt + 1)
+            if proc:
+                try:
+                    os.killpg(os.getpgid(proc.pid), _signal.SIGKILL)
+                    log.info("Killed Claude process group (PID %d)", proc.pid)
+                except (ProcessLookupError, PermissionError):
+                    try:
+                        proc.kill()
+                    except (ProcessLookupError, PermissionError):
+                        pass
+                try:
+                    proc.wait(timeout=5)
+                except (ChildProcessError, subprocess.TimeoutExpired):
+                    pass
+            if attempt == 2:  # last attempt — no retry on timeout
+                return None
+
+        except Exception as e:
+            log.error("ask_claude attempt %d/3 error: %s", attempt + 1, e)
+
+        if attempt < 2:
+            delay = backoff[attempt]
+            log.info("Retrying Claude in %d sec...", delay)
+            time.sleep(delay)
+
+    return None
 
 # ─── Telegram ─────────────────────────────────────────────────────────────────
 def _smart_split(text: str, limit: int = 4000) -> list[str]:
@@ -1187,15 +1258,21 @@ def send_telegram(text, max_len=4000):
 
 # ─── Лог ──────────────────────────────────────────────────────────────────────
 def save_log(scan_result):
-    ts = datetime.now().strftime("%Y-%m-%d_%H-%M")
-    log_file = LOG_DIR / f"scan_{ts}.json"
-    with open(log_file, "w") as f:
-        json.dump(scan_result, f, indent=2, ensure_ascii=False)
+    try:
+        ts = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        log_file = LOG_DIR / f"scan_{ts}.json"
+        with open(log_file, "w") as f:
+            json.dump(scan_result, f, indent=2, ensure_ascii=False)
 
-    # Чистим старые логи — оставляем последние 30
-    logs = sorted(LOG_DIR.glob("scan_*.json"))
-    for old in logs[:-30]:
-        old.unlink()
+        # Чистим старые логи — оставляем последние 30
+        logs = sorted(LOG_DIR.glob("scan_*.json"))
+        for old in logs[:-30]:
+            try:
+                old.unlink()
+            except OSError as e:
+                log.warning("Failed to delete old scan log %s: %s", old, e)
+    except Exception as e:
+        log.error("save_log failed: %s", e)
 
 # ─── Форматирование Telegram сообщения ────────────────────────────────────────
 def format_telegram_message(analysis, trade_log, portfolio, prices, pnl_lines, total_value,
@@ -1409,6 +1486,7 @@ def main():
     # 2d. Strategy Intelligence — combine all signals
     print("[*] Strategy Intelligence...")
     strategy_report = ""
+    combined = []  # Initialize before try block — used later in check_signal_validity
     try:
         funding_data = hl_market or {}
         pred_funding = extended_data.get("predicted_funding", {}) if extended_data else {}
@@ -1500,6 +1578,16 @@ def main():
     # 3b. P&L оставшихся позиций
     pnl_lines, total_value = calc_pnl(portfolio, prices, hl_market)
 
+    # 3c. NewsAgent signal (if available)
+    news_signal = None
+    if _NEWS_AGENT_AVAILABLE and get_news_signal:
+        try:
+            news_signal = get_news_signal()
+            if news_signal:
+                print(f"[+] NewsAgent: sentiment={news_signal.get('overall_sentiment', '?')}")
+        except Exception as e:
+            log.warning("NewsAgent failed: %s", e)
+
     # 4. Промпт и анализ Claude — с ПОЛНЫМИ данными Hyperliquid
     print("[*] Строим промпт (Hyperliquid Extended + Multi-TF TA + Strategies + News)...")
     prompt = build_prompt(
@@ -1507,6 +1595,7 @@ def main():
         portfolio, pnl_lines, total_value,
         rsi_data=rsi_data, hl_market=hl_market, ta_reports=ta_reports,
         strategy_report=strategy_report, extended_data=extended_data,
+        news_signal=news_signal,
     )
     log.info("Prompt length: %d chars", len(prompt))
 
