@@ -1,40 +1,39 @@
 {
-  "timestamp": "2026-04-10T11:22:27.618861+00:00",
+  "timestamp": "2026-04-12T02:41:21.700784+00:00",
   "sentiment": "bearish",
-  "score": -0.81,
+  "score": -0.64,
   "fear_greed": {
     "value": 16,
     "label": "Extreme Fear",
     "trend": "rising"
   },
   "key_events": [
-    "[HACK] The Drift Protocol Hack: $285.0M stolen",
-    "Mythos AI threat prompts Bessent, Powell to convene bank CEOs for urgent talks",
-    "Aethir halts bridge exploit, promises compensation after $90K loss",
-    "Bitcoin holds steady as inflation data looms, bittensor drama unfolds",
-    "HSBC and Standard Chartered-led group land Hong Kong’s first stablecoin licenses"
+    "Musk’s SpaceX holds $603 million in bitcoin despite $5 billion loss stemming from xAI",
+    "$1.6 billion Ether Machine SPAC deal collapses over unfavorable market",
+    "US President Trump faces renewed backlash as Trump-linked tokens crash",
+    "Crypto crashed six months ago: Have markets improved, or are bears still in charge?",
+    "Bitcoin and other cryptos fall as U.S., Iranian negotiators fail to reach war resolution"
   ],
   "affected_assets": [
+    "BTC",
     "ETH",
     "SOL",
-    "XRP",
-    "DOGE",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "TAO",
-    "RAVE",
+    "BTC",
+    "FIRO",
+    "OVPP",
     "MON",
-    "ZEC",
-    "PENGU",
-    "WLFI",
-    "XMR"
+    "SOL",
+    "VVV",
+    "TAO"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 20,
-  "hacks_detected": 1,
-  "fetch_time_sec": 54.51,
-  "cached_at": 1775820147.619122
+  "news_count": 17,
+  "hacks_detected": 0,
+  "fetch_time_sec": 3.23,
+  "cached_at": 1775961681.7009778
 }
