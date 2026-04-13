@@ -2,6 +2,7 @@ const express = require('express');
 const { verifyToken } = require('../middleware/auth');
 const { calculateTollCost, getTollsByState, getAvailableStates } = require('../services/tollCalculator');
 const db = require('../db');
+const cache = require('../services/cache');
 
 const router = express.Router();
 
@@ -295,6 +296,19 @@ router.get('/route', (req, res) => {
       });
     }
 
+    let truckType = truck_type;
+    if (axles && !truck_type) {
+      truckType = `${axles}-axle`;
+    }
+
+    // --- Cache check ---
+    const cacheKey = cache.routeCacheKey(from, to, truckType);
+    const cached = cache.get(cacheKey);
+    if (cached) {
+      // Добавляем признак кэша, но не сохраняем в историю повторно
+      return res.json({ ...cached, cached: true });
+    }
+
     const fromState = parseCity(from);
     const toState = parseCity(to);
 
@@ -305,18 +319,13 @@ router.get('/route', (req, res) => {
       return res.status(400).json({ error: `Unknown city: "${to}". Use format "Houston,TX"` });
     }
 
-    let truckType = truck_type;
-    if (axles && !truck_type) {
-      truckType = `${axles}-axle`;
-    }
-
     const states = getStatesBetween(fromState, toState);
     const distanceMiles = estimateDistance(fromState, toState);
     const availableStates = getAvailableStates();
     const filteredStates = states.filter(s => availableStates.includes(s));
 
     if (filteredStates.length === 0) {
-      return res.status(200).json({
+      const emptyResult = {
         from, to,
         from_state: fromState,
         to_state: toState,
@@ -324,10 +333,24 @@ router.get('/route', (req, res) => {
         total: 0,
         message: 'No toll roads found on this route',
         breakdown: [],
-      });
+      };
+      cache.set(cacheKey, emptyResult);
+      return res.status(200).json(emptyResult);
     }
 
     const result = calculateTollCost(filteredStates, distanceMiles, truckType);
+
+    const response = {
+      from,
+      to,
+      from_state: fromState,
+      to_state: toState,
+      distance_miles: distanceMiles,
+      ...result,
+    };
+
+    // Кэшируем результат (TTL 1 час)
+    cache.set(cacheKey, response);
 
     // Сохраняем в историю если пользователь авторизован
     if (userId) {
@@ -340,14 +363,7 @@ router.get('/route', (req, res) => {
       }
     }
 
-    res.json({
-      from,
-      to,
-      from_state: fromState,
-      to_state: toState,
-      distance_miles: distanceMiles,
-      ...result,
-    });
+    res.json(response);
   } catch (err) {
     console.error('Route calculate error:', err);
     res.status(500).json({ error: 'Server error' });

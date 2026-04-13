@@ -13,7 +13,13 @@ app.use(express.json());
 
 // Health check
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime(), version: '0.2.0' });
+  const cache = require('./services/cache');
+  res.json({
+    status: 'ok',
+    uptime: process.uptime(),
+    version: '0.2.0',
+    cache: cache.stats(),
+  });
 });
 
 // Auth роуты
