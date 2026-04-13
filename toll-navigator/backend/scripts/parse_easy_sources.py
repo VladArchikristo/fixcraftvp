@@ -143,67 +143,62 @@ def is_duplicate(name: str, seed_names: set, existing: list) -> bool:
 
 def parse_fhwa() -> list:
     """
-    Socrata API — FHWA Toll Facilities.
-    Dataset: https://data.transportation.gov/resource/qea2-tqrm.json
+    Socrata API — FHWA Toll ID Elements.
+    Dataset: https://data.transportation.gov/resource/8fiq-4cn6.json
+    Fields: state, hpms_toll_id, name_of_toll_facility
+    ~526 records covering all US states.
     """
-    log.info('[FHWA] Fetching data.transportation.gov ...')
+    log.info('[FHWA] Fetching data.transportation.gov (FHWA Toll ID Elements) ...')
     results = []
 
-    # Попробуем несколько endpoint'ов
-    endpoints = [
-        'https://data.transportation.gov/resource/qea2-tqrm.json?$limit=2000',
-        'https://data.transportation.gov/resource/qea2-tqrm.json?$limit=2000&$offset=0',
-    ]
+    # State name -> abbreviation map
+    state_name_map = {
+        'alabama': 'AL', 'alaska': 'AK', 'arizona': 'AZ', 'arkansas': 'AR',
+        'california': 'CA', 'colorado': 'CO', 'connecticut': 'CT', 'delaware': 'DE',
+        'florida': 'FL', 'georgia': 'GA', 'hawaii': 'HI', 'idaho': 'ID',
+        'illinois': 'IL', 'indiana': 'IN', 'iowa': 'IA', 'kansas': 'KS',
+        'kentucky': 'KY', 'louisiana': 'LA', 'maine': 'ME', 'maryland': 'MD',
+        'massachusetts': 'MA', 'michigan': 'MI', 'minnesota': 'MN', 'mississippi': 'MS',
+        'missouri': 'MO', 'montana': 'MT', 'nebraska': 'NE', 'nevada': 'NV',
+        'new hampshire': 'NH', 'new jersey': 'NJ', 'new mexico': 'NM', 'new york': 'NY',
+        'north carolina': 'NC', 'north dakota': 'ND', 'ohio': 'OH', 'oklahoma': 'OK',
+        'oregon': 'OR', 'pennsylvania': 'PA', 'rhode island': 'RI', 'south carolina': 'SC',
+        'south dakota': 'SD', 'tennessee': 'TN', 'texas': 'TX', 'utah': 'UT',
+        'vermont': 'VT', 'virginia': 'VA', 'washington': 'WA', 'west virginia': 'WV',
+        'wisconsin': 'WI', 'wyoming': 'WY',
+    }
 
-    data = None
-    for url in endpoints:
-        data = fetch_json(url, timeout=30)
-        if data:
-            break
+    url = 'https://data.transportation.gov/resource/8fiq-4cn6.json?$limit=2000'
+    data = fetch_json(url, timeout=30)
 
-    if not data:
+    if not data or not isinstance(data, list):
         log.warning('[FHWA] No data received, skipping')
-        return results
-
-    if not isinstance(data, list):
-        log.warning(f'[FHWA] Unexpected format: {type(data)}')
         return results
 
     log.info(f'[FHWA] Raw records: {len(data)}')
 
-    # Inspect first record to understand schema
-    if data:
-        log.info(f'[FHWA] Sample keys: {list(data[0].keys())[:10]}')
-
     for row in data:
-        # Пробуем разные варианты имён полей (Socrata может менять их)
-        name = (
-            row.get('facility_name') or
-            row.get('toll_facility_name') or
-            row.get('name') or
-            row.get('road_name') or
-            ''
-        )
-        state = (
-            row.get('state_code') or
-            row.get('state') or
-            row.get('st') or
-            ''
-        )
-        if not name or not state or len(state) > 3:
+        name = row.get('name_of_toll_facility', '').strip()
+        state_raw = row.get('state', '').strip()
+
+        if not name or not state_raw:
             continue
 
-        hwy = row.get('route_number') or row.get('highway') or row.get('route') or ''
-        length = 0.0
-        try:
-            length = float(row.get('length_miles') or row.get('length') or row.get('miles') or 0)
-        except (ValueError, TypeError):
-            pass
+        # Конвертируем полное название штата в аббревиатуру
+        state = state_name_map.get(state_raw.lower(), '')
+        if not state:
+            # Может уже аббревиатура
+            if len(state_raw) == 2:
+                state = state_raw.upper()
+            else:
+                log.debug(f'[FHWA] Unknown state: {state_raw}')
+                continue
 
-        toll_type_raw = (row.get('facility_type') or row.get('toll_type') or '').lower()
-        if 'bridge' in toll_type_raw or 'tunnel' in toll_type_raw:
+        # Определяем тип по названию
+        name_lower = name.lower()
+        if 'bridge' in name_lower or 'tunnel' in name_lower or 'ferry' in name_lower:
             toll_type = 'bridge_tunnel'
-        elif 'express' in toll_type_raw or 'managed' in toll_type_raw or 'hot' in toll_type_raw:
+        elif 'express' in name_lower or 'hov' in name_lower or 'hot' in name_lower or 'managed' in name_lower:
             toll_type = 'express_lane'
         else:
             toll_type = 'toll_road'
@@ -211,9 +206,7 @@ def parse_fhwa() -> list:
         results.append(make_record(
             name=name,
             state=state,
-            highway_number=str(hwy),
             toll_type=toll_type,
-            length_miles=length,
             source='FHWA/data.transportation.gov',
         ))
 
@@ -360,81 +353,79 @@ def parse_osm() -> list:
 
 def parse_fldot() -> list:
     """
-    Florida DOT GIS — ArcGIS Feature Service.
-    Пробуем несколько известных FL GIS endpoints.
+    Florida DOT GIS — ArcGIS Feature Service (FDOT Toll Roads).
+    Verified endpoints:
+    - Toll_Roads_TDA: 99 records with LOCALNAM, ROUTE, BEGIN_POST, END_POST
+    - toll_roads (general): 97 records
     """
     log.info('[FLDOT] Fetching Florida toll roads GIS ...')
     results = []
+    seen_names = set()
 
-    # FL GIS открытые данные
     endpoints = [
-        # FDOT Open Data ArcGIS: Toll Facilities
-        'https://opendata.arcgis.com/datasets/7ae36d6ef5bc4a0b9abff24617a4a2ab_0.geojson',
-        # Альтернативный ArcGIS REST
-        'https://services1.arcgis.com/O1JpcwDW8sjYuddV/arcgis/rest/services/Toll_Roads/FeatureServer/0/query?where=STATE_CD+%3D+%27FL%27&outFields=*&f=json&resultRecordCount=500',
-        # FDOT District GIS
-        'https://gis.fdot.gov/arcgis/rest/services/Roadway/FDOT_Toll_Facilities/FeatureServer/0/query?where=1%3D1&outFields=FACILITY_NAME,ROUTE_ID,BEGIN_POST,END_POST,STATE_RD&f=json&resultRecordCount=500',
+        # FDOT Toll Roads TDA (verified: 99 records)
+        (
+            'https://services1.arcgis.com/O1JpcwDW8sjYuddV/arcgis/rest/services/Toll_Roads_TDA/FeatureServer/0/query'
+            '?where=1%3D1&outFields=LOCALNAM,ROUTE,RouteNum,BEGIN_POST,END_POST,Shape__Length,COUNTY&f=json&resultRecordCount=500',
+            'FDOT/Toll_Roads_TDA'
+        ),
+        # General toll_roads dataset (verified: 97 records)
+        (
+            'https://services2.arcgis.com/I9cUOJUZvdGAJncI/arcgis/rest/services/toll_roads/FeatureServer/0/query'
+            '?where=1%3D1&outFields=LOCALNAM,ROUTE,RouteNum,BEGIN_POST,END_POST,Shape__Length,COUNTY&f=json&resultRecordCount=500',
+            'FDOT/toll_roads'
+        ),
     ]
 
-    data = None
-    used_url = ''
-    for url in endpoints:
-        log.info(f'[FLDOT] Trying: {url[:80]}...')
+    for url, src_label in endpoints:
+        log.info(f'[FLDOT] Fetching {src_label} ...')
         data = fetch_json(url, timeout=30)
-        if data:
-            used_url = url
-            break
 
-    if not data:
-        log.warning('[FLDOT] All endpoints failed, skipping FL DOT')
-        return results
+        if not data or not isinstance(data, dict):
+            log.warning(f'[FLDOT] No data from {src_label}')
+            continue
 
-    # GeoJSON format
-    if isinstance(data, dict) and 'features' in data:
-        features = data['features']
-        log.info(f'[FLDOT] GeoJSON features: {len(features)}')
-        if features:
-            sample_props = features[0].get('properties', {})
-            log.info(f'[FLDOT] Sample props: {list(sample_props.keys())[:8]}')
+        features = data.get('features', [])
+        log.info(f'[FLDOT] {src_label}: {len(features)} features')
 
         for feat in features:
-            props = feat.get('properties', {}) or {}
-            name = (
-                props.get('FACILITY_NAME') or props.get('NAME') or
-                props.get('ROAD_NAME') or props.get('name') or ''
-            )
-            if not name:
+            attrs = feat.get('attributes', {}) or {}
+
+            # LOCALNAM = local name (e.g. " SUNCOAST PKWY"), ROUTE = "SR 589"
+            local_name = (attrs.get('LOCALNAM') or '').strip()
+            route = (attrs.get('ROUTE') or '').strip()
+
+            # Формируем читаемое имя
+            if local_name:
+                name = local_name
+            elif route:
+                name = f'Florida Toll Road {route}'
+            else:
                 continue
-            hwy = props.get('ROUTE_ID') or props.get('ROUTE') or props.get('STATE_RD') or ''
+
+            if name.lower() in seen_names:
+                continue
+            seen_names.add(name.lower())
+
+            # Длина: Shape__Length в метрах -> мили (1 meter = 0.000621371 miles)
             length = 0.0
             try:
-                length = float(props.get('LENGTH_MILES') or props.get('SHAPE_LEN') or 0)
-                if length > 1000:  # вероятно в футах или метрах
-                    length = length / 5280.0
+                shape_len = float(attrs.get('Shape__Length') or 0)
+                if shape_len > 0:
+                    begin = float(attrs.get('BEGIN_POST') or 0)
+                    end = float(attrs.get('END_POST') or 0)
+                    if end > begin:
+                        length = end - begin  # mile posts
+                    else:
+                        length = shape_len * 0.000621371
             except (ValueError, TypeError):
                 pass
 
             results.append(make_record(
-                name=name, state='FL', highway_number=str(hwy),
-                length_miles=length, source='FLDOT/ArcGIS'
-            ))
-
-    # ArcGIS REST format
-    elif isinstance(data, dict) and 'features' in data:
-        pass  # уже обработано выше
-
-    elif isinstance(data, dict) and data.get('features'):
-        features = data['features']
-        log.info(f'[FLDOT] ArcGIS REST features: {len(features)}')
-        for feat in features:
-            attrs = feat.get('attributes', {}) or {}
-            name = attrs.get('FACILITY_NAME') or attrs.get('NAME') or ''
-            if not name:
-                continue
-            results.append(make_record(
                 name=name, state='FL',
-                highway_number=attrs.get('ROUTE_ID', ''),
-                source='FLDOT/ArcGIS'
+                highway_number=route,
+                length_miles=round(length, 2),
+                source=src_label,
             ))
 
     log.info(f'[FLDOT] Parsed {len(results)} FL records')
@@ -445,83 +436,76 @@ def parse_fldot() -> list:
 
 def parse_txdot() -> list:
     """
-    TxDOT открытые данные — Texas toll roads.
-    Пробуем TxDOT open data portal и ArcGIS REST.
+    TxDOT — Texas Toll Roads.
+    Verified endpoint: TxDOT_Texas_Toll_Roads (686 segments, TOLL_NM field has toll road names).
     """
     log.info('[TxDOT] Fetching Texas toll roads ...')
     results = []
+    seen_names = set()
 
-    endpoints = [
-        # TxDOT Open Data ArcGIS
-        'https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Highways/FeatureServer/0/query?where=TOLL_ROAD+%3D+%27Y%27&outFields=RTE_NM,HWY_NM,BEGIN_DFO,END_DFO&f=json&resultRecordCount=500',
-        # Альтернатива через data.texas.gov (Socrata)
-        'https://data.texas.gov/resource/e8td-6dxb.json?$limit=500',
-        # TxDOT Pavement & Roadway
-        'https://opendata.arcgis.com/datasets/0b3d6e1bf6f64f7cac6e98cced9c86eb_0.geojson',
-    ]
+    # Фетчим все записи постранично (max 1000 за раз)
+    base_url = (
+        'https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Texas_Toll_Roads/FeatureServer/0/query'
+        '?where=1%3D1&outFields=TOLL_NM,RTE_NM,RTE_NBR,CHRG_TYPE,BEGIN_DFO,END_DFO&f=json&resultRecordCount=1000'
+    )
 
-    data = None
-    for url in endpoints:
-        log.info(f'[TxDOT] Trying: {url[:80]}...')
-        data = fetch_json(url, timeout=30)
-        if data:
-            break
-
-    if not data:
-        log.warning('[TxDOT] All endpoints failed, skipping TxDOT')
+    data = fetch_json(base_url, timeout=45)
+    if not data or not isinstance(data, dict):
+        log.warning('[TxDOT] No data received, skipping')
         return results
 
-    # ArcGIS REST
-    if isinstance(data, dict) and 'features' in data:
-        features = data.get('features', [])
-        log.info(f'[TxDOT] ArcGIS features: {len(features)}')
-        if features:
-            sample = features[0].get('attributes', {})
-            log.info(f'[TxDOT] Sample attrs: {list(sample.keys())[:8]}')
+    features = data.get('features', [])
+    log.info(f'[TxDOT] Raw segments: {len(features)}')
 
-        for feat in features:
-            attrs = feat.get('attributes', {}) or {}
-            name = attrs.get('HWY_NM') or attrs.get('RTE_NM') or attrs.get('NAME') or ''
-            if not name:
-                continue
-            hwy = attrs.get('RTE_NM') or attrs.get('ROUTE') or ''
-            results.append(make_record(
-                name=name, state='TX', highway_number=str(hwy),
-                source='TxDOT/ArcGIS'
-            ))
+    for feat in features:
+        attrs = feat.get('attributes', {}) or {}
 
-    # GeoJSON
-    elif isinstance(data, dict) and 'type' in data and data.get('type') == 'FeatureCollection':
-        features = data.get('features', [])
-        log.info(f'[TxDOT] GeoJSON features: {len(features)}')
-        for feat in features:
-            props = feat.get('properties', {}) or {}
-            name = props.get('HWY_NM') or props.get('NAME') or props.get('name') or ''
-            if not name:
-                continue
-            results.append(make_record(
-                name=name, state='TX',
-                highway_number=props.get('RTE_NM', ''),
-                source='TxDOT/GeoJSON'
-            ))
+        toll_nm = (attrs.get('TOLL_NM') or '').strip()
+        rte_nm = (attrs.get('RTE_NM') or '').strip()
 
-    # Socrata JSON array
-    elif isinstance(data, list):
-        log.info(f'[TxDOT] Socrata records: {len(data)}')
-        if data:
-            log.info(f'[TxDOT] Sample keys: {list(data[0].keys())[:8]}')
-        for row in data:
-            name = row.get('highway_name') or row.get('name') or row.get('road_name') or ''
-            state = row.get('state') or 'TX'
-            if not name:
-                continue
-            results.append(make_record(
-                name=name, state=state,
-                highway_number=row.get('route_number', ''),
-                source='TxDOT/Socrata'
-            ))
+        if not toll_nm and not rte_nm:
+            continue
 
-    log.info(f'[TxDOT] Parsed {len(results)} TX records')
+        name = toll_nm if toll_nm else f'Texas Toll Road {rte_nm}'
+
+        if name.lower() in seen_names:
+            continue
+        seen_names.add(name.lower())
+
+        # Длина сегмента в милях (Distance From Origin)
+        length = 0.0
+        try:
+            begin = float(attrs.get('BEGIN_DFO') or 0)
+            end = float(attrs.get('END_DFO') or 0)
+            if end > begin:
+                length = round(end - begin, 2)
+        except (ValueError, TypeError):
+            pass
+
+        # Направление
+        chrg_type = (attrs.get('CHRG_TYPE') or '').lower()
+        if 'one direction' in chrg_type:
+            direction = 'one_way'
+        else:
+            direction = 'both'
+
+        # HOT/HOV lanes -> express_lane
+        name_lower = name.lower()
+        if 'hov' in name_lower or 'hot' in name_lower or 'express' in name_lower or 'managed' in name_lower:
+            toll_type = 'express_lane'
+        else:
+            toll_type = 'toll_road'
+
+        results.append(make_record(
+            name=name, state='TX',
+            highway_number=rte_nm,
+            toll_type=toll_type,
+            length_miles=length,
+            direction=direction,
+            source='TxDOT/ArcGIS',
+        ))
+
+    log.info(f'[TxDOT] Parsed {len(results)} unique TX toll roads')
     return results
 
 
