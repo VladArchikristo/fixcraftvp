@@ -1,40 +1,38 @@
 {
-  "timestamp": "2026-04-12T22:00:25.641266+00:00",
+  "timestamp": "2026-04-13T01:00:28.080395+00:00",
   "sentiment": "bearish",
-  "score": -0.6,
+  "score": -0.68,
   "fear_greed": {
-    "value": 16,
+    "value": 12,
     "label": "Extreme Fear",
-    "trend": "rising"
+    "trend": "falling"
   },
   "key_events": [
-    "Commodity traders are getting debanked due to Iran war, pushing them to rely on stablecoins",
-    "Banks, corporates in Europe ‘actively selecting partners’ for stablecoin push",
     "FBI says crypto-related fraud losses hit record $11.4 billion in 2025, with seniors bearing the brunt",
     "CFTC Chair Mike Selig argues for agency's 'exclusive regulatory authority' in prediction markets fight: State of Crypto",
-    "DeFi’s shakeout is a stress test, not a death sentence"
+    "DeFi’s shakeout is a stress test, not a death sentence",
+    "Bitcoin may be forming a base at $65,000 as 'paper hands' have been flushed out",
+    "Oil futures up 7% on Hyperliquid as Trump orders Naval blockade of Hormuz"
   ],
   "affected_assets": [
     "BTC",
-    "ETH",
     "SOL",
     "UNI",
-    "OP",
-    "LINK"
+    "OP"
   ],
   "trending_coins": [
     "RAVE",
+    "INX",
     "PENGU",
-    "WLFI",
+    "MON",
     "BTC",
-    "SIREN",
-    "TAO",
-    "TON"
+    "HYPE",
+    "BASED"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 20,
+  "news_count": 18,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.72,
-  "cached_at": 1776031225.641504
+  "fetch_time_sec": 2.71,
+  "cached_at": 1776042028.080631
 }
