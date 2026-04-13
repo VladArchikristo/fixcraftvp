@@ -1,0 +1,64 @@
+17:19:24 [MEDIUM-AGENT] === MEDIUM AGENT STARTED ===
+17:20:13 [MEDIUM-AGENT] === MEDIUM AGENT STARTED ===
+17:20:13 [MEDIUM-AGENT] Existing records: 1856
+17:20:13 [MEDIUM-AGENT] --- Phase 1: State Wikipedia pages ---
+17:20:13 [MEDIUM-AGENT]   AL [List_of_toll_roads_in_Alabama]: +1 roads
+17:20:18 [MEDIUM-AGENT]   AK [Transportation_in_Alaska]: +8 roads
+17:20:20 [MEDIUM-AGENT]   AZ [Transportation_in_Arizona]: +2 roads
+17:20:26 [MEDIUM-AGENT]   CA [Transportation_in_California]: +21 roads
+17:20:29 [MEDIUM-AGENT]   CO [Transportation_in_Colorado]: +2 roads
+17:20:31 [MEDIUM-AGENT]   CT [Transportation_in_Connecticut]: +12 roads
+17:20:33 [MEDIUM-AGENT]   CT [Connecticut_Turnpike]: +23 roads
+17:20:36 [MEDIUM-AGENT]   DE [Delaware_Turnpike]: +2 roads
+17:20:38 [MEDIUM-AGENT]   FL [List_of_toll_roads_in_Florida]: +21 roads
+17:20:40 [MEDIUM-AGENT]   FL [Transportation_in_Florida]: +5 roads
+17:20:46 [MEDIUM-AGENT]   HI [Transportation_in_Hawaii]: +11 roads
+17:20:54 [MEDIUM-AGENT]   IL [Illinois_Turnpike]: +1 roads
+17:21:00 [MEDIUM-AGENT]   IA [Iowa_Turnpike]: +1 roads
+17:21:04 [MEDIUM-AGENT]   KS [Kansas_Turnpike]: +26 roads
+17:21:06 [MEDIUM-AGENT]   KY [Transportation_in_Kentucky]: +8 roads
+17:21:08 [MEDIUM-AGENT]   KY [Kentucky_Turnpike]: +3 roads
+17:21:14 [MEDIUM-AGENT]   ME [Maine_Turnpike]: +2 roads
+17:21:21 [MEDIUM-AGENT]   MA [Massachusetts_Turnpike]: +35 roads
+17:21:24 [MEDIUM-AGENT]   MI [Michigan_Turnpike]: +1 roads
+17:21:26 [MEDIUM-AGENT]   MN [Transportation_in_Minnesota]: +7 roads
+17:21:34 [MEDIUM-AGENT]   MT [Transportation_in_Montana]: +5 roads
+17:21:46 [MEDIUM-AGENT]   NJ [Transportation_in_New_Jersey]: +30 roads
+17:21:48 [MEDIUM-AGENT]   NJ [New_Jersey_Turnpike]: +43 roads
+17:21:54 [MEDIUM-AGENT]   NY [New_York_Turnpike]: +1 roads
+17:21:56 [MEDIUM-AGENT]   NC [Transportation_in_North_Carolina]: +5 roads
+17:22:03 [MEDIUM-AGENT]   OH [Ohio_Turnpike]: +12 roads
+17:22:08 [MEDIUM-AGENT]   OR [List_of_toll_roads_in_Oregon]: +1 roads
+17:22:09 [MEDIUM-AGENT]   OR [Transportation_in_Oregon]: +8 roads
+17:22:14 [MEDIUM-AGENT]   PA [Pennsylvania_Turnpike]: +72 roads
+17:22:22 [MEDIUM-AGENT]   SD [Transportation_in_South_Dakota]: +4 roads
+17:22:27 [MEDIUM-AGENT]   TX [List_of_toll_roads_in_Texas]: +1 roads
+17:22:28 [MEDIUM-AGENT]   TX [Toll_roads_in_Texas]: +17 roads
+17:22:30 [MEDIUM-AGENT]   TX [Transportation_in_Texas]: +8 roads
+17:22:37 [MEDIUM-AGENT]   VA [Transportation_in_Virginia]: +48 roads
+17:22:41 [MEDIUM-AGENT]   WA [Washington_Turnpike]: +1 roads
+17:22:44 [MEDIUM-AGENT]   WV [Transportation_in_West_Virginia]: +7 roads
+17:22:45 [MEDIUM-AGENT]   WV [West_Virginia_Turnpike]: +2 roads
+17:22:52 [MEDIUM-AGENT] --- Phase 2: Toll authority pages ---
+17:22:52 [MEDIUM-AGENT]   Authority [New_York_State_Thruway]: +44 roads
+17:22:54 [MEDIUM-AGENT]   Authority [Indiana_Toll_Road]: +22 roads
+17:22:55 [MEDIUM-AGENT]   Authority [Illinois_Tollway]: +11 roads
+17:22:56 [MEDIUM-AGENT]   Authority [Oklahoma_Turnpike_Authority]: +5 roads
+17:22:59 [MEDIUM-AGENT]   Authority [Harris_County_Toll_Road_Authority]: +10 roads
+17:23:00 [MEDIUM-AGENT]   Authority [North_Carolina_Turnpike_Authority]: +16 roads
+17:23:02 [MEDIUM-AGENT]   Authority [Virginia_Department_of_Transportation]: +9 roads
+17:23:03 [MEDIUM-AGENT]   Authority [Maryland_Transportation_Authority]: +24 roads
+17:23:05 [MEDIUM-AGENT]   Authority [New_Hampshire_Turnpike_System]: +2 roads
+17:23:06 [MEDIUM-AGENT]   Authority [Georgia_State_Road_and_Tollway_Authority]: +2 roads
+17:23:08 [MEDIUM-AGENT]   Authority [Dallas_North_Tollway]: +2 roads
+17:23:09 [MEDIUM-AGENT]   Authority [Sam_Houston_Tollway]: +1 roads
+17:23:11 [MEDIUM-AGENT]   Authority [Dulles_Toll_Road]: +1 roads
+17:23:12 [MEDIUM-AGENT]   Authority [Garden_State_Parkway]: +19 roads
+17:23:14 [MEDIUM-AGENT]   Authority [Atlantic_City_Expressway]: +3 roads
+17:23:15 [MEDIUM-AGENT]   Authority [Blue_Water_Bridge]: +36 roads
+17:23:17 [MEDIUM-AGENT]   Authority [Mackinac_Bridge]: +28 roads
+17:23:18 [MEDIUM-AGENT]   Authority [Bay_Area_Toll_Authority]: +7 roads
+17:23:20 [MEDIUM-AGENT]   Authority [Orange_County_Transportation_Authority]: +5 roads
+17:23:21 [MEDIUM-AGENT] --- Phase 3: US master pages ---
+17:23:21 [MEDIUM-AGENT]   US page [List_of_toll_roads_in_the_United_States]: +81 roads
+17:23:27 [MEDIUM-AGENT] === MEDIUM AGENT DONE === Added: 785 | Total in DB: 2697

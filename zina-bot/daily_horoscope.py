@@ -47,7 +47,7 @@ FULL_NAME = "Приходько Владимир Геннадьевич"
 def log(msg: str):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{ts}] {msg}"
-    print(line)
+    # Пишем только в файл напрямую (LaunchAgent тоже пишет stdout в этот же файл)
     try:
         with open(LOG_FILE, "a") as f:
             f.write(line + "\n")

@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/vladimirprihodko/Папка тест/fixcraftvp/toll-navigator/backend/scripts/agent_medium.py", line 93, in <module>
+    def fetch_url(url: str, timeout: int = 30) -> str | None:
+TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'

@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-13T19:00:24.283529+00:00",
+  "timestamp": "2026-04-13T22:00:29.635352+00:00",
   "sentiment": "bearish",
-  "score": -0.96,
+  "score": -0.88,
   "fear_greed": {
     "value": 12,
     "label": "Extreme Fear",
@@ -11,33 +11,34 @@
     "Circle CEO says he won’t freeze USDC without a court order even as hackers walk away with millions",
     "Bankers rebuff White House claim that stablecoin yield doesn't threaten deposits",
     "ClearBank secures MiCA approval, targets Circle euro, dollar stablecoins for institutional clients",
-    "Strategy buys 13,927 bitcoin for $1 billion, entirely through STRC",
-    "White House crypto adviser Witt says other Clarity Act hurdles being cleared"
+    "This little-known token just posted a 6,000% rally — and traders are trying to figure out why",
+    "Bitcoin erases weekend decline, returns to $73,400 as oil retreats back under $100"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
     "XRP",
+    "DOGE",
+    "BNB",
     "ADA",
     "DOT",
     "ARB",
-    "OP",
-    "LINK"
+    "OP"
   ],
   "trending_coins": [
     "RAVE",
+    "BLESS",
     "GENIUS",
-    "DOT",
-    "BTC",
-    "TAO",
     "PENGU",
-    "BLESS"
+    "HYPE",
+    "BTC",
+    "VVV"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.89,
-  "cached_at": 1776106824.283749
+  "fetch_time_sec": 5.29,
+  "cached_at": 1776117629.635605
 }

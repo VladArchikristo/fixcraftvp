@@ -56,9 +56,9 @@ def build_report():
 
     # Портфель
     portfolio = load_json(DATA_DIR / "paper_portfolio.json") or {}
-    balance = portfolio.get("balance", 1000.0)
+    balance = portfolio.get("cash", portfolio.get("balance", 1000.0))
     positions = portfolio.get("positions", [])
-    history = portfolio.get("history", [])
+    history = portfolio.get("closed_trades", portfolio.get("history", []))
 
     # Дневной P&L
     daily_pnl_data = load_json(DATA_DIR / "daily_pnl.json") or []

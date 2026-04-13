@@ -1,0 +1,1275 @@
+{
+  "meta": {
+    "total": 179,
+    "raw": 6249,
+    "regions": {
+      "SW1-CalNev": 2503,
+      "SW2-AZNMTx": 0,
+      "SE1-FLGAAl": 0,
+      "SE2-NCVAMd": 2606,
+      "NW1-PacNW": 0,
+      "NW2-MtWy": 1140,
+      "NE1a-OhIn": 0,
+      "NE1b-MnWi": 0,
+      "NE1c-IaMo": 0,
+      "NE1d-TnNc": 0,
+      "NE2a-NyNjPa": 0,
+      "NE2b-NewEng": 0
+    }
+  },
+  "records": [
+    {
+      "name": "Lopez Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "17 Mile Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carmel Way",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Costanilla Way",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Sunridge Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Navajo Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Scenic Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Los Altos Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Morse Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Foothill Transportation Corridor",
+      "state": "CA",
+      "highway_number": "CA 241 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Eastern Transportation Corridor",
+      "state": "CA",
+      "highway_number": "CA 133 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "South Moapa Valley Boulevard",
+      "state": "NV",
+      "highway_number": "NV 169",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Tijuana - Ensenada (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 1D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "East Lake Mead Boulevard",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Tijuana–Ensenada",
+      "state": "US",
+      "highway_number": "MEX 1D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Tecate–Tijuana",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I-10 Metro ExpressLanes",
+      "state": "US",
+      "highway_number": "I 10 EXPR",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Harbor Transitway",
+      "state": "US",
+      "highway_number": "I 110 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "33 Hole Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Northshore Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera La Rumorosa - Tecate (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Sonoita - Mexicali",
+      "state": "US",
+      "highway_number": "MEX 2",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "MEX 2D",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento de Nogales",
+      "state": "US",
+      "highway_number": "MEX 15D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "San Joaquin Hills Transportation Corridor",
+      "state": "CA",
+      "highway_number": "CA 73 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "South Bay Expressway",
+      "state": "CA",
+      "highway_number": "CA 125 Toll",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 125 Toll",
+      "state": "CA",
+      "highway_number": "CA 125 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Artesia Tollway",
+      "state": "CA",
+      "highway_number": "CA 91 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 15 EXPR",
+      "state": "US",
+      "highway_number": "I 15 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Sloat Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 241 Toll",
+      "state": "CA",
+      "highway_number": "CA 241 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "exit",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "South Palm Canyon Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Autopista Tijuana-Mexicali",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento de Tecate (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Avenida Paseo Ensenada",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 91 EXPR",
+      "state": "CA",
+      "highway_number": "CA 91 EXPR",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Corredor 2000 Tijuana-Rosarito",
+      "state": "US",
+      "highway_number": "BC 201",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento de Mexicali (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera El Centinela - La Rumorosa (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Valley of Fire Highway",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Hillery Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento de Nogales (Camiones)",
+      "state": "US",
+      "highway_number": "MEX 15D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Careterra Nogales - Hermosillo",
+      "state": "US",
+      "highway_number": "MEX 15D",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento de Magdalena de Kino (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 15D;MEX 2",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Autopista Santa Ana-Altar",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Boulevard Industrial",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Lakeshore Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Government Wash Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Old Saint Thomas Road",
+      "state": "US",
+      "highway_number": "NPS 109",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Overton Beach Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Echo Bay Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "MEX 2",
+      "state": "US",
+      "highway_number": "MEX 2",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 11",
+      "state": "CA",
+      "highway_number": "CA 11",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "San Luis Río Colorado - Golfo de Santa Clara (Cuota)",
+      "state": "US",
+      "highway_number": "SON D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Cattail Cove Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 91",
+      "state": "CA",
+      "highway_number": "CA 91",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento de Nogales (Linea Rapida)",
+      "state": "US",
+      "highway_number": "MEX 15D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carril Telepeaje",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Garden Grove Freeway",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Forest Lodge Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Lake Mead Marina Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "BB Residence Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "George Cooke Express Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Boulevard Alberto Limón Padilla",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Tecate - Tijuana (Cuota)",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 261 Toll",
+      "state": "CA",
+      "highway_number": "CA 261 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Avenida Garita de Otay Mesa II",
+      "state": "US",
+      "highway_number": "MEX 2D Spur",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Hemenway Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Spanish Bay Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Avenida Paseo a Playas de Tijuana",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Libramiento Mexicali",
+      "state": "US",
+      "highway_number": "MEX 2D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Lake Mead Cruises Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "8.0 Mile Road",
+      "state": "US",
+      "highway_number": "89",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Interstate 15 Express Lanes",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 405 EXPR",
+      "state": "US",
+      "highway_number": "I 405 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Tijuana-Ensenada",
+      "state": "US",
+      "highway_number": "MEX 1D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Ensenada-Tijuana",
+      "state": "US",
+      "highway_number": "MEX 1D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Tijuana - Ensenada (Libre)",
+      "state": "US",
+      "highway_number": "MEX 1",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "8.0  Mile Road",
+      "state": "US",
+      "highway_number": "89",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Govt Wash Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 210 EXPR",
+      "state": "US",
+      "highway_number": "I 210 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 605 EXPR",
+      "state": "US",
+      "highway_number": "I 605 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Gardena Tollway",
+      "state": "CA",
+      "highway_number": "CA 91 EXPR",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CA 134 EXPR",
+      "state": "CA",
+      "highway_number": "CA 134 EXPR",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "241 (northbound)",
+      "state": "US",
+      "highway_number": "241",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Carretera Federal 1D",
+      "state": "US",
+      "highway_number": "1D",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Marina del Rey WaterBus",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Florida's Turnpike",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Sawgrass Expressway",
+      "state": "US",
+      "highway_number": "SR 869 Toll",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Homestead Extension of Florida's Turnpike",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Gratigny Parkway",
+      "state": "US",
+      "highway_number": "SR 924 Toll",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Express Lanes",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Airport Expressway",
+      "state": "US",
+      "highway_number": "SR 112 Toll",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Broad Causeway",
+      "state": "US",
+      "highway_number": "SR 922",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Cape Florida Park Boulevard",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Snapper Creek Expressway",
+      "state": "US",
+      "highway_number": "SR 878 Toll",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Pilot Town Circle",
+      "state": "NC",
+      "highway_number": "NC 12",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Chesapeake Bay Bridge–Tunnel",
+      "state": "US",
+      "highway_number": "US 13",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Midtown Tunnel Expressway",
+      "state": "US",
+      "highway_number": "US 58",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 264;US 460 ALT",
+      "state": "US",
+      "highway_number": "I 264;US 460 ALT",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Midtown Tunnel",
+      "state": "US",
+      "highway_number": "US 58",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Interior Ditch Road",
+      "state": "US",
+      "highway_number": "SR 104",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "West Ditch Road",
+      "state": "US",
+      "highway_number": "SR 103",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Northampton Boulevard",
+      "state": "US",
+      "highway_number": "US 13",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Triangle Expressway",
+      "state": "NC",
+      "highway_number": "NC 540 Toll",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Western Wake Expressway",
+      "state": "NC",
+      "highway_number": "NC 540 Toll",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Downtown Tunnel",
+      "state": "US",
+      "highway_number": "I 264;US 460 ALT",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Chesapeake Expressway",
+      "state": "VA",
+      "highway_number": "VA 168",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "State Road 821 Access Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Dolphin Expressway",
+      "state": "US",
+      "highway_number": "SR 836 Toll",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Don Shula Expressway",
+      "state": "US",
+      "highway_number": "SR 874 Toll",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "SR 836 Toll",
+      "state": "US",
+      "highway_number": "SR 836 Toll",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Venetian Way",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Rickenbacker Causeway",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Alligator Alley",
+      "state": "US",
+      "highway_number": "I 75",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 75",
+      "state": "US",
+      "highway_number": "I 75",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Poindexter Street",
+      "state": "VA",
+      "highway_number": "VA 337",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "South Norfolk Jordan Bridge",
+      "state": "VA",
+      "highway_number": "VA 337",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "US 58",
+      "state": "US",
+      "highway_number": "US 58",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Card Sound Road",
+      "state": "US",
+      "highway_number": "CR 905A",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Crandon Boulevard",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Sidney Poitier Bridge",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 64",
+      "state": "US",
+      "highway_number": "I 64",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 64 Express Lanes",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Cedar Island Road",
+      "state": "NC",
+      "highway_number": "NC 12",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Dominion Boulevard South",
+      "state": "US",
+      "highway_number": "US 17",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Elm Avenue",
+      "state": "VA",
+      "highway_number": "VA 337",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I-95 Access Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Monroe Expressway",
+      "state": "US",
+      "highway_number": "US 74 BYP",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Railroad Ditch Road",
+      "state": "US",
+      "highway_number": "SR 102",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 264;US 460 Alternate",
+      "state": "US",
+      "highway_number": "I 264;US 460 Alternate",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "95 Express",
+      "state": "US",
+      "highway_number": "I 95",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Florida's Turnpike Thru Lane",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Florida's Turnpike Thru Lanes",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 95 Express Lanes",
+      "state": "US",
+      "highway_number": "I 95",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I-664 Express lanes",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "E-470",
+      "state": "US",
+      "highway_number": "E470",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Center Lake Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Natural Bridges National Park Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Kansas Turnpike",
+      "state": "US",
+      "highway_number": "I 35",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 35",
+      "state": "US",
+      "highway_number": "I 35",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Dr. Martin Luther King Jr. Memorial Highway",
+      "state": "US",
+      "highway_number": "I 470",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 135",
+      "state": "US",
+      "highway_number": "I 135",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Cash Lanes Closed - Authorized E-470 Vehicles Only",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Northwest Parkway",
+      "state": "US",
+      "highway_number": "NW",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "East Portal Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "12th/15th Avenue, North Bridge",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Plattsmouth Bridge",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Bunge Avenue",
+      "state": "US",
+      "highway_number": "CR H10",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "East Mission Avenue",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Pikes Peak Highway",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 25 EXPR",
+      "state": "US",
+      "highway_number": "I 25 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Royal Gorge Bridge",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Truman/Eisenhower Presidential Highway",
+      "state": "US",
+      "highway_number": "I 70",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Avenue of the Chiefs",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "KTA Entrance Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "US 36 EXPR",
+      "state": "US",
+      "highway_number": "US 36 EXPR",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Livingston Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Mount Blue Sky Road",
+      "state": "CO",
+      "highway_number": "CO 5",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Highway 240",
+      "state": "SD",
+      "highway_number": "SD 240",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "SD Highway 240",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CO 347",
+      "state": "CO",
+      "highway_number": "CO 347",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "McDonald Drive",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "KTA Access Road",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Bellevue Bridge",
+      "state": "US",
+      "highway_number": "CR H10",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "12th Avenue North",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "15th Avenue North/Bearcat Way",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 25 Express",
+      "state": "US",
+      "highway_number": "I 25 Express",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CO 470",
+      "state": "CO",
+      "highway_number": "CO 470",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "CO 470 EXPR",
+      "state": "CO",
+      "highway_number": "CO 470 EXPR",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Dave Sanders Memorial Highway",
+      "state": "CO",
+      "highway_number": "CO 470 EXPR",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 70 EXPR",
+      "state": "US",
+      "highway_number": "I 70 EXPR",
+      "toll_type": "bridge_tunnel",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Express Lanes Entrance",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Express Lanes Exit",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Express Lane Entrance",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Express Lane Exit",
+      "state": "US",
+      "highway_number": "",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "Needles Highway",
+      "state": "SD",
+      "highway_number": "SD 87",
+      "toll_type": "toll_road",
+      "source": "OSM/Overpass"
+    },
+    {
+      "name": "I 25 Express Lane",
+      "state": "US",
+      "highway_number": "I 25 Express",
+      "toll_type": "express_lane",
+      "source": "OSM/Overpass"
+    }
+  ]
+}
