@@ -2453,7 +2453,103 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-12T23:01:34.415855",
+      "total_value": 1005.47,
+      "portfolio_value": 1005.47,
+      "pnl": 5.47,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ | АНАЛИЗ 2026-04-12 23:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | Whale walls $2193.00-2193.20 удерживают уровень. 4h oversold StochRSI 5.9.               SL $2181 под поддержкой. R:R 1:4.9. Держать до прояснения direction.",
+        "⏸️ NO_ACTION | News signal CRITICAL (-0.76), F&G=12, Hormuz blockade — геополитика               неценируема. Новые позиции не открывать. XRP/AVAX — конфликт сигналов,               нет TA подтверждения. Кэш $806 сохранить."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 42.1
+        },
+        "XRP": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 42.5
+        },
+        "AVAX": {
+          "score": -25,
+          "rec": "SELL",
+          "rsi": 45.6
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 12.5
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "SHORT",
+          "weighted": -9.2
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -4.2
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-13T00:01:11.317033",
+      "total_value": 1005.46,
+      "portfolio_value": 1005.46,
+      "pnl": 5.46,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "# Василий — Анализ 2026-04-13 00:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | 4h StochRSI oversold (5.3), whale walls $2193.20-2193.40 держат поддержку,               SL $2181 за уровнем $2177.53, TP $2252 R:R > 1:4 от текущей цены.               1h oversold ситуация — потенциал отскока к $2201-2216.",
+        "⏸️ NO_ACTION | News agent: STOP_NEW_ENTRIES, Fear&Greed=12 (Extreme Fear),               геополитический шок (Hormuz blockade), все альты под давлением.               XRP/AVAX: медвежьи сигналы + AVAX ASK-heavy order book.               Ждём стабилизации рынка."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 42.3
+        },
+        "XRP": {
+          "score": -30,
+          "rec": "SELL",
+          "rsi": 42.3
+        },
+        "AVAX": {
+          "score": -25,
+          "rec": "SELL",
+          "rsi": 47.4
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "SHORT",
+          "weighted": -9.2
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -7.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-12T21:01:13.664768"
+  "updated_at": "2026-04-13T00:01:11.317104"
 }

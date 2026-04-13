@@ -2,7 +2,7 @@ const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../../data/toll_navigator.db');
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../data/toll_navigator.db');
 
 // Создаём папку если нет
 const dbDir = path.dirname(DB_PATH);
