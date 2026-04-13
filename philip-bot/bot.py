@@ -54,8 +54,15 @@ PID_FILE = LOG_DIR / "philip-bot.pid"
 HEARTBEAT_FILE = LOG_DIR / "philip-heartbeat"
 LOCK_FILE = LOG_DIR / "philip-bot.lock"
 
+PROJECT_MEMORY_FILE = SCRIPT_DIR / "project_memory.json"
+PROJECT_MEMORY_MAX_NOTES = 100
+
 SYSTEM_PROMPT = (
-    "Ты — Мыслитель Филип, мастер промт-инженерии и полиглот-энциклопедист.\n\n"
+    "Ты — Мыслитель Филип, оркестратор команды и мастер промт-инженерии.\n\n"
+    "РОЛЬ ОРКЕСТРАТОРА:\n"
+    "Ты координируешь команду ботов на Mac Mini Владимира. Помнишь контекст всех проектов.\n"
+    "Сам отвечаешь на вопросы о промтах, мышлении, архитектуре идей.\n"
+    "Делегируешь специализированным ботам когда задача явно в их зоне.\n\n"
     "ХАРАКТЕР:\n"
     "- Вежлив, начитан, говоришь на любом языке по запросу\n"
     "- Знаешь сотни книг, философских течений, технических трудов\n"
@@ -74,25 +81,13 @@ SYSTEM_PROMPT = (
     "- Если генерируешь — дай готовый промт в блоке кода\n"
     "- Объясняй свои решения коротко: почему так, а не иначе\n"
     "- Отвечай на том языке, на котором говорит пользователь\n\n"
-    "== ЭКОСИСТЕМА БОТОВ ==\n"
-    "Ты часть команды на Mac Mini Владимира. Знай своих коллег и умей к ним обращаться:\n\n"
-    "• Костя (@KostyaCoderBot) — программист-архитектор.\n"
-    "  Если нужно запрограммировать, создать скрипт, починить баг:\n"
-    "  echo 'задача' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-kostya.sh'\n\n"
-    "• Маша (@masha_marketer_bot) — маркетолог.\n"
-    "  Если нужен экспертный контекст по маркетингу:\n"
-    "  echo 'задача' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-masha.sh'\n\n"
-    "• Василий (@vasily_trader_bot) — трейдер.\n"
-    "  Если нужны данные о рынках, трейдинге, портфеле:\n"
-    "  echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-vasily.sh'\n\n"
-    "• Доктор Пётр — медицинский агент.\n"
-    "  Если нужна медицинская информация, анализ симптомов, биология:\n"
-    "  echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-peter.sh'\n\n"
-    "• Зина — астролог и нумеролог.\n"
-    "  Если нужен астрологический или нумерологический анализ:\n"
-    "  echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-zina.sh'\n\n"
+    "== КОМАНДА БОТОВ ==\n"
+    "• Костя (@KostyaCoderBot) — программист-архитектор. Код, скрипты, баги.\n\n"
+    "• Маша (@masha_marketer_bot) — маркетолог. Контент, стратегия, аудитории.\n\n"
+    "• Василий (@vasily_trader_bot) — трейдер. Рынки, портфель, сигналы.\n\n"
+    "• Доктор Пётр — медицинский агент. Здоровье, симптомы, биология.\n\n"
+    "• Зина — астролог и нумеролог.\n\n"
     "• Beast (@Antropic_BeastBot) — главный ассистент Владимира.\n\n"
-    "Ты можешь вызвать любого коллегу через Bash если это поможет дать лучший ответ.\n"
     "ВАЖНО: beast-bot/bot.py, .env файлы и launcher.sh — НИКОГДА не трогать.\n"
 )
 
@@ -396,6 +391,62 @@ def _save_history():
                 pass
 
 
+# ---------------------------------------------------------------------------
+# Project memory — persistent cross-session notes about ongoing projects
+# ---------------------------------------------------------------------------
+_project_memory: list[dict] = []  # [{ts, text}, ...]
+
+
+def _load_project_memory():
+    global _project_memory
+    if not PROJECT_MEMORY_FILE.exists():
+        return
+    try:
+        data = json.loads(PROJECT_MEMORY_FILE.read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            _project_memory = data[-PROJECT_MEMORY_MAX_NOTES:]
+            log.info("Loaded %d project memory notes", len(_project_memory))
+    except Exception as e:
+        log.warning("Failed to load project memory: %s", e)
+
+
+def _save_project_memory():
+    tmp_path = None
+    try:
+        data = json.dumps(_project_memory, ensure_ascii=False, indent=None)
+        fd, tmp_path = tempfile.mkstemp(dir=SCRIPT_DIR, suffix=".tmp")
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(data)
+        os.replace(tmp_path, str(PROJECT_MEMORY_FILE))
+        tmp_path = None
+    except Exception as e:
+        log.warning("Failed to save project memory: %s", e)
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
+def add_project_note(text: str):
+    _project_memory.append({"ts": datetime.now().isoformat(), "text": text[:2000]})
+    if len(_project_memory) > PROJECT_MEMORY_MAX_NOTES:
+        _project_memory.pop(0)
+    _save_project_memory()
+
+
+def project_memory_prompt() -> str:
+    if not _project_memory:
+        return ""
+    recent = _project_memory[-20:]
+    lines = ["=== ПАМЯТЬ О ПРОЕКТАХ ==="]
+    for note in recent:
+        ts = note["ts"][:16].replace("T", " ")
+        lines.append(f"[{ts}] {note['text']}")
+    lines.append("=== КОНЕЦ ПАМЯТИ ===")
+    return "\n".join(lines)
+
+
 def history_prompt() -> str:
     if not user_history:
         return ""
@@ -574,8 +625,11 @@ def _choose_model(user_text: str) -> str:
 
 async def ask_claude(user_text: str, user_id: int, image_path: str | None = None, force_opus: bool = False) -> tuple[bool, str]:
     hist = history_prompt()
+    mem = project_memory_prompt()
     system = build_system_prompt(user_id)
     full_prompt = ""
+    if mem:
+        full_prompt += f"{mem}\n\n"
     if hist:
         full_prompt += f"История диалога:\n{hist}\n\n"
 
@@ -670,6 +724,130 @@ async def cmd_clear(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     _save_history()
     user_modes.pop(uid, None)
     await update.message.reply_text("История и режим очищены.")
+
+
+async def cmd_remember(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Сохранить заметку о проекте: /remember <текст>"""
+    if not is_allowed(update):
+        return
+    text = " ".join(ctx.args) if ctx.args else ""
+    if not text:
+        await update.message.reply_text("Использование: /remember <что запомнить>\n\nПример: /remember Toll Navigator — MVP нужен к пятнице, стек: Node+SQLite")
+        return
+    add_project_note(text)
+    await update.message.reply_text(f"Запомнил. Всего заметок: {len(_project_memory)}")
+
+
+async def cmd_project(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Показать память о проектах: /project [поиск]"""
+    if not is_allowed(update):
+        return
+    search = " ".join(ctx.args).lower() if ctx.args else ""
+    if not _project_memory:
+        await update.message.reply_text("Память о проектах пуста. Используй /remember чтобы добавить заметку.")
+        return
+    notes = _project_memory[-30:]
+    if search:
+        notes = [n for n in notes if search in n["text"].lower()]
+        if not notes:
+            await update.message.reply_text(f"Ничего не найдено по запросу: {search}")
+            return
+    lines = [f"*Память о проектах* ({len(_project_memory)} заметок):\n"]
+    for note in notes[-20:]:
+        ts = note["ts"][:16].replace("T", " ")
+        lines.append(f"`{ts}` {note['text']}")
+    await _safe_reply(update.message, "\n".join(lines))
+
+
+def _delegate_sync(script_name: str, task: str) -> str:
+    """Call ask-*.sh script synchronously."""
+    script_path = f"/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/{script_name}"
+    try:
+        result = subprocess.run(
+            ["bash", script_path],
+            input=task,
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        out = result.stdout.strip()
+        err = result.stderr.strip()
+        if out:
+            return out
+        if err:
+            return f"[stderr] {err}"
+        return "Нет ответа от бота."
+    except subprocess.TimeoutExpired:
+        return "Таймаут (5 мин). Бот не ответил."
+    except Exception as e:
+        return f"Ошибка делегации: {e}"
+
+
+async def _delegate_to(update: Update, bot_name: str, script_name: str, task: str):
+    thinking = await update.message.reply_text(f"Передаю задачу {bot_name}...")
+    loop = asyncio.get_running_loop()
+    answer = await loop.run_in_executor(
+        _claude_executor,
+        lambda: _delegate_sync(script_name, task),
+    )
+    try:
+        await thinking.delete()
+    except Exception:
+        pass
+    header = f"*{bot_name} отвечает:*\n\n"
+    chunks = _split_message(header + answer)
+    for chunk in chunks:
+        await _safe_reply(update.message, chunk)
+
+
+async def cmd_kostya(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    task = " ".join(ctx.args) if ctx.args else update.message.text
+    if not task or task == "/к":
+        await update.message.reply_text("Использование: /к <задача для Кости>")
+        return
+    await _delegate_to(update, "Костя", "ask-kostya.sh", task)
+
+
+async def cmd_masha(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    task = " ".join(ctx.args) if ctx.args else ""
+    if not task:
+        await update.message.reply_text("Использование: /м <задача для Маши>")
+        return
+    await _delegate_to(update, "Маша", "ask-masha.sh", task)
+
+
+async def cmd_vasily(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    task = " ".join(ctx.args) if ctx.args else ""
+    if not task:
+        await update.message.reply_text("Использование: /в <вопрос для Василия>")
+        return
+    await _delegate_to(update, "Василий", "ask-vasily.sh", task)
+
+
+async def cmd_peter(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    task = " ".join(ctx.args) if ctx.args else ""
+    if not task:
+        await update.message.reply_text("Использование: /п <вопрос для Петра>")
+        return
+    await _delegate_to(update, "Доктор Пётр", "ask-peter.sh", task)
+
+
+async def cmd_zina(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    task = " ".join(ctx.args) if ctx.args else ""
+    if not task:
+        await update.message.reply_text("Использование: /з <вопрос для Зины>")
+        return
+    await _delegate_to(update, "Зина", "ask-zina.sh", task)
 
 
 async def cmd_set_mode(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -912,6 +1090,7 @@ def _cleanup():
     global _lock_fd
     log.info("Cleaning up...")
     _save_history()
+    _save_project_memory()
     _claude_executor.shutdown(wait=True, cancel_futures=True)
     try:
         if _lock_fd and not _lock_fd.closed:
@@ -960,6 +1139,7 @@ def main():
     write_pid()
     write_heartbeat()
     _load_history()
+    _load_project_memory()
 
     log.info("Мыслитель Филип starting, PID %d", os.getpid())
 
@@ -1003,6 +1183,14 @@ def main():
     app.add_handler(CommandHandler("status", cmd_status))
     app.add_handler(CommandHandler("clear", cmd_clear))
     app.add_handler(CommandHandler("opus", cmd_opus))
+    app.add_handler(CommandHandler("remember", cmd_remember))
+    app.add_handler(CommandHandler("project", cmd_project))
+    # Delegation shortcuts
+    app.add_handler(CommandHandler("k", cmd_kostya))
+    app.add_handler(CommandHandler("m", cmd_masha))
+    app.add_handler(CommandHandler("v", cmd_vasily))
+    app.add_handler(CommandHandler("p", cmd_peter))
+    app.add_handler(CommandHandler("z", cmd_zina))
 
     for mode_name in MODE_PREFIXES:
         app.add_handler(CommandHandler(mode_name, cmd_set_mode))
