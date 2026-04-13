@@ -1,15 +1,20 @@
-const Database = require('better-sqlite3');
+const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
+const fs = require('fs');
 
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../../data/toll_navigator.db');
 
-const db = new Database(DB_PATH);
+// Создаём папку если нет
+const dbDir = path.dirname(DB_PATH);
+if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 
-// Включаем WAL режим для лучшей производительности
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+const db = new DatabaseSync(DB_PATH);
 
-// Инициализация таблиц при первом запуске
+// Включаем WAL и foreign keys
+db.exec('PRAGMA journal_mode = WAL');
+db.exec('PRAGMA foreign_keys = ON');
+
+// Создаём таблицы при первом запуске
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +31,7 @@ db.exec(`
     destination TEXT NOT NULL,
     toll_cost REAL DEFAULT 0,
     distance_miles REAL DEFAULT 0,
+    states_crossed TEXT DEFAULT '[]',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
@@ -35,8 +41,12 @@ db.exec(`
     road_name TEXT NOT NULL,
     state TEXT NOT NULL,
     cost_per_axle REAL NOT NULL,
+    min_cost REAL DEFAULT 0,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  CREATE INDEX IF NOT EXISTS idx_routes_user_id ON routes(user_id);
+  CREATE INDEX IF NOT EXISTS idx_tolls_state ON tolls(state);
 `);
 
 console.log(`SQLite DB ready: ${DB_PATH}`);

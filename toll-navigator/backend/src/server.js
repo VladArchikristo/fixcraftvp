@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
+// Инициализируем БД при старте
+require('./db');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -10,16 +13,22 @@ app.use(express.json());
 
 // Health check
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime() });
+  res.json({ status: 'ok', uptime: process.uptime(), version: '0.2.0' });
 });
 
-// TODO: подключить роуты
-// app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/routes', require('./routes/routes'));
-// app.use('/api/tolls', require('./routes/tolls'));
+// Auth роуты
+app.use('/api/auth', require('./routes/auth'));
+
+// Toll Calculator
+app.use('/api/tolls', require('./routes/tolls'));
+
+// 404 handler
+app.use((_req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
 
 app.listen(PORT, () => {
-  console.log(`Toll Navigator API running on port ${PORT}`);
+  console.log(`Toll Navigator API v0.2.0 running on port ${PORT}`);
 });
 
 module.exports = app;
