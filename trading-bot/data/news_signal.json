@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-13T16:00:25.046414+00:00",
+  "timestamp": "2026-04-13T18:00:51.137719+00:00",
   "sentiment": "bearish",
-  "score": -0.8,
+  "score": -0.84,
   "fear_greed": {
     "value": 12,
     "label": "Extreme Fear",
@@ -12,7 +12,7 @@
     "Bankers rebuff White House claim that stablecoin yield doesn't threaten deposits",
     "ClearBank secures MiCA approval, targets Circle euro, dollar stablecoins for institutional clients",
     "Strategy buys 13,927 bitcoin for $1 billion, entirely through STRC",
-    "Bank of Korea calls for stock-style circuit breakers on BTC exchanges"
+    "U.S. SEC says software allowing crypto wallet transactions not considered broker"
   ],
   "affected_assets": [
     "BTC",
@@ -20,7 +20,6 @@
     "XRP",
     "ADA",
     "DOT",
-    "UNI",
     "ARB",
     "OP",
     "LINK"
@@ -29,15 +28,15 @@
     "RAVE",
     "GENIUS",
     "DOT",
+    "PENGU",
+    "BTC",
     "TAO",
-    "MON",
-    "HYPE",
-    "VVV"
+    "MON"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.58,
-  "cached_at": 1776096025.046657
+  "fetch_time_sec": 2.5,
+  "cached_at": 1776103251.1379461
 }
