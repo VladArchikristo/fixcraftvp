@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  api:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-change_in_production}
+      - DB_PATH=/app/data/toll_navigator.db
+    restart: unless-stopped

@@ -1,7 +1,18 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 import { getToken } from './auth';
 
-const API_URL = 'http://192.168.1.177:3001'; // Mac Mini IP
+// Priority: EXPO_PUBLIC_API_URL env var → app.json extra.apiUrl → fallback
+const getApiUrl = () => {
+  if (process.env.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
+  const extraUrl = Constants.expoConfig?.extra?.apiUrl || Constants.manifest?.extra?.apiUrl;
+  if (extraUrl) return extraUrl;
+  return 'http://192.168.1.177:3001'; // fallback Mac Mini IP
+};
+
+const API_URL = getApiUrl();
 
 const api = axios.create({
   baseURL: API_URL,

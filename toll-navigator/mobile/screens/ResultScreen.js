@@ -1,14 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { getToken } from '../services/auth';
+import api from '../services/api';
 
 export default function ResultScreen({ route, navigation }) {
   const { result, from, to, truckType } = route.params;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    getToken().then((token) => setIsLoggedIn(!!token));
+  }, []);
 
   const totalFormatted = result.total?.toFixed(2) ?? '—';
   const truckLabel = { '2-axle': '2 оси', '3-axle': '3 оси', '5-axle': '5 осей' }[truckType] || truckType;
+
+  const handleSave = async () => {
+    if (saving || saved) return;
+    setSaving(true);
+    try {
+      await api.post('/api/history', {
+        from_city: from,
+        to_city: to,
+        truck_type: truckType,
+        total_cost: result.total,
+        distance_miles: result.distance_miles,
+      });
+      setSaved(true);
+      Alert.alert('Сохранено', 'Маршрут добавлен в историю');
+    } catch (err) {
+      Alert.alert('Ошибка', err.response?.data?.error || 'Не удалось сохранить маршрут');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Build recommendations based on result
+  const recommendations = [];
+  if (result.breakdown) {
+    const states = result.breakdown.map((b) => b.state);
+    const hasNortheast = states.some((s) => ['NY', 'NJ', 'PA', 'MA', 'CT', 'RI', 'NH', 'VT', 'ME', 'MD', 'DE'].includes(s));
+    if (hasNortheast) {
+      recommendations.push({ icon: '💳', text: 'E-ZPass охватывает этот маршрут — экономия до 30% на сборах' });
+    }
+    const hasTexas = states.includes('TX');
+    if (hasTexas) {
+      recommendations.push({ icon: '⭐', text: 'TxTag или EZ TAG даёт скидку на все платные дороги Техаса' });
+    }
+  }
+  if (truckType === '5-axle') {
+    recommendations.push({ icon: '🚛', text: '5-осный грузовик — максимальная нагрузка. 3-осный вариант может быть дешевле для небольших грузов' });
+  }
+  if (truckType === '2-axle') {
+    recommendations.push({ icon: '✅', text: '2-осный грузовик — оптимальная ставка сборов на большинстве дорог' });
+  }
+  recommendations.push({ icon: '⛽', text: 'Заправляйся в штатах без топливного налога: MT, NH, OR для экономии' });
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scroll}>
@@ -35,6 +85,29 @@ export default function ResultScreen({ route, navigation }) {
         <Text style={styles.totalSub}>по данным 2026</Text>
       </View>
 
+      {/* Action buttons */}
+      <View style={styles.actionsRow}>
+        {isLoggedIn && (
+          <TouchableOpacity
+            style={[styles.actionBtn, saved && styles.actionBtnSaved]}
+            onPress={handleSave}
+            disabled={saving || saved}
+          >
+            <Ionicons name={saved ? 'checkmark-circle' : 'bookmark-outline'} size={18} color={saved ? '#81c784' : '#4fc3f7'} />
+            <Text style={[styles.actionBtnText, saved && styles.actionBtnTextSaved]}>
+              {saving ? 'Сохраняем...' : saved ? 'Сохранено' : 'Сохранить маршрут'}
+            </Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={styles.actionBtn}
+          onPress={() => navigation.navigate('Map', { from, to, total: result.total })}
+        >
+          <Ionicons name="map-outline" size={18} color="#4fc3f7" />
+          <Text style={styles.actionBtnText}>Карта 🗺️</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Breakdown by state */}
       {result.breakdown && result.breakdown.length > 0 && (
         <View style={styles.card}>
@@ -52,6 +125,17 @@ export default function ResultScreen({ route, navigation }) {
           ))}
         </View>
       )}
+
+      {/* Recommendations */}
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>🎯 Рекомендации</Text>
+        {recommendations.map((r, i) => (
+          <View key={i} style={styles.recRow}>
+            <Text style={styles.recIcon}>{r.icon}</Text>
+            <Text style={styles.recText}>{r.text}</Text>
+          </View>
+        ))}
+      </View>
 
       {/* Tips */}
       <View style={styles.card}>
@@ -98,6 +182,29 @@ const styles = StyleSheet.create({
   totalLabel: { color: '#4fc3f7', fontSize: 13, fontWeight: '600', marginBottom: 8 },
   totalAmount: { color: '#fff', fontSize: 52, fontWeight: '900', letterSpacing: -1 },
   totalSub: { color: '#555', fontSize: 12, marginTop: 4 },
+  actionsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 14,
+  },
+  actionBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#4fc3f7',
+    backgroundColor: '#0a1f2e',
+  },
+  actionBtnSaved: {
+    borderColor: '#81c784',
+    backgroundColor: '#0a1f0e',
+  },
+  actionBtnText: { color: '#4fc3f7', fontSize: 13, fontWeight: '700' },
+  actionBtnTextSaved: { color: '#81c784' },
   card: {
     backgroundColor: '#161629',
     borderRadius: 14,
@@ -114,6 +221,9 @@ const styles = StyleSheet.create({
   stateCode: { color: '#fff', fontSize: 16, fontWeight: '700' },
   stateMiles: { color: '#666', fontSize: 12, marginTop: 2 },
   stateCost: { color: '#4fc3f7', fontSize: 16, fontWeight: '700' },
+  recRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginBottom: 10 },
+  recIcon: { fontSize: 16, marginTop: 1 },
+  recText: { flex: 1, color: '#aaa', fontSize: 13, lineHeight: 20 },
   tipText: { color: '#666', fontSize: 13, marginBottom: 8, lineHeight: 20 },
   backBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',

@@ -7,6 +7,7 @@ import { ActivityIndicator, View, TouchableOpacity, Text, StyleSheet } from 'rea
 
 import HomeScreen from '../screens/HomeScreen';
 import ResultScreen from '../screens/ResultScreen';
+import MapScreen from '../screens/MapScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -42,6 +43,7 @@ function CalcStack() {
     <Stack.Navigator screenOptions={stackScreenOptions}>
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Result" component={ResultScreen} options={{ title: 'Маршрут и сборы' }} />
+      <Stack.Screen name="Map" component={MapScreen} options={{ title: 'Карта маршрута', headerShown: false }} />
     </Stack.Navigator>
   );
 }

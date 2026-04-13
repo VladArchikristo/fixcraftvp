@@ -13,9 +13,16 @@ const TRUCK_TYPES = [
 ];
 
 const CITY_SUGGESTIONS = [
-  'Dallas, TX', 'Houston, TX', 'San Antonio, TX', 'Austin, TX',
-  'Los Angeles, CA', 'San Francisco, CA', 'Miami, FL', 'Orlando, FL',
+  'Dallas, TX', 'Houston, TX', 'San Antonio, TX', 'Austin, TX', 'Fort Worth, TX',
+  'Los Angeles, CA', 'San Francisco, CA', 'San Diego, CA', 'Sacramento, CA',
+  'Miami, FL', 'Orlando, FL', 'Tampa, FL', 'Jacksonville, FL',
   'Chicago, IL', 'New York, NY', 'Philadelphia, PA', 'Atlanta, GA',
+  'Charlotte, NC', 'Nashville, TN', 'Memphis, TN',
+  'Denver, CO', 'Phoenix, AZ', 'Las Vegas, NV',
+  'Seattle, WA', 'Portland, OR', 'Boston, MA',
+  'Detroit, MI', 'Columbus, OH', 'Cleveland, OH', 'Pittsburgh, PA',
+  'Kansas City, MO', 'St. Louis, MO', 'Minneapolis, MN',
+  'New Orleans, LA', 'Louisville, KY', 'Indianapolis, IN',
 ];
 
 export default function HomeScreen({ navigation }) {
@@ -32,6 +39,14 @@ export default function HomeScreen({ navigation }) {
   const toSuggestions = CITY_SUGGESTIONS.filter(c =>
     to.length > 1 && c.toLowerCase().includes(to.toLowerCase())
   );
+
+  const handleClear = () => {
+    setFrom('');
+    setTo('');
+    setTruckType('5-axle');
+    setFromFocus(false);
+    setToFocus(false);
+  };
 
   const handleCalculate = async () => {
     if (!from.trim() || !to.trim()) {
@@ -142,6 +157,14 @@ export default function HomeScreen({ navigation }) {
           }
         </TouchableOpacity>
 
+        {/* Clear button */}
+        {(from || to) && (
+          <TouchableOpacity style={styles.clearBtn} onPress={handleClear}>
+            <Ionicons name="close-circle-outline" size={16} color="#888" />
+            <Text style={styles.clearBtnText}>Очистить форму</Text>
+          </TouchableOpacity>
+        )}
+
         <Text style={styles.hint}>80+ городов США • Данные 2026</Text>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -196,5 +219,10 @@ const styles = StyleSheet.create({
   },
   calcBtnDisabled: { opacity: 0.6 },
   calcBtnText: { color: '#0d0d1a', fontSize: 16, fontWeight: '800' },
+  clearBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    gap: 6, marginTop: 10, padding: 10,
+  },
+  clearBtnText: { color: '#888', fontSize: 13 },
   hint: { textAlign: 'center', color: '#444', fontSize: 12, marginTop: 16 },
 });
