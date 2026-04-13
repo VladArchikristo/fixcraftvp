@@ -1,40 +1,42 @@
 {
-  "timestamp": "2026-04-13T07:00:26.883629+00:00",
+  "timestamp": "2026-04-13T09:00:53.251705+00:00",
   "sentiment": "bearish",
-  "score": -0.8,
+  "score": -0.84,
   "fear_greed": {
     "value": 12,
     "label": "Extreme Fear",
     "trend": "falling"
   },
   "key_events": [
+    "Clarity Act returns to U.S. Senate, Bank earnings: Crypto Week Ahead",
+    "Attacker mints $1 billion Polkadot tokens on Ethereum, ends up stealing just $250,000",
     "Bank of Korea floats crypto ‘circuit breakers’ after Bithumb blunder",
     "EU central bank backs plan for crypto supervision under EU markets watchdog",
-    "Bank of Korea calls for ‘circuit breaker’ in local crypto market, citing Bithumb incident",
-    "FBI says crypto-related fraud losses hit record $11.4 billion in 2025, with seniors bearing the brunt",
-    "Alameda moves $16 million in Solana's SOL token for possible creditor distribution"
+    "Attacker exploits Polkadot-based Hyperbridge to mint 1 billion bridged DOT, nets $237K"
   ],
   "affected_assets": [
     "BTC",
+    "ETH",
     "SOL",
+    "DOT",
     "INJ",
     "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "DOT",
     "RAVE",
+    "DOT",
     "INX",
-    "PENGU",
     "TAO",
-    "WLFI",
-    "MON"
+    "HYPE",
+    "ARIA",
+    "WLFI"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.38,
-  "cached_at": 1776063626.883808
+  "fetch_time_sec": 2.53,
+  "cached_at": 1776070853.251851
 }
