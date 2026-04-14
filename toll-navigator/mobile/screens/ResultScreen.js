@@ -20,22 +20,50 @@ const IFTA_RATES = {
   WA: 0.494, WV: 0.358, WI: 0.329, WY: 0.240,
 };
 
-function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown) {
+// fuelPurchases: [{ state: 'TX', gallons: 100 }, ...]
+// Если переданы — считаем полный IFTA (с зачётом купленных галлонов)
+// Если нет — упрощённая формула (только потреблённые галлоны × ставка)
+function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
   const totalGallons = distanceMiles / mpg;
   const totalFuelCost = totalGallons * fuelPrice;
 
+  // Индекс купленных галлонов по штатам
+  const purchasedByState = {};
+  if (fuelPurchases && fuelPurchases.length > 0) {
+    fuelPurchases.forEach(p => {
+      if (p.state && p.gallons > 0) {
+        purchasedByState[p.state] = (purchasedByState[p.state] || 0) + p.gallons;
+      }
+    });
+  }
+  const hasRealPurchases = Object.keys(purchasedByState).length > 0;
+
   const stateBreakdown = (breakdown || []).map(b => {
-    const gallons = b.miles_in_state / mpg;
-    const fuelCost = gallons * fuelPrice;
+    const consumedGallons = b.miles_in_state / mpg;
+    const fuelCost = consumedGallons * fuelPrice;
     const iftaRate = IFTA_RATES[b.state] || 0;
-    const iftaTax = gallons * iftaRate;
+
+    let iftaTax;
+    let purchasedInState = 0;
+    if (hasRealPurchases) {
+      // Полная формула IFTA:
+      // Net Tax = (consumedGallons × rate) - (purchasedInState × rate)
+      purchasedInState = purchasedByState[b.state] || 0;
+      iftaTax = (consumedGallons - purchasedInState) * iftaRate;
+    } else {
+      // Упрощённая — только потреблённые галлоны
+      iftaTax = consumedGallons * iftaRate;
+    }
+
     return {
       state: b.state,
       miles: b.miles_in_state,
-      gallons: gallons.toFixed(2),
+      gallons: consumedGallons.toFixed(2),
+      purchasedGallons: purchasedInState > 0 ? purchasedInState.toFixed(2) : null,
       fuelCost: fuelCost.toFixed(2),
       iftaRate: iftaRate.toFixed(3),
       iftaTax: iftaTax.toFixed(2),
+      iftaNetPositive: iftaTax >= 0, // true = доплата, false = возврат
     };
   });
 
@@ -46,11 +74,12 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown) {
     totalFuelCost: totalFuelCost.toFixed(2),
     totalIftaTax: totalIftaTax.toFixed(2),
     stateBreakdown,
+    hasRealPurchases,
   };
 }
 
 export default function ResultScreen({ route, navigation }) {
-  const { result, from, to, truckType, fuelData } = route.params;
+  const { result, from, to, truckType, fuelData, fuelPurchases } = route.params;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -69,7 +98,7 @@ export default function ResultScreen({ route, navigation }) {
 
   // Fuel calculations
   const fuel = fuelData
-    ? calcFuelData(result.distance_miles, fuelData.mpg, fuelData.fuelPrice, result.breakdown)
+    ? calcFuelData(result.distance_miles, fuelData.mpg, fuelData.fuelPrice, result.breakdown, fuelPurchases)
     : null;
 
   const grandTotal = fuel
@@ -227,7 +256,9 @@ export default function ResultScreen({ route, navigation }) {
           >
             <Text style={styles.sectionTitle}>🏛️ IFTA — разбивка по штатам</Text>
             <View style={styles.iftaBadge}>
-              <Text style={styles.iftaBadgeText}>ИТОГО: ${fuel.totalIftaTax}</Text>
+              <Text style={styles.iftaBadgeText}>
+                {fuel.hasRealPurchases ? 'НЕТТО: ' : 'ИТОГО: '}${fuel.totalIftaTax}
+              </Text>
             </View>
             <Ionicons
               name={showIftaDetail ? 'chevron-up' : 'chevron-down'}
@@ -238,28 +269,65 @@ export default function ResultScreen({ route, navigation }) {
 
           {showIftaDetail && (
             <>
-              <View style={styles.iftaTableHeader}>
-                <Text style={[styles.iftaCol, { flex: 0.8 }]}>Штат</Text>
-                <Text style={[styles.iftaCol, { flex: 1 }]}>Мили</Text>
-                <Text style={[styles.iftaCol, { flex: 1 }]}>Галлоны</Text>
-                <Text style={[styles.iftaCol, { flex: 1 }]}>Ставка</Text>
-                <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Налог</Text>
-              </View>
-              {fuel.stateBreakdown.map((s, i) => (
-                <View key={i} style={styles.iftaRow}>
-                  <Text style={[styles.iftaState, { flex: 0.8 }]}>{s.state}</Text>
-                  <Text style={[styles.iftaData, { flex: 1 }]}>{s.miles}</Text>
-                  <Text style={[styles.iftaData, { flex: 1 }]}>{s.gallons}</Text>
-                  <Text style={[styles.iftaData, { flex: 1 }]}>${s.iftaRate}</Text>
-                  <Text style={[styles.iftaCost, { flex: 1, textAlign: 'right' }]}>${s.iftaTax}</Text>
-                </View>
-              ))}
-              <View style={styles.iftaNote}>
-                <Text style={styles.iftaNoteText}>
-                  * IFTA — это квартальный отчёт по топливным налогам между штатами.
-                  Сумма показывает приблизительный налог, не учитывая заправки в штатах.
-                </Text>
-              </View>
+              {fuel.hasRealPurchases ? (
+                <>
+                  <View style={styles.iftaTableHeader}>
+                    <Text style={[styles.iftaCol, { flex: 0.7 }]}>Штат</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Мили</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Потр.</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Куплено</Text>
+                    <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Нетто</Text>
+                  </View>
+                  {fuel.stateBreakdown.map((s, i) => (
+                    <View key={i} style={styles.iftaRow}>
+                      <Text style={[styles.iftaState, { flex: 0.7 }]}>{s.state}</Text>
+                      <Text style={[styles.iftaData, { flex: 0.9 }]}>{s.miles}</Text>
+                      <Text style={[styles.iftaData, { flex: 0.9 }]}>{s.gallons}</Text>
+                      <Text style={[styles.iftaData, { flex: 0.9, color: '#81c784' }]}>
+                        {s.purchasedGallons || '—'}
+                      </Text>
+                      <Text style={[
+                        styles.iftaCost,
+                        { flex: 1, textAlign: 'right' },
+                        s.iftaNetPositive ? styles.iftaTaxDue : styles.iftaTaxRefund
+                      ]}>
+                        {s.iftaNetPositive ? '+' : ''}{s.iftaTax}
+                      </Text>
+                    </View>
+                  ))}
+                  <View style={styles.iftaNote}>
+                    <Text style={styles.iftaNoteText}>
+                      Нетто = (потреблённые − купленные) × ставка штата.
+                      {'\n'}+ красный → доплата штату  |  − зелёный → возврат от штата.
+                    </Text>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View style={styles.iftaTableHeader}>
+                    <Text style={[styles.iftaCol, { flex: 0.8 }]}>Штат</Text>
+                    <Text style={[styles.iftaCol, { flex: 1 }]}>Мили</Text>
+                    <Text style={[styles.iftaCol, { flex: 1 }]}>Галлоны</Text>
+                    <Text style={[styles.iftaCol, { flex: 1 }]}>Ставка</Text>
+                    <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Налог</Text>
+                  </View>
+                  {fuel.stateBreakdown.map((s, i) => (
+                    <View key={i} style={styles.iftaRow}>
+                      <Text style={[styles.iftaState, { flex: 0.8 }]}>{s.state}</Text>
+                      <Text style={[styles.iftaData, { flex: 1 }]}>{s.miles}</Text>
+                      <Text style={[styles.iftaData, { flex: 1 }]}>{s.gallons}</Text>
+                      <Text style={[styles.iftaData, { flex: 1 }]}>${s.iftaRate}</Text>
+                      <Text style={[styles.iftaCost, { flex: 1, textAlign: 'right' }]}>${s.iftaTax}</Text>
+                    </View>
+                  ))}
+                  <View style={styles.iftaNote}>
+                    <Text style={styles.iftaNoteText}>
+                      * Упрощённый расчёт — заправки по штатам не указаны.
+                      Добавь данные о заправках для точного IFTA.
+                    </Text>
+                  </View>
+                </>
+              )}
             </>
           )}
 
@@ -431,6 +499,8 @@ const styles = StyleSheet.create({
   iftaState: { color: '#fff', fontSize: 14, fontWeight: '700' },
   iftaData: { color: '#666', fontSize: 13 },
   iftaCost: { color: '#81c784', fontSize: 13, fontWeight: '700' },
+  iftaTaxDue: { color: '#ef9a9a', fontSize: 13, fontWeight: '700' },    // доплата = красный
+  iftaTaxRefund: { color: '#81c784', fontSize: 13, fontWeight: '700' }, // возврат = зелёный
   iftaNote: { marginTop: 12, padding: 10, backgroundColor: '#0d1a0d', borderRadius: 8 },
   iftaNoteText: { color: '#555', fontSize: 11, lineHeight: 16 },
 

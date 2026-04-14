@@ -6,6 +6,15 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { calculateRoute } from '../services/api';
 
+// Список штатов США для Picker заправок
+const US_STATES = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+  'ID','IL','IN','IA','KS','KY','LA','ME','MD','MA',
+  'MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM',
+  'NY','NC','ND','OH','OK','OR','PA','RI','SC','SD',
+  'TN','TX','UT','VT','VA','WA','WV','WI','WY',
+];
+
 const TRUCK_TYPES = [
   { label: '2-Axle', value: '2-axle', icon: '🚗' },
   { label: '3-Axle', value: '3-axle', icon: '🚛' },
@@ -36,6 +45,9 @@ export default function HomeScreen({ navigation }) {
   const [showFuel, setShowFuel] = useState(false);
   const [mpg, setMpg] = useState('6.5');
   const [fuelPrice, setFuelPrice] = useState('3.80');
+  // Заправки по штатам (для точного IFTA)
+  const [fuelPurchases, setFuelPurchases] = useState([]); // [{state, gallons}]
+  const [showStatePicker, setShowStatePicker] = useState(null); // index строки у которой открыт пикер
 
   const fromSuggestions = CITY_SUGGESTIONS.filter(c =>
     from.length > 1 && c.toLowerCase().includes(from.toLowerCase())
@@ -52,6 +64,27 @@ export default function HomeScreen({ navigation }) {
     setToFocus(false);
     setMpg('6.5');
     setFuelPrice('3.80');
+    setFuelPurchases([]);
+    setShowStatePicker(null);
+  };
+
+  // Хелперы для списка заправок
+  const addFuelPurchase = () => {
+    setFuelPurchases(prev => [...prev, { state: 'TX', gallons: '' }]);
+  };
+
+  const removeFuelPurchase = (index) => {
+    setFuelPurchases(prev => prev.filter((_, i) => i !== index));
+    if (showStatePicker === index) setShowStatePicker(null);
+  };
+
+  const updatePurchaseState = (index, state) => {
+    setFuelPurchases(prev => prev.map((p, i) => i === index ? { ...p, state } : p));
+    setShowStatePicker(null);
+  };
+
+  const updatePurchaseGallons = (index, gallons) => {
+    setFuelPurchases(prev => prev.map((p, i) => i === index ? { ...p, gallons } : p));
   };
 
   const handleCalculate = async () => {
@@ -66,7 +99,16 @@ export default function HomeScreen({ navigation }) {
         mpg: parseFloat(mpg) || 6.5,
         fuelPrice: parseFloat(fuelPrice) || 3.80,
       } : null;
-      navigation.navigate('Result', { result: response.data, from, to, truckType, fuelData });
+      // Подготовить данные о заправках: только валидные строки (штат + галлоны > 0)
+      const validPurchases = showFuel
+        ? fuelPurchases
+            .map(p => ({ state: p.state, gallons: parseFloat(p.gallons) || 0 }))
+            .filter(p => p.gallons > 0)
+        : [];
+      navigation.navigate('Result', {
+        result: response.data, from, to, truckType, fuelData,
+        fuelPurchases: validPurchases.length > 0 ? validPurchases : undefined,
+      });
     } catch (err) {
       const msg = err.response?.data?.error || 'Ошибка соединения с сервером';
       Alert.alert('Ошибка', msg);
@@ -205,6 +247,73 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.fuelHint}>Дизель сейчас ~$3.80</Text>
               </View>
             </View>
+            {/* Секция заправок по штатам */}
+            <View style={styles.purchasesSection}>
+              <View style={styles.purchasesHeader}>
+                <View>
+                  <Text style={styles.purchasesTitle}>⛽ Заправки по штатам</Text>
+                  <Text style={styles.purchasesSub}>
+                    {fuelPurchases.length > 0
+                      ? `${fuelPurchases.length} штат(а) — точный IFTA расчёт`
+                      : 'Необязательно — для точного IFTA'}
+                  </Text>
+                </View>
+                <TouchableOpacity style={styles.addPurchaseBtn} onPress={addFuelPurchase}>
+                  <Text style={styles.addPurchaseBtnText}>+ Добавить</Text>
+                </TouchableOpacity>
+              </View>
+
+              {fuelPurchases.map((p, index) => (
+                <View key={index} style={styles.purchaseRow}>
+                  {/* Выбор штата */}
+                  <TouchableOpacity
+                    style={styles.stateSelector}
+                    onPress={() => setShowStatePicker(showStatePicker === index ? null : index)}
+                  >
+                    <Text style={styles.stateSelectorText}>{p.state}</Text>
+                    <Text style={styles.stateSelectorArrow}>▼</Text>
+                  </TouchableOpacity>
+
+                  {/* Пикер штатов (inline dropdown) */}
+                  {showStatePicker === index && (
+                    <View style={styles.statePickerContainer}>
+                      <ScrollView style={styles.statePickerScroll} nestedScrollEnabled>
+                        {US_STATES.map(st => (
+                          <TouchableOpacity
+                            key={st}
+                            style={[styles.stateOption, p.state === st && styles.stateOptionActive]}
+                            onPress={() => updatePurchaseState(index, st)}
+                          >
+                            <Text style={[styles.stateOptionText, p.state === st && styles.stateOptionTextActive]}>
+                              {st}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  )}
+
+                  {/* Поле галлонов */}
+                  <TextInput
+                    style={styles.gallonsInput}
+                    value={p.gallons}
+                    onChangeText={val => updatePurchaseGallons(index, val)}
+                    keyboardType="decimal-pad"
+                    placeholder="галлоны"
+                    placeholderTextColor="#444"
+                  />
+
+                  {/* Удалить строку */}
+                  <TouchableOpacity
+                    style={styles.removePurchaseBtn}
+                    onPress={() => removeFuelPurchase(index)}
+                  >
+                    <Text style={styles.removePurchaseBtnText}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+
             <Text style={styles.fuelNote}>
               📊 Увидишь: толлы + топливо + IFTA разбивка + итог рейса
             </Text>
@@ -324,6 +433,92 @@ const styles = StyleSheet.create({
   },
   fuelHint: { color: '#444', fontSize: 10, marginTop: 4, textAlign: 'center' },
   fuelNote: { color: '#4fc3f7', fontSize: 12, textAlign: 'center', fontWeight: '600' },
+  // Fuel purchases section
+  purchasesSection: {
+    marginTop: 8,
+    marginBottom: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#1a2e3a',
+    paddingTop: 12,
+  },
+  purchasesHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  purchasesTitle: { color: '#aaa', fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+  purchasesSub: { color: '#555', fontSize: 10, marginTop: 2 },
+  addPurchaseBtn: {
+    backgroundColor: '#0d1f2d',
+    borderWidth: 1,
+    borderColor: '#4fc3f7',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  addPurchaseBtnText: { color: '#4fc3f7', fontSize: 12, fontWeight: '700' },
+  purchaseRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  stateSelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0d0d1a',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#2a3a4a',
+    minWidth: 60,
+    gap: 4,
+  },
+  stateSelectorText: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  stateSelectorArrow: { color: '#4fc3f7', fontSize: 10 },
+  statePickerContainer: {
+    position: 'absolute',
+    top: 40,
+    left: 0,
+    zIndex: 100,
+    backgroundColor: '#161629',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#2a3a4a',
+    width: 80,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  statePickerScroll: { maxHeight: 200 },
+  stateOption: { paddingHorizontal: 12, paddingVertical: 8 },
+  stateOptionActive: { backgroundColor: '#0d1f2d' },
+  stateOptionText: { color: '#888', fontSize: 14 },
+  stateOptionTextActive: { color: '#4fc3f7', fontWeight: '700' },
+  gallonsInput: {
+    flex: 1,
+    backgroundColor: '#0d0d1a',
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
+    borderRadius: 8,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#2a3a4a',
+    textAlign: 'center',
+  },
+  removePurchaseBtn: {
+    backgroundColor: '#1a0d0d',
+    borderRadius: 8,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#3a1a1a',
+  },
+  removePurchaseBtnText: { color: '#ef9a9a', fontSize: 13, fontWeight: '700' },
   // Buttons
   calcBtn: {
     backgroundColor: '#4fc3f7',
