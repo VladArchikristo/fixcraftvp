@@ -93,39 +93,50 @@ function haversineDistance(p1, p2) {
  * @param {{ lat, lon }} toCoords
  * @returns {{ distanceMiles, durationHours, source, waypoints } | null}
  */
+// Список OSRM-серверов (основной + резервные)
+const OSRM_SERVERS = [
+  'https://router.project-osrm.org',
+  'https://routing.openstreetmap.de/routed-car',
+];
+
 async function getOSRMRoute(fromCoords, toCoords) {
-  try {
-    // overview=full + geometries=geojson — получаем реальную геометрию маршрута
-    const url = `https://router.project-osrm.org/route/v1/driving/${fromCoords.lon},${fromCoords.lat};${toCoords.lon},${toCoords.lat}?overview=full&geometries=geojson&steps=false`;
+  for (const server of OSRM_SERVERS) {
+    try {
+      // overview=full + geometries=geojson — получаем реальную геометрию маршрута
+      const url = `${server}/route/v1/driving/${fromCoords.lon},${fromCoords.lat};${toCoords.lon},${toCoords.lat}?overview=full&geometries=geojson&steps=false`;
 
-    const result = await httpsGet(url);
+      const result = await httpsGet(url);
 
-    if (!result || result.code !== 'Ok' || !result.routes || result.routes.length === 0) {
-      return null;
+      if (!result || result.code !== 'Ok' || !result.routes || result.routes.length === 0) {
+        console.warn(`[geoService] OSRM ${server}: bad response (code=${result?.code})`);
+        continue;
+      }
+
+      const route = result.routes[0];
+      const distanceMeters = route.distance;
+      const durationSeconds = route.duration;
+
+      // Извлекаем waypoints из GeoJSON геометрии (реальный путь по дорогам)
+      let waypoints = null;
+      if (route.geometry && route.geometry.coordinates && route.geometry.coordinates.length > 1) {
+        // GeoJSON: [lon, lat] → конвертируем в { lat, lon }
+        waypoints = route.geometry.coordinates.map(([lon, lat]) => ({ lat, lon }));
+        console.log(`[geoService] OSRM (${server}): ${waypoints.length} waypoints for route`);
+      }
+
+      return {
+        distanceMiles: Math.round(distanceMeters * 0.000621371),
+        durationHours: Math.round(durationSeconds / 360) / 10, // 1 decimal
+        source: 'osrm',
+        waypoints, // реальные точки маршрута по дорогам
+      };
+    } catch (err) {
+      console.warn(`[geoService] OSRM ${server} error:`, err.message);
+      // Попробуем следующий сервер
     }
-
-    const route = result.routes[0];
-    const distanceMeters = route.distance;
-    const durationSeconds = route.duration;
-
-    // Извлекаем waypoints из GeoJSON геометрии (реальный путь по дорогам)
-    let waypoints = null;
-    if (route.geometry && route.geometry.coordinates && route.geometry.coordinates.length > 1) {
-      // GeoJSON: [lon, lat] → конвертируем в { lat, lon }
-      waypoints = route.geometry.coordinates.map(([lon, lat]) => ({ lat, lon }));
-      console.log(`[geoService] OSRM: ${waypoints.length} waypoints for route`);
-    }
-
-    return {
-      distanceMiles: Math.round(distanceMeters * 0.000621371),
-      durationHours: Math.round(durationSeconds / 360) / 10, // 1 decimal
-      source: 'osrm',
-      waypoints, // реальные точки маршрута по дорогам
-    };
-  } catch (err) {
-    console.warn('[geoService] OSRM error:', err.message);
-    return null;
   }
+  console.warn('[geoService] All OSRM servers failed — using hardcoded fallback tables');
+  return null;
 }
 
 /**

@@ -260,7 +260,8 @@ const ROUTE_DISTANCES = {
 // Ключ: "City1,ST|City2,ST" — значение: объект { штат: мили }
 // ─────────────────────────────────────────────────────────────────────────────
 const STATE_MILES = {
-  'dallas,tx|new york,ny': { TX: 400, LA: 115, MS: 150, AL: 120, GA: 150, SC: 100, NC: 180, VA: 120, MD: 50, DE: 30, NJ: 90, NY: 66 },
+  // Dallas→NY: северный маршрут I-35→I-44→I-70→I-76/I-78 (реальный трак-маршрут)
+  'dallas,tx|new york,ny': { TX: 200, OK: 340, MO: 300, IL: 150, IN: 170, OH: 190, PA: 155, NJ: 90, NY: 66 },
   'dallas,tx|los angeles,ca': { TX: 350, NM: 290, AZ: 420, CA: 375 },
   'dallas,tx|chicago,il': { TX: 200, OK: 200, MO: 380, IL: 141 },
   'dallas,tx|miami,fl': { TX: 250, LA: 200, MS: 150, AL: 120, FL: 591 },
@@ -440,10 +441,10 @@ const STATE_MILES = {
 // Расстояния между СОСЕДНИМИ штатами (сегменты, мили)
 // Используются для расчёта суммы по коридору
 const SEGMENT_DISTANCES = {
-  // East Coast
-  'FL-GA': 350, 'GA-SC': 170, 'SC-NC': 120, 'NC-VA': 200, 'VA-MD': 120,
-  'MD-DE': 90, 'DE-NJ': 80, 'NJ-NY': 55, 'NY-CT': 80, 'CT-RI': 50,
-  'RI-MA': 50, 'MA-NH': 60, 'NH-ME': 90, 'NY-VT': 120, 'VT-NH': 90,
+  // East Coast (реальные расстояния по шоссе)
+  'FL-GA': 350, 'GA-SC': 170, 'SC-NC': 220, 'NC-VA': 220, 'VA-MD': 110,
+  'MD-DE': 60, 'DE-NJ': 50, 'NJ-NY': 120, 'NY-CT': 100, 'CT-RI': 50,
+  'RI-MA': 50, 'MA-NH': 80, 'NH-ME': 110, 'NY-VT': 120, 'VT-NH': 90,
   // Southeast interior
   'FL-AL': 380, 'AL-MS': 180, 'MS-LA': 195, 'LA-TX': 350,
   'GA-AL': 160, 'GA-TN': 120, 'GA-FL': 350,
@@ -451,27 +452,27 @@ const SEGMENT_DISTANCES = {
   'TN-KY': 160, 'TN-NC': 380, 'TN-VA': 340, 'TN-AR': 280,
   'KY-OH': 140, 'KY-IN': 120, 'KY-IL': 200, 'KY-WV': 190, 'KY-VA': 200,
   'WV-VA': 180, 'WV-OH': 140, 'WV-PA': 160, 'WV-MD': 160,
-  // Mid-Atlantic / Northeast
-  'PA-NJ': 90, 'PA-NY': 200, 'PA-MD': 120, 'PA-WV': 160, 'PA-OH': 320, 'PA-DE': 50,
-  'NY-PA': 200, 'NY-NJ': 55, 'NY-MA': 220, 'NY-VT': 120,
+  // Mid-Atlantic / Northeast (реальные расстояния по шоссе)
+  'PA-NJ': 90, 'PA-NY': 320, 'PA-MD': 120, 'PA-WV': 160, 'PA-OH': 190, 'PA-DE': 50,
+  'NY-PA': 320, 'NY-NJ': 120, 'NY-MA': 220, 'NY-VT': 120,
   'MD-VA': 120, 'MD-PA': 120, 'MD-DE': 90, 'MD-WV': 160,
   'VA-NC': 200, 'VA-WV': 180, 'VA-TN': 340, 'VA-KY': 200,
   'NC-TN': 380, 'NC-SC': 120, 'NC-GA': 250,
-  // Midwest
-  'OH-IN': 180, 'OH-MI': 145, 'OH-PA': 320, 'OH-WV': 140, 'OH-KY': 100,
-  'IN-IL': 180, 'IN-MI': 200, 'IN-KY': 120, 'IN-OH': 180,
-  'IL-WI': 150, 'IL-MO': 290, 'IL-KY': 200, 'IL-IN': 180, 'IL-IA': 220,
+  // Midwest (реальные расстояния по шоссе)
+  'OH-IN': 170, 'OH-MI': 145, 'OH-PA': 190, 'OH-WV': 140, 'OH-KY': 100,
+  'IN-IL': 150, 'IN-MI': 200, 'IN-KY': 120, 'IN-OH': 170,
+  'IL-WI': 150, 'IL-MO': 300, 'IL-KY': 200, 'IL-IN': 150, 'IL-IA': 220,
   'MI-OH': 145, 'MI-IN': 200, 'MI-WI': 290,
   'WI-MN': 280, 'WI-IA': 200, 'WI-IL': 150, 'WI-MI': 290,
   'MN-IA': 250, 'MN-ND': 290, 'MN-SD': 220, 'MN-WI': 280,
   'IA-MO': 200, 'IA-IL': 220, 'IA-WI': 200, 'IA-NE': 300, 'IA-SD': 250,
-  'MO-IL': 290, 'MO-KY': 380, 'MO-TN': 320, 'MO-AR': 220, 'MO-OK': 260,
+  'MO-IL': 300, 'MO-KY': 380, 'MO-TN': 320, 'MO-AR': 220, 'MO-OK': 340,
   'MO-KS': 200, 'MO-NE': 350, 'MO-IA': 200,
-  // South Central
-  'TX-OK': 200, 'TX-AR': 310, 'TX-LA': 350, 'TX-NM': 290,
-  'OK-KS': 170, 'OK-AR': 200, 'OK-MO': 260, 'OK-CO': 420, 'OK-NM': 380, 'OK-TX': 200,
+  // South Central (реальные расстояния по шоссе)
+  'TX-OK': 200, 'TX-AR': 310, 'TX-LA': 250, 'TX-NM': 580,
+  'OK-KS': 170, 'OK-AR': 200, 'OK-MO': 340, 'OK-CO': 420, 'OK-NM': 380, 'OK-TX': 200,  // OK-MO: реальное 340 миль (I-44)
   'AR-TN': 280, 'AR-MS': 180, 'AR-LA': 280, 'AR-MO': 220, 'AR-OK': 200, 'AR-TX': 310,
-  'LA-MS': 195, 'LA-TX': 350, 'LA-AR': 280,
+  'LA-MS': 200, 'LA-TX': 250, 'LA-AR': 280,
   // Plains & Mountain
   'KS-NE': 200, 'KS-CO': 340, 'KS-MO': 200, 'KS-OK': 170,
   'NE-SD': 200, 'NE-IA': 300, 'NE-MO': 350, 'NE-KS': 200, 'NE-CO': 500, 'NE-WY': 450,
@@ -482,13 +483,13 @@ const SEGMENT_DISTANCES = {
   'WY-MT': 350, 'WY-ID': 340, 'WY-UT': 320, 'WY-CO': 100, 'WY-NE': 450, 'WY-SD': 400,
   'MT-ID': 330, 'MT-ND': 400, 'MT-SD': 380, 'MT-WY': 350,
   // West
-  'NM-TX': 290, 'NM-OK': 380, 'NM-CO': 280, 'NM-AZ': 290, 'NM-UT': 500,
-  'AZ-CA': 370, 'AZ-NV': 280, 'AZ-UT': 360, 'AZ-NM': 290,
-  'UT-NV': 410, 'UT-ID': 300, 'UT-WY': 320, 'UT-CO': 370, 'UT-AZ': 360,
-  'NV-CA': 270, 'NV-AZ': 280, 'NV-UT': 410, 'NV-OR': 500, 'NV-ID': 550,
-  'CA-OR': 590, 'CA-NV': 270, 'CA-AZ': 370,
-  'OR-WA': 180, 'OR-ID': 340, 'OR-NV': 500, 'OR-CA': 590,
-  'WA-OR': 180, 'WA-ID': 280, 'WA-MT': 430,
+  'NM-TX': 580, 'NM-OK': 380, 'NM-CO': 280, 'NM-AZ': 390, 'NM-UT': 500,
+  'AZ-CA': 500, 'AZ-NV': 280, 'AZ-UT': 360, 'AZ-NM': 390,
+  'UT-NV': 420, 'UT-ID': 300, 'UT-WY': 320, 'UT-CO': 450, 'UT-AZ': 360,
+  'NV-CA': 450, 'NV-AZ': 280, 'NV-UT': 420, 'NV-OR': 500, 'NV-ID': 550,
+  'CA-OR': 650, 'CA-NV': 450, 'CA-AZ': 500,
+  'OR-WA': 280, 'OR-ID': 340, 'OR-NV': 500, 'OR-CA': 650,
+  'WA-OR': 280, 'WA-ID': 280, 'WA-MT': 430,
   'ID-MT': 330, 'ID-WY': 340, 'ID-UT': 300, 'ID-OR': 340, 'ID-NV': 550, 'ID-WA': 280,
   // Alaska / Hawaii (no land routes)
   'AK-AK': 500, 'HI-HI': 200,
@@ -663,11 +664,17 @@ const CORRIDORS = {
   'CA-OH': ['CA', 'AZ', 'NM', 'TX', 'OK', 'MO', 'IL', 'IN', 'OH'],
   'CA-PA': ['CA', 'AZ', 'NM', 'TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA'],
   'CA-NY': ['CA', 'AZ', 'NM', 'TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA', 'NJ', 'NY'],
-  // TX cross-country (east)
-  'TX-NC': ['TX', 'LA', 'MS', 'AL', 'GA', 'SC', 'NC'],
-  'TX-VA': ['TX', 'LA', 'MS', 'AL', 'GA', 'SC', 'NC', 'VA'],
-  'TX-PA': ['TX', 'LA', 'MS', 'AL', 'GA', 'SC', 'NC', 'VA', 'MD', 'PA'],
-  'TX-NY': ['TX', 'LA', 'MS', 'AL', 'GA', 'SC', 'NC', 'VA', 'MD', 'DE', 'NJ', 'NY'],
+  // TX cross-country (north/east — реальный трак-маршрут I-35/I-44/I-70)
+  'TX-OK': ['TX', 'OK'],
+  'TX-MO': ['TX', 'OK', 'MO'],
+  'TX-IL': ['TX', 'OK', 'MO', 'IL'],
+  'TX-IN': ['TX', 'OK', 'MO', 'IL', 'IN'],
+  'TX-OH': ['TX', 'OK', 'MO', 'IL', 'IN', 'OH'],
+  'TX-PA': ['TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA'],
+  'TX-NJ': ['TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA', 'NJ'],
+  'TX-NY': ['TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA', 'NJ', 'NY'],
+  'TX-NC': ['TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA', 'MD', 'VA', 'NC'],
+  'TX-VA': ['TX', 'OK', 'MO', 'IL', 'IN', 'OH', 'PA', 'MD', 'VA'],
   // West Coast / Mountain corridors
   'CA-NV': ['CA', 'NV'],
   'CA-CO': ['CA', 'NV', 'CO'],
