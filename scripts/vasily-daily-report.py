@@ -87,7 +87,7 @@ def build_report():
         for p in positions:
             entry = p.get("entry_price", 0)
             side = p.get("side", "?")
-            coin = p.get("coin", "?")
+            coin = p.get("asset", p.get("coin", "?"))
             size = p.get("size_usd", 0)
             lev = p.get("leverage", 1)
             emoji = "🟢" if side == "LONG" else "🔴"
@@ -101,9 +101,9 @@ def build_report():
     if today_history:
         lines = []
         for t in today_history:
-            coin = t.get("coin", "?")
+            coin = t.get("asset", t.get("coin", "?"))
             side = t.get("side", "?")
-            pnl = t.get("pnl", 0)
+            pnl = t.get("pnl_usd", t.get("pnl", 0)) or 0
             reason = t.get("reason", "")
             emoji = "✅" if pnl > 0 else "❌"
             lines.append(f"  {emoji} {coin} {side}: {'+' if pnl>=0 else ''}{pnl:.2f}$ ({reason})")
@@ -112,11 +112,11 @@ def build_report():
         closed_text = "  сделок за сутки нет"
 
     # Статистика из всей истории
-    wins = [t for t in history if t.get("pnl", 0) > 0]
-    losses = [t for t in history if t.get("pnl", 0) <= 0]
+    wins = [t for t in history if (t.get("pnl_usd", t.get("pnl", 0)) or 0) > 0]
+    losses = [t for t in history if (t.get("pnl_usd", t.get("pnl", 0)) or 0) <= 0]
     total = len(history)
     win_rate = (len(wins) / total * 100) if total > 0 else 0
-    total_pnl = sum(t.get("pnl", 0) for t in history)
+    total_pnl = sum((t.get("pnl_usd", t.get("pnl", 0)) or 0) for t in history)
 
     # Знак P&L
     pnl_emoji = "📈" if day_pnl >= 0 else "📉"
