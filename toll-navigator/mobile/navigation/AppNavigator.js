@@ -23,6 +23,9 @@ import DocumentScannerScreen from '../screens/DocumentScannerScreen';
 import DocumentHistoryScreen from '../screens/DocumentHistoryScreen';
 import ImageEditScreen from '../screens/ImageEditScreen';
 import LoadTrackingScreen from '../screens/LoadTrackingScreen';
+import ExpenseDashboardScreen from '../screens/ExpenseDashboardScreen';
+import AddExpenseScreen from '../screens/AddExpenseScreen';
+import AddLoadScreen from '../screens/AddLoadScreen';
 import { getToken, logout } from '../services/auth';
 
 const Stack = createStackNavigator();
@@ -114,6 +117,29 @@ function DocumentsStack() {
   );
 }
 
+// Expenses stack
+function ExpensesStack() {
+  return (
+    <Stack.Navigator screenOptions={stackScreenOptions}>
+      <Stack.Screen
+        name="ExpenseDashboard"
+        component={ExpenseDashboardScreen}
+        options={{ title: 'Expenses', headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddExpense"
+        component={AddExpenseScreen}
+        options={{ title: 'Add Expense', headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddLoad"
+        component={AddLoadScreen}
+        options={{ title: 'Add Load', headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 // Load Tracking stack
 function TrackingStack() {
   return (
@@ -156,6 +182,7 @@ function MainTabs({ onLogout }) {
             Brokers:   focused ? 'shield'          : 'shield-outline',
             Documents: focused ? 'document-text'  : 'document-text-outline',
             Tracking:  focused ? 'location'        : 'location-outline',
+            Expenses:  focused ? 'wallet'          : 'wallet-outline',
             Profile:   focused ? 'person'          : 'person-outline',
           };
           return <Ionicons name={icons[route.name] || 'ellipse'} size={size} color={color} />;
@@ -170,6 +197,7 @@ function MainTabs({ onLogout }) {
       <Tab.Screen name="Brokers"   component={BrokersStack}   options={{ tabBarLabel: 'Брокеры' }} />
       <Tab.Screen name="Documents" component={DocumentsStack} options={{ tabBarLabel: 'Docs' }} />
       <Tab.Screen name="Tracking"  component={TrackingStack}  options={{ tabBarLabel: 'Tracking' }} />
+      <Tab.Screen name="Expenses"  component={ExpensesStack}  options={{ tabBarLabel: 'Expenses' }} />
       <Tab.Screen name="Profile"   options={{ tabBarLabel: 'Профиль' }}>
         {() => <ProfileScreen onLogout={handleLogout} />}
       </Tab.Screen>
