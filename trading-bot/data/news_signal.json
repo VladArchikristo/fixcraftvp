@@ -1,41 +1,37 @@
 {
-  "timestamp": "2026-04-14T10:00:26.190445+00:00",
+  "timestamp": "2026-04-14T13:00:23.245264+00:00",
   "sentiment": "bearish",
-  "score": -0.52,
+  "score": -0.56,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
     "trend": "rising"
   },
   "key_events": [
-    "Japan's central bank cools rate hike expectations, removing a key risk for bitcoin's rally",
-    "Justice Department opens compensation for victims of $4B OneCoin crypto fraud",
-    "Banks challenge White House report on stablecoin yields",
-    "Strategy's STRC sees record-breaking trading day, may surpass that on Tuesday",
-    "Here are key bitcoin price levels to watch as the rally gathers steam"
+    "Bank of Korea nominee backs central bank-led digital currency, sees limited role for stablecoins",
+    "Web3 hacks cost $482M in Q1 as phishing drives majority of losses: Hacken",
+    "Bitcoin is closing in on $75,000 and analysts say a breakout could trigger a massive new rally",
+    "Tether introduces crypto wallet to bring stablecoin and bitcoin payments directly to users",
+    "Visa throws its weight behind Stripe’s Tempo blockchain"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "SOL",
-    "XRP",
-    "DOGE",
-    "UNI",
     "OP"
   ],
   "trending_coins": [
     "RAVE",
-    "GENIUS",
+    "PENGU",
     "ZAMA",
     "MYX",
-    "TAO",
-    "HYPE",
-    "PENGU"
+    "MON",
+    "GENIUS",
+    "TAO"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.35,
-  "cached_at": 1776160826.190582
+  "fetch_time_sec": 2.54,
+  "cached_at": 1776171623.245404
 }

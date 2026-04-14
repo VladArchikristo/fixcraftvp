@@ -45,7 +45,7 @@ CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
 CLAUDE_MODEL_OPUS = "claude-opus-4-6"
-COMPLEX_THRESHOLD = 250  # chars — longer messages use Opus
+COMPLEX_THRESHOLD = 500  # chars — longer messages use Opus
 CLAUDE_TIMEOUT = 600
 
 LOG_DIR = Path.home() / "logs"
@@ -88,7 +88,11 @@ SYSTEM_PROMPT = (
     "• Доктор Пётр — медицинский агент. Здоровье, симптомы, биология.\n\n"
     "• Зина — астролог и нумеролог.\n\n"
     "• Beast (@Antropic_BeastBot) — главный ассистент Владимира.\n\n"
-    "ВАЖНО: beast-bot/bot.py, .env файлы и launcher.sh — НИКОГДА не трогать.\n"
+    "ВАЖНО: beast-bot/bot.py, .env файлы и launcher.sh — НИКОГДА не трогать.\n\n"
+    "ПРАВИЛО ОТВЕТОВ:\n"
+    "- Отвечай ТЕКСТОМ. Не пытайся читать файлы, писать код или выполнять команды если тебя об этом явно не просили.\n"
+    "- Для задач планирования, анализа, разбиения на этапы — просто думай и пиши ответ.\n"
+    "- Используй Read/Grep ТОЛЬКО если пользователь явно просит посмотреть конкретный файл.\n"
 )
 
 MODE_PREFIXES = {
@@ -317,7 +321,7 @@ async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
 # Persistent history
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque[dict] = deque(maxlen=40)
+user_history: deque[dict] = deque(maxlen=15)
 
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 CONVERSATION_LOG_MAX_BYTES = 10 * 1024 * 1024  # 10 MB
@@ -531,7 +535,7 @@ def _split_message(text: str, limit: int = 4096) -> list[str]:
 # ---------------------------------------------------------------------------
 # Claude CLI call
 # ---------------------------------------------------------------------------
-CLAUDE_TOOLS = "Read,Edit,Write,Bash,Grep,Glob"
+CLAUDE_TOOLS = "Read,Grep,Glob"
 
 
 def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | None = None, model: str | None = None) -> tuple[bool, str]:
@@ -543,7 +547,7 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
         "--system-prompt", system,
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
-        "--max-turns", "15",
+        "--max-turns", "12",
     ]
     if extra_flags:
         cmd.extend(extra_flags)
@@ -567,6 +571,9 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
             stdout_text = stdout.strip()[:500] if stdout else ""
             log.error("Claude exited %d: stderr=%s | stdout=%s", proc.returncode,
                       stderr_text or "(empty)", stdout_text or "(empty)")
+            # Красивое сообщение при достижении лимита шагов
+            if "Reached max turns" in (stdout_text + " " + stderr_text):
+                return False, "MAX_TURNS"
             return False, ""
 
         answer = stdout.strip()
@@ -596,18 +603,18 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
 
 
 def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | None = None, model: str | None = None) -> tuple[bool, str]:
-    max_retries = 3
-    backoff = [3, 5, 10]  # exponential backoff seconds
+    max_retries = 1
     for attempt in range(max_retries):
         ok, text = _call_claude_once(full_prompt, system, extra_flags=extra_flags, model=model)
         if ok:
             return True, text
         if text == "TIMEOUT":
-            return False, "Таймаут (10 мин). Попробуй разбить задачу на части."
+            return False, "⏱ Таймаут (10 мин). Попробуй разбить задачу на части."
+        if text == "MAX_TURNS":
+            return False, "📝 Задача слишком объёмная — я обработал часть, но не уложился в лимит шагов. Попробуй разбить на более мелкие подзадачи."
         if attempt < max_retries - 1:
-            delay = backoff[attempt] if attempt < len(backoff) else 10
-            log.info("Claude attempt %d/%d failed, retrying in %d sec...", attempt + 1, max_retries, delay)
-            time.sleep(delay)
+            log.info("Claude attempt %d/%d failed, retrying in 3 sec...", attempt + 1, max_retries)
+            time.sleep(3)
     return False, "Произошла ошибка. Попробуй ещё раз через минуту."
 
 
@@ -926,6 +933,9 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
             user_history.append({"role": "assistant", "text": answer[:2000]})
             _save_history()
             _log_conversation("assistant", answer, update.effective_user.id)
+        elif answer and "объёмная" in answer:
+            # MAX_TURNS — не считаем как ошибку, юзер получит понятное сообщение
+            log.info("Max turns reached — not counting as error")
         else:
             _consecutive_errors += 1
             log.warning("Consecutive error count: %d/%d", _consecutive_errors, _CONSECUTIVE_ERROR_LIMIT)
