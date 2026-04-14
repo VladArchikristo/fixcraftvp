@@ -37,7 +37,7 @@ router.post('/', verifyToken, (req, res) => {
       state_miles = {},
       toll_cost = 0,
       fuel_cost = 0,
-      mpg = 6.5,
+      mpg,
       fuel_purchases = [],
       trip_date = null, // опциональная дата поездки для исторических записей
     } = req.body;
@@ -46,9 +46,9 @@ router.post('/', verifyToken, (req, res) => {
       return res.status(400).json({ error: 'from_city and to_city are required' });
     }
 
-    // Валидация MPG
-    const mpgVal = parseFloat(mpg) || 6.5;
-    if (mpgVal <= 0 || mpgVal >= 100) {
+    // Валидация MPG — явная проверка чтобы mpg=0 не превращалось в 6.5
+    const mpgVal = (mpg !== undefined && mpg !== null && Number(mpg) > 0) ? Number(mpg) : 6.5;
+    if (mpgVal >= 100) {
       return res.status(400).json({ error: 'mpg must be between 0 and 100' });
     }
 
@@ -115,12 +115,40 @@ router.post('/', verifyToken, (req, res) => {
   }
 });
 
+// Парсит квартал из строки: "Q1", "Q1-2026", "1", 1 → { q: 1, y: ... }
+function parseQuarterParam(qParam, yParam) {
+  const { quarter: curQ, year: curY } = getQuarterYear();
+  let q = curQ;
+  let y = yParam ? parseInt(yParam) : curY;
+
+  if (qParam !== undefined && qParam !== null && qParam !== '') {
+    const str = String(qParam).trim().toUpperCase();
+    // Формат "Q1-2026" или "Q1 2026"
+    const fullMatch = str.match(/^Q?(\d)\s*[-\s]\s*(\d{4})$/);
+    if (fullMatch) {
+      q = parseInt(fullMatch[1]);
+      y = parseInt(fullMatch[2]);
+    } else {
+      // Формат "Q1" или "Q2" или просто "1"
+      const simpleMatch = str.match(/^Q?(\d)$/);
+      if (simpleMatch) {
+        q = parseInt(simpleMatch[1]);
+      }
+    }
+  }
+
+  // Нормализуем квартал в диапазон 1-4
+  if (q < 1 || q > 4 || isNaN(q)) q = curQ;
+  if (isNaN(y)) y = curY;
+
+  return { q, y };
+}
+
 // GET /api/trips/ifta?quarter=2&year=2026 — IFTA расчёт за квартал
+// Поддерживаемые форматы: ?quarter=Q1, ?quarter=Q1-2026, ?quarter=1&year=2026
 router.get('/ifta', verifyToken, (req, res) => {
   try {
-    const { quarter, year } = getQuarterYear();
-    const q = parseInt(req.query.quarter) || quarter;
-    const y = parseInt(req.query.year) || year;
+    const { q, y } = parseQuarterParam(req.query.quarter, req.query.year);
 
     // Все поездки за квартал
     const trips = db.prepare(`
@@ -271,9 +299,7 @@ router.get('/history', verifyToken, (req, res) => {
 // GET /api/trips/fuel-purchases?quarter=2&year=2026 — заправки за квартал
 router.get('/fuel-purchases', verifyToken, (req, res) => {
   try {
-    const { quarter, year } = getQuarterYear();
-    const q = parseInt(req.query.quarter) || quarter;
-    const y = parseInt(req.query.year) || year;
+    const { q, y } = parseQuarterParam(req.query.quarter, req.query.year);
 
     const purchases = db.prepare(`
       SELECT fp.*, t.from_city, t.to_city

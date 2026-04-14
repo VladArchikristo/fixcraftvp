@@ -293,7 +293,7 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
 
 
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque = deque(maxlen=30)
+user_history: deque = deque(maxlen=10)
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 
 
@@ -848,7 +848,7 @@ async def heartbeat_job(context: ContextTypes.DEFAULT_TYPE):
 # History
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque = deque(maxlen=30)
+user_history: deque = deque(maxlen=10)
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 
 

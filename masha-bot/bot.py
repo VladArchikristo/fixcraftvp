@@ -298,7 +298,7 @@ def _kill_claude_children(pids: list[int]):
 # Persistent history (saved to disk, survives restarts)
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque[dict] = deque(maxlen=40)
+user_history: deque[dict] = deque(maxlen=10)
 
 # Full conversation log (never truncated, appends forever)
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"

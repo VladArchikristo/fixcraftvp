@@ -25,8 +25,8 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Health check
-app.get('/health', (_req, res) => {
+// Health check — доступен и как /health и как /api/health
+const healthHandler = (_req, res) => {
   const cache = require('./services/cache');
   res.json({
     status: 'ok',
@@ -34,7 +34,9 @@ app.get('/health', (_req, res) => {
     version: '0.2.0',
     cache: cache.stats(),
   });
-});
+};
+app.get('/health', healthHandler);
+app.get('/api/health', healthHandler);
 
 // Auth роуты
 app.use('/api/auth', require('./routes/auth'));
@@ -47,6 +49,9 @@ app.use('/api/trips', require('./routes/trips'));
 
 // User profile
 app.use('/api/users', require('./routes/users'));
+
+// Broker check
+app.use('/api/brokers', require('./routes/brokers'));
 
 // Global error handler
 app.use((err, req, res, next) => {

@@ -262,7 +262,7 @@ def profile_summary(profile: dict) -> str:
 # Persistent history
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque[dict] = deque(maxlen=40)
+user_history: deque[dict] = deque(maxlen=10)
 
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 CONVERSATION_LOG_MAX_BYTES = 10 * 1024 * 1024

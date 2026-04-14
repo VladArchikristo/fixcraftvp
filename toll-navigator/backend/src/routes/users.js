@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/profile', verifyToken, (req, res) => {
   try {
     const user = db.prepare(`
-      SELECT id, email, truck_type, company_name, usdot_number, full_name, created_at
+      SELECT id, email, truck_type, truck_mpg, company_name, usdot_number, full_name, created_at
       FROM users WHERE id = ?
     `).get(req.userId);
 
@@ -26,7 +26,7 @@ router.get('/profile', verifyToken, (req, res) => {
 // PUT /api/users/profile — обновить профиль пользователя
 router.put('/profile', verifyToken, (req, res) => {
   try {
-    const { full_name, company_name, truck_type, usdot_number } = req.body;
+    const { full_name, company_name, truck_type, usdot_number, truck_mpg } = req.body;
 
     // Валидация truck_type если передан
     const validTruckTypes = ['2-axle', '3-axle', '5-axle', '2axle', '3axle', '5axle'];
@@ -34,6 +34,14 @@ router.put('/profile', verifyToken, (req, res) => {
       return res.status(400).json({
         error: `Invalid truck_type. Must be one of: ${validTruckTypes.join(', ')}`
       });
+    }
+
+    // Валидация truck_mpg если передан
+    if (truck_mpg !== undefined && truck_mpg !== null) {
+      const mpgNum = Number(truck_mpg);
+      if (isNaN(mpgNum) || mpgNum <= 0 || mpgNum >= 100) {
+        return res.status(400).json({ error: 'truck_mpg must be a number between 0 and 100' });
+      }
     }
 
     // Строим динамический UPDATE — обновляем только переданные поля
@@ -44,10 +52,11 @@ router.put('/profile', verifyToken, (req, res) => {
     if (company_name !== undefined) { fields.push('company_name = ?'); values.push(company_name); }
     if (truck_type !== undefined) { fields.push('truck_type = ?'); values.push(truck_type); }
     if (usdot_number !== undefined) { fields.push('usdot_number = ?'); values.push(usdot_number); }
+    if (truck_mpg !== undefined && truck_mpg !== null) { fields.push('truck_mpg = ?'); values.push(Number(truck_mpg)); }
 
     if (fields.length === 0) {
       return res.status(400).json({
-        error: 'No fields to update. Provide at least one: full_name, company_name, truck_type, usdot_number'
+        error: 'No fields to update. Provide at least one: full_name, company_name, truck_type, usdot_number, truck_mpg'
       });
     }
 
@@ -56,7 +65,7 @@ router.put('/profile', verifyToken, (req, res) => {
 
     // Возвращаем обновлённый профиль
     const user = db.prepare(`
-      SELECT id, email, truck_type, company_name, usdot_number, full_name, created_at
+      SELECT id, email, truck_type, truck_mpg, company_name, usdot_number, full_name, created_at
       FROM users WHERE id = ?
     `).get(req.userId);
 

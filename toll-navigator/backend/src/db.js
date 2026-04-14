@@ -21,6 +21,7 @@ db.exec(`
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     truck_type TEXT DEFAULT '2-axle',
+    truck_mpg REAL DEFAULT 6.5,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -96,6 +97,34 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_fuel_purchases_user_id ON fuel_purchases(user_id);
   CREATE INDEX IF NOT EXISTS idx_fuel_purchases_quarter_year ON fuel_purchases(user_id, quarter, year);
   CREATE INDEX IF NOT EXISTS idx_fuel_purchases_trip_id ON fuel_purchases(trip_id);
+
+  CREATE TABLE IF NOT EXISTS brokers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    mc_number TEXT,
+    dot_number TEXT,
+    phone TEXT,
+    email TEXT,
+    city TEXT,
+    state TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS broker_reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    broker_id INTEGER NOT NULL REFERENCES brokers(id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5),
+    comment TEXT,
+    issue_type TEXT,
+    is_anonymous BOOLEAN DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_broker_reviews_broker_id ON broker_reviews(broker_id);
+  CREATE INDEX IF NOT EXISTS idx_broker_reviews_user_id ON broker_reviews(user_id);
+  CREATE UNIQUE INDEX IF NOT EXISTS idx_broker_reviews_unique ON broker_reviews(broker_id, user_id);
 `);
 
 // Migration: add new columns to existing tables (safe — fails silently if already exist)
@@ -109,6 +138,8 @@ const migrateColumns = [
   `ALTER TABLE users ADD COLUMN company_name TEXT`,
   `ALTER TABLE users ADD COLUMN usdot_number TEXT`,
   `ALTER TABLE users ADD COLUMN full_name TEXT`,
+  // MPG по умолчанию для профиля водителя
+  `ALTER TABLE users ADD COLUMN truck_mpg REAL DEFAULT 6.5`,
 ];
 migrateColumns.forEach(sql => { try { db.exec(sql); } catch (_) {} });
 

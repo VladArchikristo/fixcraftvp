@@ -13,6 +13,9 @@ import TripHistoryScreen from '../screens/TripHistoryScreen';
 import TripDetailScreen from '../screens/TripDetailScreen';
 import FuelPurchaseScreen from '../screens/FuelPurchaseScreen';
 import IFTADashboardScreen from '../screens/IFTADashboardScreen';
+import BrokerListScreen from '../screens/BrokerListScreen';
+import BrokerDetailScreen from '../screens/BrokerDetailScreen';
+import AddBrokerReviewScreen from '../screens/AddBrokerReviewScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -81,6 +84,17 @@ function IFTAStack() {
   );
 }
 
+// Brokers stack
+function BrokersStack() {
+  return (
+    <Stack.Navigator screenOptions={stackScreenOptions}>
+      <Stack.Screen name="BrokerList" component={BrokerListScreen} options={{ title: 'Брокеры' }} />
+      <Stack.Screen name="BrokerDetail" component={BrokerDetailScreen} options={{ title: 'Брокер' }} />
+      <Stack.Screen name="AddBrokerReview" component={AddBrokerReviewScreen} options={{ title: 'Добавить отзыв' }} />
+    </Stack.Navigator>
+  );
+}
+
 // Main tab navigator
 function MainTabs({ onLogout }) {
   const handleLogout = async () => {
@@ -103,21 +117,23 @@ function MainTabs({ onLogout }) {
         tabBarInactiveTintColor: '#444',
         tabBarIcon: ({ focused, color, size }) => {
           const icons = {
-            Calc: focused ? 'calculator' : 'calculator-outline',
-            Fuel: focused ? 'flame' : 'flame-outline',
-            History: focused ? 'time' : 'time-outline',
-            IFTA: focused ? 'bar-chart' : 'bar-chart-outline',
-            Profile: focused ? 'person' : 'person-outline',
+            Calc:    focused ? 'calculator'  : 'calculator-outline',
+            Fuel:    focused ? 'flame'        : 'flame-outline',
+            History: focused ? 'time'         : 'time-outline',
+            IFTA:    focused ? 'bar-chart'    : 'bar-chart-outline',
+            Brokers: focused ? 'shield'       : 'shield-outline',
+            Profile: focused ? 'person'       : 'person-outline',
           };
           return <Ionicons name={icons[route.name] || 'ellipse'} size={size} color={color} />;
         },
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       })}
     >
-      <Tab.Screen name="Calc" component={CalcStack} options={{ tabBarLabel: 'Маршрут' }} />
-      <Tab.Screen name="Fuel" component={FuelStack} options={{ tabBarLabel: 'Заправки' }} />
+      <Tab.Screen name="Calc"    component={CalcStack}    options={{ tabBarLabel: 'Маршрут' }} />
+      <Tab.Screen name="Fuel"    component={FuelStack}    options={{ tabBarLabel: 'Заправки' }} />
       <Tab.Screen name="History" component={HistoryStack} options={{ tabBarLabel: 'История' }} />
-      <Tab.Screen name="IFTA" component={IFTAStack} options={{ tabBarLabel: 'IFTA' }} />
+      <Tab.Screen name="IFTA"    component={IFTAStack}    options={{ tabBarLabel: 'IFTA' }} />
+      <Tab.Screen name="Brokers" component={BrokersStack} options={{ tabBarLabel: 'Брокеры' }} />
       <Tab.Screen name="Profile" options={{ tabBarLabel: 'Профиль' }}>
         {() => <ProfileScreen onLogout={handleLogout} />}
       </Tab.Screen>

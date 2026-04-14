@@ -321,7 +321,7 @@ async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
 # Persistent history
 # ---------------------------------------------------------------------------
 HISTORY_FILE = SCRIPT_DIR / "history.json"
-user_history: deque[dict] = deque(maxlen=15)
+user_history: deque[dict] = deque(maxlen=10)
 
 CONVERSATION_LOG = SCRIPT_DIR / "conversation_log.jsonl"
 CONVERSATION_LOG_MAX_BYTES = 10 * 1024 * 1024  # 10 MB
