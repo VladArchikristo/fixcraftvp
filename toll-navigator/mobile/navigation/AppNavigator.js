@@ -21,6 +21,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import DocumentScannerScreen from '../screens/DocumentScannerScreen';
 import DocumentHistoryScreen from '../screens/DocumentHistoryScreen';
+import ImageEditScreen from '../screens/ImageEditScreen';
 import { getToken, logout } from '../services/auth';
 
 const Stack = createStackNavigator();
@@ -103,6 +104,11 @@ function DocumentsStack() {
     <Stack.Navigator screenOptions={stackScreenOptions}>
       <Stack.Screen name="DocumentScanner" component={DocumentScannerScreen} options={{ headerShown: false }} />
       <Stack.Screen name="DocumentHistory" component={DocumentHistoryScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="ImageEdit"
+        component={ImageEditScreen}
+        options={{ headerShown: false, presentation: 'modal' }}
+      />
     </Stack.Navigator>
   );
 }

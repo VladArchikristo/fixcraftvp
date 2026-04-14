@@ -36,4 +36,12 @@ export const login = (data) => api.post('/api/auth/login', data);
 export const calculateRoute = (from, to, truckType) =>
   api.get('/api/tolls/route', { params: { from, to, truck_type: truckType } });
 
+// Document Scanner — Auto edge detection (OpenCV)
+export const detectEdges = (image_base64) =>
+  api.post('/api/documents/detect-edges', { image_base64 }, { timeout: 15000 });
+
+// Document Scanner — OCR text extraction (Google Vision API)
+export const extractTextOCR = (image_base64) =>
+  api.post('/api/documents/ocr', { image_base64 }, { timeout: 30000 });
+
 export default api;

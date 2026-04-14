@@ -35,6 +35,9 @@
         "android.permission.WRITE_EXTERNAL_STORAGE"
       ]
     },
+    "plugins": [
+      "@react-native-ml-kit/text-recognition"
+    ],
     "extra": {
       "apiUrl": "http://localhost:3001"
     }
