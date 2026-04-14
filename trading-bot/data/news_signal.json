@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-14T07:00:28.859082+00:00",
+  "timestamp": "2026-04-14T10:00:26.190445+00:00",
   "sentiment": "bearish",
-  "score": -0.62,
+  "score": -0.52,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
@@ -11,8 +11,8 @@
     "Japan's central bank cools rate hike expectations, removing a key risk for bitcoin's rally",
     "Justice Department opens compensation for victims of $4B OneCoin crypto fraud",
     "Banks challenge White House report on stablecoin yields",
-    "NFT bull Steve Aoki sells his SHIB, ETH, and PEPE. His Bored Apes are down 88%.",
-    "Nikita Bier says crypto has had a rough year, hints at building something new as X Money launch nears"
+    "Strategy's STRC sees record-breaking trading day, may surpass that on Tuesday",
+    "Here are key bitcoin price levels to watch as the rally gathers steam"
   ],
   "affected_assets": [
     "BTC",
@@ -25,17 +25,17 @@
   ],
   "trending_coins": [
     "RAVE",
-    "MYX",
-    "PENGU",
-    "ZAMA",
     "GENIUS",
-    "CC",
-    "HYPE"
+    "ZAMA",
+    "MYX",
+    "TAO",
+    "HYPE",
+    "PENGU"
   ],
-  "risk_level": "CRITICAL",
-  "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
+  "risk_level": "HIGH",
+  "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.96,
-  "cached_at": 1776150028.859324
+  "fetch_time_sec": 2.35,
+  "cached_at": 1776160826.190582
 }
