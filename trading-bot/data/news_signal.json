@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-14T00:53:44.188479+00:00",
+  "timestamp": "2026-04-14T04:00:25.743584+00:00",
   "sentiment": "bearish",
   "score": -0.7,
   "fear_greed": {
@@ -8,34 +8,35 @@
     "trend": "rising"
   },
   "key_events": [
-    "Circle CEO says he won’t freeze USDC without a court order even as hackers walk away with millions",
-    "Bankers rebuff White House claim that stablecoin yield doesn't threaten deposits",
-    "ClearBank secures MiCA approval, targets Circle euro, dollar stablecoins for institutional clients",
+    "U.S. lawmakers take another swing at crypto tax policy with revised bill",
     "This little-known token just posted a 6,000% rally — and traders are trying to figure out why",
-    "Bitcoin erases weekend decline, returns to $73,400 as oil retreats back under $100"
+    "Bitcoin erases weekend decline, returns to $73,400 as oil retreats back under $100",
+    "Coinbase VP of international policy leaves for OpenAI",
+    "Crypto wallet firm Exodus sues W3C and its CEO Garth Howat, seeking to compel $175M acquisition"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
+    "SOL",
     "XRP",
+    "DOGE",
+    "BNB",
     "ADA",
-    "DOT",
-    "ARB",
     "OP"
   ],
   "trending_coins": [
-    "BLESS",
-    "PENGU",
     "RAVE",
-    "MON",
-    "BTC",
+    "BLESS",
     "GENIUS",
-    "HYPE"
+    "PENGU",
+    "HYPE",
+    "BTC",
+    "ETH"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.77,
-  "cached_at": 1776128024.188703
+  "fetch_time_sec": 2.38,
+  "cached_at": 1776139225.7438312
 }

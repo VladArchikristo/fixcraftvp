@@ -28,9 +28,10 @@ function getTollsByState(state) {
  * @param {string[]} states - штаты на маршруте (например ['TX', 'LA', 'FL'])
  * @param {number} distanceMiles - общая дистанция в милях
  * @param {string} truckType - тип грузовика
+ * @param {object} [stateMilesMap] - распределение миль по штатам { TX: 400, OK: 190, ... }
  * @returns {{ total: number, breakdown: object[], states: string[] }}
  */
-function calculateTollCost(states, distanceMiles, truckType = '2-axle') {
+function calculateTollCost(states, distanceMiles, truckType = '2-axle', stateMilesMap = null) {
   const config = AXLE_CONFIG[truckType] || AXLE_CONFIG['2-axle'];
   const breakdown = [];
   let total = 0;
@@ -39,8 +40,8 @@ function calculateTollCost(states, distanceMiles, truckType = '2-axle') {
     const tolls = getTollsByState(state);
     if (tolls.length === 0) continue;
 
-    // Расстояние по штату (примерно равномерно)
-    const milesInState = distanceMiles / states.length;
+    // Используем точное распределение миль по штату если доступно
+    const milesInState = (stateMilesMap && stateMilesMap[state]) ? stateMilesMap[state] : distanceMiles / states.length;
 
     let stateCost = 0;
 

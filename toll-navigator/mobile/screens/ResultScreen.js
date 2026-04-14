@@ -73,7 +73,7 @@ export default function ResultScreen({ route, navigation }) {
     : null;
 
   const grandTotal = fuel
-    ? (tollCost + parseFloat(fuel.totalFuelCost)).toFixed(2)
+    ? (tollCost + parseFloat(fuel.totalFuelCost) + parseFloat(fuel.totalIftaTax)).toFixed(2)
     : null;
 
   const handleSave = async () => {
@@ -142,7 +142,7 @@ export default function ResultScreen({ route, navigation }) {
         <View style={styles.grandTotalCard}>
           <Text style={styles.grandTotalLabel}>💰 ИТОГО РЕЙС</Text>
           <Text style={styles.grandTotalAmount}>${grandTotal}</Text>
-          <Text style={styles.grandTotalSub}>толлы + топливо • {result.distance_miles} миль</Text>
+          <Text style={styles.grandTotalSub}>толлы + топливо + IFTA • {result.distance_miles} миль</Text>
           {/* Breakdown row */}
           <View style={styles.grandBreakRow}>
             <View style={styles.grandBreakItem}>

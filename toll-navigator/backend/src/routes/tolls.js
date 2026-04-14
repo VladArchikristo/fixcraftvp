@@ -105,100 +105,392 @@ const CITY_STATE_MAP = {
   'anchorage': 'AK', 'fairbanks': 'AK', 'juneau': 'AK',
 };
 
-// Примерные расстояния между популярными маршрутами (мили)
+// ─────────────────────────────────────────────────────────────────────────────
+// Точные расстояния между городами (мили по шоссе, реальные данные)
+// Ключ: "City1,ST|City2,ST" (нижний регистр, оба направления заносятся ниже)
+// ─────────────────────────────────────────────────────────────────────────────
 const ROUTE_DISTANCES = {
-  // Texas
-  'TX-TX': 260, 'TX-LA': 350, 'TX-OK': 200, 'TX-NM': 290, 'TX-AR': 310,
-  'TX-GA': 900, 'TX-FL': 1050, 'TX-TN': 850, 'TX-NC': 1100,
-  // California
-  'CA-CA': 380, 'CA-NV': 270, 'CA-AZ': 380, 'CA-OR': 590,
-  'CA-TX': 1560, 'CA-IL': 2020, 'CA-NY': 2800,
-  // Florida
-  'FL-FL': 280, 'FL-GA': 350, 'FL-AL': 400, 'FL-SC': 500,
-  'FL-NC': 750, 'FL-VA': 950, 'FL-MD': 1080, 'FL-NJ': 1200, 'FL-NY': 1280,
-  // New York
-  'NY-NJ': 50, 'NY-PA': 160, 'NY-CT': 80, 'NY-MA': 220,
-  'NY-MD': 200, 'NY-VA': 360, 'NY-NC': 570, 'NY-GA': 900,
-  // Illinois
-  'IL-IN': 180, 'IL-OH': 320, 'IL-MO': 290, 'IL-WI': 150,
-  'IL-PA': 460, 'IL-NY': 790, 'IL-MI': 280, 'IL-KY': 350,
-  // Pennsylvania
-  'PA-NJ': 90, 'PA-MD': 120, 'PA-OH': 320, 'PA-NY': 160,
-  'PA-VA': 250, 'PA-NC': 500, 'PA-MA': 380, 'PA-DE': 50,
-  // Ohio
-  'OH-PA': 320, 'OH-IN': 180, 'OH-KY': 100, 'OH-MI': 145,
-  'OH-WV': 140, 'OH-NY': 400, 'OH-IL': 320,
-  // Georgia
-  'GA-FL': 350, 'GA-TN': 120, 'GA-AL': 160, 'GA-NC': 250,
-  'GA-SC': 180, 'GA-VA': 420, 'GA-TX': 900,
-  // North Carolina
-  'NC-VA': 200, 'NC-SC': 120, 'NC-TN': 380, 'NC-GA': 250,
-  'NC-MD': 380, 'NC-NY': 560, 'NC-NJ': 480,
-  // New Jersey
-  'NJ-NY': 50, 'NJ-PA': 90, 'NJ-MD': 150, 'NJ-DE': 80,
-  'NJ-VA': 280, 'NJ-MA': 290,
-  // Virginia
-  'VA-MD': 120, 'VA-NC': 200, 'VA-WV': 200, 'VA-TN': 340,
-  'VA-PA': 250, 'VA-NJ': 280, 'VA-NY': 360,
-  // Massachusetts
-  'MA-NH': 60, 'MA-RI': 50, 'MA-CT': 100, 'MA-NY': 220,
-  'MA-PA': 380, 'MA-NJ': 290, 'MA-MD': 430,
-  // Maryland
-  'MD-VA': 120, 'MD-PA': 120, 'MD-DE': 100, 'MD-NJ': 150,
-  'MD-DC': 40, 'MD-WV': 180, 'MD-NY': 200,
-  // Indiana
-  'IN-OH': 180, 'IN-IL': 180, 'IN-KY': 120, 'IN-MI': 200,
-  'IN-WI': 210, 'IN-PA': 430,
-  // Oklahoma
-  'OK-TX': 200, 'OK-KS': 170, 'OK-AR': 200, 'OK-MO': 260,
-  'OK-CO': 420, 'OK-NM': 380,
-  // Colorado
-  'CO-CO': 110, 'CO-NM': 280, 'CO-KS': 340, 'CO-WY': 100,
-  'CO-UT': 370, 'CO-NV': 730, 'CO-AZ': 580, 'CO-TX': 670,
-  'CO-OK': 420, 'CO-CA': 1230, 'CO-IL': 1000,
-  // Washington
-  'WA-WA': 150, 'WA-OR': 180, 'WA-ID': 280, 'WA-MT': 430,
-  'WA-CA': 820, 'WA-NV': 900, 'WA-CO': 1200,
-  // Arizona
-  'AZ-AZ': 170, 'AZ-NV': 280, 'AZ-UT': 360, 'AZ-NM': 290,
-  'AZ-CA': 380, 'AZ-TX': 870, 'AZ-CO': 580,
-  // Nevada
-  'NV-NV': 300, 'NV-CA': 270, 'NV-AZ': 280, 'NV-UT': 420,
-  'NV-OR': 500, 'NV-ID': 550, 'NV-WA': 900, 'NV-CO': 730,
-  // Minnesota
-  'MN-MN': 200, 'MN-WI': 280, 'MN-IA': 250, 'MN-ND': 290,
-  'MN-SD': 220, 'MN-IL': 420, 'MN-IN': 530, 'MN-OH': 740,
-  // City-to-city routes
-  'dallas-kansas city': 480, 'kansas city-dallas': 480,
-  'dallas-oklahoma city': 200, 'oklahoma city-dallas': 200,
-  'houston-baton rouge': 270, 'baton rouge-houston': 270,
-  'atlanta-birmingham': 150, 'birmingham-atlanta': 150,
-  'atlanta-columbia': 215, 'columbia-atlanta': 215,
-  'charlotte-columbia': 90, 'columbia-charlotte': 90,
-  'miami-tampa': 280, 'tampa-miami': 280,
-  'miami-jacksonville': 345, 'jacksonville-miami': 345,
-  'chicago-milwaukee': 90, 'milwaukee-chicago': 90,
-  'chicago-minneapolis': 410, 'minneapolis-chicago': 410,
-  'chicago-detroit': 280, 'detroit-chicago': 280,
-  'detroit-cleveland': 170, 'cleveland-detroit': 170,
-  'cleveland-pittsburgh': 130, 'pittsburgh-cleveland': 130,
-  'boston-hartford': 100, 'hartford-boston': 100,
-  'boston-providence': 50, 'providence-boston': 50,
-  'seattle-portland': 175, 'portland-seattle': 175,
-  'portland-sacramento': 580, 'sacramento-portland': 580,
-  'salt lake city-denver': 525, 'denver-salt lake city': 525,
-  'albuquerque-phoenix': 425, 'phoenix-albuquerque': 425,
-  'las vegas-salt lake city': 420, 'salt lake city-las vegas': 420,
-  'denver-kansas city': 600, 'kansas city-denver': 600,
-  'omaha-kansas city': 185, 'kansas city-omaha': 185,
-  'indianapolis-chicago': 180, 'chicago-indianapolis': 180,
-  'indianapolis-columbus': 175, 'columbus-indianapolis': 175,
-  'nashville-birmingham': 185, 'birmingham-nashville': 185,
-  'nashville-memphis': 210, 'memphis-nashville': 210,
-  'new orleans-baton rouge': 80, 'baton rouge-new orleans': 80,
-  'richmond-washington': 115, 'washington-richmond': 115,
-  'baltimore-philadelphia': 100, 'philadelphia-baltimore': 100,
-  'philadelphia-new york': 95, 'new york-philadelphia': 95,
+  // Dallas ↔ *
+  'dallas,tx|new york,ny': 1571, 'dallas,tx|los angeles,ca': 1435, 'dallas,tx|chicago,il': 921,
+  'dallas,tx|miami,fl': 1311, 'dallas,tx|atlanta,ga': 781, 'dallas,tx|houston,tx': 239,
+  'dallas,tx|san antonio,tx': 274, 'dallas,tx|austin,tx': 196, 'dallas,tx|el paso,tx': 625,
+  'dallas,tx|albuquerque,nm': 638, 'dallas,tx|phoenix,az': 1027, 'dallas,tx|memphis,tn': 452,
+  'dallas,tx|oklahoma city,ok': 207, 'dallas,tx|little rock,ar': 316, 'dallas,tx|kansas city,mo': 499,
+  // Houston ↔ *
+  'houston,tx|new york,ny': 1627, 'houston,tx|los angeles,ca': 1553, 'houston,tx|chicago,il': 1092,
+  'houston,tx|san antonio,tx': 199, 'houston,tx|austin,tx': 162, 'houston,tx|new orleans,la': 349,
+  'houston,tx|dallas,tx': 239,
+  // New York ↔ *
+  'new york,ny|los angeles,ca': 2790, 'new york,ny|chicago,il': 789, 'new york,ny|miami,fl': 1281,
+  'new york,ny|atlanta,ga': 874, 'new york,ny|boston,ma': 215, 'new york,ny|philadelphia,pa': 95,
+  'new york,ny|baltimore,md': 195, 'new york,ny|washington dc,dc': 228, 'new york,ny|richmond,va': 354,
+  'new york,ny|charlotte,nc': 633, 'new york,ny|pittsburgh,pa': 371, 'new york,ny|detroit,mi': 613,
+  'new york,ny|buffalo,ny': 375, 'new york,ny|nashville,tn': 889, 'new york,ny|columbus,oh': 503,
+  // Los Angeles ↔ *
+  'los angeles,ca|chicago,il': 2016, 'los angeles,ca|miami,fl': 2757, 'los angeles,ca|phoenix,az': 372,
+  'los angeles,ca|las vegas,nv': 270, 'los angeles,ca|seattle,wa': 1137, 'los angeles,ca|san francisco,ca': 381,
+  'los angeles,ca|sacramento,ca': 386, 'los angeles,ca|salt lake city,ut': 689,
+  'los angeles,ca|denver,co': 1021, 'los angeles,ca|albuquerque,nm': 791,
+  // Chicago ↔ *
+  'chicago,il|atlanta,ga': 716, 'chicago,il|miami,fl': 1379, 'chicago,il|seattle,wa': 2064,
+  'chicago,il|denver,co': 1003, 'chicago,il|nashville,tn': 476, 'chicago,il|detroit,mi': 281,
+  'chicago,il|pittsburgh,pa': 452, 'chicago,il|columbus,oh': 351, 'chicago,il|indianapolis,in': 181,
+  'chicago,il|milwaukee,wi': 92, 'chicago,il|minneapolis,mn': 409, 'chicago,il|kansas city,mo': 503,
+  'chicago,il|st louis,mo': 300, 'chicago,il|cleveland,oh': 345, 'chicago,il|memphis,tn': 530,
+  'chicago,il|des moines,ia': 335,
+  // Atlanta ↔ *
+  'atlanta,ga|miami,fl': 662, 'atlanta,ga|charlotte,nc': 245, 'atlanta,ga|nashville,tn': 249,
+  'atlanta,ga|birmingham,al': 148, 'atlanta,ga|new orleans,la': 469, 'atlanta,ga|savannah,ga': 249,
+  'atlanta,ga|jacksonville,fl': 346,
+  // Seattle ↔ *
+  'seattle,wa|chicago,il': 2064, 'seattle,wa|los angeles,ca': 1137, 'seattle,wa|portland,or': 174,
+  'seattle,wa|boise,id': 497,
+  // Denver ↔ *
+  'denver,co|chicago,il': 1003, 'denver,co|los angeles,ca': 1021, 'denver,co|salt lake city,ut': 527,
+  'denver,co|minneapolis,mn': 917, 'denver,co|billings,mt': 549, 'denver,co|cheyenne,wy': 99,
+  // Phoenix ↔ *
+  'phoenix,az|los angeles,ca': 372, 'phoenix,az|dallas,tx': 1027, 'phoenix,az|tucson,az': 116,
+  // Las Vegas ↔ *
+  'las vegas,nv|los angeles,ca': 270, 'las vegas,nv|salt lake city,ut': 419,
+  // Nashville ↔ *
+  'nashville,tn|atlanta,ga': 249, 'nashville,tn|chicago,il': 476, 'nashville,tn|new york,ny': 889,
+  'nashville,tn|birmingham,al': 191, 'nashville,tn|louisville,ky': 176,
+  // Memphis ↔ *
+  'memphis,tn|dallas,tx': 452, 'memphis,tn|chicago,il': 530, 'memphis,tn|little rock,ar': 138,
+  // Kansas City ↔ *
+  'kansas city,mo|chicago,il': 503, 'kansas city,mo|dallas,tx': 499, 'kansas city,mo|st louis,mo': 253,
+  'kansas city,mo|omaha,ne': 187, 'kansas city,mo|oklahoma city,ok': 337,
+  // Minneapolis ↔ *
+  'minneapolis,mn|chicago,il': 409, 'minneapolis,mn|denver,co': 917, 'minneapolis,mn|sioux falls,sd': 244,
+  'minneapolis,mn|fargo,nd': 235,
+  // Detroit ↔ *
+  'detroit,mi|chicago,il': 281, 'detroit,mi|new york,ny': 613,
+  // Pittsburgh ↔ *
+  'pittsburgh,pa|new york,ny': 371, 'pittsburgh,pa|chicago,il': 452, 'pittsburgh,pa|cleveland,oh': 131,
+  // Columbus ↔ *
+  'columbus,oh|chicago,il': 351, 'columbus,oh|new york,ny': 503, 'columbus,oh|indianapolis,in': 176,
+  'columbus,oh|cincinnati,oh': 108,
+  // Charlotte ↔ *
+  'charlotte,nc|atlanta,ga': 245, 'charlotte,nc|new york,ny': 633,
+  // Baltimore ↔ *
+  'baltimore,md|new york,ny': 195,
+  // Philadelphia ↔ *
+  'philadelphia,pa|new york,ny': 95, 'philadelphia,pa|washington dc,dc': 140,
+  // Boston ↔ *
+  'boston,ma|new york,ny': 215,
+  // Portland ↔ *
+  'portland,or|seattle,wa': 174, 'portland,or|san francisco,ca': 640,
+  // San Francisco ↔ *
+  'san francisco,ca|los angeles,ca': 381, 'san francisco,ca|sacramento,ca': 88,
+  'san francisco,ca|reno,nv': 219,
+  // Sacramento ↔ *
+  'sacramento,ca|los angeles,ca': 386,
+  // Tucson ↔ *
+  'tucson,az|phoenix,az': 116,
+  // Oklahoma City ↔ *
+  'oklahoma city,ok|dallas,tx': 207, 'oklahoma city,ok|kansas city,mo': 337,
+  // Little Rock ↔ *
+  'little rock,ar|memphis,tn': 138, 'little rock,ar|dallas,tx': 316,
+  // New Orleans ↔ *
+  'new orleans,la|houston,tx': 349, 'new orleans,la|atlanta,ga': 469,
+  // Birmingham ↔ *
+  'birmingham,al|atlanta,ga': 148, 'birmingham,al|nashville,tn': 191,
+  // Jacksonville ↔ *
+  'jacksonville,fl|miami,fl': 341, 'jacksonville,fl|atlanta,ga': 346,
+  // Orlando ↔ *
+  'orlando,fl|miami,fl': 236,
+  // Tampa ↔ *
+  'tampa,fl|miami,fl': 281,
+  // Savannah ↔ *
+  'savannah,ga|atlanta,ga': 249,
+  // Richmond ↔ *
+  'richmond,va|washington dc,dc': 108, 'richmond,va|new york,ny': 354,
+  // Washington DC ↔ *
+  'washington dc,dc|new york,ny': 228, 'washington dc,dc|philadelphia,pa': 140,
+  // Buffalo ↔ *
+  'buffalo,ny|new york,ny': 375,
+  // Cleveland ↔ *
+  'cleveland,oh|pittsburgh,pa': 131, 'cleveland,oh|chicago,il': 345,
+  // Indianapolis ↔ *
+  'indianapolis,in|chicago,il': 181, 'indianapolis,in|columbus,oh': 176,
+  'indianapolis,in|louisville,ky': 115,
+  // Louisville ↔ *
+  'louisville,ky|nashville,tn': 176, 'louisville,ky|indianapolis,in': 115,
+  'louisville,ky|cincinnati,oh': 100,
+  // Cincinnati ↔ *
+  'cincinnati,oh|columbus,oh': 108, 'cincinnati,oh|louisville,ky': 100,
+  // St Louis ↔ *
+  'st louis,mo|kansas city,mo': 253, 'st louis,mo|chicago,il': 300,
+  // Milwaukee ↔ *
+  'milwaukee,wi|chicago,il': 92, 'milwaukee,wi|green bay,wi': 116,
+  // Green Bay ↔ *
+  'green bay,wi|milwaukee,wi': 116,
+  // Des Moines ↔ *
+  'des moines,ia|chicago,il': 335,
+  // Omaha ↔ *
+  'omaha,ne|kansas city,mo': 187,
+  // Sioux Falls ↔ *
+  'sioux falls,sd|minneapolis,mn': 244,
+  // Fargo ↔ *
+  'fargo,nd|minneapolis,mn': 235,
+  // Billings ↔ *
+  'billings,mt|denver,co': 549,
+  // Cheyenne ↔ *
+  'cheyenne,wy|denver,co': 99, 'cheyenne,wy|salt lake city,ut': 440,
+  // Salt Lake City ↔ *
+  'salt lake city,ut|denver,co': 527, 'salt lake city,ut|los angeles,ca': 689,
+  'salt lake city,ut|las vegas,nv': 419,
+  // Boise ↔ *
+  'boise,id|seattle,wa': 497,
+  // Reno ↔ *
+  'reno,nv|san francisco,ca': 219,
+  // Albuquerque ↔ *
+  'albuquerque,nm|dallas,tx': 638, 'albuquerque,nm|los angeles,ca': 791,
+  // El Paso ↔ *
+  'el paso,tx|dallas,tx': 625,
+  // San Antonio ↔ *
+  'san antonio,tx|dallas,tx': 274, 'san antonio,tx|houston,tx': 199,
+  // Austin ↔ *
+  'austin,tx|dallas,tx': 196, 'austin,tx|houston,tx': 162,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Распределение миль по штатам для маршрутов (STATE_MILES)
+// Ключ: "City1,ST|City2,ST" — значение: объект { штат: мили }
+// ─────────────────────────────────────────────────────────────────────────────
+const STATE_MILES = {
+  'dallas,tx|new york,ny': { TX: 400, LA: 115, MS: 150, AL: 120, GA: 150, SC: 100, NC: 180, VA: 120, MD: 50, DE: 30, NJ: 90, NY: 66 },
+  'dallas,tx|los angeles,ca': { TX: 350, NM: 290, AZ: 420, CA: 375 },
+  'dallas,tx|chicago,il': { TX: 200, OK: 200, MO: 380, IL: 141 },
+  'dallas,tx|miami,fl': { TX: 250, LA: 200, MS: 150, AL: 120, FL: 591 },
+  'dallas,tx|atlanta,ga': { TX: 250, LA: 180, MS: 150, AL: 120, GA: 81 },
+  'dallas,tx|houston,tx': { TX: 239 },
+  'dallas,tx|san antonio,tx': { TX: 274 },
+  'dallas,tx|austin,tx': { TX: 196 },
+  'dallas,tx|el paso,tx': { TX: 625 },
+  'dallas,tx|albuquerque,nm': { TX: 350, NM: 288 },
+  'dallas,tx|phoenix,az': { TX: 350, NM: 290, AZ: 387 },
+  'dallas,tx|memphis,tn': { TX: 100, AR: 120, TN: 232 },
+  'dallas,tx|oklahoma city,ok': { TX: 30, OK: 177 },
+  'dallas,tx|little rock,ar': { TX: 30, AR: 286 },
+  'dallas,tx|kansas city,mo': { TX: 30, OK: 200, MO: 269 },
+  'houston,tx|new york,ny': { TX: 450, LA: 200, MS: 150, AL: 120, GA: 150, SC: 100, NC: 150, VA: 120, MD: 50, DE: 35, NJ: 55, NY: 47 },
+  'houston,tx|los angeles,ca': { TX: 500, NM: 290, AZ: 420, CA: 343 },
+  'houston,tx|chicago,il': { TX: 200, OK: 200, MO: 420, IL: 272 },
+  'houston,tx|san antonio,tx': { TX: 199 },
+  'houston,tx|austin,tx': { TX: 162 },
+  'houston,tx|new orleans,la': { TX: 170, LA: 179 },
+  'new york,ny|los angeles,ca': { NY: 150, NJ: 55, PA: 300, OH: 220, IN: 150, IL: 150, MO: 280, OK: 200, TX: 350, NM: 290, AZ: 420, CA: 225 },
+  'new york,ny|chicago,il': { NY: 150, NJ: 55, PA: 300, OH: 220, IN: 150, IL: 114 },
+  'new york,ny|miami,fl': { NY: 100, NJ: 55, DE: 50, MD: 90, VA: 120, NC: 250, SC: 200, GA: 100, FL: 316 },
+  'new york,ny|atlanta,ga': { NY: 100, NJ: 55, DE: 50, MD: 90, VA: 120, NC: 200, SC: 110, GA: 149 },
+  'new york,ny|boston,ma': { NY: 50, CT: 90, MA: 75 },
+  'new york,ny|philadelphia,pa': { NY: 50, NJ: 45 },
+  'new york,ny|baltimore,md': { NY: 30, NJ: 55, DE: 50, MD: 60 },
+  'new york,ny|washington dc,dc': { NY: 50, NJ: 55, DE: 50, MD: 70, DC: 3 },
+  'new york,ny|richmond,va': { NY: 50, NJ: 55, DE: 50, MD: 100, VA: 99 },
+  'new york,ny|charlotte,nc': { NY: 50, NJ: 55, DE: 50, MD: 100, VA: 200, NC: 178 },
+  'new york,ny|pittsburgh,pa': { NY: 100, NJ: 55, PA: 216 },
+  'new york,ny|detroit,mi': { NY: 150, PA: 200, OH: 200, MI: 63 },
+  'new york,ny|buffalo,ny': { NY: 375 },
+  'new york,ny|nashville,tn': { NY: 100, NJ: 55, PA: 300, OH: 220, KY: 100, TN: 114 },
+  'new york,ny|columbus,oh': { NY: 100, NJ: 55, PA: 250, OH: 98 },
+  'los angeles,ca|chicago,il': { CA: 300, AZ: 290, NM: 180, TX: 200, OK: 200, MO: 380, IL: 266 },
+  'los angeles,ca|miami,fl': { CA: 300, AZ: 290, NM: 200, TX: 500, LA: 200, MS: 150, AL: 120, FL: 497 },
+  'los angeles,ca|phoenix,az': { CA: 130, AZ: 242 },
+  'los angeles,ca|las vegas,nv': { CA: 100, NV: 170 },
+  'los angeles,ca|seattle,wa': { CA: 640, OR: 310, WA: 187 },
+  'los angeles,ca|san francisco,ca': { CA: 381 },
+  'los angeles,ca|sacramento,ca': { CA: 386 },
+  'los angeles,ca|salt lake city,ut': { CA: 280, NV: 180, UT: 229 },
+  'los angeles,ca|denver,co': { CA: 280, NV: 180, UT: 250, CO: 311 },
+  'los angeles,ca|albuquerque,nm': { CA: 200, AZ: 290, NM: 301 },
+  'chicago,il|atlanta,ga': { IL: 100, IN: 60, KY: 200, TN: 200, GA: 156 },
+  'chicago,il|miami,fl': { IL: 100, IN: 60, KY: 200, TN: 200, GA: 450, FL: 369 },
+  'chicago,il|seattle,wa': { IL: 150, MN: 350, ND: 180, MT: 550, ID: 330, WA: 504 },
+  'chicago,il|denver,co': { IL: 100, IA: 220, NE: 350, CO: 333 },
+  'chicago,il|nashville,tn': { IL: 100, KY: 200, TN: 176 },
+  'chicago,il|detroit,mi': { IL: 30, IN: 60, MI: 191 },
+  'chicago,il|pittsburgh,pa': { IL: 60, IN: 150, OH: 180, PA: 62 },
+  'chicago,il|columbus,oh': { IL: 60, IN: 150, OH: 141 },
+  'chicago,il|indianapolis,in': { IL: 90, IN: 91 },
+  'chicago,il|milwaukee,wi': { IL: 50, WI: 42 },
+  'chicago,il|minneapolis,mn': { IL: 50, WI: 150, MN: 209 },
+  'chicago,il|kansas city,mo': { IL: 250, MO: 253 },
+  'chicago,il|st louis,mo': { IL: 250, MO: 50 },
+  'chicago,il|cleveland,oh': { IL: 30, IN: 150, OH: 165 },
+  'chicago,il|memphis,tn': { IL: 100, KY: 200, TN: 230 },
+  'chicago,il|des moines,ia': { IL: 150, IA: 185 },
+  'atlanta,ga|miami,fl': { GA: 120, FL: 542 },
+  'atlanta,ga|charlotte,nc': { GA: 100, NC: 145 },
+  'atlanta,ga|nashville,tn': { GA: 100, TN: 149 },
+  'atlanta,ga|birmingham,al': { GA: 50, AL: 98 },
+  'atlanta,ga|new orleans,la': { GA: 100, AL: 180, MS: 100, LA: 89 },
+  'atlanta,ga|savannah,ga': { GA: 249 },
+  'atlanta,ga|jacksonville,fl': { GA: 150, FL: 196 },
+  'seattle,wa|chicago,il': { WA: 350, MT: 550, ND: 180, MN: 350, WI: 150, IL: 484 },
+  'seattle,wa|los angeles,ca': { WA: 187, OR: 310, CA: 640 },
+  'seattle,wa|portland,or': { WA: 100, OR: 74 },
+  'seattle,wa|boise,id': { WA: 130, ID: 367 },
+  'denver,co|chicago,il': { CO: 200, NE: 350, IA: 220, IL: 233 },
+  'denver,co|los angeles,ca': { CO: 200, UT: 350, NV: 180, CA: 291 },
+  'denver,co|salt lake city,ut': { CO: 200, UT: 327 },
+  'denver,co|minneapolis,mn': { CO: 100, NE: 350, SD: 220, MN: 247 },
+  'denver,co|billings,mt': { CO: 100, WY: 300, MT: 149 },
+  'denver,co|cheyenne,wy': { CO: 60, WY: 39 },
+  'phoenix,az|los angeles,ca': { AZ: 130, CA: 242 },
+  'phoenix,az|dallas,tx': { AZ: 200, NM: 290, TX: 537 },
+  'phoenix,az|tucson,az': { AZ: 116 },
+  'las vegas,nv|los angeles,ca': { NV: 100, CA: 170 },
+  'las vegas,nv|salt lake city,ut': { NV: 100, UT: 319 },
+  'nashville,tn|atlanta,ga': { TN: 100, GA: 149 },
+  'nashville,tn|chicago,il': { TN: 100, KY: 200, IL: 176 },
+  'nashville,tn|new york,ny': { TN: 100, KY: 200, OH: 220, PA: 250, NJ: 80, NY: 39 },
+  'nashville,tn|birmingham,al': { TN: 100, AL: 91 },
+  'nashville,tn|louisville,ky': { TN: 90, KY: 86 },
+  'memphis,tn|dallas,tx': { TN: 20, AR: 130, TX: 302 },
+  'memphis,tn|chicago,il': { TN: 20, KY: 200, IL: 310 },
+  'memphis,tn|little rock,ar': { TN: 10, AR: 128 },
+  'kansas city,mo|chicago,il': { MO: 250, IL: 253 },
+  'kansas city,mo|dallas,tx': { MO: 120, OK: 200, TX: 179 },
+  'kansas city,mo|st louis,mo': { MO: 253 },
+  'kansas city,mo|omaha,ne': { MO: 30, NE: 157 },
+  'kansas city,mo|oklahoma city,ok': { MO: 30, OK: 307 },
+  'minneapolis,mn|chicago,il': { MN: 150, WI: 150, IL: 109 },
+  'minneapolis,mn|denver,co': { MN: 150, SD: 244, NE: 350, CO: 173 },
+  'minneapolis,mn|sioux falls,sd': { MN: 100, SD: 144 },
+  'minneapolis,mn|fargo,nd': { MN: 100, ND: 135 },
+  'detroit,mi|chicago,il': { MI: 100, IN: 90, IL: 91 },
+  'detroit,mi|new york,ny': { MI: 100, OH: 200, PA: 200, NJ: 55, NY: 58 },
+  'pittsburgh,pa|new york,ny': { PA: 250, NJ: 55, NY: 66 },
+  'pittsburgh,pa|chicago,il': { PA: 100, OH: 180, IN: 110, IL: 62 },
+  'pittsburgh,pa|cleveland,oh': { PA: 50, OH: 81 },
+  'columbus,oh|chicago,il': { OH: 200, IN: 90, IL: 61 },
+  'columbus,oh|new york,ny': { OH: 200, PA: 200, NJ: 55, NY: 48 },
+  'columbus,oh|indianapolis,in': { OH: 100, IN: 76 },
+  'columbus,oh|cincinnati,oh': { OH: 108 },
+  'charlotte,nc|atlanta,ga': { NC: 100, GA: 145 },
+  'charlotte,nc|new york,ny': { NC: 100, VA: 200, MD: 100, DE: 50, NJ: 80, NY: 103 },
+  'baltimore,md|new york,ny': { MD: 50, DE: 50, NJ: 55, NY: 40 },
+  'philadelphia,pa|new york,ny': { PA: 20, NJ: 75 },
+  'philadelphia,pa|washington dc,dc': { PA: 20, DE: 30, MD: 80, DC: 10 },
+  'boston,ma|new york,ny': { MA: 80, CT: 90, NY: 45 },
+  'portland,or|seattle,wa': { OR: 50, WA: 124 },
+  'portland,or|san francisco,ca': { OR: 360, CA: 280 },
+  'san francisco,ca|los angeles,ca': { CA: 381 },
+  'san francisco,ca|sacramento,ca': { CA: 88 },
+  'san francisco,ca|reno,nv': { CA: 100, NV: 119 },
+  'sacramento,ca|los angeles,ca': { CA: 386 },
+  'tucson,az|phoenix,az': { AZ: 116 },
+  'oklahoma city,ok|dallas,tx': { OK: 170, TX: 37 },
+  'oklahoma city,ok|kansas city,mo': { OK: 100, KS: 100, MO: 137 },
+  'little rock,ar|memphis,tn': { AR: 70, TN: 68 },
+  'little rock,ar|dallas,tx': { AR: 100, TX: 216 },
+  'new orleans,la|houston,tx': { LA: 180, TX: 169 },
+  'new orleans,la|atlanta,ga': { LA: 100, MS: 150, AL: 100, GA: 119 },
+  'birmingham,al|atlanta,ga': { AL: 80, GA: 68 },
+  'birmingham,al|nashville,tn': { AL: 100, TN: 91 },
+  'jacksonville,fl|miami,fl': { FL: 341 },
+  'jacksonville,fl|atlanta,ga': { FL: 100, GA: 246 },
+  'orlando,fl|miami,fl': { FL: 236 },
+  'tampa,fl|miami,fl': { FL: 281 },
+  'savannah,ga|atlanta,ga': { GA: 249 },
+  'richmond,va|washington dc,dc': { VA: 100, DC: 8 },
+  'richmond,va|new york,ny': { VA: 100, MD: 100, DE: 50, NJ: 55, NY: 49 },
+  'washington dc,dc|new york,ny': { DC: 3, MD: 50, DE: 50, NJ: 75, NY: 50 },
+  'washington dc,dc|philadelphia,pa': { DC: 3, MD: 40, DE: 30, PA: 67 },
+  'buffalo,ny|new york,ny': { NY: 375 },
+  'cleveland,oh|pittsburgh,pa': { OH: 70, PA: 61 },
+  'cleveland,oh|chicago,il': { OH: 100, IN: 100, IL: 145 },
+  'indianapolis,in|chicago,il': { IN: 100, IL: 81 },
+  'indianapolis,in|columbus,oh': { IN: 100, OH: 76 },
+  'indianapolis,in|louisville,ky': { IN: 80, KY: 35 },
+  'louisville,ky|nashville,tn': { KY: 80, TN: 96 },
+  'louisville,ky|indianapolis,in': { KY: 80, IN: 35 },
+  'louisville,ky|cincinnati,oh': { KY: 60, OH: 40 },
+  'cincinnati,oh|columbus,oh': { OH: 108 },
+  'cincinnati,oh|louisville,ky': { OH: 50, KY: 50 },
+  'st louis,mo|kansas city,mo': { MO: 253 },
+  'st louis,mo|chicago,il': { MO: 20, IL: 280 },
+  'milwaukee,wi|chicago,il': { WI: 50, IL: 42 },
+  'milwaukee,wi|green bay,wi': { WI: 116 },
+  'green bay,wi|milwaukee,wi': { WI: 116 },
+  'des moines,ia|chicago,il': { IA: 200, IL: 135 },
+  'omaha,ne|kansas city,mo': { NE: 100, MO: 87 },
+  'sioux falls,sd|minneapolis,mn': { SD: 100, MN: 144 },
+  'fargo,nd|minneapolis,mn': { ND: 100, MN: 135 },
+  'billings,mt|denver,co': { MT: 150, WY: 270, CO: 129 },
+  'cheyenne,wy|denver,co': { WY: 60, CO: 39 },
+  'cheyenne,wy|salt lake city,ut': { WY: 200, UT: 240 },
+  'salt lake city,ut|denver,co': { UT: 200, CO: 327 },
+  'salt lake city,ut|los angeles,ca': { UT: 200, NV: 180, CA: 309 },
+  'salt lake city,ut|las vegas,nv': { UT: 200, NV: 219 },
+  'boise,id|seattle,wa': { ID: 200, WA: 297 },
+  'reno,nv|san francisco,ca': { NV: 100, CA: 119 },
+  'albuquerque,nm|dallas,tx': { NM: 200, TX: 438 },
+  'albuquerque,nm|los angeles,ca': { NM: 200, AZ: 280, CA: 311 },
+  'el paso,tx|dallas,tx': { TX: 625 },
+  'san antonio,tx|dallas,tx': { TX: 274 },
+  'san antonio,tx|houston,tx': { TX: 199 },
+  'austin,tx|dallas,tx': { TX: 196 },
+  'austin,tx|houston,tx': { TX: 162 },
+};
+
+// Расстояния между СОСЕДНИМИ штатами (сегменты, мили)
+// Используются для расчёта суммы по коридору
+const SEGMENT_DISTANCES = {
+  // East Coast
+  'FL-GA': 350, 'GA-SC': 170, 'SC-NC': 120, 'NC-VA': 200, 'VA-MD': 120,
+  'MD-DE': 90, 'DE-NJ': 80, 'NJ-NY': 55, 'NY-CT': 80, 'CT-RI': 50,
+  'RI-MA': 50, 'MA-NH': 60, 'NH-ME': 90, 'NY-VT': 120, 'VT-NH': 90,
+  // Southeast interior
+  'FL-AL': 380, 'AL-MS': 180, 'MS-LA': 195, 'LA-TX': 350,
+  'GA-AL': 160, 'GA-TN': 120, 'GA-FL': 350,
+  'AL-TN': 190, 'MS-TN': 280, 'MS-AR': 180,
+  'TN-KY': 160, 'TN-NC': 380, 'TN-VA': 340, 'TN-AR': 280,
+  'KY-OH': 140, 'KY-IN': 120, 'KY-IL': 200, 'KY-WV': 190, 'KY-VA': 200,
+  'WV-VA': 180, 'WV-OH': 140, 'WV-PA': 160, 'WV-MD': 160,
+  // Mid-Atlantic / Northeast
+  'PA-NJ': 90, 'PA-NY': 200, 'PA-MD': 120, 'PA-WV': 160, 'PA-OH': 320, 'PA-DE': 50,
+  'NY-PA': 200, 'NY-NJ': 55, 'NY-MA': 220, 'NY-VT': 120,
+  'MD-VA': 120, 'MD-PA': 120, 'MD-DE': 90, 'MD-WV': 160,
+  'VA-NC': 200, 'VA-WV': 180, 'VA-TN': 340, 'VA-KY': 200,
+  'NC-TN': 380, 'NC-SC': 120, 'NC-GA': 250,
+  // Midwest
+  'OH-IN': 180, 'OH-MI': 145, 'OH-PA': 320, 'OH-WV': 140, 'OH-KY': 100,
+  'IN-IL': 180, 'IN-MI': 200, 'IN-KY': 120, 'IN-OH': 180,
+  'IL-WI': 150, 'IL-MO': 290, 'IL-KY': 200, 'IL-IN': 180, 'IL-IA': 220,
+  'MI-OH': 145, 'MI-IN': 200, 'MI-WI': 290,
+  'WI-MN': 280, 'WI-IA': 200, 'WI-IL': 150, 'WI-MI': 290,
+  'MN-IA': 250, 'MN-ND': 290, 'MN-SD': 220, 'MN-WI': 280,
+  'IA-MO': 200, 'IA-IL': 220, 'IA-WI': 200, 'IA-NE': 300, 'IA-SD': 250,
+  'MO-IL': 290, 'MO-KY': 380, 'MO-TN': 320, 'MO-AR': 220, 'MO-OK': 260,
+  'MO-KS': 200, 'MO-NE': 350, 'MO-IA': 200,
+  // South Central
+  'TX-OK': 200, 'TX-AR': 310, 'TX-LA': 350, 'TX-NM': 290,
+  'OK-KS': 170, 'OK-AR': 200, 'OK-MO': 260, 'OK-CO': 420, 'OK-NM': 380, 'OK-TX': 200,
+  'AR-TN': 280, 'AR-MS': 180, 'AR-LA': 280, 'AR-MO': 220, 'AR-OK': 200, 'AR-TX': 310,
+  'LA-MS': 195, 'LA-TX': 350, 'LA-AR': 280,
+  // Plains & Mountain
+  'KS-NE': 200, 'KS-CO': 340, 'KS-MO': 200, 'KS-OK': 170,
+  'NE-SD': 200, 'NE-IA': 300, 'NE-MO': 350, 'NE-KS': 200, 'NE-CO': 500, 'NE-WY': 450,
+  'SD-ND': 200, 'SD-MN': 220, 'SD-NE': 200, 'SD-WY': 400, 'SD-MT': 380,
+  'ND-MN': 290, 'ND-MT': 400, 'ND-SD': 200,
+  'CO-NM': 280, 'CO-KS': 340, 'CO-NE': 500, 'CO-WY': 100, 'CO-UT': 370,
+  'CO-OK': 420, 'CO-AZ': 580,
+  'WY-MT': 350, 'WY-ID': 340, 'WY-UT': 320, 'WY-CO': 100, 'WY-NE': 450, 'WY-SD': 400,
+  'MT-ID': 330, 'MT-ND': 400, 'MT-SD': 380, 'MT-WY': 350,
+  // West
+  'NM-TX': 290, 'NM-OK': 380, 'NM-CO': 280, 'NM-AZ': 290, 'NM-UT': 500,
+  'AZ-CA': 370, 'AZ-NV': 280, 'AZ-UT': 360, 'AZ-NM': 290,
+  'UT-NV': 410, 'UT-ID': 300, 'UT-WY': 320, 'UT-CO': 370, 'UT-AZ': 360,
+  'NV-CA': 270, 'NV-AZ': 280, 'NV-UT': 410, 'NV-OR': 500, 'NV-ID': 550,
+  'CA-OR': 590, 'CA-NV': 270, 'CA-AZ': 370,
+  'OR-WA': 180, 'OR-ID': 340, 'OR-NV': 500, 'OR-CA': 590,
+  'WA-OR': 180, 'WA-ID': 280, 'WA-MT': 430,
+  'ID-MT': 330, 'ID-WY': 340, 'ID-UT': 300, 'ID-OR': 340, 'ID-NV': 550, 'ID-WA': 280,
+  // Alaska / Hawaii (no land routes)
+  'AK-AK': 500, 'HI-HI': 200,
 };
 
 function parseCity(input) {
@@ -213,10 +505,86 @@ function parseCity(input) {
   return CITY_STATE_MAP[city] || null;
 }
 
-function estimateDistance(fromState, toState) {
+/**
+ * Строит нормализованный ключ для поиска в ROUTE_DISTANCES / STATE_MILES.
+ * Порядок не важен — пробуем оба направления.
+ */
+function routeKey(fromCity, toCity) {
+  // Нормализуем: "Dallas, TX" → "dallas,tx" (убираем пробел после запятой)
+  const normalize = (s) => s.trim().toLowerCase().replace(/,\s+/g, ',');
+  const a = normalize(fromCity);
+  const b = normalize(toCity);
+  return `${a}|${b}`;
+}
+
+/**
+ * Ищет точное расстояние по парам городов в таблице ROUTE_DISTANCES.
+ * Возвращает { distance, stateMiles } или null если не найдено.
+ */
+function lookupRouteDistance(from, to) {
+  const k1 = routeKey(from, to);
+  const k2 = routeKey(to, from);
+
+  if (ROUTE_DISTANCES[k1] !== undefined) {
+    return { distance: ROUTE_DISTANCES[k1], stateMiles: STATE_MILES[k1] || null };
+  }
+  if (ROUTE_DISTANCES[k2] !== undefined) {
+    // Обратный маршрут — STATE_MILES тоже разворачиваем (объект, порядок не важен)
+    return { distance: ROUTE_DISTANCES[k2], stateMiles: STATE_MILES[k2] || null };
+  }
+  return null;
+}
+
+/**
+ * Рассчитывает расстояние как сумму сегментов коридора.
+ * Сначала проверяет точную таблицу ROUTE_DISTANCES.
+ */
+function estimateDistance(fromState, toState, corridorStates, fromCity, toCity) {
+  // 1) Точная таблица по городам
+  if (fromCity && toCity) {
+    const exact = lookupRouteDistance(fromCity, toCity);
+    if (exact) return exact.distance;
+  }
+
+  if (fromState === toState) return 300; // внутриштатный рейс
+
+  // 2) Если есть коридор — считаем сумму сегментов
+  if (corridorStates && corridorStates.length > 1) {
+    let total = 0;
+    for (let i = 0; i < corridorStates.length - 1; i++) {
+      const s1 = corridorStates[i];
+      const s2 = corridorStates[i + 1];
+      const key1 = `${s1}-${s2}`;
+      const key2 = `${s2}-${s1}`;
+      const segDist = SEGMENT_DISTANCES[key1] || SEGMENT_DISTANCES[key2] || 200;
+      total += segDist;
+    }
+    return total;
+  }
+
+  // 3) Фоллбэк — прямая пара штатов
   const key1 = `${fromState}-${toState}`;
   const key2 = `${toState}-${fromState}`;
-  return ROUTE_DISTANCES[key1] || ROUTE_DISTANCES[key2] || 400;
+  return SEGMENT_DISTANCES[key1] || SEGMENT_DISTANCES[key2] || 500;
+}
+
+/**
+ * Возвращает распределение миль по штатам для маршрута.
+ * Если есть в таблице STATE_MILES — используем её.
+ * Иначе — делим поровну по коридору.
+ */
+function getStateMiles(fromCity, toCity, corridorStates, totalDistance) {
+  if (fromCity && toCity) {
+    const k1 = routeKey(fromCity, toCity);
+    const k2 = routeKey(toCity, fromCity);
+    if (STATE_MILES[k1]) return STATE_MILES[k1];
+    if (STATE_MILES[k2]) return STATE_MILES[k2];
+  }
+  // Фоллбэк: поровну
+  const perState = Math.round(totalDistance / (corridorStates.length || 1));
+  const result = {};
+  corridorStates.forEach(s => { result[s] = perState; });
+  return result;
 }
 
 // Interstate highway corridors — промежуточные штаты для основных трак-маршрутов
@@ -383,7 +751,8 @@ function handleRoute(params, headers, res, db, cache) {
     if (!toState) return res.status(400).json({ error: `Unknown city: "${to}". Use format "Houston,TX"` });
 
     const states = getStatesBetween(fromState, toState);
-    const distanceMiles = estimateDistance(fromState, toState);
+    const distanceMiles = estimateDistance(fromState, toState, states, from, to);
+    const stateMilesMap = getStateMiles(from, to, states, distanceMiles);
     const availableStates = getAvailableStates();
     const filteredStates = states.filter(s => availableStates.includes(s));
 
@@ -393,7 +762,7 @@ function handleRoute(params, headers, res, db, cache) {
       return res.status(200).json(emptyResult);
     }
 
-    const result = calculateTollCost(filteredStates, distanceMiles, truckType);
+    const result = calculateTollCost(filteredStates, distanceMiles, truckType, stateMilesMap);
     const response = { from, to, from_state: fromState, to_state: toState, distance_miles: distanceMiles, ...result };
 
     cache.set(cacheKey, response);
