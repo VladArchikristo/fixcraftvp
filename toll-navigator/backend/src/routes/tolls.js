@@ -65,6 +65,44 @@ const CITY_STATE_MAP = {
   // New Jersey
   'newark': 'NJ', 'jersey city': 'NJ', 'trenton': 'NJ', 'camden': 'NJ',
   'paterson': 'NJ', 'elizabeth': 'NJ', 'atlantic city': 'NJ',
+  // Michigan
+  'detroit': 'MI', 'grand rapids': 'MI', 'warren': 'MI', 'sterling heights': 'MI',
+  'ann arbor': 'MI', 'lansing': 'MI',
+  // Minnesota
+  'minneapolis': 'MN', 'saint paul': 'MN', 'duluth': 'MN',
+  // Wisconsin
+  'milwaukee': 'WI', 'madison': 'WI', 'green bay': 'WI', 'kenosha': 'WI',
+  // Missouri
+  'kansas city': 'MO', 'st. louis': 'MO', 'columbia': 'MO',
+  // Alabama
+  'birmingham': 'AL', 'montgomery': 'AL', 'huntsville': 'AL', 'mobile': 'AL',
+  // South Carolina
+  'charleston': 'SC', 'greenville': 'SC', 'spartanburg': 'SC',
+  // Kentucky
+  'louisville': 'KY', 'lexington': 'KY', 'bowling green': 'KY',
+  // Connecticut
+  'bridgeport': 'CT', 'new haven': 'CT', 'hartford': 'CT', 'stamford': 'CT',
+  // Iowa
+  'des moines': 'IA', 'cedar rapids': 'IA', 'davenport': 'IA', 'sioux city': 'IA',
+  // Arkansas
+  'little rock': 'AR', 'fort smith': 'AR', 'fayetteville': 'AR',
+  // Mississippi
+  'jackson': 'MS', 'gulfport': 'MS', 'hattiesburg': 'MS',
+  // Utah
+  'salt lake city': 'UT', 'west valley city': 'UT', 'provo': 'UT',
+  'west jordan': 'UT', 'orem': 'UT',
+  // New Mexico
+  'albuquerque': 'NM', 'las cruces': 'NM', 'rio rancho': 'NM', 'santa fe': 'NM',
+  // Nebraska
+  'omaha': 'NE', 'lincoln': 'NE', 'bellevue': 'NE',
+  // West Virginia
+  'huntington': 'WV', 'morgantown': 'WV',
+  // Idaho
+  'boise': 'ID', 'meridian': 'ID', 'nampa': 'ID', 'idaho falls': 'ID',
+  // Hawaii
+  'honolulu': 'HI', 'hilo': 'HI', 'kailua': 'HI', 'pearl city': 'HI',
+  // Alaska
+  'anchorage': 'AK', 'fairbanks': 'AK', 'juneau': 'AK',
 };
 
 // Примерные расстояния между популярными маршрутами (мили)
@@ -130,6 +168,37 @@ const ROUTE_DISTANCES = {
   // Minnesota
   'MN-MN': 200, 'MN-WI': 280, 'MN-IA': 250, 'MN-ND': 290,
   'MN-SD': 220, 'MN-IL': 420, 'MN-IN': 530, 'MN-OH': 740,
+  // City-to-city routes
+  'dallas-kansas city': 480, 'kansas city-dallas': 480,
+  'dallas-oklahoma city': 200, 'oklahoma city-dallas': 200,
+  'houston-baton rouge': 270, 'baton rouge-houston': 270,
+  'atlanta-birmingham': 150, 'birmingham-atlanta': 150,
+  'atlanta-columbia': 215, 'columbia-atlanta': 215,
+  'charlotte-columbia': 90, 'columbia-charlotte': 90,
+  'miami-tampa': 280, 'tampa-miami': 280,
+  'miami-jacksonville': 345, 'jacksonville-miami': 345,
+  'chicago-milwaukee': 90, 'milwaukee-chicago': 90,
+  'chicago-minneapolis': 410, 'minneapolis-chicago': 410,
+  'chicago-detroit': 280, 'detroit-chicago': 280,
+  'detroit-cleveland': 170, 'cleveland-detroit': 170,
+  'cleveland-pittsburgh': 130, 'pittsburgh-cleveland': 130,
+  'boston-hartford': 100, 'hartford-boston': 100,
+  'boston-providence': 50, 'providence-boston': 50,
+  'seattle-portland': 175, 'portland-seattle': 175,
+  'portland-sacramento': 580, 'sacramento-portland': 580,
+  'salt lake city-denver': 525, 'denver-salt lake city': 525,
+  'albuquerque-phoenix': 425, 'phoenix-albuquerque': 425,
+  'las vegas-salt lake city': 420, 'salt lake city-las vegas': 420,
+  'denver-kansas city': 600, 'kansas city-denver': 600,
+  'omaha-kansas city': 185, 'kansas city-omaha': 185,
+  'indianapolis-chicago': 180, 'chicago-indianapolis': 180,
+  'indianapolis-columbus': 175, 'columbus-indianapolis': 175,
+  'nashville-birmingham': 185, 'birmingham-nashville': 185,
+  'nashville-memphis': 210, 'memphis-nashville': 210,
+  'new orleans-baton rouge': 80, 'baton rouge-new orleans': 80,
+  'richmond-washington': 115, 'washington-richmond': 115,
+  'baltimore-philadelphia': 100, 'philadelphia-baltimore': 100,
+  'philadelphia-new york': 95, 'new york-philadelphia': 95,
 };
 
 function parseCity(input) {
@@ -287,18 +356,21 @@ router.get('/route', (req, res) => {
   } catch (_) { /* не авторизован — ок, продолжаем без сохранения */ }
 
   try {
-    const { from, to, truck_type = '2-axle', axles } = req.query;
+    const { from, to, truck_type, axles } = req.query;
 
+    // Input validation
     if (!from || !to) {
-      return res.status(400).json({
-        error: 'Params required: from=City,STATE&to=City,STATE',
-        example: '/api/tolls/route?from=Dallas,TX&to=Houston,TX&truck_type=5-axle',
-      });
+      return res.status(400).json({ error: 'Parameters "from" and "to" are required' });
     }
-
-    let truckType = truck_type;
-    if (axles && !truck_type) {
-      truckType = `${axles}-axle`;
+    if (from.length > 100 || to.length > 100) {
+      return res.status(400).json({ error: 'City names too long' });
+    }
+    // Normalize truck_type: accept both "2axle" and "2-axle" formats
+    const normalizeTruckType = (t) => t ? t.replace(/-/g, '') : '5axle';
+    const validTruckTypes = ['2axle', '3axle', '4axle', '5axle', '6axle'];
+    const truckType = normalizeTruckType(truck_type || '5axle');
+    if (!validTruckTypes.includes(truckType)) {
+      return res.status(400).json({ error: `Invalid truck_type. Must be one of: ${validTruckTypes.join(', ')} (or with dashes: 2-axle, 5-axle)` });
     }
 
     // --- Cache check ---
@@ -356,8 +428,8 @@ router.get('/route', (req, res) => {
     if (userId) {
       try {
         db.prepare(
-          'INSERT INTO routes (user_id, origin, destination, toll_cost, distance_miles, states_crossed) VALUES (?, ?, ?, ?, ?, ?)'
-        ).run(userId, from, to, result.total, distanceMiles, JSON.stringify(filteredStates));
+          'INSERT INTO routes (user_id, from_city, to_city, truck_type, total_toll, distance_miles, states_crossed) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        ).run(userId, from, to, truckType, result.total, distanceMiles, JSON.stringify(filteredStates));
       } catch (dbErr) {
         console.warn('History save failed:', dbErr.message);
       }
@@ -403,11 +475,12 @@ router.post('/calculate', verifyToken, (req, res) => {
 
     // Сохраняем маршрут в историю
     db.prepare(
-      'INSERT INTO routes (user_id, origin, destination, toll_cost, distance_miles, states_crossed) VALUES (?, ?, ?, ?, ?, ?)'
+      'INSERT INTO routes (user_id, from_city, to_city, truck_type, total_toll, distance_miles, states_crossed) VALUES (?, ?, ?, ?, ?, ?, ?)'
     ).run(
       req.userId,
       origin || states[0],
       destination || states[states.length - 1],
+      truck_type,
       result.total,
       distance_miles,
       JSON.stringify(result.states_crossed)
@@ -449,6 +522,31 @@ router.get('/history', verifyToken, (req, res) => {
     'SELECT * FROM routes WHERE user_id = ? ORDER BY created_at DESC LIMIT 20'
   ).all(req.userId);
   res.json(routes);
+});
+
+// Save route to history
+router.post('/history', verifyToken, (req, res) => {
+  const { from_city, to_city, truck_type, total_toll, distance_miles, route_data } = req.body;
+
+  if (!from_city || !to_city || !truck_type) {
+    return res.status(400).json({ error: 'Missing required fields: from_city, to_city, truck_type' });
+  }
+
+  try {
+    const result = db.prepare(
+      `INSERT INTO routes (user_id, from_city, to_city, truck_type, total_toll, distance_miles, route_data, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))`
+    ).run(req.userId, from_city, to_city, truck_type, total_toll || 0, distance_miles || 0, route_data ? JSON.stringify(route_data) : null);
+
+    res.status(201).json({
+      success: true,
+      id: result.lastInsertRowid,
+      message: 'Route saved to history'
+    });
+  } catch (err) {
+    console.error('Error saving history:', err);
+    res.status(500).json({ error: 'Failed to save route' });
+  }
 });
 
 module.exports = router;

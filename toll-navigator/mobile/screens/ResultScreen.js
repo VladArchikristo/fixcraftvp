@@ -23,11 +23,11 @@ export default function ResultScreen({ route, navigation }) {
     if (saving || saved) return;
     setSaving(true);
     try {
-      await api.post('/api/history', {
+      await api.post('/api/tolls/history', {
         from_city: from,
         to_city: to,
         truck_type: truckType,
-        total_cost: result.total,
+        total_toll: result.total,
         distance_miles: result.distance_miles,
       });
       setSaved(true);

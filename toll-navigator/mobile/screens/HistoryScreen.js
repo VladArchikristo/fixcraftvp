@@ -98,13 +98,13 @@ export default function HistoryScreen({ navigation }) {
         renderItem={({ item }) => (
           <View style={styles.card}>
             <View style={styles.routeRow}>
-              <Text style={styles.city} numberOfLines={1}>{item.origin}</Text>
+              <Text style={styles.city} numberOfLines={1}>{item.from_city || item.origin}</Text>
               <Ionicons name="arrow-forward" size={16} color="#4fc3f7" style={styles.arrow} />
-              <Text style={styles.city} numberOfLines={1}>{item.destination}</Text>
+              <Text style={styles.city} numberOfLines={1}>{item.to_city || item.destination}</Text>
             </View>
             <View style={styles.bottomRow}>
               <Text style={styles.date}>{formatDate(item.created_at)}</Text>
-              <Text style={styles.cost}>${Number(item.toll_cost).toFixed(2)}</Text>
+              <Text style={styles.cost}>${Number(item.total_toll ?? item.toll_cost ?? 0).toFixed(2)}</Text>
             </View>
             <Text style={styles.meta}>{item.distance_miles} миль</Text>
           </View>

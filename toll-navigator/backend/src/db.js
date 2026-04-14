@@ -27,10 +27,12 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS routes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    origin TEXT NOT NULL,
-    destination TEXT NOT NULL,
-    toll_cost REAL DEFAULT 0,
+    from_city TEXT,
+    to_city TEXT,
+    truck_type TEXT DEFAULT '5-axle',
+    total_toll REAL DEFAULT 0,
     distance_miles REAL DEFAULT 0,
+    route_data TEXT,
     states_crossed TEXT DEFAULT '[]',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
@@ -48,6 +50,23 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_routes_user_id ON routes(user_id);
   CREATE INDEX IF NOT EXISTS idx_tolls_state ON tolls(state);
 `);
+
+// Migration: add new columns to existing tables (safe — fails silently if already exist)
+const migrateColumns = [
+  `ALTER TABLE routes ADD COLUMN from_city TEXT`,
+  `ALTER TABLE routes ADD COLUMN to_city TEXT`,
+  `ALTER TABLE routes ADD COLUMN truck_type TEXT DEFAULT '5-axle'`,
+  `ALTER TABLE routes ADD COLUMN total_toll REAL DEFAULT 0`,
+  `ALTER TABLE routes ADD COLUMN route_data TEXT`,
+];
+migrateColumns.forEach(sql => { try { db.exec(sql); } catch (_) {} });
+
+// Copy old column data to new columns if migration just happened
+try {
+  db.exec(`UPDATE routes SET from_city = origin WHERE from_city IS NULL AND origin IS NOT NULL`);
+  db.exec(`UPDATE routes SET to_city = destination WHERE to_city IS NULL AND destination IS NOT NULL`);
+  db.exec(`UPDATE routes SET total_toll = toll_cost WHERE total_toll = 0 AND toll_cost IS NOT NULL`);
+} catch (_) {}
 
 console.log(`SQLite DB ready: ${DB_PATH}`);
 
