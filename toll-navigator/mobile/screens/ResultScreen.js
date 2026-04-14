@@ -7,17 +7,20 @@ import { getToken } from '../services/auth';
 import api from '../services/api';
 
 // IFTA Diesel Tax Rates ($ per gallon, 2026)
+// Синхронизировано с backend/src/routes/trips.js — единый источник правды на бэкенде
+// NOTE: предпочтительно получать ставки с сервера (/api/trips/ifta), эти данные используются
+// только для предварительного расчёта на экране результата до запроса к API.
 const IFTA_RATES = {
-  AL: 0.290, AK: 0.0895, AZ: 0.260, AR: 0.285, CA: 0.883,
-  CO: 0.205, CT: 0.401, DE: 0.220, FL: 0.350, GA: 0.320,
-  ID: 0.320, IL: 0.467, IN: 0.530, IA: 0.325, KS: 0.260,
-  KY: 0.216, LA: 0.200, ME: 0.319, MD: 0.358, MA: 0.240,
-  MI: 0.470, MN: 0.285, MS: 0.180, MO: 0.170, MT: 0.278,
-  NE: 0.278, NV: 0.295, NH: 0.222, NJ: 0.415, NM: 0.210,
-  NY: 0.449, NC: 0.375, ND: 0.230, OH: 0.470, OK: 0.190,
-  OR: 0.384, PA: 0.745, RI: 0.340, SC: 0.220, SD: 0.280,
-  TN: 0.217, TX: 0.200, UT: 0.315, VT: 0.320, VA: 0.274,
-  WA: 0.494, WV: 0.358, WI: 0.329, WY: 0.240,
+  TX: 0.200, OK: 0.160, KS: 0.260, MO: 0.170, IL: 0.455,
+  IN: 0.330, OH: 0.280, PA: 0.741, NY: 0.398, NJ: 0.175,
+  VA: 0.162, NC: 0.361, TN: 0.170, GA: 0.326, FL: 0.359,
+  AL: 0.190, MS: 0.180, AR: 0.225, LA: 0.200, CA: 0.824,
+  AZ: 0.260, NV: 0.270, UT: 0.249, CO: 0.205, NM: 0.210,
+  WY: 0.240, MT: 0.2775, ID: 0.320, WA: 0.494, OR: 0.340,
+  AK: 0.0895, CT: 0.401, DE: 0.220, IA: 0.325, KY: 0.216,
+  ME: 0.319, MD: 0.358, MA: 0.240, MI: 0.470, MN: 0.285,
+  NE: 0.278, NH: 0.222, ND: 0.230, RI: 0.340, SC: 0.220,
+  SD: 0.280, VT: 0.320, WV: 0.358, WI: 0.329,
 };
 
 // fuelPurchases: [{ state: 'TX', gallons: 100 }, ...]
@@ -78,11 +81,14 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
   };
 }
 
-// Тихое авто-сохранение маршрута на сервер (fire and forget)
-async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases }) {
+// Авто-сохранение маршрута на сервер с индикатором статуса
+// onStatus: (status: 'saving'|'saved'|'failed') => void
+async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases, onStatus }) {
   try {
     const token = await getToken();
     if (!token) return; // не авторизован — не сохраняем
+
+    onStatus?.('saving');
 
     // Строим state_miles из breakdown
     const stateMiles = {};
@@ -117,9 +123,16 @@ async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchas
       mpg,
       fuel_purchases: normalizedPurchases,
     });
+
+    onStatus?.('saved');
   } catch (err) {
-    // Тихая ошибка — не показываем пользователю
-    console.log('[autoSaveTrip] failed (silent):', err?.message || err);
+    console.error('[autoSaveTrip] failed:', err?.message || err);
+    onStatus?.('failed');
+    Alert.alert(
+      'Поездка не сохранена',
+      'Проверьте подключение к интернету и попробуйте ещё раз.',
+      [{ text: 'OK' }]
+    );
   }
 }
 
@@ -129,13 +142,18 @@ export default function ResultScreen({ route, navigation }) {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showIftaDetail, setShowIftaDetail] = useState(false);
+  // Статус авто-сохранения: null | 'saving' | 'saved' | 'failed'
+  const [saveStatus, setSaveStatus] = useState(null);
 
   useEffect(() => {
     getToken().then((token) => {
       setIsLoggedIn(!!token);
-      // Тихое авто-сохранение маршрута при открытии экрана результата
+      // Авто-сохранение маршрута при открытии экрана результата
       if (token) {
-        autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases });
+        autoSaveTrip({
+          result, from, to, truckType, fuelData, fuelPurchases,
+          onStatus: setSaveStatus,
+        });
       }
     });
   }, []);
@@ -273,6 +291,17 @@ export default function ResultScreen({ route, navigation }) {
             <Text style={styles.fuelSummaryTotalVal}>${fuel.totalFuelCost}</Text>
           </View>
         </View>
+      )}
+
+      {/* Индикатор авто-сохранения */}
+      {saveStatus === 'saving' && (
+        <Text style={styles.autoSaveStatus}>💾 Сохраняем поездку...</Text>
+      )}
+      {saveStatus === 'saved' && (
+        <Text style={[styles.autoSaveStatus, styles.autoSaveOk]}>✓ Поездка сохранена</Text>
+      )}
+      {saveStatus === 'failed' && (
+        <Text style={[styles.autoSaveStatus, styles.autoSaveFail]}>✗ Не удалось сохранить</Text>
       )}
 
       {/* Action buttons */}
@@ -573,4 +602,12 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: '#4fc3f7', marginTop: 8,
   },
   backBtnText: { color: '#4fc3f7', fontSize: 15, fontWeight: '700' },
+
+  // Auto-save status indicator
+  autoSaveStatus: {
+    textAlign: 'center', fontSize: 12, color: '#888',
+    marginBottom: 8, paddingVertical: 4,
+  },
+  autoSaveOk: { color: '#81c784' },
+  autoSaveFail: { color: '#ef9a9a' },
 });

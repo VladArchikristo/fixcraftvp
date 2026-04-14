@@ -3,15 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { ActivityIndicator, View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import ResultScreen from '../screens/ResultScreen';
 import MapScreen from '../screens/MapScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import TripHistoryScreen from '../screens/TripHistoryScreen';
+import TripDetailScreen from '../screens/TripDetailScreen';
 import FuelPurchaseScreen from '../screens/FuelPurchaseScreen';
 import IFTADashboardScreen from '../screens/IFTADashboardScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import { getToken, logout } from '../services/auth';
@@ -56,6 +58,7 @@ function HistoryStack() {
   return (
     <Stack.Navigator screenOptions={stackScreenOptions}>
       <Stack.Screen name="HistoryList" component={TripHistoryScreen} options={{ title: 'История поездок' }} />
+      <Stack.Screen name="TripDetail" component={TripDetailScreen} options={{ title: 'Детали поездки' }} />
     </Stack.Navigator>
   );
 }
@@ -75,21 +78,6 @@ function IFTAStack() {
     <Stack.Navigator screenOptions={stackScreenOptions}>
       <Stack.Screen name="IFTADashboard" component={IFTADashboardScreen} options={{ title: 'IFTA' }} />
     </Stack.Navigator>
-  );
-}
-
-// Profile screen (simple)
-function ProfileScreen({ onLogout }) {
-  return (
-    <View style={styles.profileContainer}>
-      <Ionicons name="person-circle-outline" size={90} color="#4fc3f7" />
-      <Text style={styles.profileTitle}>Мой профиль</Text>
-      <Text style={styles.profileSub}>Toll Navigator Driver</Text>
-      <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
-        <Ionicons name="log-out-outline" size={20} color="#f44336" />
-        <Text style={styles.logoutText}>Выйти из аккаунта</Text>
-      </TouchableOpacity>
-    </View>
   );
 }
 
@@ -172,26 +160,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   splashLogo: { fontSize: 72 },
-
-  profileContainer: {
-    flex: 1,
-    backgroundColor: '#0d0d1a',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  profileTitle: { fontSize: 22, fontWeight: '800', color: '#fff', marginTop: 16 },
-  profileSub: { fontSize: 14, color: '#888', marginTop: 4, marginBottom: 40 },
-  logoutBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#1a0a0a',
-    borderRadius: 12,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderWidth: 1,
-    borderColor: '#3a1111',
-    gap: 10,
-  },
-  logoutText: { color: '#f44336', fontSize: 15, fontWeight: '700' },
 });

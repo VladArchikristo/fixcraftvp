@@ -92,8 +92,10 @@ db.exec(`
 
   CREATE INDEX IF NOT EXISTS idx_trips_user_id ON trips(user_id);
   CREATE INDEX IF NOT EXISTS idx_trips_quarter_year ON trips(user_id, quarter, year);
+  CREATE INDEX IF NOT EXISTS idx_trips_created_at ON trips(created_at);
   CREATE INDEX IF NOT EXISTS idx_fuel_purchases_user_id ON fuel_purchases(user_id);
   CREATE INDEX IF NOT EXISTS idx_fuel_purchases_quarter_year ON fuel_purchases(user_id, quarter, year);
+  CREATE INDEX IF NOT EXISTS idx_fuel_purchases_trip_id ON fuel_purchases(trip_id);
 `);
 
 // Migration: add new columns to existing tables (safe — fails silently if already exist)
@@ -103,6 +105,10 @@ const migrateColumns = [
   `ALTER TABLE routes ADD COLUMN truck_type TEXT DEFAULT '5-axle'`,
   `ALTER TABLE routes ADD COLUMN total_toll REAL DEFAULT 0`,
   `ALTER TABLE routes ADD COLUMN route_data TEXT`,
+  // User profile fields
+  `ALTER TABLE users ADD COLUMN company_name TEXT`,
+  `ALTER TABLE users ADD COLUMN usdot_number TEXT`,
+  `ALTER TABLE users ADD COLUMN full_name TEXT`,
 ];
 migrateColumns.forEach(sql => { try { db.exec(sql); } catch (_) {} });
 

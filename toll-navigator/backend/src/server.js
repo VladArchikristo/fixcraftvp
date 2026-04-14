@@ -45,6 +45,9 @@ app.use('/api/tolls', require('./routes/tolls'));
 // Trips history + IFTA
 app.use('/api/trips', require('./routes/trips'));
 
+// User profile
+app.use('/api/users', require('./routes/users'));
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.message);

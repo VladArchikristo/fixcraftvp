@@ -92,6 +92,13 @@ export default function HomeScreen({ navigation }) {
       Alert.alert('Заполни маршрут', 'Введи город отправления и назначения');
       return;
     }
+    if (showFuel) {
+      const mpgVal = parseFloat(mpg);
+      if (!mpg || isNaN(mpgVal) || mpgVal <= 0 || mpgVal > 100) {
+        Alert.alert('Ошибка', 'Введите корректный расход топлива (1-100 MPG)');
+        return;
+      }
+    }
     setLoading(true);
     try {
       const response = await calculateRoute(from.trim(), to.trim(), truckType);

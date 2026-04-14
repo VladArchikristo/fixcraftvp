@@ -39,13 +39,25 @@ router.post('/', verifyToken, (req, res) => {
       fuel_cost = 0,
       mpg = 6.5,
       fuel_purchases = [],
+      trip_date = null, // опциональная дата поездки для исторических записей
     } = req.body;
 
     if (!from_city || !to_city) {
       return res.status(400).json({ error: 'from_city and to_city are required' });
     }
 
-    const { quarter, year } = getQuarterYear();
+    // Валидация MPG
+    const mpgVal = parseFloat(mpg) || 6.5;
+    if (mpgVal <= 0 || mpgVal >= 100) {
+      return res.status(400).json({ error: 'mpg must be between 0 and 100' });
+    }
+
+    // Квартал определяем из trip_date если передан, иначе — текущая дата
+    const tripDateObj = trip_date ? new Date(trip_date) : new Date();
+    if (trip_date && isNaN(tripDateObj.getTime())) {
+      return res.status(400).json({ error: 'Invalid trip_date format. Use ISO 8601 (e.g. 2026-01-15)' });
+    }
+    const { quarter, year } = getQuarterYear(tripDateObj);
     const stateMilesJson = typeof state_miles === 'string' ? state_miles : JSON.stringify(state_miles);
 
     // Сохраняем в транзакции
@@ -65,7 +77,7 @@ router.post('/', verifyToken, (req, res) => {
     try {
       const tripResult = insertTrip.run(
         req.userId, from_city, to_city, truck_type,
-        total_miles, stateMilesJson, toll_cost, fuel_cost, mpg,
+        total_miles, stateMilesJson, toll_cost, fuel_cost, mpgVal,
         quarter, year
       );
       tripId = tripResult.lastInsertRowid;
@@ -193,9 +205,33 @@ router.get('/ifta', verifyToken, (req, res) => {
   }
 });
 
-// GET /api/trips/history — история всех поездок пользователя
+// GET /api/trips/history — история поездок с пагинацией и фильтрацией
 router.get('/history', verifyToken, (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = (page - 1) * limit;
+    const from = req.query.from || null;
+    const to = req.query.to || null;
+    const search = req.query.search || null;
+
+    // Собираем WHERE условия
+    const conditions = ['t.user_id = ?'];
+    const params = [req.userId];
+
+    if (from) { conditions.push('t.created_at >= ?'); params.push(from); }
+    if (to) { conditions.push('t.created_at <= ?'); params.push(to + 'T23:59:59'); }
+    if (search) {
+      conditions.push('(t.from_city LIKE ? OR t.to_city LIKE ? OR t.state_miles LIKE ?)');
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+    }
+
+    const whereClause = conditions.join(' AND ');
+
+    // Считаем total
+    const totalRow = db.prepare(`SELECT COUNT(*) as cnt FROM trips t WHERE ${whereClause}`).get(...params);
+    const total = totalRow.cnt;
+
     const trips = db.prepare(`
       SELECT t.*,
         (SELECT json_group_array(json_object(
@@ -208,9 +244,10 @@ router.get('/history', verifyToken, (req, res) => {
         ))
         FROM fuel_purchases fp WHERE fp.trip_id = t.id) as fuel_purchases
       FROM trips t
-      WHERE t.user_id = ?
+      WHERE ${whereClause}
       ORDER BY t.created_at DESC
-    `).all(req.userId);
+      LIMIT ? OFFSET ?
+    `).all(...params, limit, offset);
 
     // Парсим JSON поля
     const result = trips.map(trip => ({
@@ -219,7 +256,12 @@ router.get('/history', verifyToken, (req, res) => {
       fuel_purchases: (() => { try { return JSON.parse(trip.fuel_purchases || '[]'); } catch (_) { return []; } })(),
     }));
 
-    res.json({ trips: result, total: result.length });
+    res.json({
+      trips: result,
+      total,
+      page,
+      hasMore: offset + result.length < total,
+    });
   } catch (err) {
     console.error('GET /api/trips/history error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -436,6 +478,68 @@ router.post('/fuel-purchases', verifyToken, (req, res) => {
     });
   } catch (err) {
     console.error('POST /api/trips/fuel-purchases error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/trips/:id — детали поездки (должен быть ПОСЛЕ всех именованных маршрутов!)
+router.get('/:id', verifyToken, (req, res) => {
+  try {
+    const tripId = parseInt(req.params.id);
+    const trip = db.prepare(`
+      SELECT t.*,
+        (SELECT json_group_array(json_object(
+          'id', fp.id,
+          'state', fp.state,
+          'gallons', fp.gallons,
+          'price_per_gallon', fp.price_per_gallon,
+          'station_name', fp.station_name,
+          'purchase_date', fp.purchase_date
+        ))
+        FROM fuel_purchases fp WHERE fp.trip_id = t.id) as fuel_purchases
+      FROM trips t
+      WHERE t.id = ? AND t.user_id = ?
+    `).get(tripId, req.userId);
+
+    if (!trip) {
+      return res.status(404).json({ error: 'Trip not found' });
+    }
+
+    res.json({
+      ...trip,
+      state_miles: (() => { try { return JSON.parse(trip.state_miles || '{}'); } catch (_) { return {}; } })(),
+      fuel_purchases: (() => { try { return JSON.parse(trip.fuel_purchases || '[]'); } catch (_) { return []; } })(),
+    });
+  } catch (err) {
+    console.error('GET /api/trips/:id error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// DELETE /api/trips/:id — удаление поездки (должен быть ПОСЛЕ всех именованных маршрутов!)
+router.delete('/:id', verifyToken, (req, res) => {
+  try {
+    const tripId = parseInt(req.params.id);
+
+    // Проверяем что поездка принадлежит этому пользователю
+    const trip = db.prepare('SELECT id FROM trips WHERE id = ? AND user_id = ?').get(tripId, req.userId);
+    if (!trip) {
+      return res.status(404).json({ error: 'Trip not found' });
+    }
+
+    db.exec('BEGIN');
+    try {
+      db.prepare('DELETE FROM fuel_purchases WHERE trip_id = ?').run(tripId);
+      db.prepare('DELETE FROM trips WHERE id = ?').run(tripId);
+      db.exec('COMMIT');
+    } catch (txErr) {
+      db.exec('ROLLBACK');
+      throw txErr;
+    }
+
+    res.json({ success: true, message: 'Trip deleted' });
+  } catch (err) {
+    console.error('DELETE /api/trips/:id error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });

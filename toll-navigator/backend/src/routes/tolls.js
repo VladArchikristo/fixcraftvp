@@ -930,6 +930,8 @@ router.post('/calculate', verifyToken, (req, res) => {
  * Список штатов с данными
  */
 router.get('/states', (req, res) => {
+  // Статичные данные — кешируем на 1 день
+  res.set('Cache-Control', 'public, max-age=86400');
   res.json({ states: getAvailableStates() });
 });
 
