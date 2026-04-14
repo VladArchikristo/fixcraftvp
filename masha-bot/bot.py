@@ -29,6 +29,7 @@ from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     MessageHandler,
+    TypeHandler,
     filters,
     ContextTypes,
 )
@@ -113,6 +114,11 @@ _processing_since: float | None = None  # timestamp when _processing became True
 _WATCHDOG_TIMEOUT = 300  # 5 min — soft reset if no Claude running
 _WATCHDOG_HARD_LIMIT = 600  # 10 min — hard reset even if Claude is alive
 _message_queue: deque = deque(maxlen=5)  # queue up to 5 messages
+
+# Polling health monitor — detect dead polling after Bad Gateway / network errors
+_last_update_time: float = time.time()  # last time ANY update was received
+_POLLING_DEAD_TIMEOUT = 900  # 15 min without any update = polling is dead
+_polling_restart_count: int = 0
 
 
 def _get_claude_env() -> dict:
@@ -566,12 +572,16 @@ async def cmd_status(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     hours, remainder = divmod(int(uptime.total_seconds()), 3600)
     minutes, seconds = divmod(remainder, 60)
     mode = user_modes.get(update.effective_user.id, "общий")
+    polling_age = int(time.time() - _last_update_time)
+    restart_info = f"\nPolling restarts: {_polling_restart_count}" if _polling_restart_count > 0 else ""
     await update.message.reply_text(
         f"Маша онлайн\n"
         f"PID: {os.getpid()}\n"
         f"Аптайм: {hours}ч {minutes}м {seconds}с\n"
         f"Режим: {mode}\n"
-        f"Сообщений в истории: {len(user_history)}"
+        f"Сообщений в истории: {len(user_history)}\n"
+        f"Последний update: {polling_age}с назад"
+        f"{restart_info}"
     )
 
 
@@ -838,12 +848,61 @@ async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ---------------------------------------------------------------------------
 # Error handler
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Polling health — track updates, detect dead polling, auto-restart
+# ---------------------------------------------------------------------------
+async def _track_update(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Called on EVERY incoming update (group -1) — just bumps the timestamp."""
+    global _last_update_time
+    _last_update_time = time.time()
+
+
+async def _polling_health_job(context: ContextTypes.DEFAULT_TYPE):
+    """Every 60s check if polling is alive. If no updates for 15 min — restart."""
+    global _last_update_time, _polling_restart_count
+    try:
+        elapsed = time.time() - _last_update_time
+        if elapsed < _POLLING_DEAD_TIMEOUT:
+            return
+
+        log.warning(
+            "⚠️ Polling health: no updates for %.0f sec (limit %d) — restarting polling!",
+            elapsed, _POLLING_DEAD_TIMEOUT,
+        )
+        _polling_restart_count += 1
+
+        # Stop and restart the updater (polling mechanism)
+        if _app_ref and _app_ref.updater and _app_ref.updater.running:
+            try:
+                await _app_ref.updater.stop()
+                log.info("Updater stopped, restarting...")
+            except Exception as e:
+                log.warning("Error stopping updater: %s", e)
+
+        if _app_ref and _app_ref.updater:
+            try:
+                await _app_ref.updater.start_polling(
+                    drop_pending_updates=False,
+                    allowed_updates=Update.ALL_TYPES,
+                )
+                _last_update_time = time.time()  # reset timer
+                log.info("✅ Polling restarted successfully (restart #%d)", _polling_restart_count)
+            except Exception as e:
+                log.error("Failed to restart polling: %s — will retry next cycle", e)
+
+    except Exception as e:
+        log.error("Polling health job error: %s", e)
+
+
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     err = context.error
     if isinstance(err, Conflict):
         log.debug("409 Conflict — reclaiming session (normal during takeover)")
     elif isinstance(err, (NetworkError, TimedOut)):
         log.warning("Telegram network error (will retry): %s", err)
+        # Bump the update time on network errors — we know polling is trying
+        global _last_update_time
+        _last_update_time = time.time()
     else:
         log.error("Update error: %s", err, exc_info=True)
 
@@ -944,6 +1003,9 @@ def main():
         .build()
     )
 
+    # Track ALL updates for polling health monitor (group -1 = runs before everything)
+    app.add_handler(TypeHandler(Update, _track_update), group=-1)
+
     # Commands
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CommandHandler("status", cmd_status))
@@ -969,6 +1031,9 @@ def main():
 
     # Watchdog — check every 60 sec if _processing is stuck
     app.job_queue.run_repeating(watchdog_job, interval=60, first=30)
+
+    # Polling health monitor — restart polling if dead for 15 min
+    app.job_queue.run_repeating(_polling_health_job, interval=60, first=60)
 
     _app_ref = app
 
