@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   ActivityIndicator, Alert, Platform,
@@ -10,6 +10,13 @@ import * as Sharing from 'expo-sharing';
 import * as Print from 'expo-print';
 import api from '../services/api';
 import { generateIFTAPDF } from '../ifta/quarterlyCalculator';
+import {
+  startBackgroundTracking,
+  stopBackgroundTracking,
+  isTrackingActive,
+} from '../services/backgroundLocationService';
+import { getTodayMiles, getCurrentState } from '../services/iftaMileageTracker';
+import { getStateName } from '../services/stateDetectionService';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const QUARTERS = [1, 2, 3, 4];
@@ -27,6 +34,70 @@ export default function IFTADashboardScreen() {
   const [exporting, setExporting] = useState(false);
   const [exportingPdf, setExportingPdf] = useState(false);
   const [driverInfo, setDriverInfo] = useState({ name: '', company: '', usdot: '' });
+
+  // GPS tracking state
+  const [tracking, setTracking] = useState(false);
+  const [trackingLoading, setTrackingLoading] = useState(false);
+  const [todayMiles, setTodayMiles] = useState(0);
+  const [currentState, setCurrentState] = useState(null);
+
+  // ── Tracking helpers ──────────────────────────────────────────────────────
+
+  const refreshTrackingStatus = useCallback(async () => {
+    try {
+      const [active, miles, state] = await Promise.all([
+        isTrackingActive(),
+        getTodayMiles(),
+        getCurrentState(),
+      ]);
+      setTracking(active);
+      setTodayMiles(miles);
+      setCurrentState(state);
+    } catch (err) {
+      console.warn('[IFTA] refreshTrackingStatus error:', err.message);
+    }
+  }, []);
+
+  // Poll tracking stats every 30s while the screen is focused
+  useEffect(() => {
+    refreshTrackingStatus();
+    const interval = setInterval(refreshTrackingStatus, 30000);
+    return () => clearInterval(interval);
+  }, [refreshTrackingStatus]);
+
+  const handleToggleTracking = async () => {
+    setTrackingLoading(true);
+    try {
+      if (tracking) {
+        const result = await stopBackgroundTracking();
+        if (!result.success) {
+          Alert.alert('Error', result.error || 'Could not stop tracking');
+        } else {
+          setTracking(false);
+        }
+      } else {
+        const result = await startBackgroundTracking();
+        if (!result.success) {
+          // Show user-friendly permission instructions
+          Alert.alert(
+            'Location Permission Required',
+            result.error ||
+              'Please allow "Always" location access in Settings to enable background GPS tracking for IFTA.',
+            [{ text: 'OK' }]
+          );
+        } else {
+          setTracking(true);
+        }
+      }
+    } catch (err) {
+      Alert.alert('Error', err.message);
+    } finally {
+      setTrackingLoading(false);
+      refreshTrackingStatus();
+    }
+  };
+
+  // ─────────────────────────────────────────────────────────────────────────
 
   const loadIFTA = useCallback(async (q = quarter, y = year) => {
     setLoading(true);
@@ -159,6 +230,66 @@ export default function IFTADashboardScreen() {
 
       {/* Заголовок */}
       <Text style={styles.title}>IFTA Dashboard</Text>
+
+      {/* GPS Tracking Card */}
+      <View style={[styles.trackingCard, tracking ? styles.trackingCardActive : styles.trackingCardIdle]}>
+        {/* Status row */}
+        <View style={styles.trackingRow}>
+          <View style={styles.trackingStatusLeft}>
+            <View style={[styles.trackingDot, { backgroundColor: tracking ? '#66bb6a' : '#ef5350' }]} />
+            <Text style={[styles.trackingStatusText, { color: tracking ? '#66bb6a' : '#ef5350' }]}>
+              {tracking ? 'Tracking Active' : 'Tracking Stopped'}
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            style={[
+              styles.trackingBtn,
+              tracking ? styles.trackingBtnStop : styles.trackingBtnStart,
+              trackingLoading && styles.exportBtnDisabled,
+            ]}
+            onPress={handleToggleTracking}
+            disabled={trackingLoading}
+          >
+            {trackingLoading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Ionicons
+                name={tracking ? 'stop-circle-outline' : 'navigate-outline'}
+                size={16}
+                color="#fff"
+              />
+            )}
+            <Text style={styles.trackingBtnText}>
+              {trackingLoading ? '...' : tracking ? 'Stop' : 'Start Tracking'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Live stats */}
+        <View style={styles.trackingStats}>
+          <View style={styles.trackingStatItem}>
+            <Text style={styles.trackingStatLabel}>Today</Text>
+            <Text style={styles.trackingStatValue}>{todayMiles.toFixed(1)} mi</Text>
+          </View>
+          <View style={styles.trackingStatDivider} />
+          <View style={styles.trackingStatItem}>
+            <Text style={styles.trackingStatLabel}>Current State</Text>
+            <Text style={styles.trackingStatValue}>
+              {currentState
+                ? `${currentState} · ${getStateName(currentState)}`
+                : '—'}
+            </Text>
+          </View>
+        </View>
+
+        {/* EAS-only notice */}
+        {!tracking && (
+          <Text style={styles.trackingNotice}>
+            Requires EAS Build — not available in Expo Go
+          </Text>
+        )}
+      </View>
 
       {/* Выбор квартала */}
       <View style={styles.selectorSection}>
@@ -483,4 +614,92 @@ const styles = StyleSheet.create({
   exportBtnDisabled: { opacity: 0.5 },
   exportBtnText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
   exportBtnTextPdf: { color: '#fff', fontSize: 14, fontWeight: '700' },
+
+  // GPS Tracking Card
+  trackingCard: {
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+  },
+  trackingCardActive: {
+    backgroundColor: '#071a0f',
+    borderColor: '#2e7d32',
+  },
+  trackingCardIdle: {
+    backgroundColor: '#161629',
+    borderColor: '#1e1e3a',
+  },
+  trackingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 14,
+  },
+  trackingStatusLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  trackingDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  trackingStatusText: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  trackingBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+  },
+  trackingBtnStart: {
+    backgroundColor: '#1565c0',
+  },
+  trackingBtnStop: {
+    backgroundColor: '#b71c1c',
+  },
+  trackingBtnText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  trackingStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  trackingStatItem: {
+    flex: 1,
+  },
+  trackingStatDivider: {
+    width: 1,
+    height: 32,
+    backgroundColor: '#1e1e3a',
+    marginHorizontal: 16,
+  },
+  trackingStatLabel: {
+    color: '#555',
+    fontSize: 10,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 3,
+  },
+  trackingStatValue: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  trackingNotice: {
+    color: '#333',
+    fontSize: 10,
+    marginTop: 12,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
 });

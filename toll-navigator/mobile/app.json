@@ -17,9 +17,11 @@
       "buildNumber": "1",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Toll Navigator uses your location to suggest nearby cities and calculate routes from your current position.",
-        "NSLocationAlwaysUsageDescription": "Toll Navigator uses your location to calculate toll routes.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+        "NSLocationAlwaysUsageDescription": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
         "NSCameraUsageDescription": "Toll Navigator uses the camera to scan fuel receipts for OCR processing.",
-        "NSPhotoLibraryUsageDescription": "Toll Navigator accesses your photo library to scan saved fuel receipts."
+        "NSPhotoLibraryUsageDescription": "Toll Navigator accesses your photo library to scan saved fuel receipts.",
+        "UIBackgroundModes": ["location", "fetch"]
       }
     },
     "android": {
@@ -32,11 +34,26 @@
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE"
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION"
       ]
     },
     "plugins": [
-      "@react-native-ml-kit/text-recognition"
+      "@react-native-ml-kit/text-recognition",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+          "locationAlwaysPermission": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+          "locationWhenInUsePermission": "Toll Navigator uses your location to suggest nearby cities and calculate routes.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ]
     ],
     "extra": {
       "apiUrl": "http://localhost:3001"
