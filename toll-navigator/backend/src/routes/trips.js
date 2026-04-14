@@ -257,4 +257,187 @@ router.get('/fuel-purchases', verifyToken, (req, res) => {
   }
 });
 
+// POST /api/trips/scan-receipt — OCR скан чека заправки
+router.post('/scan-receipt', verifyToken, async (req, res) => {
+  try {
+    const { image_base64 } = req.body;
+    if (!image_base64) {
+      return res.status(400).json({ error: 'image_base64 is required' });
+    }
+
+    const apiKey = process.env.GOOGLE_VISION_API_KEY;
+
+    // Если нет ключа — возвращаем mock-данные для разработки
+    if (!apiKey) {
+      console.log('[scan-receipt] No GOOGLE_VISION_API_KEY — returning mock data');
+      return res.json({
+        state: 'TX',
+        gallons: 85.4,
+        price_per_gallon: 3.89,
+        date: new Date().toISOString().split('T')[0],
+        station_name: 'Pilot Travel Center',
+        raw_text: 'mock',
+        mock: true,
+      });
+    }
+
+    // Google Vision API — text detection
+    const visionRes = await fetch(
+      `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requests: [{
+            image: { content: image_base64 },
+            features: [{ type: 'TEXT_DETECTION', maxResults: 1 }],
+          }],
+        }),
+      }
+    );
+
+    if (!visionRes.ok) {
+      const errText = await visionRes.text();
+      console.error('[scan-receipt] Vision API error:', errText);
+      return res.status(502).json({ error: 'Google Vision API error', details: errText });
+    }
+
+    const visionData = await visionRes.json();
+    const rawText = visionData.responses?.[0]?.fullTextAnnotation?.text || '';
+
+    // Парсим текст чека
+    const parsed = parseReceiptText(rawText);
+
+    res.json({ ...parsed, raw_text: rawText });
+  } catch (err) {
+    console.error('POST /api/trips/scan-receipt error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Парсим текст чека — извлекаем ключевые данные
+function parseReceiptText(text) {
+  const result = {
+    state: null,
+    gallons: null,
+    price_per_gallon: null,
+    date: null,
+    station_name: null,
+  };
+
+  if (!text) return result;
+
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
+  // Название станции — первые строки обычно
+  const stationKeywords = ['pilot', 'loves', 'flying j', 'petro', 'ta travel', 'speedway', 'kwik trip', 'casey', 'circle k', 'shell', 'bp', 'marathon', 'chevron'];
+  for (const line of lines.slice(0, 5)) {
+    if (stationKeywords.some(k => line.toLowerCase().includes(k))) {
+      result.station_name = line;
+      break;
+    }
+  }
+
+  // Штат — ищем аббревиатуру USA штата (2 буквы)
+  const US_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+  for (const line of lines) {
+    const match = line.match(/\b([A-Z]{2})\b/);
+    if (match && US_STATES.includes(match[1])) {
+      result.state = match[1];
+      break;
+    }
+  }
+
+  // Галлоны — ищем паттерн "XX.X GAL" или "GALLONS XX.X"
+  for (const line of lines) {
+    const galMatch = line.match(/(\d+\.\d+)\s*(?:gal|gallons|GAL|GALLONS)/i)
+      || line.match(/(?:gal|gallons)\s*(\d+\.\d+)/i);
+    if (galMatch) {
+      result.gallons = parseFloat(galMatch[1]);
+      break;
+    }
+  }
+
+  // Цена за галлон — ищем паттерн "$X.XXX/GAL" или "PRICE/GAL X.XXX"
+  for (const line of lines) {
+    const priceMatch = line.match(/\$?(\d+\.\d{2,3})\s*\/\s*(?:gal|gallon)/i)
+      || line.match(/(?:price|per gal)[^\d]*(\d+\.\d{2,3})/i);
+    if (priceMatch) {
+      result.price_per_gallon = parseFloat(priceMatch[1]);
+      break;
+    }
+  }
+
+  // Дата — ищем паттерн MM/DD/YYYY или YYYY-MM-DD
+  for (const line of lines) {
+    const dateMatch = line.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/)
+      || line.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (dateMatch) {
+      // Нормализуем в YYYY-MM-DD
+      if (dateMatch[0].includes('-')) {
+        result.date = dateMatch[0];
+      } else {
+        const [, m, d, y] = dateMatch;
+        result.date = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+      }
+      break;
+    }
+  }
+
+  // Если дата не найдена — сегодняшняя
+  if (!result.date) {
+    result.date = new Date().toISOString().split('T')[0];
+  }
+
+  return result;
+}
+
+// POST /api/trips/fuel-purchases — добавить заправку вручную
+router.post('/fuel-purchases', verifyToken, (req, res) => {
+  try {
+    const {
+      state,
+      gallons,
+      price_per_gallon = 0,
+      station_name = null,
+      trip_id = null,
+      purchase_date = null,
+    } = req.body;
+
+    if (!state || !gallons) {
+      return res.status(400).json({ error: 'state and gallons are required' });
+    }
+
+    const { quarter, year } = getQuarterYear(purchase_date ? new Date(purchase_date) : new Date());
+
+    const result = db.prepare(`
+      INSERT INTO fuel_purchases (user_id, trip_id, state, gallons, price_per_gallon, station_name, quarter, year, purchase_date)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      req.userId,
+      trip_id || null,
+      state,
+      parseFloat(gallons),
+      parseFloat(price_per_gallon) || 0,
+      station_name,
+      quarter,
+      year,
+      purchase_date || new Date().toISOString(),
+    );
+
+    res.status(201).json({
+      id: result.lastInsertRowid,
+      state,
+      gallons: parseFloat(gallons),
+      price_per_gallon: parseFloat(price_per_gallon) || 0,
+      quarter,
+      year,
+      message: 'Fuel purchase saved',
+    });
+  } catch (err) {
+    console.error('POST /api/trips/fuel-purchases error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 module.exports = router;

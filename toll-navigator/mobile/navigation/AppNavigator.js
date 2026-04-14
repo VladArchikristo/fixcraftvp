@@ -9,6 +9,9 @@ import HomeScreen from '../screens/HomeScreen';
 import ResultScreen from '../screens/ResultScreen';
 import MapScreen from '../screens/MapScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import TripHistoryScreen from '../screens/TripHistoryScreen';
+import FuelPurchaseScreen from '../screens/FuelPurchaseScreen';
+import IFTADashboardScreen from '../screens/IFTADashboardScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import { getToken, logout } from '../services/auth';
@@ -52,7 +55,25 @@ function CalcStack() {
 function HistoryStack() {
   return (
     <Stack.Navigator screenOptions={stackScreenOptions}>
-      <Stack.Screen name="HistoryList" component={HistoryScreen} options={{ title: 'История маршрутов' }} />
+      <Stack.Screen name="HistoryList" component={TripHistoryScreen} options={{ title: 'История поездок' }} />
+    </Stack.Navigator>
+  );
+}
+
+// Fuel stack
+function FuelStack() {
+  return (
+    <Stack.Navigator screenOptions={stackScreenOptions}>
+      <Stack.Screen name="FuelPurchase" component={FuelPurchaseScreen} options={{ title: 'Заправки' }} />
+    </Stack.Navigator>
+  );
+}
+
+// IFTA stack
+function IFTAStack() {
+  return (
+    <Stack.Navigator screenOptions={stackScreenOptions}>
+      <Stack.Screen name="IFTADashboard" component={IFTADashboardScreen} options={{ title: 'IFTA' }} />
     </Stack.Navigator>
   );
 }
@@ -95,7 +116,9 @@ function MainTabs({ onLogout }) {
         tabBarIcon: ({ focused, color, size }) => {
           const icons = {
             Calc: focused ? 'calculator' : 'calculator-outline',
+            Fuel: focused ? 'flame' : 'flame-outline',
             History: focused ? 'time' : 'time-outline',
+            IFTA: focused ? 'bar-chart' : 'bar-chart-outline',
             Profile: focused ? 'person' : 'person-outline',
           };
           return <Ionicons name={icons[route.name] || 'ellipse'} size={size} color={color} />;
@@ -103,8 +126,10 @@ function MainTabs({ onLogout }) {
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       })}
     >
-      <Tab.Screen name="Calc" component={CalcStack} options={{ tabBarLabel: 'Калькулятор' }} />
+      <Tab.Screen name="Calc" component={CalcStack} options={{ tabBarLabel: 'Маршрут' }} />
+      <Tab.Screen name="Fuel" component={FuelStack} options={{ tabBarLabel: 'Заправки' }} />
       <Tab.Screen name="History" component={HistoryStack} options={{ tabBarLabel: 'История' }} />
+      <Tab.Screen name="IFTA" component={IFTAStack} options={{ tabBarLabel: 'IFTA' }} />
       <Tab.Screen name="Profile" options={{ tabBarLabel: 'Профиль' }}>
         {() => <ProfileScreen onLogout={handleLogout} />}
       </Tab.Screen>

@@ -18,7 +18,8 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Toll Navigator uses your location to suggest nearby cities and calculate routes from your current position.",
         "NSLocationAlwaysUsageDescription": "Toll Navigator uses your location to calculate toll routes.",
-        "NSCameraUsageDescription": "Camera is not used by this app."
+        "NSCameraUsageDescription": "Toll Navigator uses the camera to scan fuel receipts for OCR processing.",
+        "NSPhotoLibraryUsageDescription": "Toll Navigator accesses your photo library to scan saved fuel receipts."
       }
     },
     "android": {
@@ -28,7 +29,11 @@
       },
       "package": "com.tollnavigator.app",
       "versionCode": 1,
-      "permissions": []
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "extra": {
       "apiUrl": "http://192.168.1.177:3001"
