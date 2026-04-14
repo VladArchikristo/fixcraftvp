@@ -78,6 +78,51 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
   };
 }
 
+// Тихое авто-сохранение маршрута на сервер (fire and forget)
+async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases }) {
+  try {
+    const token = await getToken();
+    if (!token) return; // не авторизован — не сохраняем
+
+    // Строим state_miles из breakdown
+    const stateMiles = {};
+    if (result.breakdown) {
+      result.breakdown.forEach(b => {
+        if (b.state && b.miles_in_state) {
+          stateMiles[b.state] = b.miles_in_state;
+        }
+      });
+    }
+
+    const mpg = fuelData?.mpg || 6.5;
+    const fuelPrice = fuelData?.fuelPrice || 0;
+    const totalGallons = result.distance_miles ? result.distance_miles / mpg : 0;
+    const fuelCost = totalGallons * fuelPrice;
+
+    // Нормализуем fuel_purchases
+    const normalizedPurchases = (fuelPurchases || []).map(p => ({
+      state: p.state,
+      gallons: p.gallons,
+      price_per_gallon: p.price_per_gallon || fuelPrice || 0,
+    }));
+
+    await api.post('/api/trips', {
+      from_city: from,
+      to_city: to,
+      truck_type: truckType,
+      total_miles: result.distance_miles || 0,
+      state_miles: stateMiles,
+      toll_cost: result.total || 0,
+      fuel_cost: parseFloat(fuelCost.toFixed(2)),
+      mpg,
+      fuel_purchases: normalizedPurchases,
+    });
+  } catch (err) {
+    // Тихая ошибка — не показываем пользователю
+    console.log('[autoSaveTrip] failed (silent):', err?.message || err);
+  }
+}
+
 export default function ResultScreen({ route, navigation }) {
   const { result, from, to, truckType, fuelData, fuelPurchases } = route.params;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -86,7 +131,13 @@ export default function ResultScreen({ route, navigation }) {
   const [showIftaDetail, setShowIftaDetail] = useState(false);
 
   useEffect(() => {
-    getToken().then((token) => setIsLoggedIn(!!token));
+    getToken().then((token) => {
+      setIsLoggedIn(!!token);
+      // Тихое авто-сохранение маршрута при открытии экрана результата
+      if (token) {
+        autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases });
+      }
+    });
   }, []);
 
   const tollCost = result.total || 0;

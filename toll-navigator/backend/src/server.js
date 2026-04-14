@@ -42,6 +42,9 @@ app.use('/api/auth', require('./routes/auth'));
 // Toll Calculator
 app.use('/api/tolls', require('./routes/tolls'));
 
+// Trips history + IFTA
+app.use('/api/trips', require('./routes/trips'));
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.message);

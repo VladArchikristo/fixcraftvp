@@ -49,6 +49,51 @@ db.exec(`
 
   CREATE INDEX IF NOT EXISTS idx_routes_user_id ON routes(user_id);
   CREATE INDEX IF NOT EXISTS idx_tolls_state ON tolls(state);
+
+  CREATE TABLE IF NOT EXISTS trips (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    from_city TEXT NOT NULL,
+    to_city TEXT NOT NULL,
+    truck_type TEXT DEFAULT '5-axle',
+    total_miles REAL DEFAULT 0,
+    state_miles TEXT DEFAULT '{}',
+    toll_cost REAL DEFAULT 0,
+    fuel_cost REAL DEFAULT 0,
+    mpg REAL DEFAULT 6.5,
+    quarter INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS fuel_purchases (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    trip_id INTEGER REFERENCES trips(id),
+    state TEXT NOT NULL,
+    gallons REAL NOT NULL,
+    price_per_gallon REAL DEFAULT 0,
+    station_name TEXT,
+    receipt_photo TEXT,
+    quarter INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    purchase_date DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS ifta_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    quarter INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    report_data TEXT DEFAULT '{}',
+    total_tax_due REAL DEFAULT 0,
+    generated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_trips_user_id ON trips(user_id);
+  CREATE INDEX IF NOT EXISTS idx_trips_quarter_year ON trips(user_id, quarter, year);
+  CREATE INDEX IF NOT EXISTS idx_fuel_purchases_user_id ON fuel_purchases(user_id);
+  CREATE INDEX IF NOT EXISTS idx_fuel_purchases_quarter_year ON fuel_purchases(user_id, quarter, year);
 `);
 
 // Migration: add new columns to existing tables (safe — fails silently if already exist)
