@@ -58,8 +58,8 @@ const CITY_STATE_MAP = {
   'las vegas': 'NV', 'reno': 'NV', 'henderson': 'NV',
   // Oklahoma
   'oklahoma city': 'OK', 'tulsa': 'OK', 'norman': 'OK', 'broken arrow': 'OK',
-  // Georgia (extra cities)
-  'columbus': 'GA',
+  // Note: 'columbus' without state defaults to OH (Columbus, OH is on I-70/I-71, major trucker hub)
+  // Columbus, GA users must specify state: "Columbus,GA"
   // Virginia
   'virginia beach': 'VA', 'norfolk': 'VA', 'richmond': 'VA', 'roanoke': 'VA',
   'alexandria': 'VA', 'chesapeake': 'VA', 'hampton': 'VA',
@@ -250,11 +250,74 @@ const ROUTE_DISTANCES = {
   // Albuquerque ↔ *
   'albuquerque,nm|dallas,tx': 638, 'albuquerque,nm|los angeles,ca': 791,
   // El Paso ↔ *
-  'el paso,tx|dallas,tx': 625,
+  'el paso,tx|dallas,tx': 625, 'el paso,tx|los angeles,ca': 800, 'el paso,tx|phoenix,az': 428,
+  'el paso,tx|albuquerque,nm': 267, 'el paso,tx|san antonio,tx': 547,
   // San Antonio ↔ *
   'san antonio,tx|dallas,tx': 274, 'san antonio,tx|houston,tx': 199,
+  'san antonio,tx|new york,ny': 1981, 'san antonio,tx|los angeles,ca': 1561,
+  'san antonio,tx|chicago,il': 1275, 'san antonio,tx|miami,fl': 1481,
   // Austin ↔ *
   'austin,tx|dallas,tx': 196, 'austin,tx|houston,tx': 162,
+  'austin,tx|san antonio,tx': 79, 'austin,tx|new york,ny': 1802,
+  // Chicago ↔ extended routes
+  'chicago,il|houston,tx': 1090, 'chicago,il|phoenix,az': 1750,
+  'chicago,il|charlotte,nc': 757, 'chicago,il|boston,ma': 981,
+  'chicago,il|washington dc,dc': 703, 'chicago,il|raleigh,nc': 858,
+  // Houston ↔ extended routes
+  'houston,tx|atlanta,ga': 789, 'houston,tx|miami,fl': 1188,
+  'houston,tx|charlotte,nc': 1131, 'houston,tx|phoenix,az': 1175,
+  'houston,tx|denver,co': 1018, 'houston,tx|memphis,tn': 567,
+  // Miami ↔ extended routes
+  'miami,fl|chicago,il': 1363, 'miami,fl|los angeles,ca': 2757,
+  'miami,fl|dallas,tx': 1311, 'miami,fl|atlanta,ga': 662,
+  'miami,fl|houston,tx': 1188, 'miami,fl|washington dc,dc': 1057,
+  // Boston ↔ extended routes
+  'boston,ma|washington dc,dc': 437, 'boston,ma|chicago,il': 981,
+  'boston,ma|philadelphia,pa': 296, 'boston,ma|atlanta,ga': 1097,
+  // Washington DC ↔ extended routes
+  'washington dc,dc|chicago,il': 703, 'washington dc,dc|miami,fl': 1057,
+  'washington dc,dc|atlanta,ga': 641, 'washington dc,dc|charlotte,nc': 391,
+  'washington dc,dc|boston,ma': 437,
+  // Portland OR ↔ extended routes
+  'portland,or|los angeles,ca': 1090, 'portland,or|denver,co': 1235,
+  'portland,or|chicago,il': 2089, 'portland,or|phoenix,az': 1430,
+  // Seattle ↔ extended routes
+  'seattle,wa|new york,ny': 2851, 'seattle,wa|dallas,tx': 2078,
+  'seattle,wa|phoenix,az': 1421, 'seattle,wa|salt lake city,ut': 836,
+  // Minneapolis ↔ extended routes
+  'minneapolis,mn|new york,ny': 1383, 'minneapolis,mn|dallas,tx': 1169,
+  'minneapolis,mn|houston,tx': 1273, 'minneapolis,mn|atlanta,ga': 1146,
+  'minneapolis,mn|kansas city,mo': 440, 'minneapolis,mn|st louis,mo': 559,
+  // Denver ↔ extended routes
+  'denver,co|new york,ny': 1770, 'denver,co|dallas,tx': 1017,
+  'denver,co|phoenix,az': 600, 'denver,co|houston,tx': 1018,
+  'denver,co|atlanta,ga': 1398, 'denver,co|kansas city,mo': 616,
+  // Phoenix ↔ extended routes
+  'phoenix,az|new york,ny': 2400, 'phoenix,az|chicago,il': 1750,
+  'phoenix,az|miami,fl': 2359, 'phoenix,az|atlanta,ga': 1805,
+  'phoenix,az|houston,tx': 1175, 'phoenix,az|salt lake city,ut': 651,
+  'phoenix,az|seattle,wa': 1421, 'phoenix,az|las vegas,nv': 297,
+  // Las Vegas ↔ extended routes
+  'las vegas,nv|phoenix,az': 297, 'las vegas,nv|denver,co': 748,
+  'las vegas,nv|seattle,wa': 1222, 'las vegas,nv|dallas,tx': 1230,
+  // Charlotte ↔ extended routes
+  'charlotte,nc|miami,fl': 651, 'charlotte,nc|chicago,il': 757,
+  'charlotte,nc|washington dc,dc': 391, 'charlotte,nc|dallas,tx': 1160,
+  // Raleigh ↔ *
+  'raleigh,nc|new york,ny': 548, 'raleigh,nc|miami,fl': 839,
+  'raleigh,nc|charlotte,nc': 167, 'raleigh,nc|chicago,il': 858,
+  // St Louis ↔ extended routes
+  'st louis,mo|dallas,tx': 636, 'st louis,mo|nashville,tn': 313,
+  'st louis,mo|new york,ny': 942, 'st louis,mo|atlanta,ga': 555,
+  'st louis,mo|miami,fl': 1340, 'st louis,mo|houston,tx': 779,
+  // Indianapolis ↔ extended routes
+  'indianapolis,in|new york,ny': 713, 'indianapolis,in|atlanta,ga': 493,
+  'indianapolis,in|nashville,tn': 285, 'indianapolis,in|dallas,tx': 873,
+  'indianapolis,in|miami,fl': 1283,
+  // Salt Lake City ↔ extended routes
+  'salt lake city,ut|seattle,wa': 836, 'salt lake city,ut|phoenix,az': 651,
+  'salt lake city,ut|chicago,il': 1453, 'salt lake city,ut|dallas,tx': 1239,
+  'salt lake city,ut|new york,ny': 2174,
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -300,7 +363,7 @@ const STATE_MILES = {
   'new york,ny|nashville,tn': { NY: 100, NJ: 55, PA: 300, OH: 220, KY: 100, TN: 114 },
   'new york,ny|columbus,oh': { NY: 100, NJ: 55, PA: 250, OH: 98 },
   'los angeles,ca|chicago,il': { CA: 560, AZ: 400, NM: 200, TX: 150, OK: 280, MO: 280, IL: 146 },
-  'los angeles,ca|miami,fl': { CA: 300, AZ: 290, NM: 200, TX: 500, LA: 200, MS: 150, AL: 120, FL: 497 },
+  'los angeles,ca|miami,fl': { CA: 300, AZ: 400, NM: 164, TX: 857, LA: 270, MS: 75, AL: 60, FL: 627 },
   'los angeles,ca|phoenix,az': { CA: 130, AZ: 242 },
   'los angeles,ca|las vegas,nv': { CA: 100, NV: 170 },
   'los angeles,ca|seattle,wa': { CA: 640, OR: 310, WA: 187 },
@@ -442,6 +505,107 @@ const STATE_MILES = {
   'san antonio,tx|houston,tx': { TX: 199 },
   'austin,tx|dallas,tx': { TX: 196 },
   'austin,tx|houston,tx': { TX: 162 },
+  // Chicago extended
+  'chicago,il|houston,tx': { IL: 300, IN: 100, KY: 200, TN: 200, MS: 100, LA: 100, TX: 90 },
+  'chicago,il|phoenix,az': { IL: 250, MO: 150, OK: 350, TX: 150, NM: 280, AZ: 570 },
+  'chicago,il|charlotte,nc': { IL: 100, IN: 60, OH: 200, WV: 100, VA: 150, NC: 147 },
+  'chicago,il|boston,ma': { IL: 100, IN: 60, OH: 200, PA: 400, NJ: 60, NY: 100, CT: 40, MA: 21 },
+  'chicago,il|washington dc,dc': { IL: 100, IN: 60, OH: 200, PA: 250, MD: 80, DC: 13 },
+  // Houston extended
+  'houston,tx|atlanta,ga': { TX: 200, LA: 200, MS: 150, AL: 120, GA: 119 },
+  'houston,tx|miami,fl': { TX: 200, LA: 200, MS: 150, AL: 120, FL: 518 },
+  'houston,tx|charlotte,nc': { TX: 250, LA: 200, MS: 150, AL: 120, GA: 250, NC: 161 },
+  'houston,tx|phoenix,az': { TX: 500, NM: 290, AZ: 385 },
+  'houston,tx|denver,co': { TX: 500, NM: 200, CO: 318 },
+  'houston,tx|memphis,tn': { TX: 100, AR: 180, TN: 287 },
+  // Miami extended
+  'miami,fl|chicago,il': { FL: 420, GA: 450, TN: 200, KY: 100, IN: 60, IL: 133 },
+  'miami,fl|los angeles,ca': { FL: 627, AL: 60, MS: 75, LA: 270, TX: 857, NM: 164, AZ: 400, CA: 304 },
+  'miami,fl|dallas,tx': { FL: 591, AL: 120, MS: 150, LA: 200, TX: 250 },
+  'miami,fl|washington dc,dc': { FL: 400, GA: 200, SC: 100, NC: 130, VA: 180, MD: 40, DC: 7 },
+  // Boston extended
+  'boston,ma|washington dc,dc': { MA: 50, CT: 100, NY: 50, NJ: 75, DE: 50, MD: 100, DC: 12 },
+  'boston,ma|chicago,il': { MA: 50, CT: 100, NY: 80, PA: 400, OH: 200, IN: 80, IL: 71 },
+  'boston,ma|philadelphia,pa': { MA: 50, CT: 100, NY: 80, NJ: 40, PA: 26 },
+  'boston,ma|atlanta,ga': { MA: 50, CT: 100, NY: 80, NJ: 55, PA: 250, NC: 220, SC: 100, GA: 242 },
+  // Washington DC extended
+  'washington dc,dc|chicago,il': { DC: 13, MD: 80, PA: 250, OH: 200, IN: 60, IL: 100 },
+  'washington dc,dc|miami,fl': { DC: 7, MD: 40, VA: 180, NC: 130, SC: 100, GA: 200, FL: 400 },
+  'washington dc,dc|atlanta,ga': { DC: 7, MD: 50, VA: 200, NC: 200, GA: 184 },
+  'washington dc,dc|charlotte,nc': { DC: 7, MD: 50, VA: 200, NC: 134 },
+  // Portland OR extended
+  'portland,or|los angeles,ca': { OR: 360, CA: 730 },
+  'portland,or|denver,co': { OR: 200, ID: 200, UT: 300, CO: 535 },
+  'portland,or|chicago,il': { OR: 200, ID: 300, MT: 400, WY: 350, SD: 200, MN: 250, WI: 150, IL: 239 },
+  // Seattle extended
+  'seattle,wa|new york,ny': { WA: 300, MT: 550, ND: 200, MN: 350, WI: 150, IL: 300, IN: 150, OH: 200, PA: 400, NJ: 100, NY: 151 },
+  'seattle,wa|dallas,tx': { WA: 300, ID: 200, UT: 350, CO: 200, NM: 200, TX: 828 },
+  'seattle,wa|phoenix,az': { WA: 300, OR: 200, CA: 500, AZ: 421 },
+  // Minneapolis extended
+  'minneapolis,mn|new york,ny': { MN: 200, WI: 200, IL: 150, IN: 150, OH: 200, PA: 350, NJ: 80, NY: 53 },
+  'minneapolis,mn|dallas,tx': { MN: 200, IA: 200, MO: 330, OK: 200, TX: 239 },
+  'minneapolis,mn|houston,tx': { MN: 200, IA: 200, MO: 400, OK: 200, TX: 273 },
+  'minneapolis,mn|atlanta,ga': { MN: 200, WI: 150, IL: 150, KY: 200, TN: 200, GA: 246 },
+  'minneapolis,mn|kansas city,mo': { MN: 150, IA: 200, MO: 90 },
+  // Denver extended
+  'denver,co|new york,ny': { CO: 200, KS: 340, MO: 280, IL: 300, IN: 150, OH: 200, PA: 200, NJ: 55, NY: 45 },
+  'denver,co|dallas,tx': { CO: 200, KS: 200, OK: 300, TX: 317 },
+  'denver,co|houston,tx': { CO: 200, KS: 100, OK: 340, TX: 378 },
+  'denver,co|atlanta,ga': { CO: 200, KS: 100, OK: 340, AR: 200, TN: 200, GA: 358 },
+  'denver,co|kansas city,mo': { CO: 200, KS: 340, MO: 76 },
+  // Phoenix extended
+  'phoenix,az|new york,ny': { AZ: 200, NM: 290, TX: 350, OK: 200, MO: 280, IL: 150, IN: 150, OH: 200, PA: 380, NJ: 100, NY: 100 },
+  'phoenix,az|chicago,il': { AZ: 570, NM: 280, TX: 150, OK: 350, MO: 150, IL: 250 },
+  'phoenix,az|miami,fl': { AZ: 200, NM: 290, TX: 500, LA: 200, MS: 150, AL: 120, FL: 899 },
+  'phoenix,az|atlanta,ga': { AZ: 200, NM: 290, TX: 500, MS: 150, AL: 120, GA: 545 },
+  'phoenix,az|houston,tx': { AZ: 385, NM: 290, TX: 500 },
+  'phoenix,az|salt lake city,ut': { AZ: 300, UT: 351 },
+  'phoenix,az|las vegas,nv': { AZ: 200, NV: 97 },
+  // Charlotte extended
+  'charlotte,nc|miami,fl': { NC: 150, SC: 200, GA: 150, FL: 151 },
+  'charlotte,nc|chicago,il': { NC: 150, VA: 200, WV: 100, OH: 200, IN: 60, IL: 47 },
+  'charlotte,nc|washington dc,dc': { NC: 150, VA: 200, MD: 35, DC: 6 },
+  'charlotte,nc|dallas,tx': { NC: 150, VA: 200, TN: 200, AR: 200, TX: 410 },
+  // Raleigh
+  'raleigh,nc|new york,ny': { NC: 100, VA: 200, MD: 100, DE: 50, NJ: 55, NY: 43 },
+  'raleigh,nc|miami,fl': { NC: 100, SC: 150, GA: 150, FL: 439 },
+  'raleigh,nc|charlotte,nc': { NC: 167 },
+  'raleigh,nc|chicago,il': { NC: 200, VA: 200, WV: 100, OH: 200, IN: 80, IL: 78 },
+  // St Louis extended
+  'st louis,mo|dallas,tx': { MO: 100, OK: 340, TX: 196 },
+  'st louis,mo|nashville,tn': { MO: 100, TN: 213 },
+  'st louis,mo|new york,ny': { MO: 150, IL: 150, IN: 150, OH: 200, PA: 200, NJ: 55, NY: 37 },
+  'st louis,mo|atlanta,ga': { MO: 100, TN: 300, GA: 155 },
+  'st louis,mo|houston,tx': { MO: 100, AR: 280, TX: 399 },
+  // Indianapolis extended
+  'indianapolis,in|new york,ny': { IN: 100, OH: 200, PA: 300, NJ: 60, NY: 53 },
+  'indianapolis,in|atlanta,ga': { IN: 100, KY: 150, TN: 100, GA: 143 },
+  'indianapolis,in|nashville,tn': { IN: 100, KY: 85, TN: 100 },
+  'indianapolis,in|dallas,tx': { IN: 100, IL: 100, MO: 300, OK: 200, TX: 173 },
+  // Salt Lake City extended
+  'salt lake city,ut|seattle,wa': { UT: 200, ID: 340, WA: 296 },
+  'salt lake city,ut|phoenix,az': { UT: 200, AZ: 451 },
+  'salt lake city,ut|chicago,il': { UT: 200, WY: 440, NE: 500, IA: 120, IL: 193 },
+  'salt lake city,ut|dallas,tx': { UT: 200, CO: 200, NM: 290, TX: 549 },
+  'salt lake city,ut|new york,ny': { UT: 200, WY: 440, NE: 500, IA: 100, IL: 300, IN: 170, OH: 200, PA: 155, NJ: 55, NY: 54 },
+  // El Paso extended
+  'el paso,tx|los angeles,ca': { TX: 20, NM: 100, AZ: 380, CA: 300 },
+  'el paso,tx|phoenix,az': { TX: 20, NM: 100, AZ: 308 },
+  'el paso,tx|albuquerque,nm': { TX: 20, NM: 247 },
+  'el paso,tx|san antonio,tx': { TX: 547 },
+  // San Antonio extended
+  'san antonio,tx|new york,ny': { TX: 450, LA: 200, MS: 150, AL: 120, GA: 150, SC: 100, NC: 200, VA: 200, MD: 100, DE: 55, NJ: 75, NY: 181 },
+  'san antonio,tx|los angeles,ca': { TX: 500, NM: 290, AZ: 420, CA: 351 },
+  'san antonio,tx|chicago,il': { TX: 200, OK: 340, MO: 530, IL: 205 },
+  'san antonio,tx|miami,fl': { TX: 400, LA: 200, MS: 150, AL: 120, FL: 611 },
+  // Austin extended
+  'austin,tx|san antonio,tx': { TX: 79 },
+  'austin,tx|new york,ny': { TX: 400, OK: 340, MO: 300, IL: 150, IN: 170, OH: 190, PA: 155, NJ: 90, NY: 7 },
+  // Las Vegas extended
+  'las vegas,nv|phoenix,az': { NV: 100, AZ: 197 },
+  'las vegas,nv|denver,co': { NV: 200, UT: 300, CO: 248 },
+  'las vegas,nv|seattle,wa': { NV: 200, OR: 600, WA: 422 },
+  'las vegas,nv|dallas,tx': { NV: 200, AZ: 200, NM: 290, TX: 540 },
 };
 
 // Расстояния между СОСЕДНИМИ штатами (сегменты, мили)
