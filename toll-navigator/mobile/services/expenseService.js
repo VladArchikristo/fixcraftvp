@@ -480,6 +480,16 @@ export async function getLoadsByPeriod(startDate, endDate) {
 }
 
 /**
+ * Eagerly initialize the database (call once at app startup).
+ * Safe to call multiple times — returns immediately if already opened.
+ *
+ * @returns {Promise<void>}
+ */
+export async function initExpenseDb() {
+  await getDb();
+}
+
+/**
  * Delete all expense and load data (testing/reset only).
  */
 export async function clearAllExpenseData() {

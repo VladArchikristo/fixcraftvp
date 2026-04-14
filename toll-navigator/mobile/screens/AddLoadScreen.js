@@ -13,7 +13,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addLoad } from '../services/expenseService';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -72,25 +72,19 @@ export default function AddLoadScreen({ navigation }) {
 
     setSaving(true);
     try {
-      const stored = await AsyncStorage.getItem('loads');
-      const list = stored ? JSON.parse(stored) : [];
-      const newLoad = {
-        id:               Date.now().toString(),
-        grossRate:        parseNum(grossRate),
-        fuelSurcharge:    parseNum(fuelSurcharge),
-        detention:        parseNum(detention),
-        factoringEnabled,
-        factoringPct:     parseNum(factoringPct),
-        factoringFee:     parseFloat(factoringFee.toFixed(2)),
-        netPay:           parseFloat(netPay.toFixed(2)),
-        miles:            parseNum(miles),
-        origin:           origin.trim(),
-        destination:      destination.trim(),
-        broker:           broker.trim(),
-        date,
-      };
-      list.unshift(newLoad);
-      await AsyncStorage.setItem('loads', JSON.stringify(list));
+      await addLoad({
+        gross_rate:        parseNum(grossRate),
+        fuel_surcharge:    parseNum(fuelSurcharge),
+        detention_pay:     parseNum(detention),
+        factoring_enabled: factoringEnabled ? 1 : 0,
+        factoring_percent: parseNum(factoringPct),
+        net_pay:           parseFloat(netPay.toFixed(2)),
+        miles:             parseNum(miles),
+        origin:            origin.trim() || null,
+        destination:       destination.trim() || null,
+        broker_name:       broker.trim() || null,
+        delivered_at:      date,
+      });
       Alert.alert('Saved', `Load saved. Net Pay: ${fmt(netPay)}`, [
         { text: 'OK', onPress: () => navigation.goBack() },
       ]);

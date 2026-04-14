@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-14T19:00:25.459912+00:00",
+  "timestamp": "2026-04-14T22:00:27.176245+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.44,
+  "score": -0.48,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
@@ -9,10 +9,10 @@
   },
   "key_events": [
     "Bitcoin climbs to highest level since Feb. 5 crash that sent price plunging to $60,000",
-    "The next Fed chair has crypto exposure in portfolio. Here are the details",
+    "Bitcoin's $76,000 breakout fails but a rare signal is hinting at major market bottom",
+    "The next Fed chair has crypto exposure in his portfolio. Here are the details",
     "Rakuten to allow XRP to be used as payment method by its 44 million customers",
-    "Popular DeFi platform warns users to stay away from its site after security breach",
-    "Ethereum Foundation unveils $1M audit subsidy program to boost crypto security and cut costs for builders"
+    "Popular DeFi platform warns users to stay away from its site after security breach"
   ],
   "affected_assets": [
     "ETH",
@@ -25,16 +25,16 @@
   "trending_coins": [
     "RAVE",
     "ARIA",
-    "BTC",
-    "ZAMA",
     "TAO",
-    "PEAQ",
+    "ENJ",
+    "BTC",
+    "PENGU",
     "GENIUS"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.61,
-  "cached_at": 1776193225.460108
+  "fetch_time_sec": 2.79,
+  "cached_at": 1776204027.176354
 }

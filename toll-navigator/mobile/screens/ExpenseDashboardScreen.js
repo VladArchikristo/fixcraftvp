@@ -7,28 +7,19 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import { getProfitAndLoss, getExpensesByPeriod } from '../services/expenseService';
 
-// ── Mock data (replace with API calls later) ─────────────────────────────────
-
-const MOCK_LOADS = [
-  { id: 'l1', grossRevenue: 3200, fuelSurcharge: 400, detention: 150, miles: 1200, date: '2026-04-10' },
-  { id: 'l2', grossRevenue: 5200, fuelSurcharge: 600, detention: 0,   miles: 2000, date: '2026-04-07' },
-];
-
-const MOCK_EXPENSES = [
-  { id: 'e1', category: 'fuel',        amount: 142.50, vendor: "Love's #450",   date: '2026-04-13', notes: '' },
-  { id: 'e2', category: 'maintenance', amount: 350.00, vendor: 'Peterbilt Shop', date: '2026-04-11', notes: 'Oil change' },
-  { id: 'e3', category: 'fuel',        amount: 210.00, vendor: "Pilot #882",     date: '2026-04-10', notes: '' },
-  { id: 'e4', category: 'permits',     amount: 85.00,  vendor: 'PrePass',        date: '2026-04-09', notes: '' },
-  { id: 'e5', category: 'food',        amount: 38.75,  vendor: 'Subway',         date: '2026-04-08', notes: '' },
-  { id: 'e6', category: 'fuel',        amount: 198.00, vendor: "TA #312",        date: '2026-04-07', notes: '' },
-  { id: 'e7', category: 'tolls',       amount: 24.50,  vendor: 'I-95 E-ZPass',   date: '2026-04-07', notes: '' },
-  { id: 'e8', category: 'insurance',   amount: 950.00, vendor: 'Progressive',    date: '2026-04-01', notes: 'Monthly' },
-  { id: 'e9', category: 'other',       amount: 45.00,  vendor: 'Dollar General', date: '2026-04-06', notes: '' },
-];
+// ── Period label → service period key ────────────────────────────────────────
+const PERIOD_KEY = {
+  Week:    'week',
+  Month:   'month',
+  Quarter: 'quarter',
+  Year:    'year',
+};
 
 const CATEGORY_META = {
   fuel:        { icon: 'flame',            color: '#ff7043', label: 'Fuel' },
@@ -44,45 +35,80 @@ const PERIODS = ['Week', 'Month', 'Quarter', 'Year'];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function buildPnL(loads, expenses) {
-  const grossRevenue = loads.reduce((s, l) => s + l.grossRevenue + l.fuelSurcharge + l.detention, 0);
-  const totalMiles   = loads.reduce((s, l) => s + l.miles, 0);
-
-  const byCategory = {};
-  let totalExpenses = 0;
-  expenses.forEach((e) => {
-    byCategory[e.category] = (byCategory[e.category] || 0) + e.amount;
-    totalExpenses += e.amount;
-  });
-
-  const netProfit    = grossRevenue - totalExpenses;
-  const revenuePerMi = totalMiles > 0 ? (grossRevenue / totalMiles) : 0;
-  const costPerMi    = totalMiles > 0 ? (totalExpenses / totalMiles) : 0;
-  const profitPerMi  = totalMiles > 0 ? (netProfit / totalMiles) : 0;
-
-  return { grossRevenue, totalExpenses, netProfit, byCategory, totalMiles, revenuePerMi, costPerMi, profitPerMi };
-}
-
 function fmt(n) {
   return n >= 0 ? `$${n.toFixed(2)}` : `-$${Math.abs(n).toFixed(2)}`;
 }
 
+// Empty PnL shape for initial / loading state
+const EMPTY_PNL = {
+  grossRevenue: 0,
+  totalExpenses: 0,
+  netProfit: 0,
+  expenses: {},
+  milesDriven: 0,
+  revenuePerMile: 0,
+  costPerMile: 0,
+  profitPerMile: 0,
+};
+
 // ── Component ─────────────────────────────────────────────────────────────────
+
+// Helper to get date range from period key (mirrors expenseService logic)
+function getPeriodDates(period) {
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  let startDate;
+  switch (period) {
+    case 'week': {
+      const d = new Date(now); d.setDate(d.getDate() - 6);
+      startDate = d.toISOString().slice(0, 10); break;
+    }
+    case 'month':
+      startDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`; break;
+    case 'quarter': {
+      const q = Math.floor(now.getMonth() / 3);
+      startDate = `${now.getFullYear()}-${String(q * 3 + 1).padStart(2, '0')}-01`; break;
+    }
+    case 'year':
+      startDate = `${now.getFullYear()}-01-01`; break;
+    default:
+      startDate = today;
+  }
+  return { startDate, endDate: today };
+}
 
 export default function ExpenseDashboardScreen({ navigation }) {
   const [period, setPeriod]       = useState('Month');
-  const [expenses, setExpenses]   = useState(MOCK_EXPENSES);
-  const [loads, setLoads]         = useState(MOCK_LOADS);
+  const [expenses, setExpenses]   = useState([]);
+  const [pnl, setPnl]             = useState(EMPTY_PNL);
+  const [loading, setLoading]     = useState(true);
 
   useFocusEffect(
     useCallback(() => {
-      // TODO: load from AsyncStorage / API
-      setExpenses(MOCK_EXPENSES);
-      setLoads(MOCK_LOADS);
+      let cancelled = false;
+      const load = async () => {
+        setLoading(true);
+        try {
+          const key = PERIOD_KEY[period] || 'month';
+          const pnlData = await getProfitAndLoss(key);
+          const expRows = await getExpensesByPeriod(pnlData.startDate, pnlData.endDate);
+          if (!cancelled) {
+            setPnl(pnlData);
+            setExpenses(expRows);
+          }
+        } catch (err) {
+          if (!cancelled) {
+            Alert.alert('Error', err.message || 'Could not load data.');
+          }
+        } finally {
+          if (!cancelled) setLoading(false);
+        }
+      };
+      load();
+      return () => { cancelled = true; };
     }, [period])
   );
 
-  const pnl = buildPnL(loads, expenses);
   const recentExpenses = expenses.slice(0, 8);
 
   const renderExpenseItem = ({ item }) => {
@@ -94,7 +120,7 @@ export default function ExpenseDashboardScreen({ navigation }) {
         </View>
         <View style={styles.expenseInfo}>
           <Text style={styles.expenseVendor}>{item.vendor}</Text>
-          <Text style={styles.expenseCat}>{meta.label} · {item.date}</Text>
+          <Text style={styles.expenseCat}>{meta.label || item.category} · {item.trip_date || item.date}</Text>
         </View>
         <Text style={styles.expenseAmount}>-${item.amount.toFixed(2)}</Text>
       </View>
@@ -127,56 +153,62 @@ export default function ExpenseDashboardScreen({ navigation }) {
         <View style={styles.pnlCard}>
           <Text style={styles.pnlTitle}>Profit & Loss · {period}</Text>
 
-          <View style={styles.pnlRow}>
-            <Text style={styles.pnlLabel}>💰 Gross Revenue</Text>
-            <Text style={[styles.pnlValue, styles.colorGreen]}>{fmt(pnl.grossRevenue)}</Text>
-          </View>
-
-          {Object.entries(pnl.byCategory).map(([cat, amt]) => {
-            const meta = CATEGORY_META[cat] || CATEGORY_META.other;
-            return (
-              <View key={cat} style={styles.pnlRow}>
-                <Text style={styles.pnlLabel}>  {meta.label}</Text>
-                <Text style={[styles.pnlValue, styles.colorRed]}>-${amt.toFixed(2)}</Text>
+          {loading ? (
+            <ActivityIndicator color="#4fc3f7" style={{ marginVertical: 20 }} />
+          ) : (
+            <>
+              <View style={styles.pnlRow}>
+                <Text style={styles.pnlLabel}>💰 Gross Revenue</Text>
+                <Text style={[styles.pnlValue, styles.colorGreen]}>{fmt(pnl.grossRevenue)}</Text>
               </View>
-            );
-          })}
 
-          <View style={styles.pnlDivider} />
+              {Object.entries(pnl.expenses || {}).map(([cat, amt]) => {
+                const meta = CATEGORY_META[cat] || CATEGORY_META.other;
+                return (
+                  <View key={cat} style={styles.pnlRow}>
+                    <Text style={styles.pnlLabel}>  {meta.label || cat}</Text>
+                    <Text style={[styles.pnlValue, styles.colorRed]}>-${amt.toFixed(2)}</Text>
+                  </View>
+                );
+              })}
 
-          <View style={styles.pnlRow}>
-            <Text style={styles.pnlNetLabel}>
-              {pnl.netProfit >= 0 ? '✅ Net Profit' : '❌ Net Loss'}
-            </Text>
-            <Text style={[styles.pnlNetValue, pnl.netProfit >= 0 ? styles.colorGreen : styles.colorRed]}>
-              {fmt(pnl.netProfit)}
-            </Text>
-          </View>
+              <View style={styles.pnlDivider} />
 
-          {/* Per-mile row */}
-          <View style={styles.perMileRow}>
-            <View style={styles.perMileItem}>
-              <Ionicons name="navigate" size={13} color="#4fc3f7" />
-              <Text style={styles.perMileText}>{pnl.totalMiles.toLocaleString()} mi</Text>
-            </View>
-            <View style={styles.perMileDivider} />
-            <View style={styles.perMileItem}>
-              <Text style={styles.perMileLabel}>Rev</Text>
-              <Text style={[styles.perMileText, styles.colorGreen]}>${pnl.revenuePerMi.toFixed(2)}/mi</Text>
-            </View>
-            <View style={styles.perMileDivider} />
-            <View style={styles.perMileItem}>
-              <Text style={styles.perMileLabel}>Cost</Text>
-              <Text style={[styles.perMileText, styles.colorRed]}>${pnl.costPerMi.toFixed(2)}/mi</Text>
-            </View>
-            <View style={styles.perMileDivider} />
-            <View style={styles.perMileItem}>
-              <Text style={styles.perMileLabel}>Net</Text>
-              <Text style={[styles.perMileText, pnl.profitPerMi >= 0 ? styles.colorGreen : styles.colorRed]}>
-                ${pnl.profitPerMi.toFixed(2)}/mi
-              </Text>
-            </View>
-          </View>
+              <View style={styles.pnlRow}>
+                <Text style={styles.pnlNetLabel}>
+                  {pnl.netProfit >= 0 ? '✅ Net Profit' : '❌ Net Loss'}
+                </Text>
+                <Text style={[styles.pnlNetValue, pnl.netProfit >= 0 ? styles.colorGreen : styles.colorRed]}>
+                  {fmt(pnl.netProfit)}
+                </Text>
+              </View>
+
+              {/* Per-mile row */}
+              <View style={styles.perMileRow}>
+                <View style={styles.perMileItem}>
+                  <Ionicons name="navigate" size={13} color="#4fc3f7" />
+                  <Text style={styles.perMileText}>{(pnl.milesDriven || 0).toLocaleString()} mi</Text>
+                </View>
+                <View style={styles.perMileDivider} />
+                <View style={styles.perMileItem}>
+                  <Text style={styles.perMileLabel}>Rev</Text>
+                  <Text style={[styles.perMileText, styles.colorGreen]}>${(pnl.revenuePerMile || 0).toFixed(2)}/mi</Text>
+                </View>
+                <View style={styles.perMileDivider} />
+                <View style={styles.perMileItem}>
+                  <Text style={styles.perMileLabel}>Cost</Text>
+                  <Text style={[styles.perMileText, styles.colorRed]}>${(pnl.costPerMile || 0).toFixed(2)}/mi</Text>
+                </View>
+                <View style={styles.perMileDivider} />
+                <View style={styles.perMileItem}>
+                  <Text style={styles.perMileLabel}>Net</Text>
+                  <Text style={[styles.perMileText, (pnl.profitPerMile || 0) >= 0 ? styles.colorGreen : styles.colorRed]}>
+                    ${(pnl.profitPerMile || 0).toFixed(2)}/mi
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
         </View>
 
         {/* Quick Actions */}

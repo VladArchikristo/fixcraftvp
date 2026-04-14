@@ -13,7 +13,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import { addExpense } from '../services/expenseService';
+import receiptParserService from '../services/receiptParserService';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -29,13 +31,15 @@ const CATEGORIES = [
   { key: 'other',       label: 'Other',        icon: 'ellipsis-horizontal-circle', color: '#78909c' },
 ];
 
-const SCAN_MOCK = [
-  { category: 'fuel',        amount: '142.50', vendor: "Love's #450" },
-  { category: 'fuel',        amount: '189.00', vendor: 'Pilot #882' },
-  { category: 'maintenance', amount: '85.00',  vendor: 'TA Truck Service' },
-  { category: 'tolls',       amount: '24.50',  vendor: 'E-ZPass' },
-  { category: 'food',        amount: '18.75',  vendor: 'Subway' },
-];
+// Map receiptParserService suggestedCategory → screen category keys
+const CATEGORY_MAP = {
+  diesel:      'fuel',
+  maintenance: 'maintenance',
+  food:        'food',
+  hotel:       'other',
+  permits:     'permits',
+  other:       'other',
+};
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
@@ -55,19 +59,48 @@ export default function AddExpenseScreen({ navigation }) {
   const [showCatModal, setShowCatModal] = useState(false);
   const [saving, setSaving]         = useState(false);
 
-  // ── Mock receipt scan ─────────────────────────────────────────────────────
+  // ── Real receipt scan via camera + OCR ───────────────────────────────────
 
-  const handleScan = () => {
-    setScanning(true);
-    // Simulate camera + OCR (1.5s)
-    setTimeout(() => {
-      const result = SCAN_MOCK[Math.floor(Math.random() * SCAN_MOCK.length)];
+  const handleScan = async () => {
+    try {
+      const permission = await ImagePicker.requestCameraPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert('Permission needed', 'Camera access is required to scan receipts.');
+        return;
+      }
+
+      const pickerResult = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 0.85,
+        allowsEditing: false,
+      });
+
+      if (pickerResult.canceled || !pickerResult.assets?.[0]?.uri) return;
+
+      setScanning(true);
+      const imageUri = pickerResult.assets[0].uri;
+
+      const parsed = await receiptParserService.scanAndParse(imageUri);
+
+      const mappedCategory = CATEGORY_MAP[parsed.suggestedCategory] || 'other';
+      const result = {
+        category: mappedCategory,
+        amount:   parsed.amount != null ? String(parsed.amount) : '',
+        vendor:   parsed.vendor || '',
+        date:     parsed.date || todayStr(),
+        imageUri,
+      };
+
       setScanned(result);
       setCategory(result.category);
       setAmount(result.amount);
       setVendor(result.vendor);
+      if (result.date) setDate(result.date);
+    } catch (err) {
+      Alert.alert('Scan failed', err.message || 'Could not scan receipt.');
+    } finally {
       setScanning(false);
-    }, 1500);
+    }
   };
 
   const handleConfirmScan = () => {
@@ -89,18 +122,14 @@ export default function AddExpenseScreen({ navigation }) {
 
     setSaving(true);
     try {
-      const stored = await AsyncStorage.getItem('expenses');
-      const list = stored ? JSON.parse(stored) : [];
-      const newItem = {
-        id:       Date.now().toString(),
+      await addExpense({
         category,
-        amount:   parseFloat(amount),
-        vendor:   vendor.trim(),
-        date,
-        notes:    notes.trim(),
-      };
-      list.unshift(newItem);
-      await AsyncStorage.setItem('expenses', JSON.stringify(list));
+        amount:            parseFloat(amount),
+        vendor:            vendor.trim(),
+        notes:             notes.trim() || null,
+        trip_date:         date,
+        receipt_image_uri: scanned?.imageUri || null,
+      });
       Alert.alert('Saved', 'Expense added.', [
         { text: 'OK', onPress: () => navigation.goBack() },
       ]);
