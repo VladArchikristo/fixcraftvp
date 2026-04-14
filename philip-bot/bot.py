@@ -864,6 +864,16 @@ async def cmd_zina(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await _delegate_to(update, "Зина", "ask-zina.sh", task)
 
 
+async def cmd_beast(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    task = " ".join(ctx.args) if ctx.args else ""
+    if not task:
+        await update.message.reply_text("Использование: /б <задача для Beast>")
+        return
+    await _delegate_to(update, "Beast", "ask-beast.sh", task)
+
+
 async def cmd_set_mode(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
@@ -1245,6 +1255,7 @@ def main():
     app.add_handler(CommandHandler("v", cmd_vasily))
     app.add_handler(CommandHandler("p", cmd_peter))
     app.add_handler(CommandHandler("z", cmd_zina))
+    app.add_handler(CommandHandler("b", cmd_beast))
 
     for mode_name in MODE_PREFIXES:
         app.add_handler(CommandHandler(mode_name, cmd_set_mode))
