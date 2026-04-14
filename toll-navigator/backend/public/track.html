@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Live Load Tracking — Toll Navigator</title>
+
+  <!-- Leaflet CSS (CDN) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d0d1a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    header {
+      background: #131326;
+      border-bottom: 1px solid #1e1e3a;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    header .logo { font-size: 26px; }
+    header .title { font-size: 17px; font-weight: 700; color: #4fc3f7; }
+    header .subtitle { font-size: 12px; color: #888; margin-top: 2px; }
+
+    /* ── Info Bar ────────────────────────────────────────── */
+    #info-bar {
+      background: #131326;
+      border-bottom: 1px solid #1e1e3a;
+      padding: 12px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .info-item { display: flex; flex-direction: column; gap: 2px; }
+    .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: #666; }
+    .info-value { font-size: 14px; font-weight: 600; color: #fff; }
+
+    /* ── Status pill ─────────────────────────────────────── */
+    #status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      margin-left: auto;
+      align-self: center;
+    }
+    #status-pill.active   { background: rgba(76, 175, 80, 0.18); color: #66bb6a; border: 1px solid #66bb6a44; }
+    #status-pill.inactive { background: rgba(150, 150, 150, 0.12); color: #999; border: 1px solid #44444488; }
+    #status-pill.loading  { background: rgba(79, 195, 247, 0.12); color: #4fc3f7; border: 1px solid #4fc3f744; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .dot.green  { background: #66bb6a; box-shadow: 0 0 6px #66bb6a; animation: pulse 1.5s infinite; }
+    .dot.grey   { background: #666; }
+    .dot.blue   { background: #4fc3f7; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* ── Map ─────────────────────────────────────────────── */
+    #map {
+      flex: 1;
+      min-height: 300px;
+    }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      background: #131326;
+      border-top: 1px solid #1e1e3a;
+      padding: 10px 20px;
+      font-size: 11px;
+      color: #555;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Overlay (not found / delivered) ─────────────────── */
+    #overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(13, 13, 26, 0.92);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      padding: 24px;
+    }
+    #overlay.show { display: flex; }
+    #overlay .ov-icon { font-size: 56px; }
+    #overlay .ov-title { font-size: 22px; font-weight: 700; color: #fff; }
+    #overlay .ov-sub   { font-size: 14px; color: #888; max-width: 280px; }
+
+    /* Truck icon */
+    .truck-marker {
+      font-size: 26px;
+      filter: drop-shadow(0 0 4px rgba(79,195,247,0.8));
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🛣️</div>
+    <div>
+      <div class="title">Toll Navigator</div>
+      <div class="subtitle">Live Load Tracking</div>
+    </div>
+    <div id="status-pill" class="loading">
+      <div class="dot blue"></div>
+      <span id="status-text">Connecting…</span>
+    </div>
+  </header>
+
+  <div id="info-bar">
+    <div class="info-item">
+      <div class="info-label">Destination</div>
+      <div class="info-value" id="dest-value">—</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">ETA</div>
+      <div class="info-value" id="eta-value">—</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Speed</div>
+      <div class="info-value" id="speed-value">—</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Last Update</div>
+      <div class="info-value" id="updated-value">—</div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <!-- Delivered / Not Found overlay -->
+  <div id="overlay">
+    <div class="ov-icon" id="ov-icon">✅</div>
+    <div class="ov-title" id="ov-title">Load Delivered</div>
+    <div class="ov-sub" id="ov-sub">Tracking has ended. The driver marked this load as delivered.</div>
+  </div>
+
+  <footer>
+    Powered by Toll Navigator &nbsp;•&nbsp; Auto-refreshes every 30 sec
+  </footer>
+
+  <!-- Leaflet JS (CDN) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // ── Extract token from URL path /track/:token ─────────
+    const pathParts = window.location.pathname.split('/');
+    const TOKEN = pathParts[pathParts.length - 1];
+
+    // ── API base — same origin as this page ───────────────
+    const API_BASE = window.location.origin;
+
+    // ── Map setup ─────────────────────────────────────────
+    const map = L.map('map', {
+      zoomControl: true,
+      attributionControl: false,
+    }).setView([39.5, -98.35], 4); // Default: center of USA
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Truck marker (emoji DivIcon)
+    const truckIcon = L.divIcon({
+      className: '',
+      html: '<div class="truck-marker">🚛</div>',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
+
+    let marker = null;
+    let firstPosition = true;
+
+    // ── Helpers ───────────────────────────────────────────
+    function timeSince(isoStr) {
+      if (!isoStr) return 'never';
+      const secs = Math.floor((Date.now() - new Date(isoStr).getTime()) / 1000);
+      if (secs < 60)  return secs + 's ago';
+      if (secs < 3600) return Math.floor(secs / 60) + ' min ago';
+      return Math.floor(secs / 3600) + ' hr ago';
+    }
+
+    function setStatus(type, text) {
+      const pill = document.getElementById('status-pill');
+      const dot  = pill.querySelector('.dot');
+      pill.className = 'status-pill ' + type; // reset
+      pill.id = 'status-pill';
+      pill.className = type; // keep id, apply class
+      // re-set id because className reset
+      pill.setAttribute('id', 'status-pill');
+      pill.classList.add(type);
+      dot.className = 'dot ' + (type === 'active' ? 'green' : type === 'loading' ? 'blue' : 'grey');
+      document.getElementById('status-text').textContent = text;
+    }
+
+    function showOverlay(icon, title, sub) {
+      document.getElementById('ov-icon').textContent  = icon;
+      document.getElementById('ov-title').textContent = title;
+      document.getElementById('ov-sub').textContent   = sub;
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    // ── Main fetch function ───────────────────────────────
+    async function fetchPosition() {
+      try {
+        const res = await fetch(`${API_BASE}/api/tracking/${TOKEN}`);
+
+        if (res.status === 404) {
+          setStatus('inactive', 'Not found');
+          showOverlay('❓', 'Tracking Link Not Found', 'This link may have expired or is invalid.');
+          clearInterval(timer);
+          return;
+        }
+
+        if (!res.ok) {
+          setStatus('inactive', 'Error');
+          return;
+        }
+
+        const data = await res.json();
+
+        // Fill info bar
+        document.getElementById('dest-value').textContent    = data.destination || '—';
+        document.getElementById('eta-value').textContent     = data.eta || '—';
+        document.getElementById('speed-value').textContent   = data.speed != null ? Math.round(data.speed) + ' mph' : '—';
+        document.getElementById('updated-value').textContent = timeSince(data.updatedAt);
+
+        if (!data.active) {
+          setStatus('inactive', 'Delivered');
+          if (marker) map.removeLayer(marker);
+          showOverlay('✅', 'Load Delivered', 'Tracking has ended. The driver marked this load as delivered.');
+          clearInterval(timer);
+          return;
+        }
+
+        setStatus('active', 'Live');
+
+        if (data.lat != null && data.lng != null) {
+          const latlng = [data.lat, data.lng];
+          if (!marker) {
+            marker = L.marker(latlng, { icon: truckIcon }).addTo(map);
+          } else {
+            marker.setLatLng(latlng);
+          }
+          marker.bindPopup(
+            `<b>🚛 En route to ${data.destination || '...'}</b><br>` +
+            (data.speed != null ? `Speed: ${Math.round(data.speed)} mph<br>` : '') +
+            `Updated: ${timeSince(data.updatedAt)}`
+          );
+          if (firstPosition) {
+            map.setView(latlng, 10);
+            firstPosition = false;
+          }
+        }
+
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setStatus('inactive', 'Offline');
+      }
+    }
+
+    // ── Start polling ─────────────────────────────────────
+    fetchPosition(); // immediate
+    const timer = setInterval(fetchPosition, 30000); // every 30s
+  </script>
+</body>
+</html>

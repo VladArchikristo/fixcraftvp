@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 
 // Инициализируем БД при старте
 require('./db');
@@ -55,6 +56,16 @@ app.use('/api/brokers', require('./routes/brokers'));
 
 // Document scanner — OCR + edge detection
 app.use('/api/documents', require('./routes/documents'));
+
+// Live Load Tracking
+app.use('/api/tracking', require('./routes/tracking'));
+
+// Serve broker tracking page at /track/:token
+// track.html reads the token from window.location.pathname and polls the API
+app.use('/track', express.static(path.join(__dirname, '../public')));
+app.get('/track/:token', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'track.html'));
+});
 
 // Global error handler
 app.use((err, req, res, next) => {

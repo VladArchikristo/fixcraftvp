@@ -22,6 +22,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import DocumentScannerScreen from '../screens/DocumentScannerScreen';
 import DocumentHistoryScreen from '../screens/DocumentHistoryScreen';
 import ImageEditScreen from '../screens/ImageEditScreen';
+import LoadTrackingScreen from '../screens/LoadTrackingScreen';
 import { getToken, logout } from '../services/auth';
 
 const Stack = createStackNavigator();
@@ -113,6 +114,19 @@ function DocumentsStack() {
   );
 }
 
+// Load Tracking stack
+function TrackingStack() {
+  return (
+    <Stack.Navigator screenOptions={stackScreenOptions}>
+      <Stack.Screen
+        name="LoadTracking"
+        component={LoadTrackingScreen}
+        options={{ title: 'Load Tracking', headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 // Main tab navigator
 function MainTabs({ onLogout }) {
   const handleLogout = async () => {
@@ -141,6 +155,7 @@ function MainTabs({ onLogout }) {
             IFTA:      focused ? 'bar-chart'       : 'bar-chart-outline',
             Brokers:   focused ? 'shield'          : 'shield-outline',
             Documents: focused ? 'document-text'  : 'document-text-outline',
+            Tracking:  focused ? 'location'        : 'location-outline',
             Profile:   focused ? 'person'          : 'person-outline',
           };
           return <Ionicons name={icons[route.name] || 'ellipse'} size={size} color={color} />;
@@ -154,6 +169,7 @@ function MainTabs({ onLogout }) {
       <Tab.Screen name="IFTA"      component={IFTAStack}      options={{ tabBarLabel: 'IFTA' }} />
       <Tab.Screen name="Brokers"   component={BrokersStack}   options={{ tabBarLabel: 'Брокеры' }} />
       <Tab.Screen name="Documents" component={DocumentsStack} options={{ tabBarLabel: 'Docs' }} />
+      <Tab.Screen name="Tracking"  component={TrackingStack}  options={{ tabBarLabel: 'Tracking' }} />
       <Tab.Screen name="Profile"   options={{ tabBarLabel: 'Профиль' }}>
         {() => <ProfileScreen onLogout={handleLogout} />}
       </Tab.Screen>
