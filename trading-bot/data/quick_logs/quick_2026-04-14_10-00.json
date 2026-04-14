@@ -1,0 +1,20 @@
+{
+  "time": "2026-04-14T10:00:26.013981",
+  "elapsed_sec": 15.5,
+  "signals_count": 1,
+  "strong_count": 0,
+  "top_signals": [
+    {
+      "coin": "ETH",
+      "direction": "NEUTRAL",
+      "net_score": 17,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "WHALE_WALLS",
+        "MTF_CONFLUENCE",
+        "OI_DIVERGENCE",
+        "ADX_FILTER"
+      ]
+    }
+  ]
+}

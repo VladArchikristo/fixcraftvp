@@ -1,37 +1,41 @@
 {
-  "timestamp": "2026-04-14T13:00:23.245264+00:00",
+  "timestamp": "2026-04-14T16:00:26.461209+00:00",
   "sentiment": "bearish",
-  "score": -0.56,
+  "score": -0.52,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
     "trend": "rising"
   },
   "key_events": [
-    "Bank of Korea nominee backs central bank-led digital currency, sees limited role for stablecoins",
-    "Web3 hacks cost $482M in Q1 as phishing drives majority of losses: Hacken",
-    "Bitcoin is closing in on $75,000 and analysts say a breakout could trigger a massive new rally",
-    "Tether introduces crypto wallet to bring stablecoin and bitcoin payments directly to users",
-    "Visa throws its weight behind Stripe’s Tempo blockchain"
+    "Bitcoin climbs to highest level since Feb. 5 crash that sent price plunging to $60,000",
+    "Goldman Sachs files for bitcoin income ETF in crypto push",
+    "High Roller stock more than doubles on prediction markets partnership with Crypto.com",
+    "Why Cantor Fitzgerald thinks Robinhood and Coinbase are the best ways to play the prediction market boom",
+    "Scroll moves to cut costs after top protocol migrates to Optimism"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "OP"
+    "SOL",
+    "XRP",
+    "ARB",
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
     "RAVE",
+    "BTC",
     "PENGU",
     "ZAMA",
-    "MYX",
-    "MON",
     "GENIUS",
-    "TAO"
+    "MON",
+    "SOL"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.54,
-  "cached_at": 1776171623.245404
+  "fetch_time_sec": 2.45,
+  "cached_at": 1776182426.4614542
 }
