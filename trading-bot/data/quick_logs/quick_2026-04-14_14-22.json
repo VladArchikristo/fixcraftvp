@@ -1,0 +1,18 @@
+{
+  "time": "2026-04-14T14:22:59.760394",
+  "elapsed_sec": 15.7,
+  "signals_count": 1,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "ETH",
+      "direction": "LONG",
+      "net_score": 50,
+      "rec": "BUY",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "OI_DIVERGENCE"
+      ]
+    }
+  ]
+}

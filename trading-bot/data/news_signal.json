@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-14T16:00:26.461209+00:00",
-  "sentiment": "bearish",
-  "score": -0.52,
+  "timestamp": "2026-04-14T19:00:25.459912+00:00",
+  "sentiment": "slightly_bearish",
+  "score": -0.44,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
@@ -9,13 +9,12 @@
   },
   "key_events": [
     "Bitcoin climbs to highest level since Feb. 5 crash that sent price plunging to $60,000",
-    "Goldman Sachs files for bitcoin income ETF in crypto push",
-    "High Roller stock more than doubles on prediction markets partnership with Crypto.com",
-    "Why Cantor Fitzgerald thinks Robinhood and Coinbase are the best ways to play the prediction market boom",
-    "Scroll moves to cut costs after top protocol migrates to Optimism"
+    "The next Fed chair has crypto exposure in portfolio. Here are the details",
+    "Rakuten to allow XRP to be used as payment method by its 44 million customers",
+    "Popular DeFi platform warns users to stay away from its site after security breach",
+    "Ethereum Foundation unveils $1M audit subsidy program to boost crypto security and cut costs for builders"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "XRP",
@@ -25,17 +24,17 @@
   ],
   "trending_coins": [
     "RAVE",
+    "ARIA",
     "BTC",
-    "PENGU",
     "ZAMA",
-    "GENIUS",
-    "MON",
-    "SOL"
+    "TAO",
+    "PEAQ",
+    "GENIUS"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.45,
-  "cached_at": 1776182426.4614542
+  "fetch_time_sec": 2.61,
+  "cached_at": 1776193225.460108
 }

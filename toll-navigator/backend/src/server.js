@@ -53,6 +53,9 @@ app.use('/api/users', require('./routes/users'));
 // Broker check
 app.use('/api/brokers', require('./routes/brokers'));
 
+// Document scanner — OCR + edge detection
+app.use('/api/documents', require('./routes/documents'));
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.message);
