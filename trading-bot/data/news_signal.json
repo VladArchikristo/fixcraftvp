@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-13T22:00:29.635352+00:00",
+  "timestamp": "2026-04-14T00:53:44.188479+00:00",
   "sentiment": "bearish",
-  "score": -0.88,
+  "score": -0.7,
   "fear_greed": {
-    "value": 12,
+    "value": 21,
     "label": "Extreme Fear",
-    "trend": "falling"
+    "trend": "rising"
   },
   "key_events": [
     "Circle CEO says he won’t freeze USDC without a court order even as hackers walk away with millions",
@@ -17,28 +17,25 @@
   "affected_assets": [
     "BTC",
     "ETH",
-    "SOL",
     "XRP",
-    "DOGE",
-    "BNB",
     "ADA",
     "DOT",
     "ARB",
     "OP"
   ],
   "trending_coins": [
-    "RAVE",
     "BLESS",
-    "GENIUS",
     "PENGU",
-    "HYPE",
+    "RAVE",
+    "MON",
     "BTC",
-    "VVV"
+    "GENIUS",
+    "HYPE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 5.29,
-  "cached_at": 1776117629.635605
+  "fetch_time_sec": 2.77,
+  "cached_at": 1776128024.188703
 }

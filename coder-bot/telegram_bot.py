@@ -18,6 +18,10 @@ import subprocess
 import asyncio
 import threading
 from pathlib import Path
+
+# Суб-агенты — параллельное выполнение маленьких задач
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
 from datetime import datetime
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
@@ -691,6 +695,38 @@ SYSTEM_PROMPT = f"""Ты — Костя, профессиональный про
 == СКИЛ: СОЗДАНИЕ СУББОТА ==
 Когда Влад говорит "создай нового бота" — уточни имя, роль, токен, модель. Затем создай папку, telegram_bot.py, .env, launcher.sh, LaunchAgent plist, запусти через launchctl.
 
+== ДЕЛЕГИРОВАНИЕ СУБББОТАМ ==
+У тебя есть команда суб-агентов. Используй их активно — не делай сам то, что лучше сделает специалист.
+
+КОГДА делегировать:
+- Задача требует >3 шагов в чужой зоне экспертизы
+- Нужен маркетинг, копирайт, ASO — зови Машу
+- Нужен финансовый анализ, трейдинг — зови Василия
+- Нужен промт, архитектура идеи — зови Филипа
+- Задача параллельная и независимая — запусти нескольких
+
+КАК делегировать через Bash:
+```bash
+# Маша — маркетинг, контент, SEO, ASO
+RESULT=$(bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-masha.sh' "твоя задача")
+
+# Василий — рынки, крипто, трейдинг
+RESULT=$(bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-vasily.sh' "вопрос")
+
+# Филип — промты, архитектура идей, оркестрирование
+RESULT=$(bash '/Users/vladимирprihodko/Папка тест/fixcraftvp/scripts/ask-philip.sh' "задача")
+```
+
+ПАРАЛЛЕЛЬНЫЙ ЗАПУСК (максимальная эффективность):
+```bash
+# Запусти двух агентов одновременно, жди оба
+MARKETING=$(bash '.../ask-masha.sh' "ASO для App Store" &)
+ANALYSIS=$(bash '.../ask-vasily.sh' "анализ рынка" &)
+wait
+```
+
+НЕ делегируй: код, архитектуру систем, работу с файлами — это твоя зона.
+
 == СТИЛЬ ОБЩЕНИЯ ==
 - Русский язык, дружески, как хороший коллега
 - Честно и прямо — если код плохой, скажи
@@ -701,7 +737,7 @@ SYSTEM_PROMPT = f"""Ты — Костя, профессиональный про
 == РАБОТА С ИЗОБРАЖЕНИЯМИ ==
 Если пришло фото/скриншот — Read файл через инструмент (Claude умеет читать изображения).
 Анализируй ошибки на экране, схемы, диаграммы, код на фото.
-"""
+""" + DELEGATION_INSTRUCTIONS
 
 START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
@@ -995,16 +1031,20 @@ def _call_claude_once(full_prompt: str, extra_flags=None, timeout_override=None)
 
 
 def _call_claude_sync(full_prompt: str, extra_flags=None):
-    for attempt in range(2):
-        ok, text = _call_claude_once(full_prompt, extra_flags=extra_flags)
-        if ok:
-            return True, text
-        if text == "TIMEOUT":
-            return False, "Таймаут (10 мин). Разбей задачу на части — справимся."
-        if attempt == 0:
-            log.info("Claude attempt 1 failed, retrying...")
-            time.sleep(3)
-    return False, "Что-то пошло не так. Попробуй ещё раз через минуту."
+    def _once(prompt: str):
+        for attempt in range(2):
+            ok, text = _call_claude_once(prompt, extra_flags=extra_flags)
+            if ok:
+                return True, text
+            if text == "TIMEOUT":
+                return False, "Таймаут (10 мин). Разбей задачу на части — справимся."
+            if attempt == 0:
+                log.info("Claude attempt 1 failed, retrying...")
+                time.sleep(3)
+        return False, "Что-то пошло не так. Попробуй ещё раз через минуту."
+
+    # Двухпроходной вызов с поддержкой параллельных суб-агентов
+    return two_pass_call(full_prompt, _once)
 
 
 async def ask_claude(user_text: str, image_path: str = None):

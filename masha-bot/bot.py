@@ -33,6 +33,10 @@ from telegram.ext import (
     ContextTypes,
 )
 
+# Суб-агенты — параллельное выполнение маленьких задач
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -71,7 +75,20 @@ SYSTEM_PROMPT = (
     "• Зина — астролог и нумеролог.\n"
     "  echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-zina.sh'\n\n"
     "• Beast (@Antropic_BeastBot) — главный ассистент Владимира.\n\n"
-    "НЕЛЬЗЯ ТРОГАТЬ: beast-bot/bot.py, .env файлы, launcher.sh скрипты.\n"
+    "НЕЛЬЗЯ ТРОГАТЬ: beast-bot/bot.py, .env файлы, launcher.sh скрипты.\n\n"
+    "== ДЕЛЕГИРОВАНИЕ СУБ-АГЕНТАМ ==\n"
+    "Используй команду активно — не делай сама то, что лучше сделает специалист.\n\n"
+    "КОГДА делегировать:\n"
+    "- Нужен код, скрипт, техническое решение → Костя\n"
+    "- Нужен финансовый анализ, трейдинг → Василий\n"
+    "- Нужен промт, архитектура идеи → Филип\n"
+    "- Задача независимая — запускай параллельно\n\n"
+    "КАК запустить параллельно два агента:\n"
+    "  RESULT1=$(bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-kostya.sh' 'задача' &)\n"
+    "  RESULT2=$(bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-vasily.sh' 'вопрос' &)\n"
+    "  wait\n\n"
+    "НЕ делегируй: маркетинг, SEO, копирайт, контент — это твоя зона.\n"
+    + DELEGATION_INSTRUCTIONS
 )
 
 MODE_PREFIXES = {
@@ -452,19 +469,22 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
 
 
 def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | None = None) -> tuple[bool, str]:
-    backoff = [3, 5, 10]  # exponential backoff between retries
-    for attempt in range(3):
-        ok, text = _call_claude_once(full_prompt, system, extra_flags=extra_flags)
-        if ok:
-            return True, text
-        if text == "TIMEOUT":
-            return False, "Таймаут (10 мин). Задача оказалась слишком объёмной. Попробуй разбить на части."
-        if attempt < 2:
-            delay = backoff[attempt]
-            log.info("Claude attempt %d/3 failed, retrying in %d sec...", attempt + 1, delay)
-            time.sleep(delay)
+    def _once(prompt: str):
+        backoff = [3, 5, 10]
+        for attempt in range(3):
+            ok, text = _call_claude_once(prompt, system, extra_flags=extra_flags)
+            if ok:
+                return True, text
+            if text == "TIMEOUT":
+                return False, "Таймаут (10 мин). Задача оказалась слишком объёмной. Попробуй разбить на части."
+            if attempt < 2:
+                delay = backoff[attempt]
+                log.info("Claude attempt %d/3 failed, retrying in %d sec...", attempt + 1, delay)
+                time.sleep(delay)
+        return False, "Произошла ошибка при обработке запроса (3 попытки). Попробуй ещё раз через минуту."
 
-    return False, "Произошла ошибка при обработке запроса (3 попытки). Попробуй ещё раз через минуту."
+    # Двухпроходной вызов с поддержкой параллельных суб-агентов
+    return two_pass_call(full_prompt, _once)
 
 
 def build_system_prompt(user_id: int) -> str:

@@ -24,6 +24,10 @@ import json
 import tempfile
 from dotenv import load_dotenv
 
+# Суб-агенты — параллельное выполнение маленьких задач
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
+
 # NewsAgent — внутренний суб-агент новостей (может отсутствовать при первом запуске)
 try:
     from news_agent import get_news_signal, format_signal_for_vasily, format_signal_for_telegram as _fmt_news_tg
@@ -113,6 +117,7 @@ BASE_SYSTEM_PROMPT = (
     "  echo 'вопрос' | bash '/Users/vladimirprihodko/Папка тест/fixcraftvp/scripts/ask-zina.sh'\n\n"
     "• Beast (@Antropic_BeastBot) — главный ассистент Владимира.\n\n"
     "НЕЛЬЗЯ ТРОГАТЬ: beast-bot/bot.py, .env файлы, launcher.sh скрипты.\n"
+    + DELEGATION_INSTRUCTIONS
 )
 
 START_TIME = datetime.now()
