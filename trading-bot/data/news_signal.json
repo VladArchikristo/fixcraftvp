@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-04-14T04:00:25.743584+00:00",
+  "timestamp": "2026-04-14T07:00:28.859082+00:00",
   "sentiment": "bearish",
-  "score": -0.7,
+  "score": -0.62,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
     "trend": "rising"
   },
   "key_events": [
-    "U.S. lawmakers take another swing at crypto tax policy with revised bill",
-    "This little-known token just posted a 6,000% rally — and traders are trying to figure out why",
-    "Bitcoin erases weekend decline, returns to $73,400 as oil retreats back under $100",
-    "Coinbase VP of international policy leaves for OpenAI",
-    "Crypto wallet firm Exodus sues W3C and its CEO Garth Howat, seeking to compel $175M acquisition"
+    "Japan's central bank cools rate hike expectations, removing a key risk for bitcoin's rally",
+    "Justice Department opens compensation for victims of $4B OneCoin crypto fraud",
+    "Banks challenge White House report on stablecoin yields",
+    "NFT bull Steve Aoki sells his SHIB, ETH, and PEPE. His Bored Apes are down 88%.",
+    "Nikita Bier says crypto has had a rough year, hints at building something new as X Money launch nears"
   ],
   "affected_assets": [
     "BTC",
@@ -20,23 +20,22 @@
     "SOL",
     "XRP",
     "DOGE",
-    "BNB",
-    "ADA",
+    "UNI",
     "OP"
   ],
   "trending_coins": [
     "RAVE",
-    "BLESS",
-    "GENIUS",
+    "MYX",
     "PENGU",
-    "HYPE",
-    "BTC",
-    "ETH"
+    "ZAMA",
+    "GENIUS",
+    "CC",
+    "HYPE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.38,
-  "cached_at": 1776139225.7438312
+  "fetch_time_sec": 2.96,
+  "cached_at": 1776150028.859324
 }

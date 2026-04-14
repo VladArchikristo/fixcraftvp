@@ -351,6 +351,10 @@ def _log_conversation(role: str, text: str, user_id: int | None = None):
 
 user_modes: dict[int, str] = {}
 
+# Consecutive error tracking for auto-reset
+_consecutive_errors: int = 0
+_CONSECUTIVE_ERROR_LIMIT: int = 5
+
 
 def _load_history():
     if not HISTORY_FILE.exists():
@@ -559,7 +563,10 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
         stdout, stderr = proc.communicate(input=full_prompt, timeout=CLAUDE_TIMEOUT)
 
         if proc.returncode != 0:
-            log.error("Claude exited %d: %s", proc.returncode, stderr.strip())
+            stderr_text = stderr.strip()
+            stdout_text = stdout.strip()[:500] if stdout else ""
+            log.error("Claude exited %d: stderr=%s | stdout=%s", proc.returncode,
+                      stderr_text or "(empty)", stdout_text or "(empty)")
             return False, ""
 
         answer = stdout.strip()
@@ -912,10 +919,24 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
             _log_conversation("user", user_text, update.effective_user.id)
             success, answer = await ask_claude(user_text, update.effective_user.id, force_opus=force_opus)
 
+        global _consecutive_errors
+
         if success:
+            _consecutive_errors = 0
             user_history.append({"role": "assistant", "text": answer[:2000]})
             _save_history()
             _log_conversation("assistant", answer, update.effective_user.id)
+        else:
+            _consecutive_errors += 1
+            log.warning("Consecutive error count: %d/%d", _consecutive_errors, _CONSECUTIVE_ERROR_LIMIT)
+
+            if _consecutive_errors >= _CONSECUTIVE_ERROR_LIMIT:
+                old_len = len(user_history)
+                user_history.clear()
+                _save_history()
+                _consecutive_errors = 0
+                log.warning("AUTO-RESET: cleared %d history messages after %d consecutive errors",
+                            old_len, _CONSECUTIVE_ERROR_LIMIT)
 
         try:
             await thinking_msg.delete()
@@ -924,7 +945,14 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
         chunks = _split_message(answer)
         if not chunks:
-            await update.message.reply_text("Не получил ответ. Попробуй ещё раз.")
+            if _consecutive_errors == 0 and not success:
+                # Just auto-reset happened
+                await update.message.reply_text(
+                    "⚠️ Слишком много ошибок подряд — история очищена автоматически. "
+                    "Попробуй отправить сообщение ещё раз."
+                )
+            else:
+                await update.message.reply_text("Не получил ответ. Попробуй ещё раз.")
         else:
             for chunk in chunks:
                 try:
@@ -935,13 +963,29 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
     except Exception as e:
         log.error("_process_single_message error: %s", e, exc_info=True)
+        _consecutive_errors += 1
+        log.warning("Consecutive error count (exception): %d/%d", _consecutive_errors, _CONSECUTIVE_ERROR_LIMIT)
+
+        if _consecutive_errors >= _CONSECUTIVE_ERROR_LIMIT:
+            old_len = len(user_history)
+            user_history.clear()
+            _save_history()
+            _consecutive_errors = 0
+            log.warning("AUTO-RESET: cleared %d history messages after %d consecutive errors (exception path)",
+                        old_len, _CONSECUTIVE_ERROR_LIMIT)
+
         try:
             if thinking_msg:
                 await thinking_msg.delete()
         except Exception:
             pass
         try:
-            await update.message.reply_text("Произошла ошибка, попробуй ещё раз.")
+            if _consecutive_errors == 0:
+                await update.message.reply_text(
+                    "⚠️ Слишком много ошибок подряд — история очищена. Попробуй ещё раз."
+                )
+            else:
+                await update.message.reply_text("Произошла ошибка, попробуй ещё раз.")
         except Exception:
             pass
     finally:

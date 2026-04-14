@@ -1,6 +1,7 @@
 const express = require('express');
 const { verifyToken } = require('../middleware/auth');
 const { calculateTollCost, getTollsByState, getAvailableStates } = require('../services/tollCalculator');
+const { getRealRoute, getStatesAlongRoute, calculateStateMilesFromWaypoints, getStateBounds } = require('../services/geoService');
 const db = require('../db');
 const cache = require('../services/cache');
 
@@ -709,8 +710,10 @@ function getStatesBetween(fromState, toState) {
 
 /**
  * Shared route handler — используется и GET, и POST /route
+ * ASYNC: сначала пробует реальное расстояние через OSRM (Nominatim + OpenStreetMap),
+ * при недоступности — fallback на hardcoded таблицы ROUTE_DISTANCES
  */
-function handleRoute(params, headers, res, db, cache) {
+async function handleRoute(params, headers, res, db, cache) {
   // Опциональная авторизация — сохраняем историю если пользователь залогинен
   let userId = null;
   try {
@@ -732,12 +735,16 @@ function handleRoute(params, headers, res, db, cache) {
       return res.status(400).json({ error: 'City names too long' });
     }
 
-    // Normalize truck_type: accept both "2axle" and "2-axle" formats
-    const normalizeTruckType = (t) => t ? t.replace(/-/g, '') : '5axle';
-    const validTruckTypes = ['2axle', '3axle', '4axle', '5axle', '6axle'];
-    const truckType = normalizeTruckType(truck_type || '5axle');
+    // Normalize truck_type: accept both "2axle" and "2-axle" formats → always output "2-axle" style
+    const normalizeTruckType = (t) => {
+      if (!t) return '5-axle';
+      // Add dash if missing: "5axle" → "5-axle"
+      return t.replace(/^(\d)(-?)axle$/, '$1-axle');
+    };
+    const validTruckTypes = ['2-axle', '3-axle', '4-axle', '5-axle', '6-axle'];
+    const truckType = normalizeTruckType(truck_type || '5-axle');
     if (!validTruckTypes.includes(truckType)) {
-      return res.status(400).json({ error: `Invalid truck_type. Must be one of: ${validTruckTypes.join(', ')} (or with dashes: 2-axle, 5-axle)` });
+      return res.status(400).json({ error: `Invalid truck_type. Must be one of: ${validTruckTypes.join(', ')} (or without dashes: 2axle, 5axle)` });
     }
 
     const cacheKey = cache.routeCacheKey(from, to, truckType);
@@ -750,20 +757,67 @@ function handleRoute(params, headers, res, db, cache) {
     if (!fromState) return res.status(400).json({ error: `Unknown city: "${from}". Use format "Dallas,TX"` });
     if (!toState) return res.status(400).json({ error: `Unknown city: "${to}". Use format "Houston,TX"` });
 
-    const states = getStatesBetween(fromState, toState);
-    const distanceMiles = estimateDistance(fromState, toState, states, from, to);
-    const stateMilesMap = getStateMiles(from, to, states, distanceMiles);
+    // ── ТОЧНЫЙ РАСЧЁТ через OSRM (OpenStreetMap) ─────────────────────────────
+    let distanceMiles;
+    let durationHours = null;
+    let distanceSource = 'table'; // 'osrm' | 'table' | 'estimated'
+    let states;
+
+    const realRoute = await getRealRoute(from, to);
+
+    let osrmStateMiles = null; // точные мили по штатам от OSRM waypoints
+
+    if (realRoute && realRoute.distanceMiles > 0) {
+      // Реальное расстояние по дорогам от OSRM
+      distanceMiles = realRoute.distanceMiles;
+      durationHours = realRoute.durationHours;
+      distanceSource = 'osrm';
+
+      // Определяем штаты по реальным waypoints (реальный путь по дорогам)
+      if (realRoute.fromCoords && realRoute.toCoords) {
+        const geoResult = getStatesAlongRoute(realRoute.fromCoords, realRoute.toCoords, realRoute.waypoints);
+        states = geoResult.states.length > 0 ? geoResult.states : getStatesBetween(fromState, toState);
+
+        // Точные мили по штатам из waypoints OSRM
+        if (realRoute.waypoints && realRoute.waypoints.length > 1) {
+          osrmStateMiles = calculateStateMilesFromWaypoints(realRoute.waypoints, distanceMiles, getStateBounds());
+        }
+      } else {
+        states = getStatesBetween(fromState, toState);
+      }
+    } else {
+      // Fallback: hardcoded таблицы ROUTE_DISTANCES → SEGMENT_DISTANCES
+      states = getStatesBetween(fromState, toState);
+      const estimatedDist = estimateDistance(fromState, toState, states, from, to);
+      distanceMiles = estimatedDist;
+      distanceSource = lookupRouteDistance(from, to) ? 'table' : 'estimated';
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
+    // Приоритет: точные мили OSRM → hardcoded таблица → равномерное деление
+    const stateMilesMap = osrmStateMiles || getStateMiles(from, to, states, distanceMiles);
     const availableStates = getAvailableStates();
     const filteredStates = states.filter(s => availableStates.includes(s));
 
     if (filteredStates.length === 0) {
-      const emptyResult = { from, to, from_state: fromState, to_state: toState, distance_miles: distanceMiles, total: 0, message: 'No toll roads found on this route', breakdown: [] };
+      const emptyResult = {
+        from, to, from_state: fromState, to_state: toState,
+        distance_miles: distanceMiles, distance_source: distanceSource,
+        duration_hours: durationHours,
+        total: 0, message: 'No toll roads found on this route', breakdown: [],
+      };
       cache.set(cacheKey, emptyResult);
       return res.status(200).json(emptyResult);
     }
 
     const result = calculateTollCost(filteredStates, distanceMiles, truckType, stateMilesMap);
-    const response = { from, to, from_state: fromState, to_state: toState, distance_miles: distanceMiles, ...result };
+    const response = {
+      from, to, from_state: fromState, to_state: toState,
+      distance_miles: distanceMiles,
+      distance_source: distanceSource, // 'osrm' | 'table' | 'estimated'
+      duration_hours: durationHours,   // null если не получили от OSRM
+      ...result,
+    };
 
     cache.set(cacheKey, response);
 
@@ -809,8 +863,12 @@ router.post('/route', (req, res) => {
 router.post('/calculate', verifyToken, (req, res) => {
   try {
     const { states, distance_miles, origin = '', destination = '' } = req.body;
-    // Normalize truck_type: accept both "2axle" and "2-axle" formats
-    const truck_type = req.body.truck_type ? req.body.truck_type.replace(/-/g, '') : '2axle';
+    // Normalize truck_type: accept both "2axle" and "2-axle" formats → always output "N-axle"
+    const normalizeTT = (t) => {
+      if (!t) return '2-axle';
+      return t.replace(/^(\d)(-?)axle$/, '$1-axle');
+    };
+    const truck_type = normalizeTT(req.body.truck_type);
 
     if (!states || !Array.isArray(states) || states.length === 0) {
       return res.status(400).json({ error: 'states array is required (e.g. ["TX", "LA"])' });
