@@ -7,7 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+import * as Print from 'expo-print';
 import api from '../services/api';
+import { generateIFTAPDF } from '../ifta/quarterlyCalculator';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const QUARTERS = [1, 2, 3, 4];
@@ -23,6 +25,8 @@ export default function IFTADashboardScreen() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [exportingPdf, setExportingPdf] = useState(false);
+  const [driverInfo, setDriverInfo] = useState({ name: '', company: '', usdot: '' });
 
   const loadIFTA = useCallback(async (q = quarter, y = year) => {
     setLoading(true);
@@ -38,9 +42,18 @@ export default function IFTADashboardScreen() {
     }
   }, [quarter, year]);
 
+  // Загружаем профиль один раз для PDF
   useFocusEffect(
     useCallback(() => {
       loadIFTA(quarter, year);
+      api.get('/api/users/profile').then(res => {
+        const d = res.data;
+        setDriverInfo({
+          name: d.name || 'Owner-Operator',
+          company: d.company || '',
+          usdot: d.usdot || '',
+        });
+      }).catch(() => {});
     }, [quarter, year])
   );
 
@@ -53,6 +66,41 @@ export default function IFTADashboardScreen() {
     const newYear = year + delta;
     setYear(newYear);
     loadIFTA(quarter, newYear);
+  };
+
+  const exportPDF = async () => {
+    if (!data) {
+      Alert.alert('Нет данных', 'Нечего экспортировать');
+      return;
+    }
+    setExportingPdf(true);
+    try {
+      const html = generateIFTAPDF(data, driverInfo);
+      const { uri } = await Print.printToFileAsync({
+        html,
+        base64: false,
+      });
+
+      // Переименовываем файл
+      const filename = `ifta_q${data.quarter}_${data.year}.pdf`;
+      const destUri = FileSystem.cacheDirectory + filename;
+      await FileSystem.copyAsync({ from: uri, to: destUri });
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(destUri, {
+          mimeType: 'application/pdf',
+          dialogTitle: `IFTA Q${data.quarter} ${data.year}`,
+          UTI: 'com.adobe.pdf',
+        });
+      } else {
+        Alert.alert('PDF создан', `Сохранён: ${filename}`);
+      }
+    } catch (err) {
+      Alert.alert('Ошибка PDF', err.message || 'Не удалось создать PDF');
+      console.error('[IFTA PDF export]', err);
+    } finally {
+      setExportingPdf(false);
+    }
   };
 
   const exportCSV = async () => {
@@ -232,21 +280,37 @@ export default function IFTADashboardScreen() {
             </View>
           </View>
 
-          {/* Кнопка экспорт */}
+          {/* Кнопки экспорта */}
           {data.states && data.states.length > 0 && (
-            <TouchableOpacity
-              style={[styles.exportBtn, exporting && styles.exportBtnDisabled]}
-              onPress={exportCSV}
-              disabled={exporting}
-            >
-              {exporting
-                ? <ActivityIndicator size="small" color="#4fc3f7" />
-                : <Ionicons name="download-outline" size={18} color="#4fc3f7" />
-              }
-              <Text style={styles.exportBtnText}>
-                {exporting ? 'Создаём CSV...' : 'Экспорт CSV'}
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.exportRow}>
+              <TouchableOpacity
+                style={[styles.exportBtn, styles.exportBtnPdf, exportingPdf && styles.exportBtnDisabled]}
+                onPress={exportPDF}
+                disabled={exportingPdf || exporting}
+              >
+                {exportingPdf
+                  ? <ActivityIndicator size="small" color="#fff" />
+                  : <Ionicons name="document-text-outline" size={18} color="#fff" />
+                }
+                <Text style={styles.exportBtnTextPdf}>
+                  {exportingPdf ? 'PDF...' : 'PDF Report'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.exportBtn, styles.exportBtnCsv, exporting && styles.exportBtnDisabled]}
+                onPress={exportCSV}
+                disabled={exporting || exportingPdf}
+              >
+                {exporting
+                  ? <ActivityIndicator size="small" color="#4fc3f7" />
+                  : <Ionicons name="download-outline" size={18} color="#4fc3f7" />
+                }
+                <Text style={styles.exportBtnText}>
+                  {exporting ? 'CSV...' : 'Export CSV'}
+                </Text>
+              </TouchableOpacity>
+            </View>
           )}
         </>
       )}
@@ -394,17 +458,29 @@ const styles = StyleSheet.create({
   legendText: { color: '#555', fontSize: 12 },
 
   // Export
+  exportRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 4,
+  },
   exportBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
+    gap: 8,
     paddingVertical: 14,
     borderRadius: 12,
+  },
+  exportBtnPdf: {
+    backgroundColor: '#1565c0',
+  },
+  exportBtnCsv: {
     borderWidth: 1,
     borderColor: '#4fc3f7',
     backgroundColor: '#0a1520',
   },
   exportBtnDisabled: { opacity: 0.5 },
   exportBtnText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  exportBtnTextPdf: { color: '#fff', fontSize: 14, fontWeight: '700' },
 });
