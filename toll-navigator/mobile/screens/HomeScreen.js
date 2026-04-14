@@ -7,8 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { calculateRoute } from '../services/api';
 
 const TRUCK_TYPES = [
-  { label: '2-Axle', value: '2-axle', icon: '🚛' },
-  { label: '3-Axle', value: '3-axle', icon: '🚚' },
+  { label: '2-Axle', value: '2-axle', icon: '🚗' },
+  { label: '3-Axle', value: '3-axle', icon: '🚛' },
   { label: '5-Axle', value: '5-axle', icon: '🚜' },
 ];
 
@@ -32,6 +32,10 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
+  // Fuel calculation
+  const [showFuel, setShowFuel] = useState(false);
+  const [mpg, setMpg] = useState('6.5');
+  const [fuelPrice, setFuelPrice] = useState('3.80');
 
   const fromSuggestions = CITY_SUGGESTIONS.filter(c =>
     from.length > 1 && c.toLowerCase().includes(from.toLowerCase())
@@ -46,6 +50,8 @@ export default function HomeScreen({ navigation }) {
     setTruckType('5-axle');
     setFromFocus(false);
     setToFocus(false);
+    setMpg('6.5');
+    setFuelPrice('3.80');
   };
 
   const handleCalculate = async () => {
@@ -56,7 +62,11 @@ export default function HomeScreen({ navigation }) {
     setLoading(true);
     try {
       const response = await calculateRoute(from.trim(), to.trim(), truckType);
-      navigation.navigate('Result', { result: response.data, from, to, truckType });
+      const fuelData = showFuel ? {
+        mpg: parseFloat(mpg) || 6.5,
+        fuelPrice: parseFloat(fuelPrice) || 3.80,
+      } : null;
+      navigation.navigate('Result', { result: response.data, from, to, truckType, fuelData });
     } catch (err) {
       const msg = err.response?.data?.error || 'Ошибка соединения с сервером';
       Alert.alert('Ошибка', msg);
@@ -74,7 +84,7 @@ export default function HomeScreen({ navigation }) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.logo}>🛣️ Toll Navigator</Text>
-          <Text style={styles.subtitle}>Расчёт платных дорог для грузовиков</Text>
+          <Text style={styles.subtitle}>Полная стоимость маршрута для грузовиков</Text>
         </View>
 
         {/* From */}
@@ -145,6 +155,62 @@ export default function HomeScreen({ navigation }) {
           </View>
         </View>
 
+        {/* Fuel Calculator Toggle */}
+        <TouchableOpacity
+          style={[styles.fuelToggle, showFuel && styles.fuelToggleActive]}
+          onPress={() => setShowFuel(!showFuel)}
+        >
+          <Text style={styles.fuelToggleIcon}>⛽</Text>
+          <View style={styles.fuelToggleText}>
+            <Text style={[styles.fuelToggleTitle, showFuel && styles.fuelToggleTitleActive]}>
+              Добавить стоимость топлива
+            </Text>
+            <Text style={styles.fuelToggleSub}>
+              {showFuel ? 'Нажми чтобы скрыть' : 'MPG + цена → полная стоимость рейса'}
+            </Text>
+          </View>
+          <Ionicons
+            name={showFuel ? 'chevron-up' : 'chevron-down'}
+            size={18}
+            color={showFuel ? '#4fc3f7' : '#555'}
+          />
+        </TouchableOpacity>
+
+        {/* Fuel Inputs */}
+        {showFuel && (
+          <View style={styles.fuelCard}>
+            <View style={styles.fuelRow}>
+              <View style={styles.fuelField}>
+                <Text style={styles.fuelLabel}>⛽ Расход (MPG)</Text>
+                <TextInput
+                  style={styles.fuelInput}
+                  value={mpg}
+                  onChangeText={setMpg}
+                  keyboardType="decimal-pad"
+                  placeholder="6.5"
+                  placeholderTextColor="#555"
+                />
+                <Text style={styles.fuelHint}>Обычный трак: 5.5–7 MPG</Text>
+              </View>
+              <View style={styles.fuelField}>
+                <Text style={styles.fuelLabel}>💵 Цена галлона</Text>
+                <TextInput
+                  style={styles.fuelInput}
+                  value={fuelPrice}
+                  onChangeText={setFuelPrice}
+                  keyboardType="decimal-pad"
+                  placeholder="3.80"
+                  placeholderTextColor="#555"
+                />
+                <Text style={styles.fuelHint}>Дизель сейчас ~$3.80</Text>
+              </View>
+            </View>
+            <Text style={styles.fuelNote}>
+              📊 Увидишь: толлы + топливо + IFTA разбивка + итог рейса
+            </Text>
+          </View>
+        )}
+
         {/* Calculate button */}
         <TouchableOpacity
           style={[styles.calcBtn, loading && styles.calcBtnDisabled]}
@@ -153,7 +219,9 @@ export default function HomeScreen({ navigation }) {
         >
           {loading
             ? <ActivityIndicator color="#fff" />
-            : <Text style={styles.calcBtnText}>Рассчитать маршрут →</Text>
+            : <Text style={styles.calcBtnText}>
+                {showFuel ? '⛽ Рассчитать полную стоимость →' : 'Рассчитать маршрут →'}
+              </Text>
           }
         </TouchableOpacity>
 
@@ -165,7 +233,7 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
         )}
 
-        <Text style={styles.hint}>80+ городов США • Данные 2026</Text>
+        <Text style={styles.hint}>80+ городов США • IFTA 2026 • Данные платных дорог 2026</Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -210,6 +278,53 @@ const styles = StyleSheet.create({
   truckIcon: { fontSize: 22, marginBottom: 4 },
   truckLabel: { color: '#666', fontSize: 12, fontWeight: '600' },
   truckLabelActive: { color: '#4fc3f7' },
+  // Fuel toggle
+  fuelToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#161629',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#1e1e3a',
+  },
+  fuelToggleActive: {
+    borderColor: '#4fc3f7',
+    backgroundColor: '#0d1f2d',
+  },
+  fuelToggleIcon: { fontSize: 20 },
+  fuelToggleText: { flex: 1 },
+  fuelToggleTitle: { color: '#aaa', fontSize: 14, fontWeight: '700' },
+  fuelToggleTitleActive: { color: '#4fc3f7' },
+  fuelToggleSub: { color: '#555', fontSize: 11, marginTop: 2 },
+  // Fuel card
+  fuelCard: {
+    backgroundColor: '#0a1a28',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#4fc3f7',
+  },
+  fuelRow: { flexDirection: 'row', gap: 12, marginBottom: 12 },
+  fuelField: { flex: 1 },
+  fuelLabel: { color: '#888', fontSize: 11, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
+  fuelInput: {
+    backgroundColor: '#0d0d1a',
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '800',
+    borderRadius: 10,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#2a3a4a',
+    textAlign: 'center',
+  },
+  fuelHint: { color: '#444', fontSize: 10, marginTop: 4, textAlign: 'center' },
+  fuelNote: { color: '#4fc3f7', fontSize: 12, textAlign: 'center', fontWeight: '600' },
+  // Buttons
   calcBtn: {
     backgroundColor: '#4fc3f7',
     borderRadius: 14,

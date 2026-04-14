@@ -340,31 +340,30 @@ function getStatesBetween(fromState, toState) {
 }
 
 /**
- * GET /api/tolls/route?from=Dallas,TX&to=Houston,TX&truck_type=5-axle
- * Удобный эндпоинт — принимает города, возвращает расчёт
+ * Shared route handler — используется и GET, и POST /route
  */
-router.get('/route', (req, res) => {
+function handleRoute(params, headers, res, db, cache) {
   // Опциональная авторизация — сохраняем историю если пользователь залогинен
   let userId = null;
   try {
-    const authHeader = req.headers.authorization;
+    const authHeader = headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const jwt = require('jsonwebtoken');
       const decoded = jwt.verify(authHeader.slice(7), process.env.JWT_SECRET);
       userId = decoded.userId || decoded.id;
     }
-  } catch (_) { /* не авторизован — ок, продолжаем без сохранения */ }
+  } catch (_) {}
 
   try {
-    const { from, to, truck_type, axles } = req.query;
+    const { from, to, truck_type } = params;
 
-    // Input validation
     if (!from || !to) {
       return res.status(400).json({ error: 'Parameters "from" and "to" are required' });
     }
     if (from.length > 100 || to.length > 100) {
       return res.status(400).json({ error: 'City names too long' });
     }
+
     // Normalize truck_type: accept both "2axle" and "2-axle" formats
     const normalizeTruckType = (t) => t ? t.replace(/-/g, '') : '5axle';
     const validTruckTypes = ['2axle', '3axle', '4axle', '5axle', '6axle'];
@@ -373,23 +372,15 @@ router.get('/route', (req, res) => {
       return res.status(400).json({ error: `Invalid truck_type. Must be one of: ${validTruckTypes.join(', ')} (or with dashes: 2-axle, 5-axle)` });
     }
 
-    // --- Cache check ---
     const cacheKey = cache.routeCacheKey(from, to, truckType);
     const cached = cache.get(cacheKey);
-    if (cached) {
-      // Добавляем признак кэша, но не сохраняем в историю повторно
-      return res.json({ ...cached, cached: true });
-    }
+    if (cached) return res.json({ ...cached, cached: true });
 
     const fromState = parseCity(from);
     const toState = parseCity(to);
 
-    if (!fromState) {
-      return res.status(400).json({ error: `Unknown city: "${from}". Use format "Dallas,TX"` });
-    }
-    if (!toState) {
-      return res.status(400).json({ error: `Unknown city: "${to}". Use format "Houston,TX"` });
-    }
+    if (!fromState) return res.status(400).json({ error: `Unknown city: "${from}". Use format "Dallas,TX"` });
+    if (!toState) return res.status(400).json({ error: `Unknown city: "${to}". Use format "Houston,TX"` });
 
     const states = getStatesBetween(fromState, toState);
     const distanceMiles = estimateDistance(fromState, toState);
@@ -397,34 +388,16 @@ router.get('/route', (req, res) => {
     const filteredStates = states.filter(s => availableStates.includes(s));
 
     if (filteredStates.length === 0) {
-      const emptyResult = {
-        from, to,
-        from_state: fromState,
-        to_state: toState,
-        distance_miles: distanceMiles,
-        total: 0,
-        message: 'No toll roads found on this route',
-        breakdown: [],
-      };
+      const emptyResult = { from, to, from_state: fromState, to_state: toState, distance_miles: distanceMiles, total: 0, message: 'No toll roads found on this route', breakdown: [] };
       cache.set(cacheKey, emptyResult);
       return res.status(200).json(emptyResult);
     }
 
     const result = calculateTollCost(filteredStates, distanceMiles, truckType);
+    const response = { from, to, from_state: fromState, to_state: toState, distance_miles: distanceMiles, ...result };
 
-    const response = {
-      from,
-      to,
-      from_state: fromState,
-      to_state: toState,
-      distance_miles: distanceMiles,
-      ...result,
-    };
-
-    // Кэшируем результат (TTL 1 час)
     cache.set(cacheKey, response);
 
-    // Сохраняем в историю если пользователь авторизован
     if (userId) {
       try {
         db.prepare(
@@ -440,7 +413,24 @@ router.get('/route', (req, res) => {
     console.error('Route calculate error:', err);
     res.status(500).json({ error: 'Server error' });
   }
+}
+
+/**
+ * GET /api/tolls/route?from=Dallas,TX&to=Houston,TX&truck_type=5-axle
+ * Удобный эндпоинт — принимает города, возвращает расчёт
+ */
+router.get('/route', (req, res) => {
+  return handleRoute(req.query, req.headers, res, db, cache);
 });
+
+/**
+ * POST /api/tolls/route
+ * Body: { from: "Dallas,TX", to: "Houston,TX", truck_type: "2-axle" }
+ */
+router.post('/route', (req, res) => {
+  return handleRoute(req.body, req.headers, res, db, cache);
+});
+
 
 /**
  * POST /api/tolls/calculate
@@ -449,7 +439,9 @@ router.get('/route', (req, res) => {
  */
 router.post('/calculate', verifyToken, (req, res) => {
   try {
-    const { states, distance_miles, truck_type = '2-axle', origin = '', destination = '' } = req.body;
+    const { states, distance_miles, origin = '', destination = '' } = req.body;
+    // Normalize truck_type: accept both "2axle" and "2-axle" formats
+    const truck_type = req.body.truck_type ? req.body.truck_type.replace(/-/g, '') : '2axle';
 
     if (!states || !Array.isArray(states) || states.length === 0) {
       return res.status(400).json({ error: 'states array is required (e.g. ["TX", "LA"])' });

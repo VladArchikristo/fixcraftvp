@@ -68,6 +68,44 @@ try {
   db.exec(`UPDATE routes SET total_toll = toll_cost WHERE total_toll = 0 AND toll_cost IS NOT NULL`);
 } catch (_) {}
 
+// Fix NOT NULL constraint on legacy origin/destination columns (SQLite can't ALTER constraints,
+// so we recreate the table preserving all data)
+try {
+  const hasNotNull = db.prepare(`PRAGMA table_info(routes)`).all()
+    .some(c => (c.name === 'origin' || c.name === 'destination') && c.notnull === 1);
+
+  if (hasNotNull) {
+    console.log('Migrating routes table: removing NOT NULL from origin/destination...');
+    db.exec(`
+      BEGIN;
+      CREATE TABLE IF NOT EXISTS routes_new (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        origin TEXT DEFAULT '',
+        destination TEXT DEFAULT '',
+        toll_cost REAL DEFAULT 0,
+        distance_miles REAL DEFAULT 0,
+        states_crossed TEXT DEFAULT '[]',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        from_city TEXT,
+        to_city TEXT,
+        truck_type TEXT DEFAULT '5-axle',
+        total_toll REAL DEFAULT 0,
+        route_data TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      );
+      INSERT INTO routes_new SELECT * FROM routes;
+      DROP TABLE routes;
+      ALTER TABLE routes_new RENAME TO routes;
+      CREATE INDEX IF NOT EXISTS idx_routes_user_id ON routes(user_id);
+      COMMIT;
+    `);
+    console.log('Migration complete: routes table updated.');
+  }
+} catch (migErr) {
+  console.error('Migration error (routes NOT NULL fix):', migErr.message);
+}
+
 console.log(`SQLite DB ready: ${DB_PATH}`);
 
 module.exports = db;
