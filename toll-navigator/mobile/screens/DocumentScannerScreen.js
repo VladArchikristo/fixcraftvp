@@ -188,7 +188,7 @@ export default function DocumentScannerScreen({ navigation }) {
 
       await Sharing.shareAsync(permanentPath, {
         mimeType: 'application/pdf',
-        dialogTitle: `Share ${selectedType?.label || docType}`,
+        dialogTitle: `Отправить документ — ${selectedType?.label || docType}`,
         UTI: 'com.adobe.pdf',
       });
     } catch (e) {
@@ -345,7 +345,7 @@ export default function DocumentScannerScreen({ navigation }) {
         >
           <Ionicons name="share-outline" size={20} color={pdfUri ? '#4fc3f7' : '#555'} />
           <Text style={[styles.actionBtnText, !pdfUri && { color: '#555' }]}>
-            Share PDF
+            Поделиться
           </Text>
         </TouchableOpacity>
 
@@ -360,7 +360,7 @@ export default function DocumentScannerScreen({ navigation }) {
 
         <Text style={styles.hint}>
           {selectedTypeInfo?.icon} {selectedTypeInfo?.label}: {selectedTypeInfo?.desc}
-          {'\n'}Tap a thumbnail to preview • Share via Email, WhatsApp, Telegram, iMessage
+          {'\n'}Tap a thumbnail to preview • Share via AirDrop, Email, Messenger and more
         </Text>
 
       </ScrollView>
