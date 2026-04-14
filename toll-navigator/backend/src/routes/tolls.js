@@ -145,10 +145,11 @@ const ROUTE_DISTANCES = {
   'atlanta,ga|jacksonville,fl': 346,
   // Seattle ↔ *
   'seattle,wa|chicago,il': 2064, 'seattle,wa|los angeles,ca': 1137, 'seattle,wa|portland,or': 174,
-  'seattle,wa|boise,id': 497,
+  'seattle,wa|boise,id': 497, 'seattle,wa|denver,co': 1321,
   // Denver ↔ *
   'denver,co|chicago,il': 1003, 'denver,co|los angeles,ca': 1021, 'denver,co|salt lake city,ut': 527,
   'denver,co|minneapolis,mn': 917, 'denver,co|billings,mt': 549, 'denver,co|cheyenne,wy': 99,
+  'denver,co|seattle,wa': 1321,
   // Phoenix ↔ *
   'phoenix,az|los angeles,ca': 372, 'phoenix,az|dallas,tx': 1027, 'phoenix,az|tucson,az': 116,
   // Las Vegas ↔ *
@@ -156,6 +157,7 @@ const ROUTE_DISTANCES = {
   // Nashville ↔ *
   'nashville,tn|atlanta,ga': 249, 'nashville,tn|chicago,il': 476, 'nashville,tn|new york,ny': 889,
   'nashville,tn|birmingham,al': 191, 'nashville,tn|louisville,ky': 176,
+  'nashville,tn|washington dc,dc': 660,
   // Memphis ↔ *
   'memphis,tn|dallas,tx': 452, 'memphis,tn|chicago,il': 530, 'memphis,tn|little rock,ar': 138,
   // Kansas City ↔ *
@@ -178,7 +180,7 @@ const ROUTE_DISTANCES = {
   // Philadelphia ↔ *
   'philadelphia,pa|new york,ny': 95, 'philadelphia,pa|washington dc,dc': 140,
   // Boston ↔ *
-  'boston,ma|new york,ny': 215,
+  'boston,ma|new york,ny': 215, 'boston,ma|miami,fl': 1494,
   // Portland ↔ *
   'portland,or|seattle,wa': 174, 'portland,or|san francisco,ca': 640,
   // San Francisco ↔ *
@@ -283,7 +285,7 @@ const STATE_MILES = {
   'houston,tx|austin,tx': { TX: 162 },
   'houston,tx|new orleans,la': { TX: 170, LA: 179 },
   'new york,ny|los angeles,ca': { NY: 150, NJ: 55, PA: 300, OH: 220, IN: 150, IL: 150, MO: 280, OK: 200, TX: 350, NM: 290, AZ: 420, CA: 225 },
-  'new york,ny|chicago,il': { NY: 150, NJ: 55, PA: 300, OH: 220, IN: 150, IL: 114 },
+  'new york,ny|chicago,il': { NY: 100, NJ: 30, PA: 200, OH: 180, IN: 120, IL: 159 },
   'new york,ny|miami,fl': { NY: 100, NJ: 55, DE: 50, MD: 90, VA: 120, NC: 250, SC: 200, GA: 100, FL: 316 },
   'new york,ny|atlanta,ga': { NY: 100, NJ: 55, DE: 50, MD: 90, VA: 120, NC: 200, SC: 110, GA: 149 },
   'new york,ny|boston,ma': { NY: 50, CT: 90, MA: 75 },
@@ -297,7 +299,7 @@ const STATE_MILES = {
   'new york,ny|buffalo,ny': { NY: 375 },
   'new york,ny|nashville,tn': { NY: 100, NJ: 55, PA: 300, OH: 220, KY: 100, TN: 114 },
   'new york,ny|columbus,oh': { NY: 100, NJ: 55, PA: 250, OH: 98 },
-  'los angeles,ca|chicago,il': { CA: 300, AZ: 290, NM: 180, TX: 200, OK: 200, MO: 380, IL: 266 },
+  'los angeles,ca|chicago,il': { CA: 560, AZ: 400, NM: 200, TX: 150, OK: 280, MO: 280, IL: 146 },
   'los angeles,ca|miami,fl': { CA: 300, AZ: 290, NM: 200, TX: 500, LA: 200, MS: 150, AL: 120, FL: 497 },
   'los angeles,ca|phoenix,az': { CA: 130, AZ: 242 },
   'los angeles,ca|las vegas,nv': { CA: 100, NV: 170 },
@@ -334,6 +336,8 @@ const STATE_MILES = {
   'seattle,wa|los angeles,ca': { WA: 187, OR: 310, CA: 640 },
   'seattle,wa|portland,or': { WA: 100, OR: 74 },
   'seattle,wa|boise,id': { WA: 130, ID: 367 },
+  'seattle,wa|denver,co': { WA: 300, MT: 120, WY: 560, CO: 341 },
+  'denver,co|seattle,wa': { CO: 341, WY: 560, MT: 120, WA: 300 },
   'denver,co|chicago,il': { CO: 200, NE: 350, IA: 220, IL: 233 },
   'denver,co|los angeles,ca': { CO: 200, UT: 350, NV: 180, CA: 291 },
   'denver,co|salt lake city,ut': { CO: 200, UT: 327 },
@@ -350,6 +354,7 @@ const STATE_MILES = {
   'nashville,tn|new york,ny': { TN: 100, KY: 200, OH: 220, PA: 250, NJ: 80, NY: 39 },
   'nashville,tn|birmingham,al': { TN: 100, AL: 91 },
   'nashville,tn|louisville,ky': { TN: 90, KY: 86 },
+  'nashville,tn|washington dc,dc': { TN: 300, VA: 350, DC: 10 },
   'memphis,tn|dallas,tx': { TN: 20, AR: 130, TX: 302 },
   'memphis,tn|chicago,il': { TN: 20, KY: 200, IL: 310 },
   'memphis,tn|little rock,ar': { TN: 10, AR: 128 },
@@ -377,6 +382,7 @@ const STATE_MILES = {
   'philadelphia,pa|new york,ny': { PA: 20, NJ: 75 },
   'philadelphia,pa|washington dc,dc': { PA: 20, DE: 30, MD: 80, DC: 10 },
   'boston,ma|new york,ny': { MA: 80, CT: 90, NY: 45 },
+  'boston,ma|miami,fl': { MA: 80, CT: 90, NY: 90, NJ: 55, DE: 50, MD: 90, VA: 120, NC: 250, SC: 200, GA: 120, FL: 349 },
   'portland,or|seattle,wa': { OR: 50, WA: 124 },
   'portland,or|san francisco,ca': { OR: 360, CA: 280 },
   'san francisco,ca|los angeles,ca': { CA: 381 },
