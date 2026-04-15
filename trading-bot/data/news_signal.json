@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-15T07:00:25.506729+00:00",
+  "timestamp": "2026-04-15T10:00:24.053308+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.4,
+  "score": -0.44,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -9,10 +9,10 @@
   },
   "key_events": [
     "Ethereum treasury firm Bitmine reports $3.8 billion Q1 loss in latest filing",
+    "North Korean hackers used AI-enabled social engineering in Zerion attack",
     "Crypto, banks continue Senate bill spat with new proposal concerns: Report",
-    "Bitcoin developers are trying to build quantum defenses. Your coins could pay the price.",
-    "XRP climbs toward $1.38 as Japan's Rakuten integrates token for payments",
-    "Ether-bitcoin ratio bounces from 2026 lows, signaling broader crypto recovery"
+    "A new class of crypto treasury companies is forming around Strategy’s high-yield stock",
+    "Why this ex-Solana exec is using a Wall Street trick to level the playing field in DeFi"
   ],
   "affected_assets": [
     "BTC",
@@ -21,21 +21,23 @@
     "XRP",
     "DOGE",
     "ADA",
-    "OP"
+    "UNI",
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
     "RAVE",
     "ENJ",
+    "ARIA",
+    "HYPE",
     "PENGU",
     "TAO",
-    "ETH",
-    "ZAMA",
-    "MON"
+    "BIO"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.42,
-  "cached_at": 1776236425.506975
+  "fetch_time_sec": 2.36,
+  "cached_at": 1776247224.053559
 }
