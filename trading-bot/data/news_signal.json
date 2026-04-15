@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-15T13:00:23.901954+00:00",
+  "timestamp": "2026-04-15T16:00:22.697845+00:00",
   "sentiment": "bearish",
-  "score": -0.51,
+  "score": -0.69,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -9,34 +9,31 @@
   },
   "key_events": [
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
-    "Trump-backed WLFI moves to unlock 62 billion tokens after $75 million loan controversy",
-    "Ethereum treasury firm Bitmine reports $3.8 billion Q1 loss in latest filing",
-    "Pakistan allows banks to serve licensed crypto firms after years-long ban",
-    "Prediction market volumes to hit $1 trillion by 2030 with Robinhood, Coinbase as key players, Bernstein says"
+    "Bitcoin developer Jameson Lopp says it's better to freeze 5.6 million BTC than let hackers have them",
+    "Allbirds abandons sneakers in pivot to AI computing, shares surge 400%",
+    "Pakistan lifts seven-year ban, allowing banks to service crypto providers",
+    "Trump-backed WLFI moves to unlock 62 billion tokens after $75 million loan controversy"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "XRP",
-    "DOGE",
-    "ADA",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "RAVE",
-    "BIO",
     "ENJ",
-    "BTC",
-    "BLESS",
+    "HYPE",
     "TAO",
-    "WLFI"
+    "PENGU",
+    "BIO",
+    "AAVE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.26,
-  "cached_at": 1776258023.902187
+  "fetch_time_sec": 2.47,
+  "cached_at": 1776268822.698056
 }
