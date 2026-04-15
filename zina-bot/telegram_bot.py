@@ -44,7 +44,7 @@ BOT_TOKEN = os.getenv("ZINA_BOT_TOKEN", "")
 ALLOWED_USER = int(os.getenv("ALLOWED_USER_ID", "244710532"))
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
-CLAUDE_MODEL = "claude-opus-4-6"
+CLAUDE_MODEL = "claude-sonnet-4-6"
 CLAUDE_TIMEOUT = 3600
 
 LOG_DIR = Path.home() / "logs"

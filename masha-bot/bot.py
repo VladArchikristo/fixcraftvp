@@ -48,7 +48,7 @@ BOT_TOKEN = os.getenv("MASHA_BOT_TOKEN", "")
 ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
-CLAUDE_MODEL = "claude-opus-4-6"
+CLAUDE_MODEL = "claude-sonnet-4-6"
 CLAUDE_TIMEOUT = 600  # 10 min — consistent with other bots
 
 LOG_DIR = Path.home() / "logs"

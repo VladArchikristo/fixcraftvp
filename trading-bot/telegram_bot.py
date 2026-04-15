@@ -513,7 +513,7 @@ def _call_claude_once(full_prompt: str, extra_flags: list[str] | None = None) ->
     cmd = [
         CLAUDE_PATH,
         "-p",
-        "--model", "claude-opus-4-6",
+        "--model", "claude-sonnet-4-6",
         "--output-format", "text",
         "--system-prompt", _build_system_prompt(),
         "--allowedTools", CLAUDE_TOOLS,

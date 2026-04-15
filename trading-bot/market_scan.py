@@ -1152,7 +1152,7 @@ def ask_claude(prompt):
         try:
             proc = subprocess.Popen(
                 [CLAUDE_PATH, "-p",
-                 "--model", "claude-opus-4-6",
+                 "--model", "claude-sonnet-4-6",
                  "--output-format", "text",
                  "--max-turns", "15"],
                 stdin=subprocess.PIPE,
