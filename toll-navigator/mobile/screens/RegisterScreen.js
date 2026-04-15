@@ -17,15 +17,15 @@ export default function RegisterScreen({ navigation, onLogin }) {
 
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !password.trim()) {
-      Alert.alert('Ошибка', 'Заполни все поля');
+      Alert.alert('Error', 'Fill in all fields');
       return;
     }
     if (password !== password2) {
-      Alert.alert('Ошибка', 'Пароли не совпадают');
+      Alert.alert('Error', 'Passwords do not match');
       return;
     }
     if (password.length < 6) {
-      Alert.alert('Ошибка', 'Пароль минимум 6 символов');
+      Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
 
@@ -40,8 +40,8 @@ export default function RegisterScreen({ navigation, onLogin }) {
       await saveUser(res.data.user);
       onLogin();
     } catch (err) {
-      const msg = err.response?.data?.error || 'Ошибка регистрации';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Registration error';
+      Alert.alert('Error', msg);
     } finally {
       setLoading(false);
     }
@@ -56,14 +56,14 @@ export default function RegisterScreen({ navigation, onLogin }) {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.logo}>🛣️</Text>
-          <Text style={styles.title}>Создай аккаунт</Text>
-          <Text style={styles.subtitle}>Toll Navigator для водителей</Text>
+          <Text style={styles.title}>Create Account</Text>
+          <Text style={styles.subtitle}>HaulWallet for truckers</Text>
         </View>
 
         {/* Form */}
         <View style={styles.card}>
           {/* Name */}
-          <Text style={styles.label}>Имя</Text>
+          <Text style={styles.label}>Name</Text>
           <View style={styles.inputRow}>
             <Ionicons name="person-outline" size={20} color="#4fc3f7" style={styles.icon} />
             <TextInput
@@ -91,12 +91,12 @@ export default function RegisterScreen({ navigation, onLogin }) {
           </View>
 
           {/* Password */}
-          <Text style={[styles.label, { marginTop: 16 }]}>Пароль</Text>
+          <Text style={[styles.label, { marginTop: 16 }]}>Password</Text>
           <View style={styles.inputRow}>
             <Ionicons name="lock-closed-outline" size={20} color="#4fc3f7" style={styles.icon} />
             <TextInput
               style={styles.input}
-              placeholder="Минимум 6 символов"
+              placeholder="At least 6 characters"
               placeholderTextColor="#555"
               value={password}
               onChangeText={setPassword}
@@ -108,7 +108,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
           </View>
 
           {/* Confirm Password */}
-          <Text style={[styles.label, { marginTop: 16 }]}>Подтверди пароль</Text>
+          <Text style={[styles.label, { marginTop: 16 }]}>Confirm password</Text>
           <View style={[
             styles.inputRow,
             password2.length > 0 && password !== password2 && styles.inputError
@@ -116,7 +116,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
             <Ionicons name="shield-checkmark-outline" size={20} color="#4fc3f7" style={styles.icon} />
             <TextInput
               style={styles.input}
-              placeholder="Повтори пароль"
+              placeholder="Repeat password"
               placeholderTextColor="#555"
               value={password2}
               onChangeText={setPassword2}
@@ -124,7 +124,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
             />
           </View>
           {password2.length > 0 && password !== password2 && (
-            <Text style={styles.errorText}>Пароли не совпадают</Text>
+            <Text style={styles.errorText}>Passwords do not match</Text>
           )}
         </View>
 
@@ -136,7 +136,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
         >
           {loading
             ? <ActivityIndicator color="#000" />
-            : <Text style={styles.btnText}>Зарегистрироваться</Text>
+            : <Text style={styles.btnText}>Sign Up</Text>
           }
         </TouchableOpacity>
 
@@ -146,7 +146,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
           onPress={() => navigation.goBack()}
         >
           <Text style={styles.linkText}>
-            Уже есть аккаунт? <Text style={styles.linkAccent}>Войти</Text>
+            Already have an account? <Text style={styles.linkAccent}>Sign In</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>

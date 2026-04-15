@@ -59,7 +59,7 @@ export async function requestLocationPermissions() {
       granted: false,
       needsSettings: false,
       message:
-        'Location permission denied. Go to Settings → Toll Navigator → Location and allow "While Using the App".',
+        'Location permission denied. Go to Settings → HaulWallet → Location and allow "While Using the App".',
     };
   }
 
@@ -70,7 +70,7 @@ export async function requestLocationPermissions() {
       granted: false,
       needsSettings: true,
       message:
-        'Background location denied. Go to Settings → Toll Navigator → Location and select "Always".',
+        'Background location denied. Go to Settings → HaulWallet → Location and select "Always".',
     };
   }
 
@@ -121,7 +121,7 @@ export async function startBackgroundTracking() {
       showsBackgroundLocationIndicator: true,    // iOS: blue bar indicating background tracking
       foregroundService: {
         // Android: foreground service notification keeps process alive
-        notificationTitle: 'Toll Navigator — IFTA Tracking',
+        notificationTitle: 'HaulWallet — IFTA Tracking',
         notificationBody: 'Recording miles by state for IFTA report',
         notificationColor: '#1565c0',
       },

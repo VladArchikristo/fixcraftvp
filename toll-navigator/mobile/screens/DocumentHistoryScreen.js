@@ -27,7 +27,7 @@ export default function DocumentHistoryScreen({ navigation }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Перезагружаем при каждом фокусе экрана
+  // Reload on every screen focus
   useFocusEffect(
     useCallback(() => {
       loadHistory();
@@ -48,15 +48,15 @@ export default function DocumentHistoryScreen({ navigation }) {
 
   const handleShare = async (item) => {
     try {
-      // Проверяем что файл существует
+      // Check if file exists
       const info = await FileSystem.getInfoAsync(item.pdfUri);
       if (!info.exists) {
-        Alert.alert('Файл не найден', 'PDF был удалён или недоступен.');
+        Alert.alert('File Not Found', 'PDF was deleted or unavailable.');
         return;
       }
       const canShare = await Sharing.isAvailableAsync();
       if (!canShare) {
-        Alert.alert('Шаринг недоступен', 'На этом устройстве нельзя поделиться файлами.');
+        Alert.alert('Sharing Unavailable', 'File sharing is not available on this device.');
         return;
       }
       await Sharing.shareAsync(item.pdfUri, {
@@ -65,22 +65,22 @@ export default function DocumentHistoryScreen({ navigation }) {
         UTI: 'com.adobe.pdf',
       });
     } catch (e) {
-      Alert.alert('Ошибка', e.message);
+      Alert.alert('Error', e.message);
     }
   };
 
   const handleDelete = (item) => {
     Alert.alert(
-      'Удалить документ',
-      `Удалить ${item.typeLabel || item.type} из истории?`,
+      'Delete Document',
+      `Delete ${item.typeLabel || item.type} из истории?`,
       [
-        { text: 'Отмена', style: 'cancel' },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Удалить',
+          text: 'Delete',
           style: 'destructive',
           onPress: async () => {
             try {
-              // Удаляем PDF файл с диска
+              // Delete PDF file from disk
               const info = await FileSystem.getInfoAsync(item.pdfUri);
               if (info.exists) {
                 await FileSystem.deleteAsync(item.pdfUri, { idempotent: true });
@@ -88,7 +88,7 @@ export default function DocumentHistoryScreen({ navigation }) {
               const updated = await deleteDocumentFromHistory(item.id);
               setHistory(updated);
             } catch (e) {
-              Alert.alert('Ошибка удаления', e.message);
+              Alert.alert('Delete Error', e.message);
             }
           },
         },
@@ -99,16 +99,16 @@ export default function DocumentHistoryScreen({ navigation }) {
   const handleClearAll = () => {
     if (history.length === 0) return;
     Alert.alert(
-      'Очистить историю',
-      'Удалить все отсканированные документы? Это действие необратимо.',
+      'Clear History',
+      'Delete all scanned documents? This action cannot be undone.',
       [
-        { text: 'Отмена', style: 'cancel' },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Очистить всё',
+          text: 'Clear All',
           style: 'destructive',
           onPress: async () => {
             try {
-              // Удаляем все PDF файлы
+              // Delete all PDF files
               for (const item of history) {
                 try {
                   await FileSystem.deleteAsync(item.pdfUri, { idempotent: true });
@@ -117,7 +117,7 @@ export default function DocumentHistoryScreen({ navigation }) {
               await clearDocumentHistory();
               setHistory([]);
             } catch (e) {
-              Alert.alert('Ошибка', e.message);
+              Alert.alert('Error', e.message);
             }
           },
         },
@@ -204,7 +204,7 @@ export default function DocumentHistoryScreen({ navigation }) {
         />
       )}
 
-      {/* FAB — новое сканирование */}
+      {/* FAB — new scan */}
       {history.length > 0 && (
         <TouchableOpacity
           style={styles.fab}

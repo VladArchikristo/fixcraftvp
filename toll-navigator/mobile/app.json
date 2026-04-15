@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Toll Navigator",
-    "slug": "toll-navigator",
+    "name": "HaulWallet",
+    "slug": "haulwallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,27 +9,30 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1a1a2e"
+      "backgroundColor": "#0F172A"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.tollnavigator.app",
+      "bundleIdentifier": "com.haulwallet.app",
       "buildNumber": "1",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Toll Navigator uses your location to suggest nearby cities and calculate routes from your current position.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
-        "NSLocationAlwaysUsageDescription": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
-        "NSCameraUsageDescription": "Toll Navigator uses the camera to scan fuel receipts for OCR processing.",
-        "NSPhotoLibraryUsageDescription": "Toll Navigator accesses your photo library to scan saved fuel receipts.",
-        "UIBackgroundModes": ["location", "fetch"]
+        "NSLocationWhenInUseUsageDescription": "HaulWallet uses your location to suggest nearby cities and calculate routes from your current position.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "HaulWallet tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+        "NSLocationAlwaysUsageDescription": "HaulWallet tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+        "NSCameraUsageDescription": "HaulWallet uses the camera to scan fuel receipts for OCR processing.",
+        "NSPhotoLibraryUsageDescription": "HaulWallet accesses your photo library to scan saved fuel receipts.",
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#0F172A"
       },
-      "package": "com.tollnavigator.app",
+      "package": "com.haulwallet.app",
       "versionCode": 1,
       "permissions": [
         "android.permission.CAMERA",
@@ -43,20 +46,37 @@
       ]
     },
     "plugins": [
-      "@react-native-ml-kit/text-recognition",
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
-          "locationAlwaysPermission": "Toll Navigator tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
-          "locationWhenInUsePermission": "Toll Navigator uses your location to suggest nearby cities and calculate routes.",
+          "locationAlwaysAndWhenInUsePermission": "HaulWallet tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+          "locationAlwaysPermission": "HaulWallet tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
+          "locationWhenInUsePermission": "HaulWallet uses your location to suggest nearby cities and calculate routes.",
           "isIosBackgroundLocationEnabled": true,
           "isAndroidBackgroundLocationEnabled": true
         }
-      ]
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "HaulWallet accesses your photos to scan saved fuel receipts.",
+          "cameraPermission": "HaulWallet uses the camera to scan fuel receipts."
+        }
+      ],
+      "expo-font"
     ],
     "extra": {
-      "apiUrl": "http://localhost:3001"
+      "apiUrl": "https://api.haulwallet.com",
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
+    },
+    "owner": "haulwallet",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/your-eas-project-id"
     }
   }
 }

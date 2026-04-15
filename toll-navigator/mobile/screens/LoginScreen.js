@@ -15,7 +15,7 @@ export default function LoginScreen({ navigation, onLogin }) {
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Ошибка', 'Заполни email и пароль');
+      Alert.alert('Error', 'Enter email and password');
       return;
     }
     setLoading(true);
@@ -25,8 +25,8 @@ export default function LoginScreen({ navigation, onLogin }) {
       await saveUser(res.data.user);
       onLogin();
     } catch (err) {
-      const msg = err.response?.data?.error || 'Неверный email или пароль';
-      Alert.alert('Ошибка входа', msg);
+      const msg = err.response?.data?.error || 'Invalid email or password';
+      Alert.alert('Login Error', msg);
     } finally {
       setLoading(false);
     }
@@ -41,8 +41,8 @@ export default function LoginScreen({ navigation, onLogin }) {
         {/* Logo */}
         <View style={styles.header}>
           <Text style={styles.logo}>🛣️</Text>
-          <Text style={styles.title}>Toll Navigator</Text>
-          <Text style={styles.subtitle}>Войди в аккаунт</Text>
+          <Text style={styles.title}>HaulWallet</Text>
+          <Text style={styles.subtitle}>Sign in to your account</Text>
         </View>
 
         {/* Form */}
@@ -61,12 +61,12 @@ export default function LoginScreen({ navigation, onLogin }) {
             />
           </View>
 
-          <Text style={[styles.label, { marginTop: 16 }]}>Пароль</Text>
+          <Text style={[styles.label, { marginTop: 16 }]}>Password</Text>
           <View style={styles.inputRow}>
             <Ionicons name="lock-closed-outline" size={20} color="#4fc3f7" style={styles.icon} />
             <TextInput
               style={styles.input}
-              placeholder="Минимум 6 символов"
+              placeholder="At least 6 characters"
               placeholderTextColor="#555"
               value={password}
               onChangeText={setPassword}
@@ -90,7 +90,7 @@ export default function LoginScreen({ navigation, onLogin }) {
         >
           {loading
             ? <ActivityIndicator color="#000" />
-            : <Text style={styles.btnText}>Войти</Text>
+            : <Text style={styles.btnText}>Sign In</Text>
           }
         </TouchableOpacity>
 
@@ -100,7 +100,7 @@ export default function LoginScreen({ navigation, onLogin }) {
           onPress={() => navigation.navigate('Register')}
         >
           <Text style={styles.linkText}>
-            Нет аккаунта? <Text style={styles.linkAccent}>Зарегистрироваться</Text>
+            No account? <Text style={styles.linkAccent}>Sign Up</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>

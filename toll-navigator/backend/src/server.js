@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({
   origin: process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',')
-    : ['http://localhost:3000', 'http://localhost:19006', 'exp://'],
+    : ['http://localhost:3000', 'http://localhost:19006', 'exp://', 'https://haulwallet.com', 'https://www.haulwallet.com', 'https://api.haulwallet.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -59,6 +59,17 @@ app.use('/api/documents', require('./routes/documents'));
 
 // Live Load Tracking
 app.use('/api/tracking', require('./routes/tracking'));
+
+// Waitlist (landing page signups)
+app.use('/api/waitlist', require('./routes/waitlist'));
+
+// Landing page
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
+
+// Static assets (CSS, images, etc.)
+app.use('/assets', express.static(path.join(__dirname, '../public/assets')));
 
 // Serve broker tracking page at /track/:token
 // track.html reads the token from window.location.pathname and polls the API

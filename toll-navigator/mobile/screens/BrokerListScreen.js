@@ -11,7 +11,7 @@ import { getBrokers } from '../services/brokers';
 const PAGE_LIMIT = 20;
 
 const US_STATES = [
-  'Все', 'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+  'All', 'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
   'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
   'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
   'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
@@ -19,7 +19,7 @@ const US_STATES = [
 ];
 
 const RATING_FILTERS = [
-  { label: 'Все', value: 0 },
+  { label: 'All', value: 0 },
   { label: '4+ ⭐', value: 4 },
   { label: '3+ ⭐', value: 3 },
   { label: '2+ ⭐', value: 2 },
@@ -84,7 +84,7 @@ function BrokerCard({ broker, onPress }) {
         <View style={styles.metaItem}>
           <Ionicons name="chatbubble-outline" size={13} color="#555" />
           <Text style={styles.metaText}>
-            {broker.review_count || 0} отзыв{getReviewWord(broker.review_count || 0)}
+            {broker.review_count || 0} review{getReviewWord(broker.review_count || 0)}
           </Text>
         </View>
       </View>
@@ -101,11 +101,11 @@ function BrokerCard({ broker, onPress }) {
 }
 
 function getReviewWord(count) {
-  if (count % 100 >= 11 && count % 100 <= 19) return 'ов';
+  if (count % 100 >= 11 && count % 100 <= 19) return 's';
   const last = count % 10;
   if (last === 1) return '';
   if (last >= 2 && last <= 4) return 'а';
-  return 'ов';
+  return 's';
 }
 
 export default function BrokerListScreen({ navigation }) {
@@ -119,7 +119,7 @@ export default function BrokerListScreen({ navigation }) {
   const [total, setTotal] = useState(0);
 
   const [searchText, setSearchText] = useState('');
-  const [selectedState, setSelectedState] = useState('Все');
+  const [selectedState, setSelectedState] = useState('All');
   const [minRating, setMinRating] = useState(0);
 
   const searchTimeout = useRef(null);
@@ -142,7 +142,7 @@ export default function BrokerListScreen({ navigation }) {
     try {
       const params = { page: pageNum, limit: PAGE_LIMIT };
       if (search.trim()) params.search = search.trim();
-      if (state && state !== 'Все') params.state = state;
+      if (state && state !== 'All') params.state = state;
       if (rating > 0) params.min_rating = rating;
 
       const data = await getBrokers(params);
@@ -156,9 +156,9 @@ export default function BrokerListScreen({ navigation }) {
       setHasMore(data.hasMore || false);
       setPage(pageNum);
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось загрузить список брокеров';
+      const msg = err.response?.data?.error || 'Failed to load broker list';
       setError(msg);
-      if (refresh) Alert.alert('Ошибка', msg);
+      if (refresh) Alert.alert('Error', msg);
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -217,7 +217,7 @@ export default function BrokerListScreen({ navigation }) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#4fc3f7" />
-        <Text style={styles.loadingText}>Загружаем брокеров...</Text>
+        <Text style={styles.loadingText}>Loading brokers...</Text>
       </View>
     );
   }
@@ -228,7 +228,7 @@ export default function BrokerListScreen({ navigation }) {
         <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={() => loadBrokers({ pageNum: 1 })}>
-          <Text style={styles.retryText}>Повторить</Text>
+          <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
     );
@@ -237,16 +237,16 @@ export default function BrokerListScreen({ navigation }) {
   const ListHeader = (
     <View>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Проверка брокеров</Text>
-        <Text style={styles.headerSub}>{total} брокер{getBrokerWord(total)}</Text>
+        <Text style={styles.headerTitle}>Broker Check</Text>
+        <Text style={styles.headerSub}>{total} broker{getBrokerWord(total)}</Text>
       </View>
 
-      {/* Поиск */}
+      {/* Search */}
       <View style={styles.searchRow}>
         <Ionicons name="search-outline" size={16} color="#555" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Поиск по имени или MC#..."
+          placeholder="Search by name or MC#..."
           placeholderTextColor="#444"
           value={searchText}
           onChangeText={handleSearchChange}
@@ -259,7 +259,7 @@ export default function BrokerListScreen({ navigation }) {
         )}
       </View>
 
-      {/* Фильтр штат */}
+      {/* State filter */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.stateScroll}>
         {US_STATES.map(state => (
           <TouchableOpacity
@@ -274,7 +274,7 @@ export default function BrokerListScreen({ navigation }) {
         ))}
       </ScrollView>
 
-      {/* Фильтр рейтинг */}
+      {/* Rating filter */}
       <View style={styles.filterRow}>
         {RATING_FILTERS.map(f => (
           <TouchableOpacity
@@ -294,14 +294,14 @@ export default function BrokerListScreen({ navigation }) {
   const EmptyState = (
     <View style={styles.emptyState}>
       <Text style={styles.emptyIcon}>🏢</Text>
-      <Text style={styles.emptyTitle}>Брокеров пока нет</Text>
+      <Text style={styles.emptyTitle}>No brokers yet</Text>
       <Text style={styles.emptySubtitle}>
-        {searchText || selectedState !== 'Все' || minRating > 0
-          ? 'Ничего не найдено — попробуй другие фильтры'
-          : 'Будьте первым — добавьте брокера с отзывом'}
+        {searchText || selectedState !== 'All' || minRating > 0
+          ? 'Nothing found — try different filters'
+          : 'Be the first — add a broker with a review'}
       </Text>
       <TouchableOpacity style={styles.emptyBtn} onPress={handleAddBroker}>
-        <Text style={styles.emptyBtnText}>Добавить брокера</Text>
+        <Text style={styles.emptyBtnText}>Add Broker</Text>
       </TouchableOpacity>
     </View>
   );
@@ -330,7 +330,7 @@ export default function BrokerListScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
       />
 
-      {/* FAB — добавить брокера */}
+      {/* FAB — add broker */}
       <TouchableOpacity style={styles.fab} onPress={handleAddBroker} activeOpacity={0.85}>
         <Ionicons name="add" size={28} color="#fff" />
       </TouchableOpacity>
@@ -339,11 +339,11 @@ export default function BrokerListScreen({ navigation }) {
 }
 
 function getBrokerWord(count) {
-  if (count % 100 >= 11 && count % 100 <= 19) return 'ов';
+  if (count % 100 >= 11 && count % 100 <= 19) return 's';
   const last = count % 10;
   if (last === 1) return '';
   if (last >= 2 && last <= 4) return 'а';
-  return 'ов';
+  return 's';
 }
 
 const styles = StyleSheet.create({

@@ -7,9 +7,9 @@ import { getToken } from '../services/auth';
 import api from '../services/api';
 
 // IFTA Diesel Tax Rates ($ per gallon, 2026)
-// Синхронизировано с backend/src/routes/trips.js — единый источник правды на бэкенде
-// NOTE: предпочтительно получать ставки с сервера (/api/trips/ifta), эти данные используются
-// только для предварительного расчёта на экране результата до запроса к API.
+// Synced with backend/src/routes/trips.js — single source of truth on backend
+// NOTE: preferably get rates from server (/api/trips/ifta), this data is used
+// only for preliminary calculation on result screen before API request.
 const IFTA_RATES = {
   TX: 0.200, OK: 0.160, KS: 0.260, MO: 0.170, IL: 0.455,
   IN: 0.330, OH: 0.280, PA: 0.741, NY: 0.398, NJ: 0.175,
@@ -24,13 +24,13 @@ const IFTA_RATES = {
 };
 
 // fuelPurchases: [{ state: 'TX', gallons: 100 }, ...]
-// Если переданы — считаем полный IFTA (с зачётом купленных галлонов)
-// Если нет — упрощённая формула (только потреблённые галлоны × ставка)
+// If provided — full IFTA (with purchased gallons credit)
+// If not — simplified (consumed gallons x rate only)
 function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
   const totalGallons = distanceMiles / mpg;
   const totalFuelCost = totalGallons * fuelPrice;
 
-  // Индекс купленных галлонов по штатам
+  // Index of purchased gallons by state
   const purchasedByState = {};
   if (fuelPurchases && fuelPurchases.length > 0) {
     fuelPurchases.forEach(p => {
@@ -49,12 +49,12 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
     let iftaTax;
     let purchasedInState = 0;
     if (hasRealPurchases) {
-      // Полная формула IFTA:
+      // Full IFTA formula:
       // Net Tax = (consumedGallons × rate) - (purchasedInState × rate)
       purchasedInState = purchasedByState[b.state] || 0;
       iftaTax = (consumedGallons - purchasedInState) * iftaRate;
     } else {
-      // Упрощённая — только потреблённые галлоны
+      // Упрощённая — только потреблённые gallons
       iftaTax = consumedGallons * iftaRate;
     }
 
@@ -81,12 +81,12 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
   };
 }
 
-// Авто-сохранение маршрута на сервер с индикатором статуса
+// Авто-сохранение routeа на сервер с индикатором статуса
 // onStatus: (status: 'saving'|'saved'|'failed') => void
 async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases, onStatus }) {
   try {
     const token = await getToken();
-    if (!token) return; // не авторизован — не сохраняем
+    if (!token) return; // не авторизsан — не сохраняем
 
     onStatus?.('saving');
 
@@ -129,8 +129,8 @@ async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchas
     console.error('[autoSaveTrip] failed:', err?.message || err);
     onStatus?.('failed');
     Alert.alert(
-      'Поездка не сохранена',
-      'Проверьте подключение к интернету и попробуйте ещё раз.',
+      'Trip not saved',
+      'Check your internet connection and try again.',
       [{ text: 'OK' }]
     );
   }
@@ -148,7 +148,7 @@ export default function ResultScreen({ route, navigation }) {
   useEffect(() => {
     getToken().then((token) => {
       setIsLoggedIn(!!token);
-      // Авто-сохранение маршрута при открытии экрана результата
+      // Авто-сохранение routeа при открытии экрана результата
       if (token) {
         autoSaveTrip({
           result, from, to, truckType, fuelData, fuelPurchases,
@@ -161,8 +161,8 @@ export default function ResultScreen({ route, navigation }) {
   const tollCost = result.total || 0;
   const totalFormatted = tollCost.toFixed(2);
   const truckLabel = {
-    '2-axle': '2 оси', '3-axle': '3 оси', '5-axle': '5 осей',
-    '2axle': '2 оси', '3axle': '3 оси', '5axle': '5 осей',
+    '2-axle': '2-Axle', '3-axle': '3-Axle', '5-axle': '5-Axle',
+    '2axle': '2-Axle', '3axle': '3-Axle', '5axle': '5-Axle',
   }[truckType] || truckType;
 
   // Fuel calculations
@@ -186,9 +186,9 @@ export default function ResultScreen({ route, navigation }) {
         distance_miles: result.distance_miles,
       });
       setSaved(true);
-      Alert.alert('Сохранено', 'Маршрут добавлен в историю');
+      Alert.alert('Saved', 'Route saved to history');
     } catch (err) {
-      Alert.alert('Ошибка', err.response?.data?.error || 'Не удалось сохранить маршрут');
+      Alert.alert('Error', err.response?.data?.error || 'Failed to save route');
     } finally {
       setSaving(false);
     }
@@ -202,19 +202,19 @@ export default function ResultScreen({ route, navigation }) {
       ['NY', 'NJ', 'PA', 'MA', 'CT', 'RI', 'NH', 'VT', 'ME', 'MD', 'DE'].includes(s)
     );
     if (hasNortheast) {
-      recommendations.push({ icon: '💳', text: 'E-ZPass охватывает этот маршрут — экономия до 30% на сборах' });
+      recommendations.push({ icon: '💳', text: 'E-ZPass covers this route — save up to 30% on tolls' });
     }
     if (states.includes('TX')) {
-      recommendations.push({ icon: '⭐', text: 'TxTag или EZ TAG даёт скидку на все платные дороги Техаса' });
+      recommendations.push({ icon: '⭐', text: 'TxTag or EZ TAG gives discount on all Texas toll roads' });
     }
     // Cheapest fuel states
     const cheapFuelStates = states.filter(s => ['MT', 'NH', 'OR', 'WY', 'MS', 'MO'].includes(s));
     if (cheapFuelStates.length > 0) {
-      recommendations.push({ icon: '⛽', text: `Заправляйся в ${cheapFuelStates.join(', ')} — низкий налог на топливо` });
+      recommendations.push({ icon: '⛽', text: `Refuel in ${cheapFuelStates.join(', ')} — low fuel tax` });
     }
   }
   if (truckType === '5-axle' || truckType === '5axle') {
-    recommendations.push({ icon: '🚛', text: '5-осный — максимальная нагрузка. 3-осный может быть дешевле для небольших грузов' });
+    recommendations.push({ icon: '🚛', text: '5-axle — max payload. 3-axle may be cheaper for smaller loads' });
   }
 
   return (
@@ -232,24 +232,24 @@ export default function ResultScreen({ route, navigation }) {
             <Text style={styles.cityName}>{to}</Text>
           </View>
         </View>
-        <Text style={styles.truckInfo}>🚛 {truckLabel} • {result.distance_miles} миль</Text>
+        <Text style={styles.truckInfo}>🚛 {truckLabel} • {result.distance_miles} mi</Text>
       </View>
 
       {/* GRAND TOTAL (if fuel included) */}
       {fuel && grandTotal && (
         <View style={styles.grandTotalCard}>
-          <Text style={styles.grandTotalLabel}>💰 ИТОГО РЕЙС</Text>
+          <Text style={styles.grandTotalLabel}>💰 TOTAL РЕЙС</Text>
           <Text style={styles.grandTotalAmount}>${grandTotal}</Text>
-          <Text style={styles.grandTotalSub}>толлы + топливо + IFTA • {result.distance_miles} миль</Text>
+          <Text style={styles.grandTotalSub}>толлы + топливо + IFTA • {result.distance_miles} mi</Text>
           {/* Breakdown row */}
           <View style={styles.grandBreakRow}>
             <View style={styles.grandBreakItem}>
-              <Text style={styles.grandBreakLabel}>🛣️ Толлы</Text>
+              <Text style={styles.grandBreakLabel}>🛣️ Tolls</Text>
               <Text style={styles.grandBreakValue}>${totalFormatted}</Text>
             </View>
             <View style={styles.grandBreakDivider} />
             <View style={styles.grandBreakItem}>
-              <Text style={styles.grandBreakLabel}>⛽ Топливо</Text>
+              <Text style={styles.grandBreakLabel}>⛽ Fuel</Text>
               <Text style={styles.grandBreakValue}>${fuel.totalFuelCost}</Text>
             </View>
             <View style={styles.grandBreakDivider} />
@@ -264,7 +264,7 @@ export default function ResultScreen({ route, navigation }) {
       {/* Toll Cost (always shown) */}
       {!fuel && (
         <View style={styles.totalCard}>
-          <Text style={styles.totalLabel}>Итого платных дорог</Text>
+          <Text style={styles.totalLabel}>Total платных дорог</Text>
           <Text style={styles.totalAmount}>${totalFormatted}</Text>
           <Text style={styles.totalSub}>по данным 2026</Text>
         </View>
@@ -273,21 +273,21 @@ export default function ResultScreen({ route, navigation }) {
       {/* Fuel Summary Card */}
       {fuel && (
         <View style={styles.fuelSummaryCard}>
-          <Text style={styles.fuelSummaryTitle}>⛽ Топливо — детали</Text>
+          <Text style={styles.fuelSummaryTitle}>⛽ Fuel — детали</Text>
           <View style={styles.fuelSummaryRow}>
             <Text style={styles.fuelSummaryKey}>Расход топлива:</Text>
-            <Text style={styles.fuelSummaryVal}>{fuel.totalGallons} галлонов</Text>
+            <Text style={styles.fuelSummaryVal}>{fuel.totalGallons} галлонs</Text>
           </View>
           <View style={styles.fuelSummaryRow}>
             <Text style={styles.fuelSummaryKey}>Цена дизеля:</Text>
             <Text style={styles.fuelSummaryVal}>${fuelData.fuelPrice}/галлон</Text>
           </View>
           <View style={styles.fuelSummaryRow}>
-            <Text style={styles.fuelSummaryKey}>Расход (MPG):</Text>
+            <Text style={styles.fuelSummaryKey}>Fuel Economy (MPG):</Text>
             <Text style={styles.fuelSummaryVal}>{fuelData.mpg} MPG</Text>
           </View>
           <View style={[styles.fuelSummaryRow, styles.fuelSummaryTotal]}>
-            <Text style={styles.fuelSummaryTotalKey}>Стоимость топлива:</Text>
+            <Text style={styles.fuelSummaryTotalKey}>Cost топлива:</Text>
             <Text style={styles.fuelSummaryTotalVal}>${fuel.totalFuelCost}</Text>
           </View>
         </View>
@@ -301,7 +301,7 @@ export default function ResultScreen({ route, navigation }) {
         <Text style={[styles.autoSaveStatus, styles.autoSaveOk]}>✓ Поездка сохранена</Text>
       )}
       {saveStatus === 'failed' && (
-        <Text style={[styles.autoSaveStatus, styles.autoSaveFail]}>✗ Не удалось сохранить</Text>
+        <Text style={[styles.autoSaveStatus, styles.autoSaveFail]}>✗ Failed to save</Text>
       )}
 
       {/* Action buttons */}
@@ -314,7 +314,7 @@ export default function ResultScreen({ route, navigation }) {
           >
             <Ionicons name={saved ? 'checkmark-circle' : 'bookmark-outline'} size={18} color={saved ? '#81c784' : '#4fc3f7'} />
             <Text style={[styles.actionBtnText, saved && styles.actionBtnTextSaved]}>
-              {saving ? 'Сохраняем...' : saved ? 'Сохранено' : 'Сохранить'}
+              {saving ? 'Saving...' : saved ? 'Saved' : 'Save'}
             </Text>
           </TouchableOpacity>
         )}
@@ -334,10 +334,10 @@ export default function ResultScreen({ route, navigation }) {
             style={styles.iftaHeader}
             onPress={() => setShowIftaDetail(!showIftaDetail)}
           >
-            <Text style={styles.sectionTitle}>🏛️ IFTA — разбивка по штатам</Text>
+            <Text style={styles.sectionTitle}>🏛️ IFTA — разбивка по stateам</Text>
             <View style={styles.iftaBadge}>
               <Text style={styles.iftaBadgeText}>
-                {fuel.hasRealPurchases ? 'НЕТТО: ' : 'ИТОГО: '}${fuel.totalIftaTax}
+                {fuel.hasRealPurchases ? 'NET: ' : 'TOTAL: '}${fuel.totalIftaTax}
               </Text>
             </View>
             <Ionicons
@@ -352,10 +352,10 @@ export default function ResultScreen({ route, navigation }) {
               {fuel.hasRealPurchases ? (
                 <>
                   <View style={styles.iftaTableHeader}>
-                    <Text style={[styles.iftaCol, { flex: 0.7 }]}>Штат</Text>
-                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Мили</Text>
-                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Потр.</Text>
-                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Куплено</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.7 }]}>State</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Miles</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Used</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.9 }]}>Purchased</Text>
                     <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Нетто</Text>
                   </View>
                   {fuel.stateBreakdown.map((s, i) => (
@@ -377,16 +377,16 @@ export default function ResultScreen({ route, navigation }) {
                   ))}
                   <View style={styles.iftaNote}>
                     <Text style={styles.iftaNoteText}>
-                      Нетто = (потреблённые − купленные) × ставка штата.
-                      {'\n'}+ красный → доплата штату  |  − зелёный → возврат от штата.
+                      Нетто = (потреблённые − купленные) × ставка stateа.
+                      {'\n'}+ красный → доплата stateу  |  − зелёный → возврат от stateа.
                     </Text>
                   </View>
                 </>
               ) : (
                 <>
                   <View style={styles.iftaTableHeader}>
-                    <Text style={[styles.iftaCol, { flex: 0.8 }]}>Штат</Text>
-                    <Text style={[styles.iftaCol, { flex: 1 }]}>Мили</Text>
+                    <Text style={[styles.iftaCol, { flex: 0.8 }]}>State</Text>
+                    <Text style={[styles.iftaCol, { flex: 1 }]}>Miles</Text>
                     <Text style={[styles.iftaCol, { flex: 1 }]}>Галлоны</Text>
                     <Text style={[styles.iftaCol, { flex: 1 }]}>Ставка</Text>
                     <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Налог</Text>
@@ -402,7 +402,7 @@ export default function ResultScreen({ route, navigation }) {
                   ))}
                   <View style={styles.iftaNote}>
                     <Text style={styles.iftaNoteText}>
-                      * Упрощённый расчёт — заправки по штатам не указаны.
+                      * Упрощённый расчёт — заправки по stateам не указаны.
                       Добавь данные о заправках для точного IFTA.
                     </Text>
                   </View>
@@ -413,7 +413,7 @@ export default function ResultScreen({ route, navigation }) {
 
           {!showIftaDetail && (
             <Text style={styles.iftaExpandHint}>
-              Нажми чтобы увидеть разбивку по {fuel.stateBreakdown.length} штатам
+              Нажми чтобы увидеть разбивку по {fuel.stateBreakdown.length} stateам
             </Text>
           )}
         </View>
@@ -422,12 +422,12 @@ export default function ResultScreen({ route, navigation }) {
       {/* Toll Breakdown by state */}
       {result.breakdown && result.breakdown.length > 0 && (
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>🛣️ Толлы — разбивка по штатам</Text>
+          <Text style={styles.sectionTitle}>🛣️ Tolls — разбивка по stateам</Text>
           {result.breakdown.map((b, i) => (
             <View key={i} style={styles.breakdownRow}>
               <View>
                 <Text style={styles.stateCode}>{b.state}</Text>
-                <Text style={styles.stateMiles}>{b.miles_in_state} миль • {b.roads} дороги</Text>
+                <Text style={styles.stateMiles}>{b.miles_in_state} mi • {b.roads} дороги</Text>
               </View>
               <Text style={styles.stateCost}>
                 ${((result.total / result.distance_miles) * b.miles_in_state).toFixed(2)}
@@ -452,17 +452,17 @@ export default function ResultScreen({ route, navigation }) {
 
       {/* Tips */}
       <View style={styles.card}>
-        <Text style={styles.sectionTitle}>💡 Советы</Text>
+        <Text style={styles.sectionTitle}>💡 Сsеты</Text>
         <Text style={styles.tipText}>• E-ZPass экономит до 30% на большинстве платных дорог северо-востока</Text>
         <Text style={styles.tipText}>• IFTA отчёт сдаётся раз в квартал — экономь на бухгалтере с этими данными</Text>
-        <Text style={styles.tipText}>• Маршрут рассчитан для {truckLabel.toLowerCase()}</Text>
-        {fuel && <Text style={styles.tipText}>• Заправляйся в MO, MS, OK — ставка IFTA от $0.17/галлон</Text>}
+        <Text style={styles.tipText}>• Route рассчитан для {truckLabel.toLowerCase()}</Text>
+        {fuel && <Text style={styles.tipText}>• Refuel in MO, MS, OK — ставка IFTA от $0.17/галлон</Text>}
       </View>
 
       {/* Back button */}
       <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={18} color="#4fc3f7" />
-        <Text style={styles.backBtnText}>Новый расчёт</Text>
+        <Text style={styles.backBtnText}>Нsый расчёт</Text>
       </TouchableOpacity>
     </ScrollView>
   );

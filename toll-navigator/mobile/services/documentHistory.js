@@ -70,7 +70,7 @@ export function generateDocumentId() {
 }
 
 /**
- * Форматирование даты для отображения
+ * Formтирование даты для отображения
  */
 export function formatDocumentDate(isoString) {
   const d = new Date(isoString);

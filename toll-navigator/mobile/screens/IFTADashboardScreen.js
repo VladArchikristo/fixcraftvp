@@ -105,15 +105,15 @@ export default function IFTADashboardScreen() {
       const { data: res } = await api.get('/api/trips/ifta', { params: { quarter: q, year: y } });
       setData(res);
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось загрузить IFTA данные';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Failed to load IFTA data';
+      Alert.alert('Error', msg);
       setData(null);
     } finally {
       setLoading(false);
     }
   }, [quarter, year]);
 
-  // Загружаем профиль один раз для PDF
+  // Load profile once for PDF
   useFocusEffect(
     useCallback(() => {
       loadIFTA(quarter, year);
@@ -141,7 +141,7 @@ export default function IFTADashboardScreen() {
 
   const exportPDF = async () => {
     if (!data) {
-      Alert.alert('Нет данных', 'Нечего экспортировать');
+      Alert.alert('No data', 'Nothing to export');
       return;
     }
     setExportingPdf(true);
@@ -152,7 +152,7 @@ export default function IFTADashboardScreen() {
         base64: false,
       });
 
-      // Переименовываем файл
+      // Rename file
       const filename = `ifta_q${data.quarter}_${data.year}.pdf`;
       const destUri = FileSystem.cacheDirectory + filename;
       await FileSystem.copyAsync({ from: uri, to: destUri });
@@ -164,10 +164,10 @@ export default function IFTADashboardScreen() {
           UTI: 'com.adobe.pdf',
         });
       } else {
-        Alert.alert('PDF создан', `Сохранён: ${filename}`);
+        Alert.alert('PDF Created', `Saved: ${filename}`);
       }
     } catch (err) {
-      Alert.alert('Ошибка PDF', err.message || 'Не удалось создать PDF');
+      Alert.alert('Error PDF', err.message || 'Failed to create PDF');
       console.error('[IFTA PDF export]', err);
     } finally {
       setExportingPdf(false);
@@ -176,13 +176,13 @@ export default function IFTADashboardScreen() {
 
   const exportCSV = async () => {
     if (!data || !data.states || data.states.length === 0) {
-      Alert.alert('Нет данных', 'Нечего экспортировать');
+      Alert.alert('No data', 'Nothing to export');
       return;
     }
     setExporting(true);
 
     try {
-      // Формируем CSV
+      // Generate CSV
       const header = 'State,Miles,Consumed Gal,Purchased Gal,Net Gal,Tax Rate,Tax Due ($),Refund\n';
       const rows = data.states.map(s =>
         [
@@ -212,10 +212,10 @@ export default function IFTADashboardScreen() {
           UTI: 'public.comma-separated-values-text',
         });
       } else {
-        Alert.alert('Файл создан', `Сохранён: ${filename}`);
+        Alert.alert('File Created', `Saved: ${filename}`);
       }
     } catch (err) {
-      Alert.alert('Ошибка экспорта', err.message || 'Не удалось создать CSV');
+      Alert.alert('Export Error', err.message || 'Failed to create CSV');
       console.error('[IFTA export]', err);
     } finally {
       setExporting(false);
@@ -228,7 +228,7 @@ export default function IFTADashboardScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scroll}>
 
-      {/* Заголовок */}
+      {/* Header */}
       <Text style={styles.title}>IFTA Dashboard</Text>
 
       {/* GPS Tracking Card */}
@@ -291,9 +291,9 @@ export default function IFTADashboardScreen() {
         )}
       </View>
 
-      {/* Выбор квартала */}
+      {/* Quarter selection */}
       <View style={styles.selectorSection}>
-        {/* Год */}
+        {/* Year */}
         <View style={styles.yearRow}>
           <TouchableOpacity onPress={() => handleYearChange(-1)} style={styles.yearBtn}>
             <Ionicons name="chevron-back" size={18} color="#4fc3f7" />
@@ -304,7 +304,7 @@ export default function IFTADashboardScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Кварталы */}
+        {/* Quarterы */}
         <View style={styles.quarterRow}>
           {QUARTERS.map((q) => (
             <TouchableOpacity
@@ -324,41 +324,41 @@ export default function IFTADashboardScreen() {
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#4fc3f7" />
-          <Text style={styles.loadingText}>Считаем IFTA...</Text>
+          <Text style={styles.loadingText}>Calculating IFTA...</Text>
         </View>
       )}
 
-      {/* Данные */}
+      {/* Data */}
       {!loading && data && (
         <>
-          {/* Итоговая карточка */}
+          {/* Summary card */}
           <View style={[styles.totalCard, isRefund ? styles.totalCardRefund : styles.totalCardDue]}>
             <Text style={[styles.totalCardLabel, isRefund ? styles.refundText : styles.dueText]}>
-              {isRefund ? 'ВОЗВРАТ' : 'К ДОПЛАТЕ'}
+              {isRefund ? 'REFUND' : 'AMOUNT DUE'}
             </Text>
             <Text style={[styles.totalCardAmount, isRefund ? styles.refundText : styles.dueText]}>
               ${Math.abs(totalDue).toFixed(2)}
             </Text>
             <Text style={styles.totalCardSub}>
-              Q{data.quarter} {data.year} • {data.total_trips} поездок • {data.total_miles} миль • {data.avg_mpg} MPG
+              Q{data.quarter} {data.year} • {data.total_trips} trips • {data.total_miles} mi • {data.avg_mpg} MPG
             </Text>
           </View>
 
-          {/* Таблица по штатам */}
+          {/* State breakdown table */}
           {data.states && data.states.length > 0 ? (
             <View style={styles.tableCard}>
-              <Text style={styles.tableTitle}>Разбивка по штатам</Text>
+              <Text style={styles.tableTitle}>State breakdown</Text>
 
-              {/* Заголовок таблицы */}
+              {/* Header таблицы */}
               <View style={styles.tableHeader}>
-                <Text style={[styles.thCell, { flex: 0.7 }]}>Штат</Text>
-                <Text style={[styles.thCell, { flex: 1 }]}>Мили</Text>
-                <Text style={[styles.thCell, { flex: 1 }]}>Потр.</Text>
-                <Text style={[styles.thCell, { flex: 1 }]}>Куплено</Text>
-                <Text style={[styles.thCell, { flex: 0.9, textAlign: 'right' }]}>Нетто $</Text>
+                <Text style={[styles.thCell, { flex: 0.7 }]}>State</Text>
+                <Text style={[styles.thCell, { flex: 1 }]}>Miles</Text>
+                <Text style={[styles.thCell, { flex: 1 }]}>Used</Text>
+                <Text style={[styles.thCell, { flex: 1 }]}>Purchased</Text>
+                <Text style={[styles.thCell, { flex: 0.9, textAlign: 'right' }]}>Net $</Text>
               </View>
 
-              {/* Строки */}
+              {/* Rows */}
               {data.states.map((s) => (
                 <View key={s.state} style={styles.tableRow}>
                   <Text style={[styles.tdState, { flex: 0.7 }]}>{s.state}</Text>
@@ -377,9 +377,9 @@ export default function IFTADashboardScreen() {
                 </View>
               ))}
 
-              {/* Итог таблицы */}
+              {/* Table total */}
               <View style={styles.tableTotalRow}>
-                <Text style={[styles.tableTotalLabel, { flex: 2.7 }]}>ИТОГО</Text>
+                <Text style={[styles.tableTotalLabel, { flex: 2.7 }]}>TOTAL</Text>
                 <Text style={[styles.tableTotalLabel, { flex: 1 }]}>{data.total_miles}</Text>
                 <Text style={[styles.tableTotalLabel, { flex: 0.9 }]}></Text>
                 <Text style={[
@@ -394,24 +394,24 @@ export default function IFTADashboardScreen() {
           ) : (
             <View style={styles.emptyCard}>
               <Ionicons name="document-text-outline" size={40} color="#333" />
-              <Text style={styles.emptyText}>Нет данных за Q{quarter} {year}</Text>
-              <Text style={styles.emptySub}>Рассчитай маршрут или добавь заправки</Text>
+              <Text style={styles.emptyText}>No data за Q{quarter} {year}</Text>
+              <Text style={styles.emptySub}>Calculate a route or add fuel purchases</Text>
             </View>
           )}
 
-          {/* Легенда */}
+          {/* Legend */}
           <View style={styles.legend}>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#ef9a9a' }]} />
-              <Text style={styles.legendText}>Красный — доплата штату</Text>
+              <Text style={styles.legendText}>Red — amount due to state</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#81c784' }]} />
-              <Text style={styles.legendText}>Зелёный — возврат от штата</Text>
+              <Text style={styles.legendText}>Green — refund from state</Text>
             </View>
           </View>
 
-          {/* Кнопки экспорта */}
+          {/* Export buttons */}
           {data.states && data.states.length > 0 && (
             <View style={styles.exportRow}>
               <TouchableOpacity
@@ -446,13 +446,13 @@ export default function IFTADashboardScreen() {
         </>
       )}
 
-      {/* Нет данных после загрузки */}
+      {/* No data after loading */}
       {!loading && !data && (
         <View style={styles.emptyCard}>
           <Ionicons name="analytics-outline" size={48} color="#333" />
-          <Text style={styles.emptyText}>Нет данных</Text>
+          <Text style={styles.emptyText}>No data</Text>
           <TouchableOpacity style={styles.retryBtn} onPress={() => loadIFTA()}>
-            <Text style={styles.retryText}>Повторить</Text>
+            <Text style={styles.retryText}>Retry</Text>
           </TouchableOpacity>
         </View>
       )}

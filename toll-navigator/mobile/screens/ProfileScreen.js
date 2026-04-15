@@ -31,7 +31,7 @@ export default function ProfileScreen({ onLogout }) {
       setTruckType(d.truck_type || 'Semi-Truck');
       setUsdot(d.usdot || '');
     } catch (err) {
-      // Тихая ошибка при первом входе — профиль может не существовать
+      // Silent error on first login — profile may not exist yet
       console.log('[ProfileScreen] loadProfile error:', err?.message);
     } finally {
       setLoading(false);
@@ -40,7 +40,7 @@ export default function ProfileScreen({ onLogout }) {
 
   const saveProfile = async () => {
     if (!name.trim()) {
-      Alert.alert('Ошибка', 'Введите ваше имя');
+      Alert.alert('Error', 'Enter your name');
       return;
     }
     setSaving(true);
@@ -51,10 +51,10 @@ export default function ProfileScreen({ onLogout }) {
         truck_type: truckType,
         usdot: usdot.trim(),
       });
-      Alert.alert('Профиль обновлён', 'Данные успешно сохранены');
+      Alert.alert('Profile Updated', 'Data saved successfully');
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось сохранить профиль';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Failed to save profile';
+      Alert.alert('Error', msg);
     } finally {
       setSaving(false);
     }
@@ -62,11 +62,11 @@ export default function ProfileScreen({ onLogout }) {
 
   const handleLogout = () => {
     Alert.alert(
-      'Выйти из аккаунта',
-      'Вы уверены?',
+      'Sign Out',
+      'Are you sure?',
       [
-        { text: 'Отмена', style: 'cancel' },
-        { text: 'Выйти', style: 'destructive', onPress: onLogout },
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Sign Out', style: 'destructive', onPress: onLogout },
       ]
     );
   };
@@ -75,7 +75,7 @@ export default function ProfileScreen({ onLogout }) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4fc3f7" />
-        <Text style={styles.loadingText}>Загрузка профиля...</Text>
+        <Text style={styles.loadingText}>Loading profile...</Text>
       </View>
     );
   }
@@ -93,17 +93,17 @@ export default function ProfileScreen({ onLogout }) {
         {/* Header */}
         <View style={styles.header}>
           <Ionicons name="person-circle-outline" size={72} color="#4fc3f7" />
-          <Text style={styles.headerTitle}>Мой профиль</Text>
-          <Text style={styles.headerSub}>Данные водителя и компании</Text>
+          <Text style={styles.headerTitle}>My Profile</Text>
+          <Text style={styles.headerSub}>Driver and company details</Text>
         </View>
 
-        {/* Форма */}
+        {/* Form */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>ЛИЧНЫЕ ДАННЫЕ</Text>
+          <Text style={styles.cardTitle}>PERSONAL INFO</Text>
 
-          {/* Имя */}
+          {/* Name */}
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Имя водителя</Text>
+            <Text style={styles.label}>Driver Name</Text>
             <View style={styles.inputRow}>
               <Ionicons name="person-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
               <TextInput
@@ -117,9 +117,9 @@ export default function ProfileScreen({ onLogout }) {
             </View>
           </View>
 
-          {/* Компания */}
+          {/* Company */}
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Компания</Text>
+            <Text style={styles.label}>Company</Text>
             <View style={styles.inputRow}>
               <Ionicons name="business-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
               <TextInput
@@ -135,7 +135,7 @@ export default function ProfileScreen({ onLogout }) {
 
           {/* USDOT */}
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Номер USDOT</Text>
+            <Text style={styles.label}>USDOT Number</Text>
             <View style={styles.inputRow}>
               <Ionicons name="shield-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
               <TextInput
@@ -150,11 +150,11 @@ export default function ProfileScreen({ onLogout }) {
           </View>
         </View>
 
-        {/* Тип грузовика */}
+        {/* Truck Type */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>ТИП ТРАНСПОРТА</Text>
+          <Text style={styles.cardTitle}>VEHICLE TYPE</Text>
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Тип грузовика</Text>
+            <Text style={styles.label}>Truck Type</Text>
             <TouchableOpacity
               style={styles.pickerBtn}
               onPress={() => setShowTruckPicker(!showTruckPicker)}
@@ -211,18 +211,18 @@ export default function ProfileScreen({ onLogout }) {
           ) : (
             <>
               <Ionicons name="checkmark-circle-outline" size={20} color="#0d0d1a" />
-              <Text style={styles.saveBtnText}>Сохранить профиль</Text>
+              <Text style={styles.saveBtnText}>Save Profile</Text>
             </>
           )}
         </TouchableOpacity>
 
-        {/* Выход */}
+        {/* Logout */}
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={20} color="#f44336" />
-          <Text style={styles.logoutText}>Выйти из аккаунта</Text>
+          <Text style={styles.logoutText}>Sign Out</Text>
         </TouchableOpacity>
 
-        <Text style={styles.hint}>Toll Navigator • IFTA 2026 • Данные шифруются</Text>
+        <Text style={styles.hint}>HaulWallet • IFTA 2026 • Data encrypted</Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );

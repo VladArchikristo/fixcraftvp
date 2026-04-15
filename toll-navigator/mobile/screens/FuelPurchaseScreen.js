@@ -37,7 +37,7 @@ export default function FuelPurchaseScreen({ navigation }) {
       }
 
       if (permResult.status !== 'granted') {
-        Alert.alert('Нет доступа', useCamera ? 'Разреши доступ к камере в настройках' : 'Разреши доступ к галерее в настройках');
+        Alert.alert('No Access', useCamera ? 'Allow camera access in Settings' : 'Allow photo library access in Settings');
         return;
       }
 
@@ -59,7 +59,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         await scanReceipt(asset.base64);
       }
     } catch (err) {
-      Alert.alert('Ошибка', 'Не удалось открыть ' + (useCamera ? 'камеру' : 'галерею'));
+      Alert.alert('Error', 'Failed to open ' + (useCamera ? 'camera' : 'gallery'));
       console.error('[FuelPurchase] pickImage error:', err);
     }
   };
@@ -78,10 +78,10 @@ export default function FuelPurchaseScreen({ navigation }) {
       if (data.station_name) setStationName(data.station_name);
 
       if (data.mock) {
-        Alert.alert('Режим разработки', 'OCR ключ не настроен — заполнены mock-данные. Введи реальные значения.');
+        Alert.alert('Development Mode', 'OCR key not configured — mock data filled. Enter real values.');
       }
     } catch (err) {
-      Alert.alert('Ошибка OCR', 'Не удалось распознать чек. Введи данные вручную.');
+      Alert.alert('OCR Error', 'Failed to scan receipt. Enter data manually.');
       console.error('[FuelPurchase] scanReceipt error:', err?.response?.data || err.message);
     } finally {
       setScanning(false);
@@ -90,11 +90,11 @@ export default function FuelPurchaseScreen({ navigation }) {
 
   const handleSave = async () => {
     if (!state || !gallons) {
-      Alert.alert('Заполни поля', 'Штат и галлоны обязательны');
+      Alert.alert('Fill in fields', 'State and gallons are required');
       return;
     }
     if (!US_STATES.includes(state.toUpperCase())) {
-      Alert.alert('Неверный штат', 'Введи аббревиатуру штата США, например TX, CA, FL');
+      Alert.alert('Invalid state', 'Enter a US state abbreviation, e.g. TX, CA, FL');
       return;
     }
 
@@ -108,11 +108,11 @@ export default function FuelPurchaseScreen({ navigation }) {
         purchase_date: date || null,
       });
 
-      Alert.alert('Сохранено', `Заправка ${gallons} галлонов в ${state.toUpperCase()} добавлена`, [
+      Alert.alert('Saved', `Fuel purchase ${gallons} gal in ${state.toUpperCase()} added`, [
         { text: 'OK', onPress: () => navigation.goBack() },
       ]);
     } catch (err) {
-      Alert.alert('Ошибка', err.response?.data?.error || 'Не удалось сохранить');
+      Alert.alert('Error', err.response?.data?.error || 'Failed to save');
       console.error('[FuelPurchase] save error:', err?.response?.data || err.message);
     } finally {
       setSaving(false);
@@ -150,9 +150,9 @@ export default function FuelPurchaseScreen({ navigation }) {
         </View>
       )}
 
-      {/* Форма */}
+      {/* Form */}
       <View style={styles.form}>
-        <Text style={styles.label}>Штат *</Text>
+        <Text style={styles.label}>State *</Text>
         <TextInput
           style={styles.input}
           placeholder="TX"
@@ -212,7 +212,7 @@ export default function FuelPurchaseScreen({ navigation }) {
           ? <ActivityIndicator size="small" color="#fff" />
           : <Ionicons name="checkmark-circle" size={20} color="#fff" />
         }
-        <Text style={styles.saveBtnText}>{saving ? 'Сохраняем...' : 'Сохранить заправку'}</Text>
+        <Text style={styles.saveBtnText}>{saving ? 'Saving...' : 'Save Fuel Purchase'}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

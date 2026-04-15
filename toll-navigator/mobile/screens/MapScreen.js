@@ -117,12 +117,12 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total) {
 
     var fromMarker = L.marker([${fromCoords[0]}, ${fromCoords[1]}], { icon: fromIcon })
       .addTo(map)
-      .bindPopup('<b style="color:#4fc3f7">📍 ${fromLabel.replace(/'/g, "\\'")}</b><br>Откуда')
+      .bindPopup('<b style="color:#4fc3f7">📍 ${fromLabel.replace(/'/g, "\\'")}</b><br>From')
       .openPopup();
 
     var toMarker = L.marker([${toCoords[0]}, ${toCoords[1]}], { icon: toIcon })
       .addTo(map)
-      .bindPopup('<b style="color:#81c784">🏁 ${toLabel.replace(/'/g, "\\'")}</b><br>Куда');
+      .bindPopup('<b style="color:#81c784">🏁 ${toLabel.replace(/'/g, "\\'")}</b><br>To');
 
     // Draw route line
     var latlngs = [
@@ -174,7 +174,7 @@ export default function MapScreen({ route, navigation }) {
       {!hasCoords ? (
         <View style={styles.noCoords}>
           <Text style={styles.noCoordsIcon}>🗺️</Text>
-          <Text style={styles.noCoordsText}>Координаты для этого маршрута не найдены</Text>
+          <Text style={styles.noCoordsText}>Координаты для этого routeа не найдены</Text>
           <Text style={styles.noCoordsHint}>Убедись, что введены города из списка подсказок</Text>
         </View>
       ) : (

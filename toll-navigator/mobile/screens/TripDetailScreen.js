@@ -31,7 +31,7 @@ export default function TripDetailScreen({ route, navigation }) {
       const { data } = await api.get(`/api/trips/${tripId}`);
       setTrip(data);
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось загрузить поездку';
+      const msg = err.response?.data?.error || 'Failed to load trip';
       setError(msg);
     } finally {
       setLoading(false);
@@ -40,12 +40,12 @@ export default function TripDetailScreen({ route, navigation }) {
 
   const handleDelete = () => {
     Alert.alert(
-      'Удалить поездку?',
-      `${trip.from_city} → ${trip.to_city}\n\nЭто действие нельзя отменить.`,
+      'Delete trip?',
+      `${trip.from_city} → ${trip.to_city}\n\nThis action cannot be undone.`,
       [
-        { text: 'Отмена', style: 'cancel' },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Удалить',
+          text: 'Delete',
           style: 'destructive',
           onPress: confirmDelete,
         },
@@ -59,8 +59,8 @@ export default function TripDetailScreen({ route, navigation }) {
       await api.delete(`/api/trips/${tripId}`);
       navigation.goBack();
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось удалить поездку';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Failed to delete trip';
+      Alert.alert('Error', msg);
     } finally {
       setDeleting(false);
     }
@@ -70,7 +70,7 @@ export default function TripDetailScreen({ route, navigation }) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#4fc3f7" />
-        <Text style={styles.loadingText}>Загружаем поездку...</Text>
+        <Text style={styles.loadingText}>Loading trip...</Text>
       </View>
     );
   }
@@ -79,9 +79,9 @@ export default function TripDetailScreen({ route, navigation }) {
     return (
       <View style={styles.center}>
         <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
-        <Text style={styles.errorText}>{error || 'Поездка не найдена'}</Text>
+        <Text style={styles.errorText}>{error || 'Trip not found'}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={loadTrip}>
-          <Text style={styles.retryText}>Повторить</Text>
+          <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
     );
@@ -94,7 +94,7 @@ export default function TripDetailScreen({ route, navigation }) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scroll}>
-      {/* Маршрут */}
+      {/* Route */}
       <View style={styles.routeCard}>
         <View style={styles.routeRow}>
           <View style={styles.cityBlock}>
@@ -115,7 +115,7 @@ export default function TripDetailScreen({ route, navigation }) {
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="navigate-outline" size={14} color="#555" />
-            <Text style={styles.metaText}>{(trip.total_miles || 0).toFixed(1)} миль</Text>
+            <Text style={styles.metaText}>{(trip.total_miles || 0).toFixed(1)} mi</Text>
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="speedometer-outline" size={14} color="#555" />
@@ -128,29 +128,29 @@ export default function TripDetailScreen({ route, navigation }) {
         </View>
       </View>
 
-      {/* Расходы */}
+      {/* Costs */}
       <View style={styles.sectionCard}>
-        <Text style={styles.sectionTitle}>Расходы</Text>
+        <Text style={styles.sectionTitle}>Costs</Text>
         <View style={styles.costsRow}>
           <View style={styles.costItem}>
-            <Text style={styles.costLabel}>Толлы</Text>
+            <Text style={styles.costLabel}>Tolls</Text>
             <Text style={styles.costValue}>${(trip.toll_cost || 0).toFixed(2)}</Text>
           </View>
           <View style={styles.costItem}>
-            <Text style={styles.costLabel}>Топливо</Text>
+            <Text style={styles.costLabel}>Fuel</Text>
             <Text style={styles.costValue}>${(trip.fuel_cost || 0).toFixed(2)}</Text>
           </View>
           <View style={[styles.costItem, styles.costTotalItem]}>
-            <Text style={styles.costTotalLabel}>Итого</Text>
+            <Text style={styles.costTotalLabel}>Total</Text>
             <Text style={styles.costTotalValue}>${totalCost}</Text>
           </View>
         </View>
       </View>
 
-      {/* IFTA — мили по штатам */}
+      {/* IFTA — miles by state */}
       {stateEntries.length > 0 && (
         <View style={styles.sectionCard}>
-          <Text style={styles.sectionTitle}>IFTA — мили по штатам</Text>
+          <Text style={styles.sectionTitle}>IFTA — miles by state</Text>
           {stateEntries.map(([state, miles]) => (
             <View key={state} style={styles.stateRow}>
               <Text style={styles.stateCode}>{state}</Text>
@@ -168,10 +168,10 @@ export default function TripDetailScreen({ route, navigation }) {
         </View>
       )}
 
-      {/* Заправки по поездке */}
+      {/* Trip fuel purchases */}
       {fuelPurchases.length > 0 && (
         <View style={styles.sectionCard}>
-          <Text style={styles.sectionTitle}>Заправки по поездке</Text>
+          <Text style={styles.sectionTitle}>Trip fuel purchases</Text>
           {fuelPurchases.map((fp, idx) => (
             <View key={fp.id || idx} style={styles.fuelRow}>
               <View style={styles.fuelLeft}>
@@ -189,7 +189,7 @@ export default function TripDetailScreen({ route, navigation }) {
         </View>
       )}
 
-      {/* Кнопка удаления */}
+      {/* Delete button */}
       <TouchableOpacity
         style={[styles.deleteBtn, deleting && styles.deleteBtnDisabled]}
         onPress={handleDelete}
@@ -199,7 +199,7 @@ export default function TripDetailScreen({ route, navigation }) {
           ? <ActivityIndicator size="small" color="#fff" />
           : <Ionicons name="trash-outline" size={18} color="#fff" />
         }
-        <Text style={styles.deleteBtnText}>{deleting ? 'Удаляем...' : 'Удалить поездку'}</Text>
+        <Text style={styles.deleteBtnText}>{deleting ? 'Deleting...' : 'Delete Trip'}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

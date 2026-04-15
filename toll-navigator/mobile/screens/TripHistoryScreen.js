@@ -10,10 +10,10 @@ import api from '../services/api';
 const PAGE_LIMIT = 20;
 
 const DATE_FILTERS = [
-  { label: '7 дней', value: '7d' },
-  { label: '30 дней', value: '30d' },
-  { label: 'Квартал', value: 'quarter' },
-  { label: 'Всё', value: 'all' },
+  { label: '7 days', value: '7d' },
+  { label: '30 days', value: '30d' },
+  { label: 'Quarter', value: 'quarter' },
+  { label: 'All', value: 'all' },
 ];
 
 function getDateRange(filterValue) {
@@ -52,7 +52,7 @@ function TripCard({ trip, onPress }) {
 
   return (
     <TouchableOpacity style={styles.card} onPress={() => onPress(trip)} activeOpacity={0.75}>
-      {/* Маршрут */}
+      {/* Route */}
       <View style={styles.routeRow}>
         <View style={styles.cityBlock}>
           <Text style={styles.cityLabel}>ИЗ</Text>
@@ -65,7 +65,7 @@ function TripCard({ trip, onPress }) {
         </View>
       </View>
 
-      {/* Метаданные */}
+      {/* Metadata */}
       <View style={styles.metaRow}>
         <View style={styles.metaItem}>
           <Ionicons name="calendar-outline" size={13} color="#555" />
@@ -73,37 +73,37 @@ function TripCard({ trip, onPress }) {
         </View>
         <View style={styles.metaItem}>
           <Ionicons name="navigate-outline" size={13} color="#555" />
-          <Text style={styles.metaText}>{(trip.total_miles || 0).toFixed(0)} миль</Text>
+          <Text style={styles.metaText}>{(trip.total_miles || 0).toFixed(0)} mi</Text>
         </View>
         {stateCount > 0 && (
           <View style={styles.metaItem}>
             <Ionicons name="map-outline" size={13} color="#555" />
-            <Text style={styles.metaText}>{stateCount} штат{stateCount > 1 ? 'ов' : ''}</Text>
+            <Text style={styles.metaText}>{stateCount} state{stateCount > 1 ? 's' : ''}</Text>
           </View>
         )}
       </View>
 
-      {/* Стоимость */}
+      {/* Cost */}
       <View style={styles.costsRow}>
         {trip.toll_cost > 0 && (
           <View style={styles.costItem}>
-            <Text style={styles.costLabel}>Толлы</Text>
+            <Text style={styles.costLabel}>Tolls</Text>
             <Text style={styles.costValue}>${(trip.toll_cost || 0).toFixed(2)}</Text>
           </View>
         )}
         {trip.fuel_cost > 0 && (
           <View style={styles.costItem}>
-            <Text style={styles.costLabel}>Топливо</Text>
+            <Text style={styles.costLabel}>Fuel</Text>
             <Text style={styles.costValue}>${(trip.fuel_cost || 0).toFixed(2)}</Text>
           </View>
         )}
         <View style={[styles.costItem, styles.costTotal]}>
-          <Text style={styles.costTotalLabel}>Итого</Text>
+          <Text style={styles.costTotalLabel}>Total</Text>
           <Text style={styles.costTotalValue}>${totalCost}</Text>
         </View>
       </View>
 
-      {/* Квартал */}
+      {/* Quarter */}
       <View style={styles.quarterBadge}>
         <Text style={styles.quarterText}>Q{trip.quarter} {trip.year}</Text>
       </View>
@@ -121,7 +121,7 @@ export default function TripHistoryScreen({ navigation }) {
   const [hasMore, setHasMore] = useState(false);
   const [total, setTotal] = useState(0);
 
-  // Фильтры
+  // Filters
   const [searchText, setSearchText] = useState('');
   const [dateFilter, setDateFilter] = useState('all');
 
@@ -154,9 +154,9 @@ export default function TripHistoryScreen({ navigation }) {
       setHasMore(data.hasMore || false);
       setPage(pageNum);
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось загрузить историю';
+      const msg = err.response?.data?.error || 'Failed to load history';
       setError(msg);
-      if (refresh) Alert.alert('Ошибка', msg);
+      if (refresh) Alert.alert('Error', msg);
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -206,7 +206,7 @@ export default function TripHistoryScreen({ navigation }) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#4fc3f7" />
-        <Text style={styles.loadingText}>Загружаем историю...</Text>
+        <Text style={styles.loadingText}>Loading history...</Text>
       </View>
     );
   }
@@ -217,7 +217,7 @@ export default function TripHistoryScreen({ navigation }) {
         <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={() => loadTrips({ pageNum: 1 })}>
-          <Text style={styles.retryText}>Повторить</Text>
+          <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
     );
@@ -226,16 +226,16 @@ export default function TripHistoryScreen({ navigation }) {
   const ListHeader = (
     <View>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>История поездок</Text>
-        <Text style={styles.headerSub}>{total} маршрут{total !== 1 ? 'ов' : ''}</Text>
+        <Text style={styles.headerTitle}>Trip History</Text>
+        <Text style={styles.headerSub}>{total} route{total !== 1 ? 's' : ''}</Text>
       </View>
 
-      {/* Строка поиска */}
+      {/* Search bar */}
       <View style={styles.searchRow}>
         <Ionicons name="search-outline" size={16} color="#555" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Поиск по штату или маршруту..."
+          placeholder="Search by state or route..."
           placeholderTextColor="#444"
           value={searchText}
           onChangeText={handleSearchChange}
@@ -248,7 +248,7 @@ export default function TripHistoryScreen({ navigation }) {
         )}
       </View>
 
-      {/* Фильтр по датам */}
+      {/* Date filter */}
       <View style={styles.filterRow}>
         {DATE_FILTERS.map(f => (
           <TouchableOpacity
@@ -268,11 +268,11 @@ export default function TripHistoryScreen({ navigation }) {
   const EmptyState = (
     <View style={styles.emptyState}>
       <Text style={styles.emptyIcon}>🚛</Text>
-      <Text style={styles.emptyTitle}>Поездок пока нет</Text>
+      <Text style={styles.emptyTitle}>No trips yet</Text>
       <Text style={styles.emptySubtitle}>
         {searchText || dateFilter !== 'all'
-          ? 'Ничего не найдено — попробуй другой фильтр'
-          : 'Запустите маршрут чтобы начать отслеживание'}
+          ? 'Nothing found — try different filters'
+          : 'Calculate a route to start tracking'}
       </Text>
     </View>
   );

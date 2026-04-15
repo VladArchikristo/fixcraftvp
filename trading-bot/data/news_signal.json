@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-04-14T22:00:27.176245+00:00",
-  "sentiment": "slightly_bearish",
-  "score": -0.48,
+  "timestamp": "2026-04-15T01:00:28.286225+00:00",
+  "sentiment": "bearish",
+  "score": -0.5,
   "fear_greed": {
-    "value": 21,
+    "value": 23,
     "label": "Extreme Fear",
     "trend": "rising"
   },
@@ -25,16 +25,16 @@
   "trending_coins": [
     "RAVE",
     "ARIA",
-    "TAO",
     "ENJ",
-    "BTC",
-    "PENGU",
-    "GENIUS"
+    "TAO",
+    "MON",
+    "DOT",
+    "PENGU"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.79,
-  "cached_at": 1776204027.176354
+  "fetch_time_sec": 2.63,
+  "cached_at": 1776214828.286365
 }

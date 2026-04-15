@@ -6,7 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { calculateRoute } from '../services/api';
 
-// Список штатов США для Picker заправок
+// US states list for fuel purchase picker
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
   'ID','IL','IN','IA','KS','KY','LA','ME','MD','MA',
@@ -45,9 +45,9 @@ export default function HomeScreen({ navigation }) {
   const [showFuel, setShowFuel] = useState(false);
   const [mpg, setMpg] = useState('6.5');
   const [fuelPrice, setFuelPrice] = useState('3.80');
-  // Заправки по штатам (для точного IFTA)
+  // Fuel purchases by state (for precise IFTA)
   const [fuelPurchases, setFuelPurchases] = useState([]); // [{state, gallons}]
-  const [showStatePicker, setShowStatePicker] = useState(null); // index строки у которой открыт пикер
+  const [showStatePicker, setShowStatePicker] = useState(null); // index of row with open picker
 
   const fromSuggestions = CITY_SUGGESTIONS.filter(c =>
     from.length > 1 && c.toLowerCase().includes(from.toLowerCase())
@@ -68,7 +68,7 @@ export default function HomeScreen({ navigation }) {
     setShowStatePicker(null);
   };
 
-  // Хелперы для списка заправок
+  // Helpers for fuel purchases list
   const addFuelPurchase = () => {
     setFuelPurchases(prev => [...prev, { state: 'TX', gallons: '' }]);
   };
@@ -89,13 +89,13 @@ export default function HomeScreen({ navigation }) {
 
   const handleCalculate = async () => {
     if (!from.trim() || !to.trim()) {
-      Alert.alert('Заполни маршрут', 'Введи город отправления и назначения');
+      Alert.alert('Enter Route', 'Enter origin and destination city');
       return;
     }
     if (showFuel) {
       const mpgVal = parseFloat(mpg);
       if (!mpg || isNaN(mpgVal) || mpgVal <= 0 || mpgVal > 100) {
-        Alert.alert('Ошибка', 'Введите корректный расход топлива (1-100 MPG)');
+        Alert.alert('Error', 'Enter valid fuel consumption (1-100 MPG)');
         return;
       }
     }
@@ -106,7 +106,7 @@ export default function HomeScreen({ navigation }) {
         mpg: parseFloat(mpg) || 6.5,
         fuelPrice: parseFloat(fuelPrice) || 3.80,
       } : null;
-      // Подготовить данные о заправках: только валидные строки (штат + галлоны > 0)
+      // Prepare fuel purchase data: only valid rows (state + gallons > 0)
       const validPurchases = showFuel
         ? fuelPurchases
             .map(p => ({ state: p.state, gallons: parseFloat(p.gallons) || 0 }))
@@ -117,8 +117,8 @@ export default function HomeScreen({ navigation }) {
         fuelPurchases: validPurchases.length > 0 ? validPurchases : undefined,
       });
     } catch (err) {
-      const msg = err.response?.data?.error || 'Ошибка соединения с сервером';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Server connection error';
+      Alert.alert('Error', msg);
     } finally {
       setLoading(false);
     }
@@ -132,13 +132,13 @@ export default function HomeScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.logo}>🛣️ Toll Navigator</Text>
-          <Text style={styles.subtitle}>Полная стоимость маршрута для грузовиков</Text>
+          <Text style={styles.logo}>🛣️ HaulWallet</Text>
+          <Text style={styles.subtitle}>Total route cost for trucks</Text>
         </View>
 
         {/* From */}
         <View style={styles.card}>
-          <Text style={styles.label}>📍 Откуда</Text>
+          <Text style={styles.label}>📍 From</Text>
           <View style={styles.inputRow}>
             <Ionicons name="location-outline" size={20} color="#4fc3f7" style={styles.inputIcon} />
             <TextInput
@@ -165,7 +165,7 @@ export default function HomeScreen({ navigation }) {
 
         {/* To */}
         <View style={styles.card}>
-          <Text style={styles.label}>🏁 Куда</Text>
+          <Text style={styles.label}>🏁 To</Text>
           <View style={styles.inputRow}>
             <Ionicons name="flag-outline" size={20} color="#81c784" style={styles.inputIcon} />
             <TextInput
@@ -187,7 +187,7 @@ export default function HomeScreen({ navigation }) {
 
         {/* Truck type */}
         <View style={styles.card}>
-          <Text style={styles.label}>🚛 Тип грузовика</Text>
+          <Text style={styles.label}>🚛 Truck Type</Text>
           <View style={styles.truckRow}>
             {TRUCK_TYPES.map(t => (
               <TouchableOpacity
@@ -212,10 +212,10 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.fuelToggleIcon}>⛽</Text>
           <View style={styles.fuelToggleText}>
             <Text style={[styles.fuelToggleTitle, showFuel && styles.fuelToggleTitleActive]}>
-              Добавить стоимость топлива
+              Add fuel cost
             </Text>
             <Text style={styles.fuelToggleSub}>
-              {showFuel ? 'Нажми чтобы скрыть' : 'MPG + цена → полная стоимость рейса'}
+              {showFuel ? 'Tap to hide' : 'MPG + price → total trip cost'}
             </Text>
           </View>
           <Ionicons
@@ -230,7 +230,7 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.fuelCard}>
             <View style={styles.fuelRow}>
               <View style={styles.fuelField}>
-                <Text style={styles.fuelLabel}>⛽ Расход (MPG)</Text>
+                <Text style={styles.fuelLabel}>⛽ Fuel Economy (MPG)</Text>
                 <TextInput
                   style={styles.fuelInput}
                   value={mpg}
@@ -239,10 +239,10 @@ export default function HomeScreen({ navigation }) {
                   placeholder="6.5"
                   placeholderTextColor="#555"
                 />
-                <Text style={styles.fuelHint}>Обычный трак: 5.5–7 MPG</Text>
+                <Text style={styles.fuelHint}>Standard truck: 5.5–7 MPG</Text>
               </View>
               <View style={styles.fuelField}>
-                <Text style={styles.fuelLabel}>💵 Цена галлона</Text>
+                <Text style={styles.fuelLabel}>💵 Price per gallon</Text>
                 <TextInput
                   style={styles.fuelInput}
                   value={fuelPrice}
@@ -251,28 +251,28 @@ export default function HomeScreen({ navigation }) {
                   placeholder="3.80"
                   placeholderTextColor="#555"
                 />
-                <Text style={styles.fuelHint}>Дизель сейчас ~$3.80</Text>
+                <Text style={styles.fuelHint}>Diesel currently ~$3.80</Text>
               </View>
             </View>
-            {/* Секция заправок по штатам */}
+            {/* Fuel purchases by state section */}
             <View style={styles.purchasesSection}>
               <View style={styles.purchasesHeader}>
                 <View>
-                  <Text style={styles.purchasesTitle}>⛽ Заправки по штатам</Text>
+                  <Text style={styles.purchasesTitle}>⛽ Fuel purchases by state</Text>
                   <Text style={styles.purchasesSub}>
                     {fuelPurchases.length > 0
-                      ? `${fuelPurchases.length} штат(а) — точный IFTA расчёт`
-                      : 'Необязательно — для точного IFTA'}
+                      ? `${fuelPurchases.length} state(s) — precise IFTA calculation`
+                      : 'Optional — for precise IFTA'}
                   </Text>
                 </View>
                 <TouchableOpacity style={styles.addPurchaseBtn} onPress={addFuelPurchase}>
-                  <Text style={styles.addPurchaseBtnText}>+ Добавить</Text>
+                  <Text style={styles.addPurchaseBtnText}>+ Add</Text>
                 </TouchableOpacity>
               </View>
 
               {fuelPurchases.map((p, index) => (
                 <View key={index} style={styles.purchaseRow}>
-                  {/* Выбор штата */}
+                  {/* State selection */}
                   <TouchableOpacity
                     style={styles.stateSelector}
                     onPress={() => setShowStatePicker(showStatePicker === index ? null : index)}
@@ -281,7 +281,7 @@ export default function HomeScreen({ navigation }) {
                     <Text style={styles.stateSelectorArrow}>▼</Text>
                   </TouchableOpacity>
 
-                  {/* Пикер штатов (inline dropdown) */}
+                  {/* State picker (inline dropdown) */}
                   {showStatePicker === index && (
                     <View style={styles.statePickerContainer}>
                       <ScrollView style={styles.statePickerScroll} nestedScrollEnabled>
@@ -300,17 +300,17 @@ export default function HomeScreen({ navigation }) {
                     </View>
                   )}
 
-                  {/* Поле галлонов */}
+                  {/* Gallons field */}
                   <TextInput
                     style={styles.gallonsInput}
                     value={p.gallons}
                     onChangeText={val => updatePurchaseGallons(index, val)}
                     keyboardType="decimal-pad"
-                    placeholder="галлоны"
+                    placeholder="gallons"
                     placeholderTextColor="#444"
                   />
 
-                  {/* Удалить строку */}
+                  {/* Delete row */}
                   <TouchableOpacity
                     style={styles.removePurchaseBtn}
                     onPress={() => removeFuelPurchase(index)}
@@ -322,7 +322,7 @@ export default function HomeScreen({ navigation }) {
             </View>
 
             <Text style={styles.fuelNote}>
-              📊 Увидишь: толлы + топливо + IFTA разбивка + итог рейса
+              📊 You'll see: tolls + fuel + IFTA breakdown + trip total
             </Text>
           </View>
         )}
@@ -336,7 +336,7 @@ export default function HomeScreen({ navigation }) {
           {loading
             ? <ActivityIndicator color="#fff" />
             : <Text style={styles.calcBtnText}>
-                {showFuel ? '⛽ Рассчитать полную стоимость →' : 'Рассчитать маршрут →'}
+                {showFuel ? '⛽ Calculate full cost →' : 'Calculate route →'}
               </Text>
           }
         </TouchableOpacity>
@@ -345,11 +345,11 @@ export default function HomeScreen({ navigation }) {
         {(from || to) && (
           <TouchableOpacity style={styles.clearBtn} onPress={handleClear}>
             <Ionicons name="close-circle-outline" size={16} color="#888" />
-            <Text style={styles.clearBtnText}>Очистить форму</Text>
+            <Text style={styles.clearBtnText}>Clear form</Text>
           </TouchableOpacity>
         )}
 
-        <Text style={styles.hint}>80+ городов США • IFTA 2026 • Данные платных дорог 2026</Text>
+        <Text style={styles.hint}>80+ US cities • IFTA 2026 • Toll data 2026</Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -60,10 +60,10 @@ export default function HistoryScreen({ navigation }) {
     return (
       <View style={styles.center}>
         <Ionicons name="lock-closed-outline" size={48} color="#333" />
-        <Text style={styles.emptyTitle}>История недоступна</Text>
-        <Text style={styles.emptyText}>Войдите в аккаунт чтобы сохранять маршруты</Text>
+        <Text style={styles.emptyTitle}>History unavailable</Text>
+        <Text style={styles.emptyText}>Sign in to save routes</Text>
         <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Calc')}>
-          <Text style={styles.actionBtnText}>Рассчитать маршрут</Text>
+          <Text style={styles.actionBtnText}>Calculate Route</Text>
         </TouchableOpacity>
       </View>
     );
@@ -73,10 +73,10 @@ export default function HistoryScreen({ navigation }) {
     return (
       <View style={styles.center}>
         <Ionicons name="time-outline" size={48} color="#333" />
-        <Text style={styles.emptyTitle}>История пуста</Text>
-        <Text style={styles.emptyText}>Рассчитанные маршруты появятся здесь</Text>
+        <Text style={styles.emptyTitle}>History is empty</Text>
+        <Text style={styles.emptyText}>Calculated routes will appear here</Text>
         <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Calc')}>
-          <Text style={styles.actionBtnText}>Первый расчёт →</Text>
+          <Text style={styles.actionBtnText}>First calculation →</Text>
         </TouchableOpacity>
       </View>
     );
@@ -106,7 +106,7 @@ export default function HistoryScreen({ navigation }) {
               <Text style={styles.date}>{formatDate(item.created_at)}</Text>
               <Text style={styles.cost}>${Number(item.total_toll ?? item.toll_cost ?? 0).toFixed(2)}</Text>
             </View>
-            <Text style={styles.meta}>{item.distance_miles} миль</Text>
+            <Text style={styles.meta}>{item.distance_miles} mi</Text>
           </View>
         )}
       />

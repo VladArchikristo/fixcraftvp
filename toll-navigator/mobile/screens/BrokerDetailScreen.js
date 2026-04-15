@@ -7,11 +7,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { getBrokerDetail, deleteBrokerReview } from '../services/brokers';
 
 const ISSUE_TYPE_MAP = {
-  late_payment:  { label: 'Задержка оплаты', emoji: '🕐', color: '#ffb74d' },
-  fraud:         { label: 'Мошенничество',   emoji: '⚠️', color: '#ef9a9a' },
-  double_broker: { label: 'Двойной брокер',  emoji: '🔄', color: '#ce93d8' },
-  low_rate:      { label: 'Низкая ставка',   emoji: '💰', color: '#80cbc4' },
-  other:         { label: 'Другое',           emoji: '❓', color: '#90a4ae' },
+  late_payment:  { label: 'Late Payment', emoji: '🕐', color: '#ffb74d' },
+  fraud:         { label: 'Fraud',   emoji: '⚠️', color: '#ef9a9a' },
+  double_broker: { label: 'Double Broker',  emoji: '🔄', color: '#ce93d8' },
+  low_rate:      { label: 'Low Rate',   emoji: '💰', color: '#80cbc4' },
+  other:         { label: 'Other',           emoji: '❓', color: '#90a4ae' },
 };
 
 function formatDate(dateStr) {
@@ -88,7 +88,7 @@ function ReviewCard({ review, onDelete }) {
       <View style={styles.reviewFooter}>
         <Text style={styles.reviewDate}>{formatDate(review.created_at)}</Text>
         {review.is_anonymous ? (
-          <Text style={styles.reviewAnon}>Анонимно</Text>
+          <Text style={styles.reviewAnon}>Anonymous</Text>
         ) : null}
       </View>
     </View>
@@ -106,7 +106,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
   const [hasMoreReviews, setHasMoreReviews] = useState(false);
 
   useEffect(() => {
-    navigation.setOptions({ title: brokerName || 'Брокер' });
+    navigation.setOptions({ title: brokerName || 'Broker' });
     loadBroker(1);
   }, [brokerId]);
 
@@ -130,7 +130,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
       setReviewsPage(page);
       setHasMoreReviews(data.reviews_has_more || false);
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось загрузить данные брокера';
+      const msg = err.response?.data?.error || 'Failed to load broker data';
       if (page === 1) setError(msg);
     } finally {
       if (page === 1) setLoading(false);
@@ -152,12 +152,12 @@ export default function BrokerDetailScreen({ route, navigation }) {
 
   const handleDeleteReview = (review) => {
     Alert.alert(
-      'Удалить отзыв?',
-      'Это действие нельзя отменить.',
+      'Delete review?',
+      'This action cannot be undone.',
       [
-        { text: 'Отмена', style: 'cancel' },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Удалить',
+          text: 'Delete',
           style: 'destructive',
           onPress: () => confirmDeleteReview(review.id),
         },
@@ -175,8 +175,8 @@ export default function BrokerDetailScreen({ route, navigation }) {
         review_count: (prev.review_count || 1) - 1,
       }));
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось удалить отзыв';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Failed to delete review';
+      Alert.alert('Error', msg);
     } finally {
       setDeletingId(null);
     }
@@ -196,7 +196,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#4fc3f7" />
-        <Text style={styles.loadingText}>Загружаем брокера...</Text>
+        <Text style={styles.loadingText}>Loading broker...</Text>
       </View>
     );
   }
@@ -205,9 +205,9 @@ export default function BrokerDetailScreen({ route, navigation }) {
     return (
       <View style={styles.center}>
         <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
-        <Text style={styles.errorText}>{error || 'Брокер не найден'}</Text>
+        <Text style={styles.errorText}>{error || 'Broker not found'}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={loadBroker}>
-          <Text style={styles.retryText}>Повторить</Text>
+          <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
     );
@@ -221,7 +221,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
     <View style={{ flex: 1, backgroundColor: '#0d0d1a' }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scroll}>
 
-        {/* Шапка брокера */}
+        {/* Broker header */}
         <View style={styles.brokerCard}>
           <Text style={styles.brokerName}>{broker.name}</Text>
 
@@ -264,7 +264,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
           </View>
         </View>
 
-        {/* Блок рейтинга */}
+        {/* Rating block */}
         <View style={styles.ratingCard}>
           <View style={styles.ratingMain}>
             <Text style={[styles.ratingBig, { color: ratingColor }]}>
@@ -273,12 +273,12 @@ export default function BrokerDetailScreen({ route, navigation }) {
             <View style={styles.ratingRight}>
               <StarRating rating={avgRating} size={18} />
               <Text style={styles.ratingReviewCount}>
-                {broker.review_count || 0} отзыв{getReviewWord(broker.review_count || 0)}
+                {broker.review_count || 0} review{getReviewWord(broker.review_count || 0)}
               </Text>
             </View>
           </View>
 
-          {/* Распределение звёзд */}
+          {/* Star distribution */}
           {broker.rating_distribution && (
             <View style={styles.ratingDistribution}>
               {[5, 4, 3, 2, 1].map(star => {
@@ -299,16 +299,16 @@ export default function BrokerDetailScreen({ route, navigation }) {
           )}
         </View>
 
-        {/* Отзывы */}
+        {/* Reviews */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Отзывы</Text>
+          <Text style={styles.sectionTitle}>Reviews</Text>
           <Text style={styles.sectionCount}>{reviews.length}</Text>
         </View>
 
         {reviews.length === 0 ? (
           <View style={styles.noReviews}>
-            <Text style={styles.noReviewsText}>Отзывов пока нет</Text>
-            <Text style={styles.noReviewsSub}>Будьте первым — напишите отзыв</Text>
+            <Text style={styles.noReviewsText}>No reviews yet</Text>
+            <Text style={styles.noReviewsSub}>Be the first to write a review</Text>
           </View>
         ) : (
           reviews.map(review => (
@@ -329,7 +329,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
             {loadingMoreReviews ? (
               <ActivityIndicator size="small" color="#4fc3f7" />
             ) : (
-              <Text style={styles.loadMoreBtnText}>Загрузить ещё отзывы</Text>
+              <Text style={styles.loadMoreBtnText}>Load more reviews</Text>
             )}
           </TouchableOpacity>
         )}
@@ -337,11 +337,11 @@ export default function BrokerDetailScreen({ route, navigation }) {
         <View style={{ height: 100 }} />
       </ScrollView>
 
-      {/* Кнопка "Написать отзыв" */}
+      {/* Write Review button */}
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.reviewBtn} onPress={handleAddReview}>
           <Ionicons name="create-outline" size={18} color="#fff" />
-          <Text style={styles.reviewBtnText}>Написать отзыв</Text>
+          <Text style={styles.reviewBtnText}>Write Review</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -349,11 +349,11 @@ export default function BrokerDetailScreen({ route, navigation }) {
 }
 
 function getReviewWord(count) {
-  if (count % 100 >= 11 && count % 100 <= 19) return 'ов';
+  if (count % 100 >= 11 && count % 100 <= 19) return 's';
   const last = count % 10;
   if (last === 1) return '';
   if (last >= 2 && last <= 4) return 'а';
-  return 'ов';
+  return 's';
 }
 
 const styles = StyleSheet.create({

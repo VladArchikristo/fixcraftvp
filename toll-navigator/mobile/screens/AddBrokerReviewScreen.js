@@ -7,11 +7,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { addBrokerReview, createBrokerWithReview } from '../services/brokers';
 
 const ISSUE_TYPES = [
-  { value: 'late_payment',  label: 'Задержка оплаты', emoji: '🕐' },
-  { value: 'fraud',         label: 'Мошенничество',   emoji: '⚠️' },
-  { value: 'double_broker', label: 'Двойной брокер',  emoji: '🔄' },
-  { value: 'low_rate',      label: 'Низкая ставка',   emoji: '💰' },
-  { value: 'other',         label: 'Другое',           emoji: '❓' },
+  { value: 'late_payment',  label: 'Late Payment', emoji: '🕐' },
+  { value: 'fraud',         label: 'Fraud',   emoji: '⚠️' },
+  { value: 'double_broker', label: 'Double Broker',  emoji: '🔄' },
+  { value: 'low_rate',      label: 'Low Rate',   emoji: '💰' },
+  { value: 'other',         label: 'Other',           emoji: '❓' },
 ];
 
 const MAX_COMMENT = 2000;
@@ -46,11 +46,11 @@ function SectionLabel({ text, required }) {
 }
 
 export default function AddBrokerReviewScreen({ route, navigation }) {
-  // mode: 'new' — добавляем брокера+отзыв, 'review' — только отзыв к существующему
+  // mode: 'new' — adding broker+review, 'review' — review only for existing broker
   const { mode = 'new', brokerId, brokerName } = route.params || {};
   const isNewBroker = mode === 'new';
 
-  // Поля нового брокера
+  // New broker fields
   const [brokerNameField, setBrokerNameField] = useState('');
   const [mcNumber, setMcNumber] = useState('');
   const [dotNumber, setDotNumber] = useState('');
@@ -58,7 +58,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
 
-  // Поля отзыва
+  // Review fields
   const [rating, setRating] = useState(0);
   const [issueType, setIssueType] = useState('');
   const [comment, setComment] = useState('');
@@ -68,19 +68,19 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 
   React.useEffect(() => {
     if (isNewBroker) {
-      navigation.setOptions({ title: 'Добавить брокера' });
+      navigation.setOptions({ title: 'Add Broker' });
     } else {
-      navigation.setOptions({ title: `Отзыв: ${brokerName || 'Брокер'}` });
+      navigation.setOptions({ title: `Review: ${brokerName || 'Broker'}` });
     }
   }, []);
 
   const validate = () => {
     if (isNewBroker && !brokerNameField.trim()) {
-      Alert.alert('Ошибка', 'Введите имя брокера');
+      Alert.alert('Error', 'Enter broker name');
       return false;
     }
     if (rating === 0) {
-      Alert.alert('Ошибка', 'Поставьте оценку (1–5 звёзд)');
+      Alert.alert('Error', 'Rate 1–5 stars');
       return false;
     }
     return true;
@@ -108,27 +108,27 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           state: state.trim().toUpperCase() || null,
         };
         const { broker } = await createBrokerWithReview(brokerData, reviewData);
-        Alert.alert('Готово!', `Брокер "${broker.name}" добавлен с отзывом.`, [
+        Alert.alert('Done!', `Broker "${broker.name}" added with reviewом.`, [
           {
-            text: 'Посмотреть',
+            text: 'View',
             onPress: () => {
               navigation.replace('BrokerDetail', { brokerId: broker.id, brokerName: broker.name });
             },
           },
           {
-            text: 'Назад к списку',
+            text: 'Back to list',
             onPress: () => navigation.navigate('BrokerList'),
           },
         ]);
       } else {
         await addBrokerReview(brokerId, reviewData);
-        Alert.alert('Готово!', 'Ваш отзыв опубликован.', [
+        Alert.alert('Done!', 'Your review has been published.', [
           { text: 'OK', onPress: () => navigation.goBack() },
         ]);
       }
     } catch (err) {
-      const msg = err.response?.data?.error || 'Не удалось сохранить отзыв';
-      Alert.alert('Ошибка', msg);
+      const msg = err.response?.data?.error || 'Failed to save review';
+      Alert.alert('Error', msg);
     } finally {
       setSubmitting(false);
     }
@@ -145,15 +145,15 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
         contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Блок нового брокера */}
+        {/* New broker section */}
         {isNewBroker && (
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Информация о брокере</Text>
+            <Text style={styles.cardTitle}>Broker Information</Text>
 
-            <SectionLabel text="Название / Имя" required />
+            <SectionLabel text="Name / Company" required />
             <TextInput
               style={styles.input}
-              placeholder="Например: Best Freight LLC"
+              placeholder="e.g. Best Freight LLC"
               placeholderTextColor="#444"
               value={brokerNameField}
               onChangeText={setBrokerNameField}
@@ -185,7 +185,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
               </View>
             </View>
 
-            <SectionLabel text="Телефон" />
+            <SectionLabel text="Phone" />
             <TextInput
               style={styles.input}
               placeholder="+1 (555) 000-0000"
@@ -197,7 +197,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 
             <View style={styles.row2}>
               <View style={styles.col2flex}>
-                <SectionLabel text="Город" />
+                <SectionLabel text="City" />
                 <TextInput
                   style={styles.input}
                   placeholder="Chicago"
@@ -208,7 +208,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
                 />
               </View>
               <View style={styles.colState}>
-                <SectionLabel text="Штат" />
+                <SectionLabel text="State" />
                 <TextInput
                   style={styles.input}
                   placeholder="IL"
@@ -223,7 +223,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           </View>
         )}
 
-        {/* Если редактирование существующего — показываем имя */}
+        {/* If editing existing — show name */}
         {!isNewBroker && brokerName && (
           <View style={styles.brokerNameBadge}>
             <Ionicons name="business-outline" size={16} color="#4fc3f7" />
@@ -231,21 +231,21 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           </View>
         )}
 
-        {/* Блок отзыва */}
+        {/* Review section */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Ваш отзыв</Text>
+          <Text style={styles.cardTitle}>Ваш review</Text>
 
-          <SectionLabel text="Оценка" required />
+          <SectionLabel text="Rating" required />
           <StarInput value={rating} onChange={setRating} />
           {rating > 0 && (
             <Text style={styles.ratingLabel}>
-              {['', 'Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'][rating]}
+              {['', 'Terrible', 'Poor', 'Average', 'Good', 'Excellent'][rating]}
             </Text>
           )}
 
           <View style={styles.divider} />
 
-          <SectionLabel text="Тип проблемы" />
+          <SectionLabel text="Issue Type" />
           <View style={styles.issueGrid}>
             {ISSUE_TYPES.map(item => (
               <TouchableOpacity
@@ -269,10 +269,10 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 
           <View style={styles.divider} />
 
-          <SectionLabel text="Комментарий" />
+          <SectionLabel text="Comment" />
           <TextInput
             style={styles.textArea}
-            placeholder="Опишите ситуацию подробнее..."
+            placeholder="Describe the situation in detail..."
             placeholderTextColor="#444"
             value={comment}
             onChangeText={(t) => setComment(t.slice(0, MAX_COMMENT))}
@@ -289,13 +289,13 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 
           <View style={styles.divider} />
 
-          {/* Анонимно */}
+          {/* Anonymous */}
           <View style={styles.toggleRow}>
             <View style={styles.toggleLeft}>
               <Ionicons name="eye-off-outline" size={18} color="#555" />
               <View>
-                <Text style={styles.toggleLabel}>Анонимно</Text>
-                <Text style={styles.toggleSub}>Ваше имя не будет показано</Text>
+                <Text style={styles.toggleLabel}>Anonymous</Text>
+                <Text style={styles.toggleSub}>Your name will not be shown</Text>
               </View>
             </View>
             <Switch
@@ -307,7 +307,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           </View>
         </View>
 
-        {/* Кнопка публикации */}
+        {/* Publish button */}
         <TouchableOpacity
           style={[styles.submitBtn, submitting && styles.submitBtnDisabled]}
           onPress={handleSubmit}
@@ -319,7 +319,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
             <Ionicons name="send-outline" size={18} color="#fff" />
           )}
           <Text style={styles.submitBtnText}>
-            {submitting ? 'Публикуем...' : 'Опубликовать отзыв'}
+            {submitting ? 'Publishing...' : 'Publish Review'}
           </Text>
         </TouchableOpacity>
 

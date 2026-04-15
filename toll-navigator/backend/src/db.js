@@ -125,6 +125,14 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_broker_reviews_broker_id ON broker_reviews(broker_id);
   CREATE INDEX IF NOT EXISTS idx_broker_reviews_user_id ON broker_reviews(user_id);
   CREATE UNIQUE INDEX IF NOT EXISTS idx_broker_reviews_unique ON broker_reviews(broker_id, user_id);
+
+  CREATE TABLE IF NOT EXISTS waitlist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    source TEXT DEFAULT 'landing',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE INDEX IF NOT EXISTS idx_waitlist_email ON waitlist(email);
 `);
 
 // Migration: add new columns to existing tables (safe — fails silently if already exist)

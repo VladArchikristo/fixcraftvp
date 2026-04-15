@@ -1,4 +1,4 @@
 // Единый источник URL для API
-// Приоритет: EXPO_PUBLIC_API_URL env → app.json extra.apiUrl → localhost fallback
+// Приоритет: EXPO_PUBLIC_API_URL env → production API
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
+  process.env.EXPO_PUBLIC_API_URL || 'https://api.haulwallet.com';
