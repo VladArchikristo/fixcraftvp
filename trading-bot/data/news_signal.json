@@ -1,38 +1,41 @@
 {
-  "timestamp": "2026-04-15T04:00:24.302242+00:00",
+  "timestamp": "2026-04-15T07:00:25.506729+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.44,
+  "score": -0.4,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
     "trend": "rising"
   },
   "key_events": [
-    "Bitcoin's $76,000 breakout fails but a rare signal is hinting at major market bottom",
-    "The next Fed chair has crypto exposure in his portfolio. Here are the details",
-    "Rakuten to allow XRP to be used as payment method by its 44 million customers",
-    "Popular DeFi platform warns users to stay away from its site after security breach",
-    "Ethereum Foundation unveils $1M audit subsidy program to boost crypto security and cut costs for builders"
+    "Ethereum treasury firm Bitmine reports $3.8 billion Q1 loss in latest filing",
+    "Crypto, banks continue Senate bill spat with new proposal concerns: Report",
+    "Bitcoin developers are trying to build quantum defenses. Your coins could pay the price.",
+    "XRP climbs toward $1.38 as Japan's Rakuten integrates token for payments",
+    "Ether-bitcoin ratio bounces from 2026 lows, signaling broader crypto recovery"
   ],
   "affected_assets": [
+    "BTC",
     "ETH",
     "SOL",
     "XRP",
+    "DOGE",
+    "ADA",
     "OP"
   ],
   "trending_coins": [
     "RAVE",
     "ENJ",
-    "GENIUS",
-    "HYPE",
     "PENGU",
-    "MON",
-    "ETH"
+    "TAO",
+    "ETH",
+    "ZAMA",
+    "MON"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.33,
-  "cached_at": 1776225624.302474
+  "fetch_time_sec": 2.42,
+  "cached_at": 1776236425.506975
 }

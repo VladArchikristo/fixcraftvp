@@ -173,104 +173,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-12T06:02:18.949068",
-      "total_value": 1008.16,
-      "portfolio_value": 1008.16,
-      "pnl": 8.16,
-      "sentiment": "bearish",
-      "actions_taken": 1,
-      "summary": "## АНАЛИЗ ВАСИЛИЯ | 2026-04-12 06:00 UTC",
-      "trades": [
-        "✅ ОТКРЫТА SHORT AVAX $150 @ $9.02 SL:$9.13 TP:$8.74 Trail:2% | 1h Score -35, ADX 30.4 STRONG нисходящий (DI- 33.6 > DI+ 12.8),               ASK-heavy -21.6%, funding crowd в лонге (+0.0011%).              SL по 1.5x ATR ($0.107 выше входа).              TP = поддержка 4h $8.74. R:R = 0.28/0.11 = 2.5:1 ✓              Риск: StochRSI bullish cross → размер ограничен 20% кэша.",
-        "🔄 HOLD XRP | 1h Score -30 поддерживает шорт, общий рынок медвежий, R:R=4:1 отличный.               Whale walls на $1.33 — временное препятствие, но должны пробиться.               SL $1.34 актуален по ATR.",
-        "⏸️ NO_ACTION | ETH: конфликт таймфреймов (1h -45 vs 4h +30 vs 1d +20).               Whale walls $340K на $2,212 — сильная поддержка против шорта.              4h и 1d бычьи блокируют новый шорт. Ждём разрешения дивергенции."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": -45,
-          "rec": "STRONG_SELL",
-          "rsi": 38.0
-        },
-        "XRP": {
-          "score": -30,
-          "rec": "SELL",
-          "rsi": 37.9
-        },
-        "AVAX": {
-          "score": -35,
-          "rec": "SELL",
-          "rsi": 32.0
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 12.5
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -6.7
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -7.5
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
-      "time": "2026-04-12T06:43:07.339867",
-      "total_value": 1007.75,
-      "portfolio_value": 1007.75,
-      "pnl": 7.75,
-      "sentiment": "bearish",
-      "actions_taken": 0,
-      "summary": "## VASILY MARKET ANALYSIS | 2026-04-12 06:42 UTC",
-      "trades": [
-        "🔄 HOLD XRP | SHORT тренд подтверждён: EMA STRONG BEAR, ADX DI- доминирует,    1h score -30. TP $1.29 реален, SL $1.34 не пробит. Несмотря на BID-heavy стакан —    дневной тренд медвежий, объём сохнет (нет покупателей с силой).",
-        "🔄 HOLD AVAX | ADX 30.4 STRONG с DI- 33.0 >> DI+ 12.6 — сильнейший    медвежий сигнал из трёх активов. BID-heavy стакан + StochRSI bullish cross = возможен    отскок к $9.11, но SL $9.13 закрывает этот риск. Держать до TP $8.74.",
-        "⏸️ NO_ACTION | ETH — конфликт TF (1h SELL vs 4h/1d BUY), не торговать в неопределённости.    Кэш $608 достаточен для новых позиций, но в Extreme Fear (16) и геополитической    неопределённости новые входы нецелесообразны. Ждём разрешения конфликта TF или    пробоя ключевых уровней."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": -45,
-          "rec": "STRONG_SELL",
-          "rsi": 37.7
-        },
-        "XRP": {
-          "score": -30,
-          "rec": "SELL",
-          "rsi": 39.6
-        },
-        "AVAX": {
-          "score": -35,
-          "rec": "SELL",
-          "rsi": 33.5
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 12.5
-        },
-        "XRP": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": -5.0
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -7.5
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-12T09:01:18.020280",
       "total_value": 1007.95,
       "portfolio_value": 1007.95,
@@ -2581,7 +2483,105 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-15T02:21:44.691191",
+      "total_value": 1013.23,
+      "portfolio_value": 1013.23,
+      "pnl": 13.23,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "# ВАСИЛИЙ — ДНЕВНОЙ ОТЧЁТ | 2026-04-15 02:20 UTC",
+      "trades": [
+        "🔄 HOLD ETH | 4h STRONG BUY (ADX 34.3), китовая стена $864K держит $2318.90,         SL $2288 за поддержкой, TP $2393 цель. Опционально: подтянуть SL до $2295.",
+        "🔄 HOLD XRP | Whale walls $1.35 держат, Rakuten катализатор,         StochRSI oversold 1h = отскок к $1.37-1.38. SL $1.34 / TP $1.39 корректны.",
+        "⏸️ NO_ACTION | Кэш $760 доступен, но News Agent = REDUCE_SIZE.              AVAX слабый (ASK-heavy, funding+, score-20).              Ждём подтверждения движения ETH/XRP выше $2329/$1.37              для возможного добавления. Extreme Fear = торгуем только то что есть."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 47.4
+        },
+        "XRP": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 45.2
+        },
+        "AVAX": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 47.5
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 21.7
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": 9.2
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -1.7
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-15T03:02:10.261549",
+      "total_value": 1013.06,
+      "portfolio_value": 1013.06,
+      "pnl": 13.06,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ | Анализ 2026-04-15 03:00 UTC",
+      "trades": [
+        "🔄 HOLD ETH | 4h STRONG trend (ADX 34, DI+ > DI-), negative funding = лонгам платят, whale bid walls $2316 защищают. Подтягиваю SL до $2295. TP $2393",
+        "🔄 HOLD XRP | 4h STRONG trend (ADX 33.8), Rakuten катализатор, whale walls @ $1.35. SL $1.34, TP $1.39 — R:R 1:3",
+        "⏸️ NO_ACTION | Fear & Greed 23 + News REDUCE_SIZE -50% + объёмы сохнут. Cash $760 держу в резерве. AVAX — дневной медвежий (DI- > DI+), нет setup. Жду пробоя $2329 на ETH с объёмом для возможного OPEN_POSITION добавления"
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 46.4
+        },
+        "XRP": {
+          "score": 0,
+          "rec": "NEUTRAL",
+          "rsi": 45.7
+        },
+        "AVAX": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 46.5
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 25.0
+        },
+        "XRP": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 10.8
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 0.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-15T00:01:44.771026"
+  "updated_at": "2026-04-15T03:02:10.261592"
 }
