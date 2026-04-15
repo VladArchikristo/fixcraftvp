@@ -42,7 +42,8 @@
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_BACKGROUND_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_LOCATION"
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "plugins": [
@@ -68,15 +69,15 @@
     "extra": {
       "apiUrl": "https://api.haulwallet.com",
       "eas": {
-        "projectId": "your-eas-project-id"
+        "projectId": "ff7f070e-42d7-439b-9dc9-68ad352c23b0"
       }
     },
-    "owner": "haulwallet",
+    "owner": "vladimir92905",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/your-eas-project-id"
+      "url": ""
     }
   }
 }

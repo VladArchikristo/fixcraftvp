@@ -30,10 +30,9 @@ export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 export LANG="en_US.UTF-8"
 export TERM="xterm-256color"
 
-echo "$TASK" | "$CLAUDE_PATH" -p \
+cd "$PROJECT_ROOT" && echo "$TASK" | "$CLAUDE_PATH" -p \
     --model claude-sonnet-4-6 \
     --output-format text \
     --system-prompt "$VASILY_PROMPT" \
     --allowedTools "Read,Grep,Glob" \
-    --permission-mode bypassPermissions \
-    --cwd "$PROJECT_ROOT"
+    --permission-mode bypassPermissions

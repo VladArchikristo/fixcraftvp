@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-04-15T10:00:24.053308+00:00",
-  "sentiment": "slightly_bearish",
-  "score": -0.44,
+  "timestamp": "2026-04-15T13:00:23.901954+00:00",
+  "sentiment": "bearish",
+  "score": -0.51,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
     "trend": "rising"
   },
   "key_events": [
+    "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
+    "Trump-backed WLFI moves to unlock 62 billion tokens after $75 million loan controversy",
     "Ethereum treasury firm Bitmine reports $3.8 billion Q1 loss in latest filing",
-    "North Korean hackers used AI-enabled social engineering in Zerion attack",
-    "Crypto, banks continue Senate bill spat with new proposal concerns: Report",
-    "A new class of crypto treasury companies is forming around Strategy’s high-yield stock",
-    "Why this ex-Solana exec is using a Wall Street trick to level the playing field in DeFi"
+    "Pakistan allows banks to serve licensed crypto firms after years-long ban",
+    "Prediction market volumes to hit $1 trillion by 2030 with Robinhood, Coinbase as key players, Bernstein says"
   ],
   "affected_assets": [
     "BTC",
@@ -21,23 +21,22 @@
     "XRP",
     "DOGE",
     "ADA",
-    "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "RAVE",
+    "BIO",
     "ENJ",
-    "ARIA",
-    "HYPE",
-    "PENGU",
+    "BTC",
+    "BLESS",
     "TAO",
-    "BIO"
+    "WLFI"
   ],
-  "risk_level": "HIGH",
-  "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
+  "risk_level": "CRITICAL",
+  "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
-  "hacks_detected": 0,
-  "fetch_time_sec": 2.36,
-  "cached_at": 1776247224.053559
+  "hacks_detected": 1,
+  "fetch_time_sec": 2.26,
+  "cached_at": 1776258023.902187
 }
