@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-16T01:00:42.861326+00:00",
+  "timestamp": "2026-04-16T04:00:24.061216+00:00",
   "sentiment": "bearish",
-  "score": -0.69,
+  "score": -0.55,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -19,23 +19,27 @@
     "ETH",
     "SOL",
     "XRP",
+    "AVAX",
+    "DOGE",
+    "BNB",
+    "ADA",
     "INJ",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "RAVE",
     "BIO",
-    "BTC",
+    "ENJ",
+    "RAVE",
+    "PENGU",
     "MON",
-    "TRUMP",
-    "ETH",
-    "VVV"
+    "GENIUS",
+    "PEPE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 4.3,
-  "cached_at": 1776301242.861544
+  "fetch_time_sec": 2.4,
+  "cached_at": 1776312024.06146
 }
