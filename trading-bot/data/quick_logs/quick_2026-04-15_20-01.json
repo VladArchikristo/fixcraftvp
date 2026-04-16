@@ -1,13 +1,13 @@
 {
-  "time": "2026-04-15T11:23:42.238283",
-  "elapsed_sec": 13.1,
+  "time": "2026-04-15T20:01:52.500467",
+  "elapsed_sec": 12.7,
   "signals_count": 1,
   "strong_count": 0,
   "top_signals": [
     {
       "coin": "ETH",
       "direction": "NEUTRAL",
-      "net_score": -19,
+      "net_score": -16,
       "rec": "NEUTRAL",
       "strategies": [
         "MTF_CONFLUENCE",

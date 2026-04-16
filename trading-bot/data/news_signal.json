@@ -1,44 +1,41 @@
 {
-  "timestamp": "2026-04-15T22:00:26.459353+00:00",
+  "timestamp": "2026-04-16T00:20:24.654424+00:00",
   "sentiment": "bearish",
-  "score": -0.73,
+  "score": -0.69,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
-    "trend": "rising"
+    "trend": "stable"
   },
   "key_events": [
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
+    "Solana Policy Institute-backed PAC spends millions to jam Sherrod Brown's Senate run",
     "Crypto's new $11 million PAC booked millions in ads with firm started by Tether US CEO",
     "UK asset manager puts $68 billion of funds on-chain via Calastone token network",
-    "Crypto Long & Short: Fighting fraud in the digital age: why state-led identity is the future",
-    "Bitcoin developer Jameson Lopp says it's better to freeze 5.6 million BTC than let hackers have them"
+    "Crypto Long & Short: Fighting fraud in the digital age: why state-led identity is the future"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
     "XRP",
-    "AVAX",
-    "DOGE",
-    "BNB",
-    "ADA",
+    "INJ",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "BIO",
     "RAVE",
+    "PENGU",
+    "BIO",
     "ENJ",
     "BTC",
     "TAO",
-    "HYPE",
-    "BLESS"
+    "WLFI"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.57,
-  "cached_at": 1776290426.459589
+  "fetch_time_sec": 2.45,
+  "cached_at": 1776298824.654643
 }
