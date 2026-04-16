@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-16T00:20:24.654424+00:00",
+  "timestamp": "2026-04-16T01:00:42.861326+00:00",
   "sentiment": "bearish",
   "score": -0.69,
   "fear_greed": {
@@ -25,17 +25,17 @@
   ],
   "trending_coins": [
     "RAVE",
-    "PENGU",
     "BIO",
-    "ENJ",
     "BTC",
-    "TAO",
-    "WLFI"
+    "MON",
+    "TRUMP",
+    "ETH",
+    "VVV"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.45,
-  "cached_at": 1776298824.654643
+  "fetch_time_sec": 4.3,
+  "cached_at": 1776301242.861544
 }
