@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-16T10:00:23.282893+00:00",
+  "timestamp": "2026-04-16T13:00:25.191263+00:00",
   "sentiment": "bearish",
-  "score": -0.59,
+  "score": -0.55,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -9,32 +9,34 @@
   },
   "key_events": [
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
-    "Solana Policy Institute-backed PAC spends millions to jam Sherrod Brown's Senate run",
-    "South Korea to test blockchain deposit tokens for government spending in Q4",
-    "The cheapest bitcoin ETF yet: Morgan Stanley uses 0.14% fee to draw $100 million in first week",
-    "Crypto fund manager probed in the suspicious death of his fiancé’s death in Zanzibar"
+    "Keep an eye on XRP, Plasma, DOGE as bitcoin drifts",
+    "Bitcoin funding rates hit most negative since 2023, history suggests bottom is in",
+    "Bitcoin holds near $75,000 as short-term holders look for profit opportunities",
+    "South Korea to test blockchain deposit tokens for government spending in Q4"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
+    "XRP",
     "DOGE",
     "ADA",
+    "UNI",
     "OP"
   ],
   "trending_coins": [
-    "RAVE",
     "ORDI",
+    "BASED",
+    "RAVE",
     "PENGU",
-    "ENJ",
-    "GENIUS",
-    "HYPE",
-    "BASED"
+    "WAL",
+    "BTC",
+    "BIO"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.28,
-  "cached_at": 1776333623.283148
+  "fetch_time_sec": 2.48,
+  "cached_at": 1776344425.191513
 }
