@@ -21,6 +21,11 @@ from datetime import datetime
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 
+# Shared memory
+import sys as _sys
+_sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
+from shared_memory import save_message as sm_save, get_history as sm_get_history, clear_history as sm_clear_history
+
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.constants import ParseMode
@@ -455,12 +460,22 @@ def project_memory_prompt() -> str:
     return "\n".join(lines)
 
 
-def history_prompt() -> str:
+def history_prompt(user_id: int | None = None) -> str:
+    # Если есть user_id — берём из SQLite shared memory
+    if user_id is not None:
+        msgs = sm_get_history(user_id, "philip", limit=20)
+        if msgs:
+            lines = []
+            for msg in msgs:
+                role = "Пользователь" if msg["role"] == "user" else "Филип"
+                lines.append(f"{role}: {msg['content'][:1500]}")
+            return "\n".join(lines)
+    # Fallback на in-memory deque
     if not user_history:
         return ""
     lines = []
     total_chars = 0
-    max_total = 8000  # лимит чтобы не забить контекст
+    max_total = 8000
     recent = list(user_history)[-20:]
     for msg in reversed(recent):
         role = "Пользователь" if msg["role"] == "user" else "Филип"
@@ -638,7 +653,7 @@ def _choose_model(user_text: str) -> str:
 
 
 async def ask_claude(user_text: str, user_id: int, image_path: str | None = None, force_opus: bool = False) -> tuple[bool, str]:
-    hist = history_prompt()
+    hist = history_prompt(user_id)
     mem = project_memory_prompt()
     system = build_system_prompt(user_id)
     full_prompt = ""
@@ -925,24 +940,28 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
         status_task = asyncio.create_task(_status_updater())
 
+        uid = update.effective_user.id
         if image_path:
             caption = user_text or ""
             hist_text = f"[изображение] {caption}" if caption else "[изображение]"
             user_history.append({"role": "user", "text": hist_text[:2000]})
-            _log_conversation("user", hist_text, update.effective_user.id)
-            success, answer = await ask_claude(caption, update.effective_user.id, image_path=image_path, force_opus=force_opus)
+            sm_save(uid, "philip", "user", hist_text[:5000])
+            _log_conversation("user", hist_text, uid)
+            success, answer = await ask_claude(caption, uid, image_path=image_path, force_opus=force_opus)
         else:
             user_history.append({"role": "user", "text": user_text[:2000]})
-            _log_conversation("user", user_text, update.effective_user.id)
-            success, answer = await ask_claude(user_text, update.effective_user.id, force_opus=force_opus)
+            sm_save(uid, "philip", "user", user_text[:5000])
+            _log_conversation("user", user_text, uid)
+            success, answer = await ask_claude(user_text, uid, force_opus=force_opus)
 
         global _consecutive_errors
 
         if success:
             _consecutive_errors = 0
             user_history.append({"role": "assistant", "text": answer[:2000]})
+            sm_save(uid, "philip", "assistant", answer[:5000])
             _save_history()
-            _log_conversation("assistant", answer, update.effective_user.id)
+            _log_conversation("assistant", answer, uid)
         elif answer and "объёмная" in answer:
             # MAX_TURNS — не считаем как ошибку, юзер получит понятное сообщение
             log.info("Max turns reached — not counting as error")

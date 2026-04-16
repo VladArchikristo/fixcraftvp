@@ -23,6 +23,10 @@ from datetime import datetime
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 
+# Shared memory
+sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
+from shared_memory import save_message as sm_save, get_history as sm_get_history
+
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.constants import ParseMode
@@ -733,21 +737,24 @@ async def _process_single_message(update: Update, user_text: str):
 
         status_task = asyncio.create_task(_status_updater())
 
+        uid = update.effective_user.id
         user_history.append({"role": "user", "text": user_text[:2000]})
-        _log_conversation("user", user_text, update.effective_user.id)
-        success, answer = await ask_claude(user_text, update.effective_user.id)
+        sm_save(uid, "peter", "user", user_text[:5000])
+        _log_conversation("user", user_text, uid)
+        success, answer = await ask_claude(user_text, uid)
 
         if success:
             answer, mem_facts = extract_and_strip_facts(answer)
             for fact in mem_facts:
                 try:
-                    save_memory_entry(update.effective_user.id, fact.get("cat", "observation"), fact["text"])
+                    save_memory_entry(uid, fact.get("cat", "observation"), fact["text"])
                     log.info("Memory saved: [%s] %s", fact.get("cat"), fact["text"][:60])
                 except Exception as me:
                     log.warning("Memory save failed: %s", me)
             user_history.append({"role": "assistant", "text": answer[:2000]})
+            sm_save(uid, "peter", "assistant", answer[:5000])
             _save_history()
-            _log_conversation("assistant", answer, update.effective_user.id)
+            _log_conversation("assistant", answer, uid)
 
         try:
             await thinking_msg.delete()

@@ -28,6 +28,10 @@ from dotenv import load_dotenv
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
 
+# Shared memory
+sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
+from shared_memory import save_message as sm_save, get_history as sm_get_history
+
 # NewsAgent — внутренний суб-агент новостей (может отсутствовать при первом запуске)
 try:
     from news_agent import get_news_signal, format_signal_for_vasily, format_signal_for_telegram as _fmt_news_tg
@@ -1001,8 +1005,10 @@ async def _process_single_message(update: Update, user_text: str, is_photo: bool
 
         status_task = asyncio.create_task(_status_updater())
 
+        uid = update.effective_user.id
         user_history.append({"role": "user", "text": user_text[:2000]})
-        _log_conversation("user", user_text, update.effective_user.id)
+        sm_save(uid, "vasily", "user", user_text[:5000])
+        _log_conversation("user", user_text, uid)
 
         if is_photo and image_path:
             caption = update.message.caption or ""
@@ -1012,7 +1018,8 @@ async def _process_single_message(update: Update, user_text: str, is_photo: bool
 
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
-            _log_conversation("assistant", answer, update.effective_user.id)
+            sm_save(uid, "vasily", "assistant", answer[:5000])
+            _log_conversation("assistant", answer, uid)
         else:
             _log_conversation("error", answer or "no response", update.effective_user.id)
         _save_history()
