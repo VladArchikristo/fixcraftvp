@@ -1,13 +1,13 @@
 {
-  "time": "2026-04-16T03:33:55.869654",
-  "elapsed_sec": 13.6,
+  "time": "2026-04-16T12:12:15.497255",
+  "elapsed_sec": 14.3,
   "signals_count": 1,
-  "strong_count": 0,
+  "strong_count": 1,
   "top_signals": [
     {
       "coin": "ETH",
       "direction": "NEUTRAL",
-      "net_score": -22,
+      "net_score": -35,
       "rec": "NEUTRAL",
       "strategies": [
         "WHALE_WALLS",
