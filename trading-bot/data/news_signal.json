@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-16T04:00:24.061216+00:00",
+  "timestamp": "2026-04-16T07:00:24.211572+00:00",
   "sentiment": "bearish",
-  "score": -0.55,
+  "score": -0.57,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -12,34 +12,30 @@
     "Solana Policy Institute-backed PAC spends millions to jam Sherrod Brown's Senate run",
     "Crypto's new $11 million PAC booked millions in ads with firm started by Tether US CEO",
     "UK asset manager puts $68 billion of funds on-chain via Calastone token network",
-    "Crypto Long & Short: Fighting fraud in the digital age: why state-led identity is the future"
+    "Bitcoin's quantum debate splits as Adam Back pushes optional upgrades over forced freeze"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "XRP",
-    "AVAX",
     "DOGE",
-    "BNB",
     "ADA",
-    "INJ",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "BIO",
+    "PENGU",
     "ENJ",
     "RAVE",
-    "PENGU",
-    "MON",
+    "BTC",
     "GENIUS",
-    "PEPE"
+    "ETH"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.4,
-  "cached_at": 1776312024.06146
+  "fetch_time_sec": 2.35,
+  "cached_at": 1776322824.2118149
 }
