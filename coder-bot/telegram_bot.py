@@ -23,6 +23,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
 from datetime import datetime
+
+# Shared memory
+sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
+from shared_memory import save_message, get_history as sm_get_history, clear_history as sm_clear_history
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 
@@ -905,7 +909,22 @@ def _save_history():
                 pass
 
 
-def history_prompt() -> str:
+def history_prompt(user_id: int | None = None) -> str:
+    # Если есть user_id — берём из SQLite shared memory
+    if user_id is not None:
+        msgs = sm_get_history(user_id, "kostya", limit=20)
+        if msgs:
+            lines = []
+            total_chars = 0
+            for msg in msgs:
+                role = "Влад" if msg["role"] == "user" else "Костя"
+                line = f"{role}: {msg['content'][:1000]}"
+                total_chars += len(line)
+                if total_chars > 8000:
+                    break
+                lines.append(line)
+            return "\n".join(lines)
+    # Fallback на in-memory deque
     if not user_history:
         return ""
     lines = []
@@ -1047,9 +1066,9 @@ def _call_claude_sync(full_prompt: str, extra_flags=None):
     return two_pass_call(full_prompt, _once)
 
 
-async def ask_claude(user_text: str, image_path: str = None):
+async def ask_claude(user_text: str, image_path: str = None, user_id: int | None = None):
     global _claude_executor
-    hist = history_prompt()
+    hist = history_prompt(user_id)
 
     extra_flags = None
     is_photo = False

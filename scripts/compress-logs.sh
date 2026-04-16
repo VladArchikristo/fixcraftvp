@@ -93,14 +93,14 @@ new.close()
     # Summarize via Haiku (limit input to avoid token overflow)
     local old_content=$(head -c 50000 "$old_file")
     local digest=""
-    digest=$(timeout 120 "$HOME/.local/bin/claude" -p "Вот лог разговоров бота $bot_name за неделю. Сделай краткий дайджест на русском:
+    digest=$("$HOME/.local/bin/claude" -p "Вот лог разговоров бота $bot_name за неделю. Сделай краткий дайджест на русском:
 - Основные темы разговоров
 - Ключевые запросы пользователя
 - Важные решения и ответы
 - Проблемы если были
 
 Лог:
-$old_content" --model claude-haiku-4-5 --output-format text 2>/dev/null) || {
+$old_content" --model claude-haiku-4-5-20251001 --output-format text 2>/dev/null) || {
         log "$bot_name: Haiku summarization failed, keeping raw logs"
         rm -f "$old_file" "$new_file"
         return 1

@@ -21,6 +21,10 @@ from datetime import datetime
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 
+# Shared memory
+sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
+from shared_memory import save_message, get_history as sm_get_history, clear_history as sm_clear_history
+
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.constants import ParseMode
@@ -377,7 +381,17 @@ def _save_history():
                 pass
 
 
-def history_prompt() -> str:
+def history_prompt(user_id: int | None = None) -> str:
+    # Если есть user_id — берём из SQLite shared memory
+    if user_id is not None:
+        msgs = sm_get_history(user_id, "masha", limit=20)
+        if msgs:
+            lines = []
+            for msg in msgs:
+                role = "Пользователь" if msg["role"] == "user" else "Маша"
+                lines.append(f"{role}: {msg['content'][:2000]}")
+            return "\n".join(lines)
+    # Fallback на in-memory deque
     if not user_history:
         return ""
     lines = []
@@ -501,7 +515,7 @@ def build_system_prompt(user_id: int) -> str:
 
 
 async def ask_claude(user_text: str, user_id: int, image_path: str | None = None) -> tuple[bool, str]:
-    hist = history_prompt()
+    hist = history_prompt(user_id)
     system = build_system_prompt(user_id)
     full_prompt = ""
     if hist:
@@ -591,6 +605,7 @@ async def cmd_clear(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     user_history.clear()
     _save_history()
+    sm_clear_history(uid, "masha")
     user_modes.pop(uid, None)
     await update.message.reply_text("История и режим очищены.")
 
@@ -669,21 +684,25 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
 
         status_task = asyncio.create_task(_status_updater())
 
+        uid = update.effective_user.id
         if image_path:
             caption = user_text or ""
             hist_text = f"[скриншот] {caption}" if caption else "[скриншот]"
             user_history.append({"role": "user", "text": hist_text[:2000]})
-            _log_conversation("user", hist_text, update.effective_user.id)
-            success, answer = await ask_claude(caption, update.effective_user.id, image_path=image_path)
+            save_message(uid, "masha", "user", hist_text[:5000])
+            _log_conversation("user", hist_text, uid)
+            success, answer = await ask_claude(caption, uid, image_path=image_path)
         else:
             user_history.append({"role": "user", "text": user_text[:2000]})
-            _log_conversation("user", user_text, update.effective_user.id)
-            success, answer = await ask_claude(user_text, update.effective_user.id)
+            save_message(uid, "masha", "user", user_text[:5000])
+            _log_conversation("user", user_text, uid)
+            success, answer = await ask_claude(user_text, uid)
 
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
             _save_history()
-            _log_conversation("assistant", answer, update.effective_user.id)
+            save_message(uid, "masha", "assistant", answer[:5000])
+            _log_conversation("assistant", answer, uid)
 
         try:
             await thinking_msg.delete()
