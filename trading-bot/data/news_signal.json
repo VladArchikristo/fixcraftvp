@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-16T19:00:22.885993+00:00",
+  "timestamp": "2026-04-16T22:00:23.012995+00:00",
   "sentiment": "bearish",
-  "score": -0.59,
+  "score": -0.73,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -20,22 +20,23 @@
     "SOL",
     "XRP",
     "DOGE",
+    "ADA",
     "UNI",
     "OP"
   ],
   "trending_coins": [
     "ORDI",
     "PENGU",
-    "BASED",
+    "SIREN",
     "RAVE",
-    "ENJ",
-    "DRIFT",
-    "TAO"
+    "BASED",
+    "TAO",
+    "MON"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
   "fetch_time_sec": 2.59,
-  "cached_at": 1776366022.886187
+  "cached_at": 1776376823.013247
 }
