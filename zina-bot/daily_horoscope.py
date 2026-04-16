@@ -91,7 +91,7 @@ def generate_horoscope(today: str) -> str:
 
     try:
         result = subprocess.run(
-            [CLAUDE_PATH, "--model", "claude-haiku-4-5", "-p", prompt],
+            [CLAUDE_PATH, "--model", "claude-sonnet-4-6", "-p", prompt],
             capture_output=True,
             text=True,
             timeout=120,

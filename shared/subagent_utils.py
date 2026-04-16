@@ -27,7 +27,7 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
-SUBAGENT_MODEL = "claude-haiku-4-5"
+SUBAGENT_MODEL = "claude-sonnet-4-6"
 SUBAGENT_TIMEOUT = 60  # секунд — быстро!
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 

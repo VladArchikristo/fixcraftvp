@@ -264,7 +264,7 @@ def run_claude_analysis(market_data, news, fear_greed, portfolio):
         result = subprocess.run(
             [
                 str(Path.home() / ".local" / "bin" / "claude"),
-                "--model", "claude-haiku-4-5",
+                "--model", "claude-sonnet-4-6",
                 "--max-tokens", "1000",
                 "-p",
                 prompt,
