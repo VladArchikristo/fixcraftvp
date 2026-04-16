@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-16T13:00:25.191263+00:00",
+  "timestamp": "2026-04-16T16:00:23.620702+00:00",
   "sentiment": "bearish",
-  "score": -0.55,
+  "score": -0.59,
   "fear_greed": {
     "value": 23,
     "label": "Extreme Fear",
@@ -9,34 +9,32 @@
   },
   "key_events": [
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
-    "Keep an eye on XRP, Plasma, DOGE as bitcoin drifts",
-    "Bitcoin funding rates hit most negative since 2023, history suggests bottom is in",
-    "Bitcoin holds near $75,000 as short-term holders look for profit opportunities",
-    "South Korea to test blockchain deposit tokens for government spending in Q4"
+    "Drift gets $148 million funding from Tether and partners as it replaces Circle stablecoin with USDT after massive exploit",
+    "Crypto for Advisors: Tokenization’s evolution",
+    "Bitcoin slides back below $74,000 as breakout to higher levels fails again",
+    "The 24-hour trap: Why the UK’s new crypto rules could catch some firms off guard"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "XRP",
     "DOGE",
-    "ADA",
     "UNI",
     "OP"
   ],
   "trending_coins": [
-    "ORDI",
     "BASED",
-    "RAVE",
+    "ORDI",
     "PENGU",
-    "WAL",
-    "BTC",
-    "BIO"
+    "RAVE",
+    "DRIFT",
+    "TAO",
+    "BTC"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.48,
-  "cached_at": 1776344425.191513
+  "fetch_time_sec": 2.63,
+  "cached_at": 1776355223.620935
 }
