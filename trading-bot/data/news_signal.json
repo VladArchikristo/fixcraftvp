@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-17T13:00:24.043654+00:00",
+  "timestamp": "2026-04-17T16:00:22.985390+00:00",
   "sentiment": "bearish",
-  "score": -0.73,
+  "score": -0.81,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
@@ -11,29 +11,30 @@
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
     "Russia-linked Grinex exchange halts operations after $13 million ‘state-backed’ hack",
     "The U.S. government moves $606,000 in bitcoin linked to the 2016 Bitfinex hack to Coinbase",
-    "Texas man in $20M Meta-1 Coin fraud sentenced to 23 years in prison",
-    "At least a dozen crypto entities attacked since Drift Protocol hack"
+    "Don’t get AI agents and stablecoin transfers? Enroll in CoinDesk University",
+    "Back in the black: Strategy surges 8% as bitcoin's rise to $77,000 puts holdings in profit"
   ],
   "affected_assets": [
     "ETH",
     "SOL",
     "XRP",
+    "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "ASTEROID",
-    "RAVE",
-    "SIREN",
-    "PENGU",
+    "OVPP",
+    "BTC",
     "MOVR",
-    "ORDI",
-    "SOL"
+    "PENGU",
+    "RAVE",
+    "SIREN"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.35,
-  "cached_at": 1776430824.0438762
+  "fetch_time_sec": 2.37,
+  "cached_at": 1776441622.985644
 }

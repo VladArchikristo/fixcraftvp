@@ -1,0 +1,18 @@
+{
+  "time": "2026-04-17T09:05:02.906233",
+  "elapsed_sec": 14.5,
+  "signals_count": 1,
+  "strong_count": 1,
+  "top_signals": [
+    {
+      "coin": "XRP",
+      "direction": "LONG",
+      "net_score": 76,
+      "rec": "STRONG_BUY",
+      "strategies": [
+        "WHALE_WALLS",
+        "MTF_CONFLUENCE"
+      ]
+    }
+  ]
+}
