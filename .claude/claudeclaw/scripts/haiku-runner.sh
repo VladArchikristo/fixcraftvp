@@ -190,9 +190,11 @@ job_monitor() {
         fi
     done
 
-    # Check Nexus
-    if pgrep -f "claudeclaw.*start" > /dev/null 2>&1; then
-        status+="✅ Nexus: running\n"
+    # Check Nexus via launchctl (same as self-check)
+    local nexus_pid
+    nexus_pid=$(launchctl list 2>/dev/null | grep claudeclaw | awk '{print $1}')
+    if [ -n "$nexus_pid" ] && [ "$nexus_pid" != "-" ] && echo "$nexus_pid" | grep -qE '^[0-9]+$'; then
+        status+="✅ Nexus: PID $nexus_pid\n"
     else
         status+="❌ Nexus: not running\n"
     fi
