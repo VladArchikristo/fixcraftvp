@@ -162,7 +162,7 @@ job_monitor() {
     fi
 
     # Check bots
-    for bot_name in beast vasily masha kostya philip; do
+    for bot_name in beast vasily masha kostya philip peter zina; do
         local hb_file="$HOME/logs/${bot_name}-heartbeat"
         if [ -f "$hb_file" ]; then
             local raw_hb=$(cat "$hb_file" 2>/dev/null)
