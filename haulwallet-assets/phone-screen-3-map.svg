@@ -1,0 +1,279 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0D1520"/>
+      <stop offset="100%" stop-color="#0A1018"/>
+    </linearGradient>
+    <linearGradient id="cardUp" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#0F1C33"/>
+      <stop offset="100%" stop-color="#1A2B4A"/>
+    </linearGradient>
+    <linearGradient id="routeLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3D8EF0"/>
+      <stop offset="100%" stop-color="#5BA3FF"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="truckGlow">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pinGlow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="truckAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mapCenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1A2535"/>
+      <stop offset="100%" stop-color="#0D1520"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark Map Background -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#bgGrad)" rx="60" ry="60"/>
+
+  <!-- Map tile grid pattern (dark roads) -->
+  <!-- Map base -->
+  <rect x="0" y="0" width="1080" height="1500" fill="#0E1B2A"/>
+
+  <!-- Map tile - subtle grid lines -->
+  <g opacity="0.15" stroke="#2A4060" stroke-width="1">
+    <line x1="0" y1="150" x2="1080" y2="150"/>
+    <line x1="0" y1="280" x2="1080" y2="280"/>
+    <line x1="0" y1="410" x2="1080" y2="410"/>
+    <line x1="0" y1="540" x2="1080" y2="540"/>
+    <line x1="0" y1="670" x2="1080" y2="670"/>
+    <line x1="0" y1="800" x2="1080" y2="800"/>
+    <line x1="0" y1="930" x2="1080" y2="930"/>
+    <line x1="0" y1="1060" x2="1080" y2="1060"/>
+    <line x1="0" y1="1190" x2="1080" y2="1190"/>
+    <line x1="0" y1="1320" x2="1080" y2="1320"/>
+    <line x1="180" y1="0" x2="180" y2="1500"/>
+    <line x1="360" y1="0" x2="360" y2="1500"/>
+    <line x1="540" y1="0" x2="540" y2="1500"/>
+    <line x1="720" y1="0" x2="720" y2="1500"/>
+    <line x1="900" y1="0" x2="900" y2="1500"/>
+  </g>
+
+  <!-- Terrain blocks (city areas) -->
+  <rect x="80" y="180" width="200" height="80" rx="6" fill="#162030" opacity="0.8"/>
+  <rect x="100" y="280" width="150" height="60" rx="6" fill="#162030" opacity="0.6"/>
+  <rect x="300" y="150" width="180" height="100" rx="6" fill="#162030" opacity="0.7"/>
+  <rect x="600" y="200" width="220" height="120" rx="6" fill="#162030" opacity="0.6"/>
+  <rect x="750" y="350" width="160" height="90" rx="6" fill="#162030" opacity="0.7"/>
+  <rect x="200" y="500" width="200" height="80" rx="6" fill="#162030" opacity="0.5"/>
+  <rect x="500" y="450" width="180" height="100" rx="6" fill="#162030" opacity="0.6"/>
+  <rect x="850" y="480" width="160" height="100" rx="6" fill="#162030" opacity="0.5"/>
+  <rect x="100" y="700" width="220" height="90" rx="6" fill="#162030" opacity="0.6"/>
+  <rect x="400" y="650" width="200" height="120" rx="6" fill="#162030" opacity="0.5"/>
+  <rect x="700" y="680" width="250" height="100" rx="6" fill="#162030" opacity="0.6"/>
+  <rect x="150" y="900" width="190" height="80" rx="6" fill="#162030" opacity="0.5"/>
+  <rect x="500" y="880" width="210" height="100" rx="6" fill="#162030" opacity="0.6"/>
+  <rect x="800" y="920" width="180" height="90" rx="6" fill="#162030" opacity="0.5"/>
+
+  <!-- Major roads (secondary) -->
+  <g stroke="#1D3050" stroke-width="10" fill="none" opacity="0.8">
+    <line x1="0" y1="350" x2="1080" y2="350"/>
+    <line x1="0" y1="600" x2="1080" y2="600"/>
+    <line x1="0" y1="850" x2="1080" y2="850"/>
+    <line x1="0" y1="1100" x2="1080" y2="1100"/>
+    <line x1="200" y1="0" x2="200" y2="1500"/>
+    <line x1="500" y1="0" x2="500" y2="1500"/>
+    <line x1="800" y1="0" x2="800" y2="1500"/>
+  </g>
+
+  <!-- Highways (lighter) -->
+  <g stroke="#224070" stroke-width="14" fill="none">
+    <line x1="0" y1="460" x2="1080" y2="460"/>
+    <line x1="0" y1="720" x2="1080" y2="720"/>
+    <line x1="350" y1="0" x2="350" y2="1500"/>
+    <line x1="700" y1="0" x2="700" y2="1500"/>
+  </g>
+  <!-- Highway center lines -->
+  <g stroke="#2A5090" stroke-width="3" stroke-dasharray="20,15" fill="none">
+    <line x1="0" y1="460" x2="1080" y2="460"/>
+    <line x1="0" y1="720" x2="1080" y2="720"/>
+    <line x1="350" y1="0" x2="350" y2="1500"/>
+    <line x1="700" y1="0" x2="700" y2="1500"/>
+  </g>
+
+  <!-- Main interstate (I-35) -->
+  <line x1="0" y1="590" x2="1080" y2="590" stroke="#1E3A6E" stroke-width="22"/>
+  <line x1="0" y1="590" x2="1080" y2="590" stroke="#3A6DB0" stroke-width="6" stroke-dasharray="30,20"/>
+
+  <!-- Route Path (curved blue line) -->
+  <path d="M160 1350
+           Q200 1200 350 1100
+           Q450 1020 480 900
+           Q520 780 560 720
+           Q600 660 620 600
+           Q660 530 700 460
+           Q740 390 760 330
+           Q780 280 820 200
+           Q850 160 880 120"
+        stroke="#3D8EF0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"
+        opacity="0.9"/>
+  <!-- Route glow effect -->
+  <path d="M160 1350
+           Q200 1200 350 1100
+           Q450 1020 480 900
+           Q520 780 560 720
+           Q600 660 620 600
+           Q660 530 700 460
+           Q740 390 760 330
+           Q780 280 820 200
+           Q850 160 880 120"
+        stroke="#3D8EF0" stroke-width="28" fill="none" stroke-linecap="round" stroke-linejoin="round"
+        opacity="0.2"/>
+
+  <!-- Destination pin (Dallas) -->
+  <circle cx="880" cy="105" r="30" fill="#FF6B35" filter="url(#pinGlow)"/>
+  <circle cx="880" cy="105" r="18" fill="white"/>
+  <circle cx="880" cy="105" r="8" fill="#FF6B35"/>
+  <path d="M880 135 L873 155 L880 168 L887 155 Z" fill="#FF6B35"/>
+
+  <!-- Dallas label -->
+  <rect x="800" y="60" width="230" height="40" rx="10" fill="#1A2B4A" opacity="0.95"/>
+  <text x="915" y="86" font-family="SF Pro Display, Arial" font-size="22" fill="white" font-weight="600" text-anchor="middle">Dallas, TX</text>
+
+  <!-- Waypoint dots along route -->
+  <circle cx="630" cy="590" r="12" fill="#FFC107" stroke="#0E1B2A" stroke-width="3"/>
+  <circle cx="500" cy="870" r="10" fill="#4CAF50" stroke="#0E1B2A" stroke-width="3"/>
+
+  <!-- Waypoint labels -->
+  <rect x="650" y="578" width="200" height="36" rx="10" fill="#1A2B4A" opacity="0.9"/>
+  <text x="750" y="601" font-family="SF Pro Display, Arial" font-size="20" fill="#FFC107" font-weight="600" text-anchor="middle">OKC — 50 mi</text>
+
+  <!-- TRUCK ICON (current position) -->
+  <circle cx="480" cy="900" r="70" fill="url(#truckAura)"/>
+  <circle cx="480" cy="900" r="44" fill="#FF6B35" filter="url(#truckGlow)"/>
+  <!-- Truck shape inside circle -->
+  <rect x="458" y="888" width="40" height="24" rx="3" fill="white"/>
+  <rect x="466" y="878" width="28" height="16" rx="3" fill="white"/>
+  <circle cx="464" cy="916" r="7" fill="#FF6B35" stroke="white" stroke-width="2"/>
+  <circle cx="492" cy="916" r="7" fill="#FF6B35" stroke="white" stroke-width="2"/>
+
+  <!-- Compass -->
+  <circle cx="980" cy="180" r="46" fill="#0F1C33" opacity="0.9" stroke="#253A5E" stroke-width="2"/>
+  <text x="980" y="165" font-family="SF Pro Display, Arial" font-size="24" fill="#FF6B35" font-weight="700" text-anchor="middle">N</text>
+  <text x="980" y="208" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="middle">S</text>
+  <text x="948" y="186" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="middle">W</text>
+  <text x="1013" y="186" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="middle">E</text>
+
+  <!-- Scale / Zoom controls -->
+  <rect x="30" y="450" width="60" height="120" rx="16" fill="#0F1C33" opacity="0.9" stroke="#253A5E" stroke-width="1.5"/>
+  <line x1="44" y1="490" x2="76" y2="490" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <line x1="60" y1="474" x2="60" y2="506" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <line x1="44" y1="540" x2="76" y2="540" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <line x1="44" y1="516" x2="76" y2="516" stroke="#253A5E" stroke-width="1.5"/>
+
+  <!-- Status Bar -->
+  <rect x="0" y="0" width="1080" height="80" fill="rgba(10,16,24,0.85)"/>
+  <text x="80" y="52" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">9:41</text>
+  <circle cx="900" cy="40" r="7" fill="white"/>
+  <circle cx="925" cy="40" r="7" fill="white"/>
+  <circle cx="950" cy="40" r="7" fill="white"/>
+  <path d="M975 50 Q990 35 1005 50" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M982 57 Q990 49 998 57" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="990" cy="62" r="4" fill="white"/>
+  <rect x="1020" y="28" width="42" height="22" rx="4" stroke="white" stroke-width="2.5" fill="none"/>
+  <rect x="1062" y="34" width="5" height="10" rx="2" fill="white"/>
+  <rect x="1023" y="31" width="30" height="16" rx="2" fill="white"/>
+
+  <!-- Map title overlay -->
+  <rect x="0" y="80" width="1080" height="85" fill="rgba(10,16,24,0.75)"/>
+  <text x="80" y="140" font-family="SF Pro Display, Arial" font-size="44" fill="white" font-weight="800">Route Map</text>
+  <!-- Recenter button -->
+  <circle cx="1010" cy="122" r="36" fill="#1A2B4A" stroke="#253A5E" stroke-width="2"/>
+  <circle cx="1010" cy="122" r="12" fill="none" stroke="#FF6B35" stroke-width="3"/>
+  <circle cx="1010" cy="122" r="5" fill="#FF6B35"/>
+
+  <!-- Bottom info card -->
+  <rect x="0" y="1350" width="1080" height="570" rx="0" fill="url(#cardUp)"/>
+  <rect x="0" y="1350" width="1080" height="4" fill="#FF6B35" opacity="0.6"/>
+  <!-- Card handle -->
+  <rect x="460" y="1368" width="160" height="7" rx="4" fill="#253A5E"/>
+
+  <!-- Next stop header -->
+  <text x="80" y="1440" font-family="SF Pro Display, Arial" font-size="28" fill="#8FA8C8" font-weight="500">NEXT STOP</text>
+
+  <text x="80" y="1500" font-family="SF Pro Display, Arial" font-size="52" fill="white" font-weight="800">Dallas, TX</text>
+
+  <!-- Distance badge -->
+  <rect x="680" y="1458" width="340" height="62" rx="31" fill="#FF6B35" opacity="0.15" stroke="#FF6B35" stroke-width="1.5"/>
+  <text x="850" y="1497" font-family="SF Pro Display, Arial" font-size="32" fill="#FF6B35" font-weight="700" text-anchor="middle">342 mi away</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="1530" x2="1000" y2="1530" stroke="#253A5E" stroke-width="2"/>
+
+  <!-- Stats Row -->
+  <!-- ETA -->
+  <text x="80" y="1580" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8">ETA</text>
+  <text x="80" y="1626" font-family="SF Pro Display, Arial" font-size="44" fill="white" font-weight="700">5h 12min</text>
+  <text x="80" y="1660" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Arr. 3:48 PM</text>
+
+  <!-- Speed -->
+  <text x="400" y="1580" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8">SPEED</text>
+  <text x="400" y="1626" font-family="SF Pro Display, Arial" font-size="44" fill="white" font-weight="700">62 mph</text>
+  <text x="400" y="1660" font-family="SF Pro Display, Arial" font-size="22" fill="#4CAF50">On schedule</text>
+
+  <!-- Fuel -->
+  <text x="720" y="1580" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8">FUEL</text>
+  <text x="720" y="1626" font-family="SF Pro Display, Arial" font-size="44" fill="white" font-weight="700">68%</text>
+  <!-- Fuel bar -->
+  <rect x="720" y="1670" width="300" height="12" rx="6" fill="#253A5E"/>
+  <rect x="720" y="1670" width="204" height="12" rx="6" fill="#4CAF50"/>
+
+  <!-- Route summary line -->
+  <rect x="80" y="1705" width="920" height="72" rx="22" fill="#1E2F4D"/>
+  <!-- Origin dot -->
+  <circle cx="120" cy="1741" r="8" fill="#4CAF50"/>
+  <text x="148" y="1749" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8">Chicago, IL</text>
+  <!-- Route dots -->
+  <circle cx="380" cy="1741" r="5" fill="#253A5E"/>
+  <circle cx="410" cy="1741" r="5" fill="#253A5E"/>
+  <circle cx="440" cy="1741" r="5" fill="#253A5E"/>
+  <circle cx="470" cy="1741" r="5" fill="#253A5E"/>
+  <circle cx="500" cy="1741" r="5" fill="#253A5E"/>
+  <circle cx="530" cy="1741" r="5" fill="#3D8EF0"/>
+  <circle cx="560" cy="1741" r="5" fill="#3D8EF0"/>
+  <circle cx="590" cy="1741" r="5" fill="#3D8EF0"/>
+  <circle cx="620" cy="1741" r="5" fill="#3D8EF0"/>
+  <!-- Destination dot -->
+  <circle cx="920" cy="1741" r="8" fill="#FF6B35"/>
+  <text x="892" y="1749" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8" text-anchor="end">Dallas, TX</text>
+
+  <!-- Bottom Navigation -->
+  <rect x="0" y="1800" width="1080" height="120" fill="#0D1929"/>
+  <rect x="0" y="1800" width="1080" height="2" fill="#253A5E"/>
+
+  <path d="M125 1828 L95 1850 L95 1887 L155 1887 L155 1850 Z" fill="#8FA8C8"/>
+  <rect x="112" y="1862" width="26" height="24" rx="4" fill="#0D1929"/>
+  <text x="125" y="1912" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Home</text>
+
+  <rect x="256" y="1838" width="40" height="8" rx="3" fill="#8FA8C8"/>
+  <rect x="256" y="1856" width="40" height="8" rx="3" fill="#8FA8C8"/>
+  <rect x="256" y="1874" width="40" height="8" rx="3" fill="#8FA8C8"/>
+  <rect x="248" y="1830" width="56" height="60" rx="6" stroke="#8FA8C8" stroke-width="3" fill="none"/>
+  <text x="276" y="1912" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Loads</text>
+
+  <!-- Map active -->
+  <rect x="456" y="1797" width="170" height="115" rx="18" fill="#FF6B35" opacity="0.15"/>
+  <circle cx="540" cy="1852" r="28" fill="none" stroke="#FF6B35" stroke-width="3"/>
+  <circle cx="540" cy="1852" r="10" fill="#FF6B35"/>
+  <text x="540" y="1912" font-family="SF Pro Display, Arial" font-size="22" fill="#FF6B35" font-weight="600" text-anchor="middle">Map</text>
+
+  <text x="757" y="1860" font-family="SF Pro Display, Arial" font-size="48" fill="#8FA8C8" text-anchor="middle">$</text>
+  <text x="757" y="1912" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Earnings</text>
+
+  <circle cx="960" cy="1855" r="26" fill="none" stroke="#8FA8C8" stroke-width="3"/>
+  <circle cx="960" cy="1847" r="11" fill="#8FA8C8"/>
+  <path d="M935 1885 Q960 1870 985 1885" stroke="#8FA8C8" stroke-width="3" fill="none"/>
+  <text x="960" y="1912" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Profile</text>
+
+  <rect x="430" y="1905" width="220" height="7" rx="4" fill="#8FA8C8" opacity="0.5"/>
+</svg>

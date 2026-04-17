@@ -1,0 +1,356 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <!-- Night sky gradient -->
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="45%" stop-color="#0A0308"/>
+      <stop offset="80%" stop-color="#180A00"/>
+      <stop offset="100%" stop-color="#220D00"/>
+    </linearGradient>
+
+    <!-- Road gradient -->
+    <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0D0D0D"/>
+      <stop offset="100%" stop-color="#1A1A1A"/>
+    </linearGradient>
+
+    <!-- Orange headlight glow -->
+    <radialGradient id="headlightLeft" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF6B00" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#FF8C00" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FF6B00" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="headlightRight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF6B00" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#FF8C00" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FF6B00" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Beam gradient (long beam of light on road) -->
+    <linearGradient id="beamGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF6B00" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FF6B00" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Orange glow for text -->
+    <filter id="textGlow" x="-10%" y="-30%" width="120%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#FF6B00" flood-opacity="0.9" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="truckGlow" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#FF6B00" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Stars gradient -->
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Overlay gradient left side for text legibility -->
+    <linearGradient id="overlayLeft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.85"/>
+      <stop offset="55%" stop-color="#000000" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Orange stripe gradient -->
+    <linearGradient id="stripeGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF6B00"/>
+      <stop offset="100%" stop-color="#FF4500"/>
+    </linearGradient>
+
+    <!-- Phone screen gradient -->
+    <linearGradient id="phoneScreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0D0D0D"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── SKY ── -->
+  <rect width="1280" height="720" fill="url(#skyGrad)"/>
+
+  <!-- ── STARS ── -->
+  <g opacity="0.7">
+    <circle cx="120" cy="40" r="1" fill="white"/>
+    <circle cx="280" cy="25" r="1.5" fill="white"/>
+    <circle cx="450" cy="55" r="1" fill="white"/>
+    <circle cx="600" cy="30" r="1" fill="white"/>
+    <circle cx="750" cy="45" r="1.5" fill="white"/>
+    <circle cx="900" cy="20" r="1" fill="white"/>
+    <circle cx="1050" cy="60" r="1" fill="white"/>
+    <circle cx="1180" cy="35" r="1.5" fill="white"/>
+    <circle cx="200" cy="90" r="1" fill="white"/>
+    <circle cx="380" cy="110" r="0.8" fill="white"/>
+    <circle cx="1100" cy="95" r="1" fill="white"/>
+    <circle cx="55" cy="130" r="1" fill="white"/>
+    <circle cx="1220" cy="115" r="0.8" fill="white"/>
+    <circle cx="330" cy="70" r="0.8" fill="white"/>
+    <circle cx="820" cy="80" r="1" fill="white"/>
+    <circle cx="1000" cy="42" r="0.8" fill="white"/>
+    <circle cx="160" cy="155" r="1" fill="white"/>
+    <circle cx="520" cy="145" r="0.8" fill="white"/>
+    <circle cx="680" cy="105" r="1" fill="white"/>
+    <circle cx="960" cy="130" r="0.8" fill="white"/>
+  </g>
+
+  <!-- Slight mountain/horizon silhouette -->
+  <polygon points="0,340 100,310 200,280 320,320 420,285 500,305 600,270 680,295 760,260 860,295 960,275 1060,305 1180,285 1280,300 1280,380 0,380" fill="#050505"/>
+
+  <!-- ── ROAD ── -->
+  <!-- Road surface -->
+  <polygon points="350,430 930,430 1280,720 0,720" fill="#111111"/>
+  <polygon points="370,430 910,430 1260,720 20,720" fill="#141414"/>
+
+  <!-- Road edge lines -->
+  <polygon points="350,430 380,430 110,720 0,720" fill="#1A1A1A"/>
+  <polygon points="900,430 930,430 1280,720 1170,720" fill="#1A1A1A"/>
+
+  <!-- Center dashed lines on road -->
+  <g opacity="0.5">
+    <polygon points="628,435 652,435 670,500 646,500" fill="#CC5500"/>
+    <polygon points="622,510 648,510 672,590 646,590" fill="#CC5500"/>
+    <polygon points="612,600 642,600 678,700 648,700" fill="#CC5500"/>
+    <polygon points="608,710 640,710 680,760 648,760" fill="#CC5500"/>
+  </g>
+
+  <!-- ── HEADLIGHT BEAMS (from truck to viewer) ── -->
+  <!-- Left beam -->
+  <polygon points="570,430 600,430 260,720 140,720" fill="url(#beamGrad)" opacity="0.5"/>
+  <!-- Right beam -->
+  <polygon points="680,430 710,430 1140,720 1020,720" fill="url(#beamGrad)" opacity="0.5"/>
+
+  <!-- ── BIG RIG TRUCK ── -->
+  <!-- Truck positioned center-bottom, coming toward viewer -->
+  <g filter="url(#truckGlow)">
+
+    <!-- Trailer body -->
+    <rect x="508" y="340" width="264" height="100" rx="3" fill="#1A1A1A" stroke="#2A2A2A" stroke-width="1"/>
+    <!-- Trailer highlight line -->
+    <rect x="508" y="340" width="264" height="4" fill="#333333"/>
+    <!-- Trailer detail lines -->
+    <line x1="540" y1="340" x2="540" y2="440" stroke="#222" stroke-width="1"/>
+    <line x1="580" y1="340" x2="580" y2="440" stroke="#222" stroke-width="1"/>
+    <line x1="620" y1="340" x2="620" y2="440" stroke="#222" stroke-width="1"/>
+    <line x1="660" y1="340" x2="660" y2="440" stroke="#222" stroke-width="1"/>
+    <line x1="700" y1="340" x2="700" y2="440" stroke="#222" stroke-width="1"/>
+    <line x1="740" y1="340" x2="740" y2="440" stroke="#222" stroke-width="1"/>
+
+    <!-- Cab -->
+    <rect x="550" y="295" width="180" height="145" rx="8" fill="#1E1E1E"/>
+
+    <!-- Windshield -->
+    <rect x="568" y="305" width="144" height="70" rx="4" fill="#0D2040" opacity="0.9"/>
+    <!-- Windshield reflection -->
+    <polygon points="568,305 600,305 590,375 568,375" fill="white" opacity="0.04"/>
+
+    <!-- Cab details — grill & bumper -->
+    <rect x="555" y="390" width="170" height="30" rx="3" fill="#111111" stroke="#222" stroke-width="1"/>
+    <!-- Grill bars -->
+    <rect x="570" y="395" width="140" height="4" rx="1" fill="#2A2A2A"/>
+    <rect x="570" y="403" width="140" height="4" rx="1" fill="#2A2A2A"/>
+    <rect x="570" y="411" width="140" height="4" rx="1" fill="#2A2A2A"/>
+
+    <!-- Orange accent stripe on cab -->
+    <rect x="550" y="380" width="180" height="6" rx="1" fill="#FF6B00" opacity="0.9"/>
+
+    <!-- Headlights (two glowing circles) -->
+    <circle cx="582" cy="425" r="14" fill="#FF6B00" opacity="0.9"/>
+    <circle cx="582" cy="425" r="9" fill="#FFAA00"/>
+    <circle cx="582" cy="425" r="4" fill="white"/>
+    <circle cx="698" cy="425" r="14" fill="#FF6B00" opacity="0.9"/>
+    <circle cx="698" cy="425" r="9" fill="#FFAA00"/>
+    <circle cx="698" cy="425" r="4" fill="white"/>
+
+    <!-- Headlight glow spread -->
+    <ellipse cx="582" cy="425" rx="40" ry="30" fill="url(#headlightLeft)" opacity="0.7"/>
+    <ellipse cx="698" cy="425" rx="40" ry="30" fill="url(#headlightRight)" opacity="0.7"/>
+
+    <!-- Roof lights (running lights strip) -->
+    <rect x="565" y="294" width="150" height="6" rx="3" fill="#FF6B00" opacity="0.8"/>
+    <circle cx="575" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="590" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="605" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="620" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="640" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="660" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="680" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="695" cy="297" r="3" fill="#FFAA00"/>
+    <circle cx="710" cy="297" r="3" fill="#FFAA00"/>
+
+    <!-- Wheels visible at bottom -->
+    <ellipse cx="572" cy="442" rx="22" ry="10" fill="#0D0D0D" stroke="#333" stroke-width="1"/>
+    <ellipse cx="708" cy="442" rx="22" ry="10" fill="#0D0D0D" stroke="#333" stroke-width="1"/>
+  </g>
+
+  <!-- ── DARK OVERLAY (left side for text) ── -->
+  <rect x="0" y="0" width="1280" height="720" fill="url(#overlayLeft)"/>
+
+  <!-- ── ORANGE BOTTOM BAR ── -->
+  <rect x="0" y="665" width="1280" height="55" fill="url(#stripeGrad)" opacity="0.95"/>
+
+  <!-- ── PHONE MOCKUP (right side) ── -->
+  <g opacity="0.95">
+    <!-- Phone body -->
+    <rect x="940" y="95" width="210" height="410" rx="28" fill="#111111" stroke="#333333" stroke-width="2"/>
+    <!-- Notch -->
+    <rect x="1010" y="103" width="70" height="7" rx="3.5" fill="#222222"/>
+    <!-- Screen area -->
+    <rect x="950" y="116" width="190" height="376" rx="20" fill="url(#phoneScreen)"/>
+
+    <!-- App header -->
+    <rect x="950" y="116" width="190" height="42" rx="20" fill="#161616"/>
+    <rect x="950" y="136" width="190" height="22" fill="#161616"/>
+    <text x="965" y="131" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#FF6B00" letter-spacing="2">HAULWALLET</text>
+    <text x="965" y="144" font-family="Arial, sans-serif" font-size="10" font-weight="600" fill="#FFFFFF">Week Overview</text>
+
+    <!-- Earnings card -->
+    <rect x="958" y="165" width="174" height="72" rx="10" fill="#1A0800" stroke="#FF6B0033" stroke-width="1"/>
+    <text x="968" y="179" font-family="Arial, sans-serif" font-size="8" fill="#888888" letter-spacing="1">TOTAL EARNINGS</text>
+    <text x="968" y="205" font-family="Arial Black, Arial, sans-serif" font-size="26" font-weight="900" fill="#FF6B00">$4,280</text>
+    <text x="968" y="220" font-family="Arial, sans-serif" font-size="8" fill="#555555">After fuel &amp; expenses</text>
+
+    <!-- Mini bar chart -->
+    <rect x="968" y="242" width="12" height="10" rx="2" fill="#FF6B0044"/>
+    <rect x="968" y="246" width="12" height="6" rx="2" fill="#FF6B00"/>
+    <rect x="984" y="238" width="12" height="14" rx="2" fill="#FF6B0044"/>
+    <rect x="984" y="241" width="12" height="11" rx="2" fill="#FF6B00"/>
+    <rect x="1000" y="243" width="12" height="9" rx="2" fill="#FF6B0044"/>
+    <rect x="1000" y="247" width="12" height="5" rx="2" fill="#FF6B00"/>
+    <rect x="1016" y="235" width="12" height="17" rx="2" fill="#FF6B0044"/>
+    <rect x="1016" y="237" width="12" height="15" rx="2" fill="#FF6B00"/>
+    <rect x="1032" y="239" width="12" height="13" rx="2" fill="#FF6B0044"/>
+    <rect x="1032" y="242" width="12" height="10" rx="2" fill="#FF6B00"/>
+    <rect x="1048" y="233" width="12" height="19" rx="2" fill="#FF6B0044"/>
+    <rect x="1048" y="234" width="12" height="18" rx="2" fill="#FF6B00"/>
+    <rect x="1064" y="237" width="12" height="15" rx="2" fill="#FF6B0044"/>
+    <rect x="1064" y="240" width="12" height="12" rx="2" fill="#FF6B00"/>
+    <rect x="1080" y="240" width="12" height="12" rx="2" fill="#FF6B0044"/>
+    <rect x="1080" y="243" width="12" height="9" rx="2" fill="#FF6B00"/>
+    <rect x="1096" y="236" width="14" height="16" rx="2" fill="#FF6B0044"/>
+    <rect x="1096" y="237" width="14" height="15" rx="2" fill="#FF6B00"/>
+
+    <!-- Load items -->
+    <text x="968" y="277" font-family="Arial, sans-serif" font-size="8" fill="#555555" letter-spacing="1">ACTIVE LOADS</text>
+
+    <!-- Load 1 - orange (in transit) -->
+    <rect x="958" y="282" width="174" height="30" rx="6" fill="#1A1A1A"/>
+    <rect x="958" y="282" width="3" height="30" rx="1.5" fill="#FF6B00"/>
+    <circle cx="970" cy="297" r="3" fill="#FF6B00"/>
+    <text x="978" y="293" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#FFFFFF">Chicago → Dallas</text>
+    <text x="978" y="305" font-family="Arial, sans-serif" font-size="7.5" fill="#666666">In Transit · ETA 6h</text>
+    <text x="1093" y="299" font-family="Arial Black, Arial, sans-serif" font-size="9" font-weight="700" fill="#FF6B00">$1,240</text>
+
+    <!-- Load 2 - green (delivered) -->
+    <rect x="958" y="317" width="174" height="30" rx="6" fill="#1A1A1A"/>
+    <rect x="958" y="317" width="3" height="30" rx="1.5" fill="#33AA55"/>
+    <circle cx="970" cy="332" r="3" fill="#33AA55"/>
+    <text x="978" y="328" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#FFFFFF">Dallas → Phoenix</text>
+    <text x="978" y="340" font-family="Arial, sans-serif" font-size="7.5" fill="#33AA55">Delivered ✓</text>
+    <text x="1097" y="334" font-family="Arial Black, Arial, sans-serif" font-size="9" font-weight="700" fill="#33AA55">$980</text>
+
+    <!-- Load 3 - gray (pending) -->
+    <rect x="958" y="352" width="174" height="30" rx="6" fill="#1A1A1A"/>
+    <rect x="958" y="352" width="3" height="30" rx="1.5" fill="#555555"/>
+    <circle cx="970" cy="367" r="3" fill="#555555"/>
+    <text x="978" y="363" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#CCCCCC">Phoenix → LA</text>
+    <text x="978" y="375" font-family="Arial, sans-serif" font-size="7.5" fill="#666666">Pickup tomorrow</text>
+    <text x="1097" y="369" font-family="Arial Black, Arial, sans-serif" font-size="9" font-weight="700" fill="#888888">$850</text>
+
+    <!-- Nav bar at bottom of phone screen -->
+    <rect x="950" y="462" width="190" height="30" rx="0" fill="#111111"/>
+    <rect x="950" y="489" width="190" height="3" rx="0" fill="#111111"/>
+    <!-- Nav icons (simplified) -->
+    <circle cx="990" cy="478" r="5" fill="#FF6B00" opacity="0.9"/>
+    <circle cx="1025" cy="478" r="4" fill="#333333"/>
+    <circle cx="1060" cy="478" r="4" fill="#333333"/>
+    <circle cx="1095" cy="478" r="4" fill="#333333"/>
+
+    <!-- Phone outer glow -->
+    <rect x="940" y="95" width="210" height="410" rx="28" fill="none" stroke="#FF6B00" stroke-width="1" opacity="0.3"/>
+  </g>
+
+  <!-- ── MAIN HEADLINE ── -->
+  <!-- Shadow/glow layer -->
+  <text x="60" y="230" font-family="Arial Black, Impact, sans-serif" font-size="148" font-weight="900" fill="#FF6B00" opacity="0.15" letter-spacing="-2">HAUL</text>
+
+  <!-- Main text -->
+  <text x="55" y="225"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="148"
+    font-weight="900"
+    fill="white"
+    letter-spacing="-3"
+    filter="url(#textGlow)">HAUL</text>
+
+  <text x="55" y="350"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="148"
+    font-weight="900"
+    fill="#FF6B00"
+    letter-spacing="-3"
+    filter="url(#softGlow)">WALLET</text>
+
+  <!-- Subtitle -->
+  <rect x="55" y="368" width="580" height="5" rx="2.5" fill="#FF6B00" opacity="0.6"/>
+  <text x="58" y="410"
+    font-family="Arial, sans-serif"
+    font-size="38"
+    font-weight="700"
+    fill="#DDDDDD"
+    letter-spacing="4">FOR TRUCK DRIVERS</text>
+
+  <!-- Social proof badge -->
+  <rect x="55" y="430" width="295" height="48" rx="8" fill="rgba(255,107,0,0.15)" stroke="#FF6B00" stroke-width="1.5" opacity="0.9"/>
+  <text x="76" y="452" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#FF6B00">★★★★★</text>
+  <text x="130" y="452" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">12,000+ TRUCKERS</text>
+  <text x="76" y="469" font-family="Arial, sans-serif" font-size="12" fill="#AAAAAA">Track loads · Monitor earnings · Navigate</text>
+
+  <!-- ── BOTTOM BAR TEXT ── -->
+  <text x="55" y="700"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="32"
+    font-weight="900"
+    fill="#000000"
+    letter-spacing="1">FREE DOWNLOAD</text>
+
+  <text x="55" y="700" font-family="Arial Black, Impact, sans-serif" font-size="32" font-weight="900" fill="#000000" letter-spacing="1">FREE DOWNLOAD</text>
+
+  <!-- Google Play icon simplified -->
+  <g transform="translate(800, 672)">
+    <rect width="180" height="38" rx="5" fill="rgba(0,0,0,0.3)"/>
+    <text x="32" y="15" font-family="Arial, sans-serif" font-size="9" fill="rgba(0,0,0,0.8)">GET IT ON</text>
+    <text x="28" y="30" font-family="Arial Black, Arial, sans-serif" font-size="16" font-weight="900" fill="black">Google Play</text>
+    <!-- Play triangle -->
+    <polygon points="10,8 10,30 24,19" fill="black" opacity="0.8"/>
+  </g>
+
+  <!-- ── SUBTLE VIGNETTE ── -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+    <stop offset="0%" stop-color="transparent"/>
+    <stop offset="100%" stop-color="rgba(0,0,0,0.45)"/>
+  </radialGradient>
+  <rect width="1280" height="720" fill="url(#vignette)"/>
+
+</svg>

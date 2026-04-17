@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A2B4A"/>
+      <stop offset="100%" stop-color="#0F1C33"/>
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#253A5E"/>
+      <stop offset="100%" stop-color="#1E2F4D"/>
+    </linearGradient>
+    <linearGradient id="activeCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2A3F63"/>
+      <stop offset="100%" stop-color="#1F3257"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#000000" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#bgGrad)" rx="60" ry="60"/>
+
+  <!-- Status Bar -->
+  <rect x="0" y="0" width="1080" height="80" fill="#0F1C33" opacity="0.95"/>
+  <text x="80" y="52" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">9:41</text>
+  <circle cx="900" cy="40" r="7" fill="white"/>
+  <circle cx="925" cy="40" r="7" fill="white"/>
+  <circle cx="950" cy="40" r="7" fill="white"/>
+  <path d="M975 50 Q990 35 1005 50" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M982 57 Q990 49 998 57" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="990" cy="62" r="4" fill="white"/>
+  <rect x="1020" y="28" width="42" height="22" rx="4" stroke="white" stroke-width="2.5" fill="none"/>
+  <rect x="1062" y="34" width="5" height="10" rx="2" fill="white"/>
+  <rect x="1023" y="31" width="30" height="16" rx="2" fill="white"/>
+
+  <!-- Header -->
+  <rect x="0" y="80" width="1080" height="130" fill="#0F1C33"/>
+  <text x="80" y="158" font-family="SF Pro Display, Arial" font-size="48" fill="white" font-weight="800">My Loads</text>
+  <text x="920" y="158" font-family="SF Pro Display, Arial" font-size="34" fill="#8FA8C8" text-anchor="middle">3 active</text>
+
+  <!-- Add button -->
+  <circle cx="1010" cy="145" r="36" fill="#FF6B35" filter="url(#softShadow)"/>
+  <line x1="1010" y1="128" x2="1010" y2="162" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  <line x1="993" y1="145" x2="1027" y2="145" stroke="white" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Filter Tabs -->
+  <rect x="50" y="230" width="980" height="72" rx="22" fill="#1E2F4D"/>
+  <!-- All (active) -->
+  <rect x="58" y="238" width="230" height="56" rx="18" fill="#FF6B35"/>
+  <text x="173" y="276" font-family="SF Pro Display, Arial" font-size="26" fill="white" font-weight="700" text-anchor="middle">All Loads</text>
+  <!-- Active -->
+  <text x="440" y="276" font-family="SF Pro Display, Arial" font-size="26" fill="#8FA8C8" font-weight="500" text-anchor="middle">Active</text>
+  <!-- Delivered -->
+  <text x="680" y="276" font-family="SF Pro Display, Arial" font-size="26" fill="#8FA8C8" font-weight="500" text-anchor="middle">Delivered</text>
+  <!-- Pending -->
+  <text x="900" y="276" font-family="SF Pro Display, Arial" font-size="26" fill="#8FA8C8" font-weight="500" text-anchor="middle">Pending</text>
+
+  <!-- LOAD CARD 1 — IN TRANSIT -->
+  <rect x="50" y="335" width="980" height="250" rx="28" fill="url(#activeCard)" filter="url(#shadow)"/>
+  <!-- Left accent bar -->
+  <rect x="50" y="335" width="8" height="250" rx="4" fill="#FF6B35"/>
+  <!-- Route header -->
+  <text x="90" y="390" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Chicago, IL</text>
+  <text x="90" y="390" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700" dx="0">Chicago, IL</text>
+  <!-- Arrow -->
+  <text x="490" y="390" font-family="SF Pro Display, Arial" font-size="38" fill="#FF6B35" font-weight="400">→</text>
+  <text x="560" y="390" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Dallas, TX</text>
+  <!-- Status badge -->
+  <rect x="760" y="355" width="250" height="46" rx="23" fill="#FF6B35" opacity="0.2"/>
+  <circle cx="790" cy="378" r="8" fill="#FF6B35"/>
+  <text x="880" y="386" font-family="SF Pro Display, Arial" font-size="24" fill="#FF6B35" font-weight="700" text-anchor="middle">IN TRANSIT</text>
+
+  <!-- Divider -->
+  <line x1="90" y1="420" x2="990" y2="420" stroke="#2D4570" stroke-width="1.5"/>
+
+  <!-- Details row -->
+  <!-- Weight -->
+  <text x="90" y="462" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">WEIGHT</text>
+  <text x="90" y="498" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">42,000 lbs</text>
+  <!-- Distance -->
+  <text x="340" y="462" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">DISTANCE</text>
+  <text x="340" y="498" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">921 mi</text>
+  <!-- Type -->
+  <text x="580" y="462" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">TYPE</text>
+  <text x="580" y="498" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">Refrigerated</text>
+  <!-- Pay -->
+  <text x="840" y="462" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">PAYMENT</text>
+  <text x="840" y="498" font-family="SF Pro Display, Arial" font-size="30" fill="#FF6B35" font-weight="700">$1,240</text>
+
+  <!-- Progress bar -->
+  <rect x="90" y="530" width="860" height="10" rx="5" fill="#1A2B4A"/>
+  <rect x="90" y="530" width="490" height="10" rx="5" fill="#FF6B35"/>
+  <text x="90" y="565" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Chicago</text>
+  <text x="950" y="565" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="end">Dallas</text>
+  <text x="540" y="565" font-family="SF Pro Display, Arial" font-size="22" fill="#FF6B35" text-anchor="middle">57% complete</text>
+
+  <!-- LOAD CARD 2 — DELIVERED -->
+  <rect x="50" y="615" width="980" height="250" rx="28" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <rect x="50" y="615" width="8" height="250" rx="4" fill="#4CAF50"/>
+  <text x="90" y="670" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Memphis, TN</text>
+  <text x="510" y="670" font-family="SF Pro Display, Arial" font-size="38" fill="#4CAF50" font-weight="400">→</text>
+  <text x="580" y="670" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Atlanta, GA</text>
+  <!-- Status badge -->
+  <rect x="760" y="635" width="250" height="46" rx="23" fill="#4CAF50" opacity="0.15"/>
+  <text x="880" y="666" font-family="SF Pro Display, Arial" font-size="24" fill="#4CAF50" font-weight="700" text-anchor="middle">✓ DELIVERED</text>
+
+  <line x1="90" y1="700" x2="990" y2="700" stroke="#2D4570" stroke-width="1.5"/>
+
+  <text x="90" y="742" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">WEIGHT</text>
+  <text x="90" y="778" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">28,500 lbs</text>
+  <text x="340" y="742" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">DISTANCE</text>
+  <text x="340" y="778" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">394 mi</text>
+  <text x="580" y="742" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">TYPE</text>
+  <text x="580" y="778" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">Dry Van</text>
+  <text x="840" y="742" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">PAYMENT</text>
+  <text x="840" y="778" font-family="SF Pro Display, Arial" font-size="30" fill="#4CAF50" font-weight="700">$720</text>
+
+  <rect x="90" y="810" width="860" height="10" rx="5" fill="#4CAF50" opacity="0.3"/>
+  <rect x="90" y="810" width="860" height="10" rx="5" fill="#4CAF50"/>
+  <text x="90" y="845" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Completed Apr 16 • 8:42 AM</text>
+
+  <!-- LOAD CARD 3 — IN TRANSIT -->
+  <rect x="50" y="895" width="980" height="250" rx="28" fill="url(#activeCard)" filter="url(#shadow)"/>
+  <rect x="50" y="895" width="8" height="250" rx="4" fill="#FF6B35"/>
+  <text x="90" y="950" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Houston, TX</text>
+  <text x="515" y="950" font-family="SF Pro Display, Arial" font-size="38" fill="#FF6B35" font-weight="400">→</text>
+  <text x="585" y="950" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Denver, CO</text>
+  <rect x="760" y="915" width="250" height="46" rx="23" fill="#FF6B35" opacity="0.2"/>
+  <circle cx="790" cy="938" r="8" fill="#FF6B35"/>
+  <text x="880" y="946" font-family="SF Pro Display, Arial" font-size="24" fill="#FF6B35" font-weight="700" text-anchor="middle">IN TRANSIT</text>
+
+  <line x1="90" y1="980" x2="990" y2="980" stroke="#2D4570" stroke-width="1.5"/>
+
+  <text x="90" y="1022" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">WEIGHT</text>
+  <text x="90" y="1058" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">35,200 lbs</text>
+  <text x="340" y="1022" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">DISTANCE</text>
+  <text x="340" y="1058" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">1,030 mi</text>
+  <text x="580" y="1022" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">TYPE</text>
+  <text x="580" y="1058" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">Flatbed</text>
+  <text x="840" y="1022" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">PAYMENT</text>
+  <text x="840" y="1058" font-family="SF Pro Display, Arial" font-size="30" fill="#FF6B35" font-weight="700">$1,580</text>
+
+  <rect x="90" y="1090" width="860" height="10" rx="5" fill="#1A2B4A"/>
+  <rect x="90" y="1090" width="270" height="10" rx="5" fill="#FF6B35"/>
+  <text x="90" y="1125" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Houston</text>
+  <text x="950" y="1125" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="end">Denver</text>
+  <text x="540" y="1125" font-family="SF Pro Display, Arial" font-size="22" fill="#FF6B35" text-anchor="middle">31% complete</text>
+
+  <!-- LOAD CARD 4 — PENDING -->
+  <rect x="50" y="1175" width="980" height="250" rx="28" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <rect x="50" y="1175" width="8" height="250" rx="4" fill="#FFC107"/>
+  <text x="90" y="1230" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Nashville, TN</text>
+  <text x="520" y="1230" font-family="SF Pro Display, Arial" font-size="38" fill="#FFC107" font-weight="400">→</text>
+  <text x="590" y="1230" font-family="SF Pro Display, Arial" font-size="38" fill="white" font-weight="700">Kansas City, MO</text>
+  <rect x="760" y="1195" width="250" height="46" rx="23" fill="#FFC107" opacity="0.15"/>
+  <text x="880" y="1226" font-family="SF Pro Display, Arial" font-size="24" fill="#FFC107" font-weight="700" text-anchor="middle">PENDING</text>
+
+  <line x1="90" y1="1260" x2="990" y2="1260" stroke="#2D4570" stroke-width="1.5"/>
+
+  <text x="90" y="1302" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">WEIGHT</text>
+  <text x="90" y="1338" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">18,000 lbs</text>
+  <text x="340" y="1302" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">DISTANCE</text>
+  <text x="340" y="1338" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">554 mi</text>
+  <text x="580" y="1302" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">TYPE</text>
+  <text x="580" y="1338" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="600">Dry Van</text>
+  <text x="840" y="1302" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">PAYMENT</text>
+  <text x="840" y="1338" font-family="SF Pro Display, Arial" font-size="30" fill="#FFC107" font-weight="700">$890</text>
+
+  <text x="90" y="1398" font-family="SF Pro Display, Arial" font-size="26" fill="#FFC107">Pickup: Apr 19, 2026 • 8:00 AM</text>
+  <!-- Accept button -->
+  <rect x="700" y="1375" width="310" height="52" rx="26" fill="#FF6B35"/>
+  <text x="855" y="1408" font-family="SF Pro Display, Arial" font-size="26" fill="white" font-weight="700" text-anchor="middle">Accept Load</text>
+
+  <!-- Bottom Navigation -->
+  <rect x="0" y="1730" width="1080" height="190" fill="#0D1929"/>
+  <rect x="0" y="1730" width="1080" height="2" fill="#253A5E"/>
+
+  <!-- Home -->
+  <path d="M125 1778 L95 1803 L95 1840 L155 1840 L155 1803 Z" fill="#8FA8C8"/>
+  <rect x="112" y="1816" width="26" height="24" rx="4" fill="#0D1929"/>
+  <text x="125" y="1875" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Home</text>
+
+  <!-- Loads (active) -->
+  <rect x="222" y="1750" width="200" height="120" rx="18" fill="#FF6B35" opacity="0.15"/>
+  <rect x="264" y="1790" width="40" height="8" rx="3" fill="#FF6B35"/>
+  <rect x="264" y="1808" width="40" height="8" rx="3" fill="#FF6B35"/>
+  <rect x="264" y="1826" width="40" height="8" rx="3" fill="#FF6B35"/>
+  <rect x="256" y="1782" width="56" height="60" rx="6" stroke="#FF6B35" stroke-width="3" fill="none"/>
+  <text x="284" y="1875" font-family="SF Pro Display, Arial" font-size="22" fill="#FF6B35" font-weight="600" text-anchor="middle">Loads</text>
+
+  <!-- Map -->
+  <circle cx="540" cy="1810" r="28" fill="none" stroke="#8FA8C8" stroke-width="3"/>
+  <circle cx="540" cy="1810" r="10" fill="#8FA8C8"/>
+  <text x="540" y="1875" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Map</text>
+
+  <!-- Earnings -->
+  <text x="757" y="1815" font-family="SF Pro Display, Arial" font-size="48" fill="#8FA8C8" text-anchor="middle">$</text>
+  <text x="757" y="1875" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Earnings</text>
+
+  <!-- Profile -->
+  <circle cx="960" cy="1810" r="26" fill="none" stroke="#8FA8C8" stroke-width="3"/>
+  <circle cx="960" cy="1802" r="11" fill="#8FA8C8"/>
+  <path d="M935 1840 Q960 1825 985 1840" stroke="#8FA8C8" stroke-width="3" fill="none"/>
+  <text x="960" y="1875" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Profile</text>
+
+  <rect x="430" y="1905" width="220" height="7" rx="4" fill="#8FA8C8" opacity="0.5"/>
+</svg>

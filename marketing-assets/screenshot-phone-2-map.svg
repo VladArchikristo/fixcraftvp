@@ -1,0 +1,240 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg" font-family="'SF Pro Display', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B2A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0A1520;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mapBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A2E3D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#152536;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="routeCardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1E30;stop-opacity:0.98" />
+      <stop offset="100%" style="stop-color:#0A1520;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="-8" stdDeviation="20" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="pulseShadow">
+      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glowGreen">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1920" fill="url(#bgGrad)"/>
+
+  <!-- MAP AREA (full screen) -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#mapBg)"/>
+
+  <!-- Map grid lines (roads) -->
+  <!-- Horizontal roads -->
+  <line x1="0" y1="280" x2="1080" y2="310" stroke="#1E3548" stroke-width="4"/>
+  <line x1="0" y1="450" x2="1080" y2="440" stroke="#1E3548" stroke-width="4"/>
+  <line x1="0" y1="600" x2="1080" y2="620" stroke="#1E3548" stroke-width="4"/>
+  <line x1="0" y1="750" x2="1080" y2="760" stroke="#1E3548" stroke-width="6"/>
+  <line x1="0" y1="900" x2="1080" y2="880" stroke="#1E3548" stroke-width="4"/>
+  <line x1="0" y1="1050" x2="1080" y2="1030" stroke="#1E3548" stroke-width="4"/>
+  <line x1="0" y1="1200" x2="1080" y2="1180" stroke="#1E3548" stroke-width="4"/>
+
+  <!-- Vertical roads -->
+  <line x1="180" y1="100" x2="200" y2="1500" stroke="#1E3548" stroke-width="4"/>
+  <line x1="400" y1="100" x2="380" y2="1500" stroke="#1E3548" stroke-width="4"/>
+  <line x1="600" y1="100" x2="610" y2="1500" stroke="#1E3548" stroke-width="6"/>
+  <line x1="820" y1="100" x2="800" y2="1500" stroke="#1E3548" stroke-width="4"/>
+  <line x1="980" y1="100" x2="990" y2="1500" stroke="#1E3548" stroke-width="4"/>
+
+  <!-- Major highway (thicker) -->
+  <path d="M 540 200 C 560 350 520 500 580 650 C 640 800 600 950 580 1100 C 560 1250 540 1380 520 1500"
+        fill="none" stroke="#24415C" stroke-width="18"/>
+  <path d="M 540 200 C 560 350 520 500 580 650 C 640 800 600 950 580 1100 C 560 1250 540 1380 520 1500"
+        fill="none" stroke="#1A3350" stroke-width="14"/>
+
+  <!-- City blocks (rectangles) -->
+  <rect x="220" y="320" width="140" height="100" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="420" y="320" width="140" height="100" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="660" y="320" width="120" height="100" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="220" y="470" width="140" height="100" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="420" y="470" width="140" height="100" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="660" y="470" width="140" height="100" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="220" y="640" width="110" height="90" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="640" y="640" width="120" height="90" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="800" y="640" width="140" height="90" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="100" y="800" width="120" height="80" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="660" y="800" width="110" height="80" rx="4" fill="#1A2E3D" opacity="0.8"/>
+  <rect x="820" y="800" width="120" height="80" rx="4" fill="#1A2E3D" opacity="0.8"/>
+
+  <!-- Water/park area -->
+  <ellipse cx="300" cy="900" rx="120" ry="80" fill="#1A3548" opacity="0.6"/>
+  <text x="300" y="908" font-size="20" text-anchor="middle" fill="#2A5068" opacity="0.8">LAKE PARK</text>
+
+  <!-- GREEN GPS ROUTE LINE -->
+  <path d="M 490 280 C 510 350 530 420 560 500 C 590 580 580 660 570 750 C 560 840 555 920 550 1000"
+        fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" filter="url(#glowGreen)"/>
+  <path d="M 490 280 C 510 350 530 420 560 500 C 590 580 580 660 570 750 C 560 840 555 920 550 1000"
+        fill="none" stroke="#22C55E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Point A marker (destination - top) -->
+  <circle cx="490" cy="280" r="24" fill="#EF4444" filter="url(#shadow)"/>
+  <circle cx="490" cy="280" r="16" fill="#FFFFFF"/>
+  <text x="490" y="287" font-size="18" text-anchor="middle" fill="#EF4444" font-weight="800">A</text>
+  <!-- Label A -->
+  <rect x="520" y="255" width="140" height="48" rx="10" fill="#0D1B2A" opacity="0.9"/>
+  <text x="590" y="285" font-size="22" text-anchor="middle" fill="#FFFFFF" font-weight="600">Charlotte, NC</text>
+
+  <!-- Point B marker (current destination) -->
+  <polygon points="550,1000 535,960 550,968 565,960" fill="#22C55E"/>
+  <circle cx="550" cy="960" r="22" fill="#22C55E"/>
+  <circle cx="550" cy="960" r="14" fill="#FFFFFF"/>
+  <text x="550" y="967" font-size="16" text-anchor="middle" fill="#22C55E" font-weight="800">B</text>
+  <!-- Label B -->
+  <rect x="580" y="938" width="140" height="48" rx="10" fill="#0D1B2A" opacity="0.9"/>
+  <text x="650" y="968" font-size="22" text-anchor="middle" fill="#FFFFFF" font-weight="600">Atlanta, GA</text>
+
+  <!-- Current position (blue dot with pulse) -->
+  <circle cx="562" cy="620" r="36" fill="#1565C0" opacity="0.2" filter="url(#pulseShadow)"/>
+  <circle cx="562" cy="620" r="24" fill="#1565C0" opacity="0.35"/>
+  <circle cx="562" cy="620" r="16" fill="#2196F3"/>
+  <circle cx="562" cy="620" r="8" fill="#FFFFFF"/>
+
+  <!-- Direction arrow (truck heading) -->
+  <polygon points="562,580 550,605 562,598 574,605" fill="#2196F3"/>
+
+  <!-- Speed limit sign -->
+  <rect x="80" y="560" width="100" height="100" rx="12" fill="#FFFFFF"/>
+  <rect x="90" y="570" width="80" height="80" rx="8" fill="#FFFFFF" stroke="#000000" stroke-width="3"/>
+  <text x="130" y="592" font-size="18" text-anchor="middle" fill="#000000" font-weight="700">SPEED</text>
+  <text x="130" y="612" font-size="18" text-anchor="middle" fill="#000000" font-weight="700">LIMIT</text>
+  <text x="130" y="638" font-size="28" text-anchor="middle" fill="#000000" font-weight="900">65</text>
+
+  <!-- POI markers -->
+  <circle cx="760" cy="500" r="18" fill="#F59E0B"/>
+  <text x="760" y="508" font-size="16" text-anchor="middle" fill="#FFFFFF">⛽</text>
+
+  <circle cx="280" cy="720" r="18" fill="#6366F1"/>
+  <text x="280" y="728" font-size="16" text-anchor="middle" fill="#FFFFFF">🅿️</text>
+
+  <circle cx="840" cy="780" r="18" fill="#10B981"/>
+  <text x="840" y="788" font-size="16" text-anchor="middle" fill="#FFFFFF">🍔</text>
+
+  <!-- Interstate shield -->
+  <rect x="600" y="740" width="72" height="56" rx="6" fill="#1565C0"/>
+  <path d="M600 746 Q636 740 672 746 L672 796 Q636 802 600 796 Z" fill="#1565C0"/>
+  <text x="636" y="758" font-size="16" text-anchor="middle" fill="#FFFFFF">I-85</text>
+  <text x="636" y="782" font-size="22" text-anchor="middle" fill="#FFFFFF" font-weight="900">N</text>
+
+  <!-- Map controls (right side) -->
+  <rect x="960" y="400" width="80" height="80" rx="16" fill="#0F1E30" opacity="0.9"/>
+  <text x="1000" y="448" font-size="32" text-anchor="middle" fill="#FFFFFF">+</text>
+
+  <rect x="960" y="496" width="80" height="80" rx="16" fill="#0F1E30" opacity="0.9"/>
+  <text x="1000" y="544" font-size="32" text-anchor="middle" fill="#FFFFFF">−</text>
+
+  <rect x="960" y="592" width="80" height="80" rx="16" fill="#0F1E30" opacity="0.9"/>
+  <text x="1000" y="640" font-size="26" text-anchor="middle" fill="#FFFFFF">⊙</text>
+
+  <!-- My location button -->
+  <rect x="960" y="688" width="80" height="80" rx="16" fill="#1565C0" opacity="0.9"/>
+  <circle cx="1000" cy="728" r="12" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <circle cx="1000" cy="728" r="4" fill="#FFFFFF"/>
+
+  <!-- Status bar -->
+  <rect x="0" y="0" width="1080" height="100" fill="#0A1520" opacity="0.95"/>
+  <text x="80" y="68" font-size="32" fill="#FFFFFF" font-weight="600">9:41</text>
+  <rect x="940" y="38" width="66" height="30" rx="6" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <rect x="1006" y="46" width="6" height="14" rx="2" fill="#FFFFFF"/>
+  <rect x="944" y="42" width="48" height="22" rx="4" fill="#4CAF50"/>
+  <rect x="860" y="52" width="8" height="16" rx="2" fill="#FFFFFF"/>
+  <rect x="874" y="46" width="8" height="22" rx="2" fill="#FFFFFF"/>
+  <rect x="888" y="40" width="8" height="28" rx="2" fill="#FFFFFF"/>
+  <path d="M816 60 Q824 52 836 52 Q848 52 856 60" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M822 68 Q830 60 836 60 Q842 60 850 68" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="836" cy="74" r="5" fill="#FFFFFF"/>
+
+  <!-- Back button -->
+  <rect x="40" y="116" width="80" height="80" rx="20" fill="#0F1E30" opacity="0.9"/>
+  <text x="80" y="166" font-size="28" text-anchor="middle" fill="#FFFFFF">←</text>
+
+  <text x="540" y="168" font-size="36" text-anchor="middle" fill="#FFFFFF" font-weight="700">Navigation</text>
+
+  <!-- Trip info pill at top -->
+  <rect x="200" y="118" width="240" height="60" rx="30" fill="#22C55E" opacity="0.9"/>
+  <text x="320" y="156" font-size="24" text-anchor="middle" fill="#FFFFFF" font-weight="700">▶ ON ROUTE</text>
+
+  <!-- BOTTOM ROUTE CARD -->
+  <rect x="0" y="1290" width="1080" height="490" rx="40" fill="url(#routeCardGrad)" filter="url(#shadow)"/>
+
+  <!-- Drag handle -->
+  <rect x="470" y="1312" width="140" height="8" rx="4" fill="#1E3A5C"/>
+
+  <!-- Route header -->
+  <text x="60" y="1380" font-size="28" fill="#8BA3BC" font-weight="500" letter-spacing="2">ACTIVE TRIP</text>
+  <rect x="800" y="1350" width="220" height="52" rx="26" fill="#22C55E" opacity="0.15"/>
+  <text x="910" y="1384" font-size="26" text-anchor="middle" fill="#22C55E" font-weight="600">IN PROGRESS</text>
+
+  <!-- Route main info -->
+  <text x="60" y="1440" font-size="46" fill="#FFFFFF" font-weight="800">Charlotte</text>
+  <text x="60" y="1490" font-size="32" fill="#8BA3BC">North Carolina</text>
+
+  <!-- Arrow and destination -->
+  <rect x="480" y="1440" width="80" height="4" rx="2" fill="#1565C0"/>
+  <polygon points="560,1430 580,1442 560,1454" fill="#1565C0"/>
+
+  <text x="620" y="1440" font-size="46" fill="#FFFFFF" font-weight="800">Atlanta</text>
+  <text x="620" y="1490" font-size="32" fill="#8BA3BC">Georgia</text>
+
+  <!-- Stats row -->
+  <line x1="60" y1="1520" x2="1020" y2="1520" stroke="#1A3A5C" stroke-width="1.5"/>
+
+  <text x="120" y="1572" font-size="28" text-anchor="middle" fill="#8BA3BC">Remaining</text>
+  <text x="120" y="1614" font-size="48" text-anchor="middle" fill="#FFFFFF" font-weight="800">214 mi</text>
+
+  <line x1="300" y1="1535" x2="300" y2="1630" stroke="#1A3A5C" stroke-width="1.5"/>
+
+  <text x="450" y="1572" font-size="28" text-anchor="middle" fill="#8BA3BC">ETA</text>
+  <text x="450" y="1614" font-size="48" text-anchor="middle" fill="#F59E0B" font-weight="800">3:24 PM</text>
+
+  <line x1="620" y1="1535" x2="620" y2="1630" stroke="#1A3A5C" stroke-width="1.5"/>
+
+  <text x="780" y="1572" font-size="28" text-anchor="middle" fill="#8BA3BC">Speed</text>
+  <text x="780" y="1614" font-size="48" text-anchor="middle" fill="#FFFFFF" font-weight="800">64 mph</text>
+
+  <line x1="930" y1="1535" x2="930" y2="1630" stroke="#1A3A5C" stroke-width="1.5"/>
+
+  <text x="1000" y="1572" font-size="28" text-anchor="middle" fill="#8BA3BC">Load</text>
+  <text x="1000" y="1614" font-size="28" text-anchor="middle" fill="#22C55E" font-weight="600">HW-2846</text>
+
+  <!-- Progress bar -->
+  <rect x="60" y="1650" width="960" height="14" rx="7" fill="#1A3A5C"/>
+  <rect x="60" y="1650" width="576" height="14" rx="7" fill="#22C55E"/>
+  <!-- Progress indicator -->
+  <circle cx="636" cy="1657" r="16" fill="#FFFFFF"/>
+  <circle cx="636" cy="1657" r="10" fill="#22C55E"/>
+  <text x="810" y="1644" font-size="24" fill="#22C55E" font-weight="600">60% complete</text>
+
+  <!-- Action buttons -->
+  <rect x="60" y="1690" width="440" height="96" rx="24" fill="#132235"/>
+  <text x="280" y="1746" font-size="30" text-anchor="middle" fill="#FFFFFF" font-weight="600">📞 Dispatcher</text>
+
+  <rect x="580" y="1690" width="440" height="96" rx="24" fill="#1565C0"/>
+  <text x="800" y="1746" font-size="30" text-anchor="middle" fill="#FFFFFF" font-weight="600">🏁 End Trip</text>
+
+  <!-- Bottom nav -->
+  <rect x="0" y="1800" width="1080" height="120" fill="#0A1520"/>
+  <line x1="0" y1="1800" x2="1080" y2="1800" stroke="#1A3A5C" stroke-width="1.5"/>
+  <text x="148" y="1854" font-size="34" text-anchor="middle" fill="#8BA3BC">🏠</text>
+  <text x="148" y="1885" font-size="24" text-anchor="middle" fill="#8BA3BC">Home</text>
+  <text x="364" y="1854" font-size="34" text-anchor="middle" fill="#8BA3BC">📦</text>
+  <text x="364" y="1885" font-size="24" text-anchor="middle" fill="#8BA3BC">Loads</text>
+  <circle cx="540" cy="1760" r="50" fill="#1565C0"/>
+  <text x="540" y="1778" font-size="36" text-anchor="middle" fill="#FFFFFF">🗺️</text>
+  <text x="716" y="1854" font-size="34" text-anchor="middle" fill="#8BA3BC">💵</text>
+  <text x="716" y="1885" font-size="24" text-anchor="middle" fill="#8BA3BC">Earnings</text>
+  <text x="932" y="1854" font-size="34" text-anchor="middle" fill="#8BA3BC">👤</text>
+  <text x="932" y="1885" font-size="24" text-anchor="middle" fill="#8BA3BC">Profile</text>
+  <rect x="390" y="1890" width="300" height="8" rx="4" fill="#FFFFFF" opacity="0.3"/>
+</svg>

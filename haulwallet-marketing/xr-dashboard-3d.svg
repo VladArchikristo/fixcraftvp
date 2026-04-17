@@ -1,0 +1,607 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" width="2560" height="1440">
+  <defs>
+    <!-- Space background gradients -->
+    <radialGradient id="spaceBg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0d0d2b"/>
+      <stop offset="60%" stop-color="#08081e"/>
+      <stop offset="100%" stop-color="#020209"/>
+    </radialGradient>
+
+    <!-- Nebula glow left -->
+    <radialGradient id="nebulaLeft" cx="15%" cy="40%" r="40%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Nebula glow right -->
+    <radialGradient id="nebulaRight" cx="85%" cy="60%" r="40%">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Nebula glow center -->
+    <radialGradient id="nebulaCenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0a3e" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1a0a3e" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Panel gradient - LEFT (map) -->
+    <linearGradient id="leftPanelGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1428"/>
+      <stop offset="100%" stop-color="#0a1020"/>
+    </linearGradient>
+
+    <!-- Panel gradient - CENTER (metrics) -->
+    <linearGradient id="centerPanelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f0820"/>
+      <stop offset="100%" stop-color="#0a0618"/>
+    </linearGradient>
+
+    <!-- Panel gradient - RIGHT (notifications) -->
+    <linearGradient id="rightPanelGrad" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d1428"/>
+      <stop offset="100%" stop-color="#0a1020"/>
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="panelGlow3d" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="textGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="strongGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="shadowDrop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="30" dy="40" stdDeviation="25" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <!-- Metric circle gradients -->
+    <linearGradient id="circleGrad1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#0077aa"/>
+    </linearGradient>
+
+    <linearGradient id="circleGrad2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4a1fa8"/>
+    </linearGradient>
+
+    <linearGradient id="circleGrad3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00ff88"/>
+      <stop offset="100%" stop-color="#00aa55"/>
+    </linearGradient>
+
+    <!-- Panel border glow -->
+    <linearGradient id="borderGradBlue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#00d4ff" stop-opacity="0.8"/>
+      <stop offset="70%" stop-color="#00d4ff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="borderGradPurple" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#7c3aed" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="#7c3aed" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Notification item gradient -->
+    <linearGradient id="notifItemGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Chart gradient -->
+    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <!-- Scan line pattern -->
+    <pattern id="scanlines3d" x="0" y="0" width="1" height="3" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" fill="rgba(0,212,255,0.015)"/>
+    </pattern>
+
+    <!-- Grid pattern for map -->
+    <pattern id="mapGrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a2a4a" stroke-width="0.8" opacity="0.5"/>
+    </pattern>
+
+    <!-- Stars layer 1 - far stars -->
+    <pattern id="starsSmall" x="0" y="0" width="300" height="300" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="25" r="0.6" fill="white" opacity="0.4"/>
+      <circle cx="70" cy="8" r="0.5" fill="white" opacity="0.3"/>
+      <circle cx="130" cy="45" r="0.8" fill="white" opacity="0.5"/>
+      <circle cx="200" cy="15" r="0.5" fill="white" opacity="0.3"/>
+      <circle cx="250" cy="60" r="0.6" fill="white" opacity="0.4"/>
+      <circle cx="90" cy="120" r="0.7" fill="white" opacity="0.5"/>
+      <circle cx="180" cy="100" r="0.5" fill="white" opacity="0.3"/>
+      <circle cx="40" cy="180" r="0.6" fill="white" opacity="0.4"/>
+      <circle cx="270" cy="150" r="0.8" fill="white" opacity="0.5"/>
+      <circle cx="150" cy="200" r="0.5" fill="white" opacity="0.3"/>
+      <circle cx="220" cy="240" r="0.6" fill="white" opacity="0.4"/>
+      <circle cx="55" cy="260" r="0.7" fill="white" opacity="0.5"/>
+      <circle cx="110" cy="290" r="0.5" fill="white" opacity="0.3"/>
+      <circle cx="290" cy="210" r="0.6" fill="white" opacity="0.4"/>
+    </pattern>
+
+    <!-- Stars layer 2 - bright stars -->
+    <pattern id="starsBright" x="50" y="80" width="500" height="400" patternUnits="userSpaceOnUse">
+      <circle cx="80" cy="50" r="1.5" fill="white" opacity="0.7"/>
+      <circle cx="200" cy="30" r="1.2" fill="#aaddff" opacity="0.6"/>
+      <circle cx="350" cy="80" r="1.8" fill="white" opacity="0.8"/>
+      <circle cx="450" cy="150" r="1.3" fill="#ffddaa" opacity="0.5"/>
+      <circle cx="120" cy="200" r="1.5" fill="white" opacity="0.6"/>
+      <circle cx="300" cy="280" r="2" fill="white" opacity="0.7"/>
+      <circle cx="420" cy="320" r="1.2" fill="#aaddff" opacity="0.6"/>
+    </pattern>
+
+    <!-- Particle dots floating -->
+    <filter id="particleGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ===== SPACE BACKGROUND ===== -->
+  <rect width="2560" height="1440" fill="url(#spaceBg)"/>
+  <!-- Stars layers -->
+  <rect width="2560" height="1440" fill="url(#starsSmall)"/>
+  <rect width="2560" height="1440" fill="url(#starsBright)"/>
+  <!-- Nebula overlays -->
+  <rect width="2560" height="1440" fill="url(#nebulaLeft)"/>
+  <rect width="2560" height="1440" fill="url(#nebulaRight)"/>
+  <rect width="2560" height="1440" fill="url(#nebulaCenter)"/>
+
+  <!-- Grid floor perspective (subtle) -->
+  <path d="M 0 1200 L 1280 700 L 2560 1200" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.05"/>
+  <path d="M 0 1300 L 1280 750 L 2560 1300" fill="none" stroke="#7c3aed" stroke-width="0.5" opacity="0.05"/>
+
+  <!-- Floating particles -->
+  <circle cx="400" cy="200" r="3" fill="#00d4ff" opacity="0.4" filter="url(#particleGlow)"/>
+  <circle cx="600" cy="350" r="2" fill="#7c3aed" opacity="0.5" filter="url(#particleGlow)"/>
+  <circle cx="1900" cy="180" r="2.5" fill="#00d4ff" opacity="0.3" filter="url(#particleGlow)"/>
+  <circle cx="2100" cy="400" r="2" fill="#7c3aed" opacity="0.4" filter="url(#particleGlow)"/>
+  <circle cx="1280" cy="120" r="3.5" fill="#00d4ff" opacity="0.3" filter="url(#particleGlow)"/>
+  <circle cx="700" cy="1200" r="2" fill="#00d4ff" opacity="0.3" filter="url(#particleGlow)"/>
+  <circle cx="1800" cy="1150" r="2.5" fill="#7c3aed" opacity="0.4" filter="url(#particleGlow)"/>
+
+  <!-- ===== HAUL WALLET LOGO - TOP CENTER ===== -->
+  <!-- Logo glow background -->
+  <ellipse cx="1280" cy="115" rx="400" ry="70" fill="#7c3aed" opacity="0.07" filter="url(#softGlow)"/>
+
+  <!-- Logo container -->
+  <rect x="1000" y="40" width="560" height="110" rx="20" fill="#0a0518" fill-opacity="0.8" stroke="url(#borderGradPurple)" stroke-width="2"/>
+
+  <!-- Logo icon - stylized HW with 3D effect -->
+  <!-- Shadow -->
+  <text x="1075" y="112" font-family="Arial Black" font-size="52" font-weight="900" fill="#3a0a8a" opacity="0.5" transform="translate(4,4)">HW</text>
+  <!-- Main -->
+  <text x="1075" y="112" font-family="Arial Black" font-size="52" font-weight="900" fill="#7c3aed" filter="url(#textGlow)">HW</text>
+  <!-- Highlight -->
+  <text x="1075" y="108" font-family="Arial Black" font-size="52" font-weight="900" fill="#9d5aff" opacity="0.4">HW</text>
+
+  <!-- Brand name -->
+  <text x="1195" y="88" font-family="Arial Black" font-size="34" font-weight="900" fill="#ffffff" filter="url(#textGlow)">HaulWallet</text>
+  <text x="1195" y="118" font-family="Arial" font-size="15" fill="#00d4ff" opacity="0.8" letter-spacing="5">ANDROID XR  DASHBOARD</text>
+
+  <!-- Decorative line under logo -->
+  <line x1="900" y1="168" x2="1680" y2="168" stroke="url(#borderGradPurple)" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- ===== 3D PANEL SHADOWS (depth effect) ===== -->
+  <!-- Left panel shadow -->
+  <rect x="175" y="310" width="700" height="870" rx="24" fill="#000000" opacity="0.5" transform="translate(20,25)"/>
+  <!-- Center panel shadow -->
+  <rect x="930" y="230" width="700" height="960" rx="24" fill="#000000" opacity="0.5" transform="translate(25,30)"/>
+  <!-- Right panel shadow -->
+  <rect x="1685" y="310" width="700" height="870" rx="24" fill="#000000" opacity="0.5" transform="translate(20,25)"/>
+
+  <!-- ===== LEFT PANEL: ROUTE MAP ===== -->
+  <rect x="175" y="310" width="700" height="870" rx="24" fill="url(#leftPanelGrad)" filter="url(#shadowDrop)"/>
+  <!-- Panel border glow -->
+  <rect x="175" y="310" width="700" height="870" rx="24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-opacity="0.6"/>
+  <!-- Top accent line -->
+  <rect x="175" y="310" width="700" height="3" rx="2" fill="url(#borderGradBlue)"/>
+  <!-- Scan lines overlay -->
+  <rect x="175" y="310" width="700" height="870" rx="24" fill="url(#scanlines3d)"/>
+
+  <!-- Panel header -->
+  <rect x="175" y="310" width="700" height="70" rx="24" fill="#00d4ff" fill-opacity="0.08"/>
+  <rect x="175" y="356" width="700" height="24" fill="#00d4ff" fill-opacity="0.04"/>
+  <!-- Map icon -->
+  <path d="M 215 350 L 230 340 L 255 345 L 270 335 L 270 375 L 255 380 L 230 375 L 215 385 Z" fill="#00d4ff" opacity="0.6"/>
+  <text x="290" y="357" font-family="Arial Black" font-size="22" font-weight="900" fill="#ffffff" opacity="0.95">ROUTE MAP</text>
+  <text x="290" y="377" font-family="Arial" font-size="14" fill="#00d4ff" opacity="0.6" letter-spacing="2">CURRENT TRIP</text>
+
+  <!-- Map area background -->
+  <rect x="195" y="395" width="660" height="520" rx="12" fill="#05101e"/>
+  <rect x="195" y="395" width="660" height="520" rx="12" fill="url(#mapGrid)"/>
+
+  <!-- State outlines (simplified US section) -->
+  <!-- Illinois shape simplified -->
+  <path d="M 280 450 L 320 440 L 370 445 L 390 480 L 380 540 L 340 580 L 290 570 L 270 530 L 280 490 Z"
+        fill="#0a1a2e" stroke="#1a3a5a" stroke-width="1.5" opacity="0.8"/>
+  <text x="320" y="510" text-anchor="middle" font-family="Arial" font-size="13" fill="#446688" opacity="0.7">IL</text>
+
+  <!-- Indiana shape simplified -->
+  <path d="M 390 445 L 440 440 L 460 460 L 455 540 L 420 575 L 380 570 L 380 540 L 390 480 Z"
+        fill="#0a1a2e" stroke="#1a3a5a" stroke-width="1.5" opacity="0.8"/>
+  <text x="420" y="510" text-anchor="middle" font-family="Arial" font-size="13" fill="#446688" opacity="0.7">IN</text>
+
+  <!-- Ohio shape simplified -->
+  <path d="M 460 440 L 540 435 L 570 460 L 565 545 L 530 575 L 455 545 L 455 460 Z"
+        fill="#0a1a2e" stroke="#1a3a5a" stroke-width="1.5" opacity="0.8"/>
+  <text x="510" y="505" text-anchor="middle" font-family="Arial" font-size="13" fill="#446688" opacity="0.7">OH</text>
+
+  <!-- Pennsylvania shape simplified -->
+  <path d="M 570 435 L 680 430 L 720 450 L 715 530 L 680 555 L 565 550 L 565 460 Z"
+        fill="#0a1a2e" stroke="#1a3a5a" stroke-width="1.5" opacity="0.8"/>
+  <text x="640" y="495" text-anchor="middle" font-family="Arial" font-size="13" fill="#446688" opacity="0.7">PA</text>
+
+  <!-- New York hint (partial) -->
+  <path d="M 680 430 L 780 420 L 840 445 L 840 520 L 780 540 L 720 540 L 715 530 L 720 450 Z"
+        fill="#0a1a2e" stroke="#1a3a5a" stroke-width="1.5" opacity="0.8"/>
+  <text x="760" y="485" text-anchor="middle" font-family="Arial" font-size="13" fill="#446688" opacity="0.7">NY</text>
+
+  <!-- I-80 highway route highlight -->
+  <path d="M 290 505 L 380 510 L 460 505 L 565 500 L 640 495 L 720 490 L 800 488"
+        stroke="#00d4ff" stroke-width="5" fill="none" opacity="0.15" stroke-linecap="round"/>
+  <path d="M 290 505 L 380 510 L 460 505 L 565 500 L 640 495 L 720 490 L 800 488"
+        stroke="#00d4ff" stroke-width="2.5" fill="none" opacity="0.8" stroke-linecap="round" stroke-dasharray="none"/>
+
+  <!-- Route progress (completed portion) -->
+  <path d="M 290 505 L 380 510 L 460 505 L 520 502"
+        stroke="#00ff88" stroke-width="3" fill="none" opacity="0.7" stroke-linecap="round"/>
+
+  <!-- Start marker - Chicago -->
+  <circle cx="295" cy="505" r="10" fill="#ff4444" opacity="0.8" filter="url(#particleGlow)"/>
+  <circle cx="295" cy="505" r="5" fill="white"/>
+  <rect x="255" y="516" width="85" height="22" rx="5" fill="#0d1e2e" stroke="#ff4444" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="297" y="532" text-anchor="middle" font-family="Arial" font-size="11" fill="#ff8888">Chicago</text>
+
+  <!-- Current position marker -->
+  <circle cx="525" cy="502" r="14" fill="#00d4ff" opacity="0.2" filter="url(#softGlow)"/>
+  <circle cx="525" cy="502" r="8" fill="#00d4ff" opacity="0.9"/>
+  <circle cx="525" cy="502" r="4" fill="white"/>
+  <!-- Pulse rings -->
+  <circle cx="525" cy="502" r="20" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.3"/>
+  <circle cx="525" cy="502" r="28" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.15"/>
+
+  <!-- Destination marker - New York -->
+  <circle cx="800" cy="488" r="10" fill="#7c3aed" opacity="0.8" filter="url(#particleGlow)"/>
+  <circle cx="800" cy="488" r="5" fill="white"/>
+  <rect x="762" y="500" width="80" height="22" rx="5" fill="#0d1e2e" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="802" y="516" text-anchor="middle" font-family="Arial" font-size="11" fill="#aa88ff">New York</text>
+
+  <!-- I-80 label -->
+  <rect x="580" y="475" width="55" height="22" rx="4" fill="#234" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="607" y="491" text-anchor="middle" font-family="Arial Black" font-size="12" fill="#00d4ff">I-80</text>
+
+  <!-- Map info rows below map -->
+  <rect x="195" y="930" width="660" height="1" fill="#00d4ff" opacity="0.2"/>
+
+  <!-- Trip stats under map -->
+  <text x="215" y="965" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">TOTAL DISTANCE</text>
+  <text x="215" y="992" font-family="Arial Black" font-size="26" fill="#ffffff" opacity="0.9">790 miles</text>
+
+  <line x1="420" y1="948" x2="420" y2="1005" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.25"/>
+
+  <text x="440" y="965" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">PROGRESS</text>
+  <rect x="440" y="972" width="200" height="10" rx="5" fill="#001830" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.2"/>
+  <rect x="440" y="972" width="95" height="10" rx="5" fill="url(#circleGrad1)" opacity="0.8"/>
+  <text x="440" y="1002" font-family="Arial Black" font-size="20" fill="#00d4ff">48%</text>
+
+  <!-- Stops info -->
+  <rect x="195" y="1015" width="660" height="1" fill="#00d4ff" opacity="0.2"/>
+  <text x="215" y="1045" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">NEXT STOP:</text>
+  <text x="340" y="1045" font-family="Arial Black" font-size="18" fill="#ffcc44">Pilot Travel Center — Exit 142</text>
+  <text x="215" y="1072" font-family="Arial" font-size="15" fill="#aaccee" opacity="0.7">48 miles ahead  •  Fuel, Parking, Shower</text>
+
+  <rect x="195" y="1090" width="660" height="1" fill="#00d4ff" opacity="0.2"/>
+  <text x="215" y="1120" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">ETA NEW YORK:</text>
+  <text x="370" y="1120" font-family="Arial Black" font-size="24" fill="#ffffff">14:30</text>
+  <text x="480" y="1120" font-family="Arial" font-size="18" fill="#aaccee" opacity="0.7">Today  •  3h 45min</text>
+
+  <text x="215" y="1155" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">Load #4521: Chicago → New York</text>
+  <text x="750" y="1155" text-anchor="end" font-family="Arial Black" font-size="18" fill="#00ff88">$1,240</text>
+
+  <!-- ===== CENTER PANEL: MAIN METRICS ===== -->
+  <rect x="930" y="230" width="700" height="960" rx="24" fill="url(#centerPanelGrad)" filter="url(#shadowDrop)"/>
+  <!-- Border glow - purple for center -->
+  <rect x="930" y="230" width="700" height="960" rx="24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-opacity="0.7"/>
+  <!-- Top accent line -->
+  <rect x="930" y="230" width="700" height="3" rx="2" fill="url(#borderGradPurple)"/>
+  <!-- Scan lines -->
+  <rect x="930" y="230" width="700" height="960" rx="24" fill="url(#scanlines3d)"/>
+
+  <!-- Panel header -->
+  <rect x="930" y="230" width="700" height="70" rx="24" fill="#7c3aed" fill-opacity="0.1"/>
+  <rect x="930" y="276" width="700" height="24" fill="#7c3aed" fill-opacity="0.05"/>
+  <!-- Chart icon -->
+  <path d="M 965 345 L 965 300 M 980 345 L 980 318 M 995 345 L 995 308 M 1010 345 L 1010 295" stroke="#7c3aed" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <text x="1030" y="322" font-family="Arial Black" font-size="22" font-weight="900" fill="#ffffff" opacity="0.95">WEEKLY METRICS</text>
+  <text x="1030" y="342" font-family="Arial" font-size="14" fill="#7c3aed" opacity="0.8" letter-spacing="2">PERFORMANCE DASHBOARD</text>
+
+  <!-- === BIG METRIC CIRCLES === -->
+  <!-- Earnings circle -->
+  <circle cx="1280" cy="490" r="130" fill="#0d0820" stroke="#7c3aed" stroke-width="2" stroke-opacity="0.4"/>
+  <!-- Arc progress (90% of circle) -->
+  <circle cx="1280" cy="490" r="115" fill="none" stroke="#7c3aed" stroke-width="14" stroke-opacity="0.15" stroke-dasharray="723"/>
+  <circle cx="1280" cy="490" r="115" fill="none" stroke="url(#circleGrad2)" stroke-width="14" stroke-linecap="round"
+          stroke-dasharray="580 143" transform="rotate(-90 1280 490)"/>
+  <!-- Glow ring -->
+  <circle cx="1280" cy="490" r="115" fill="none" stroke="#7c3aed" stroke-width="2" stroke-opacity="0.3" filter="url(#softGlow)"/>
+
+  <text x="1280" y="470" text-anchor="middle" font-family="Arial" font-size="15" fill="#aa88ff" opacity="0.8" letter-spacing="2">WEEK EARNINGS</text>
+  <text x="1280" y="515" text-anchor="middle" font-family="Arial Black" font-size="46" font-weight="900" fill="#ffffff" filter="url(#textGlow)">$4,230</text>
+  <text x="1280" y="540" text-anchor="middle" font-family="Arial" font-size="15" fill="#00ff88" opacity="0.8">+12% vs last week</text>
+
+  <!-- Two smaller circles row -->
+  <!-- Miles circle -->
+  <circle cx="1090" cy="700" r="95" fill="#0d0820" stroke="#00d4ff" stroke-width="2" stroke-opacity="0.3"/>
+  <circle cx="1090" cy="700" r="80" fill="none" stroke="#00d4ff" stroke-width="10" stroke-opacity="0.12" stroke-dasharray="503"/>
+  <circle cx="1090" cy="700" r="80" fill="none" stroke="url(#circleGrad1)" stroke-width="10" stroke-linecap="round"
+          stroke-dasharray="400 103" transform="rotate(-90 1090 700)"/>
+  <text x="1090" y="688" text-anchor="middle" font-family="Arial" font-size="13" fill="#00d4ff" opacity="0.7">MILES</text>
+  <text x="1090" y="715" text-anchor="middle" font-family="Arial Black" font-size="32" fill="#ffffff" font-weight="900">2,140</text>
+  <text x="1090" y="738" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.6">this week</text>
+
+  <!-- Loads circle -->
+  <circle cx="1470" cy="700" r="95" fill="#0d0820" stroke="#00ff88" stroke-width="2" stroke-opacity="0.3"/>
+  <circle cx="1470" cy="700" r="80" fill="none" stroke="#00ff88" stroke-width="10" stroke-opacity="0.12" stroke-dasharray="503"/>
+  <circle cx="1470" cy="700" r="80" fill="none" stroke="url(#circleGrad3)" stroke-width="10" stroke-linecap="round"
+          stroke-dasharray="352 151" transform="rotate(-90 1470 700)"/>
+  <text x="1470" y="688" text-anchor="middle" font-family="Arial" font-size="13" fill="#00ff88" opacity="0.7">LOADS</text>
+  <text x="1470" y="715" text-anchor="middle" font-family="Arial Black" font-size="48" fill="#ffffff" font-weight="900">8</text>
+  <text x="1470" y="738" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.6">delivered</text>
+
+  <!-- Divider -->
+  <line x1="960" y1="820" x2="1610" y2="820" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- === DAILY EARNINGS CHART === -->
+  <text x="965" y="850" font-family="Arial" font-size="15" fill="#7c3aed" opacity="0.8" letter-spacing="2">DAILY EARNINGS</text>
+
+  <!-- Chart bars -->
+  <!-- Mon -->
+  <rect x="975" y="910" width="65" height="55" rx="4" fill="#7c3aed" opacity="0.6"/>
+  <text x="1007" y="905" text-anchor="middle" font-family="Arial" font-size="12" fill="#aa88ff" opacity="0.7">$580</text>
+  <text x="1007" y="985" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.5">Mon</text>
+  <!-- Tue -->
+  <rect x="1065" y="890" width="65" height="75" rx="4" fill="#7c3aed" opacity="0.6"/>
+  <text x="1097" y="885" text-anchor="middle" font-family="Arial" font-size="12" fill="#aa88ff" opacity="0.7">$720</text>
+  <text x="1097" y="985" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.5">Tue</text>
+  <!-- Wed -->
+  <rect x="1155" y="920" width="65" height="45" rx="4" fill="#7c3aed" opacity="0.4"/>
+  <text x="1187" y="915" text-anchor="middle" font-family="Arial" font-size="12" fill="#aa88ff" opacity="0.7">$450</text>
+  <text x="1187" y="985" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.5">Wed</text>
+  <!-- Thu -->
+  <rect x="1245" y="870" width="65" height="95" rx="4" fill="#00d4ff" opacity="0.7"/>
+  <text x="1277" y="865" text-anchor="middle" font-family="Arial" font-size="12" fill="#44eeff" opacity="0.8">$950</text>
+  <text x="1277" y="985" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.5">Thu</text>
+  <!-- Fri -->
+  <rect x="1335" y="895" width="65" height="70" rx="4" fill="#7c3aed" opacity="0.6"/>
+  <text x="1367" y="890" text-anchor="middle" font-family="Arial" font-size="12" fill="#aa88ff" opacity="0.7">$680</text>
+  <text x="1367" y="985" text-anchor="middle" font-family="Arial" font-size="12" fill="#aaccee" opacity="0.5">Fri</text>
+  <!-- Sat (today, active) -->
+  <rect x="1425" y="930" width="65" height="35" rx="4" fill="#00ff88" opacity="0.5"/>
+  <rect x="1425" y="930" width="65" height="35" rx="4" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="1457" y="925" text-anchor="middle" font-family="Arial" font-size="12" fill="#00ff88" opacity="0.8">$310</text>
+  <text x="1457" y="985" text-anchor="middle" font-family="Arial" font-size="12" fill="#00ff88" opacity="0.7">Sat</text>
+
+  <!-- Chart base line -->
+  <line x1="965" y1="965" x2="1610" y2="965" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+
+  <!-- Divider -->
+  <line x1="960" y1="1005" x2="1610" y2="1005" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Bottom stats row -->
+  <text x="965" y="1042" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">AVG/LOAD</text>
+  <text x="965" y="1072" font-family="Arial Black" font-size="26" fill="#ffffff">$529</text>
+
+  <line x1="1100" y1="1025" x2="1100" y2="1085" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+
+  <text x="1120" y="1042" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">AVG/MILE</text>
+  <text x="1120" y="1072" font-family="Arial Black" font-size="26" fill="#ffffff">$1.97</text>
+
+  <line x1="1260" y1="1025" x2="1260" y2="1085" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+
+  <text x="1280" y="1042" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">BEST LOAD</text>
+  <text x="1280" y="1072" font-family="Arial Black" font-size="26" fill="#00ff88">$1,240</text>
+
+  <line x1="1440" y1="1025" x2="1440" y2="1085" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+
+  <text x="1460" y="1042" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">RATING</text>
+  <text x="1460" y="1065" font-family="Arial Black" font-size="22" fill="#ffcc44">4.9</text>
+  <!-- Stars -->
+  <text x="1460" y="1085" font-family="Arial" font-size="16" fill="#ffcc44">&#9733;&#9733;&#9733;&#9733;&#9733;</text>
+
+  <!-- Divider -->
+  <line x1="960" y1="1100" x2="1610" y2="1100" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Monthly goal progress -->
+  <text x="965" y="1130" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6" letter-spacing="2">MONTHLY GOAL</text>
+  <text x="1580" y="1130" text-anchor="end" font-family="Arial Black" font-size="18" fill="#7c3aed">$12,000</text>
+
+  <rect x="965" y="1142" width="614" height="16" rx="8" fill="#0d0820" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <!-- Progress at 35% ($4,230 / $12,000) -->
+  <rect x="965" y="1142" width="216" height="16" rx="8" fill="url(#circleGrad2)" opacity="0.85"/>
+  <!-- Progress marker dot -->
+  <circle cx="1181" cy="1150" r="10" fill="#7c3aed" opacity="0.9" filter="url(#particleGlow)"/>
+  <circle cx="1181" cy="1150" r="5" fill="white"/>
+
+  <text x="965" y="1178" font-family="Arial" font-size="14" fill="#aa88ff" opacity="0.8">$4,230 earned</text>
+  <text x="1580" y="1178" text-anchor="end" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">35%  •  $7,770 remaining</text>
+
+  <!-- ===== RIGHT PANEL: NOTIFICATIONS & ORDERS ===== -->
+  <rect x="1685" y="310" width="700" height="870" rx="24" fill="url(#rightPanelGrad)" filter="url(#shadowDrop)"/>
+  <!-- Border glow -->
+  <rect x="1685" y="310" width="700" height="870" rx="24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-opacity="0.5"/>
+  <!-- Top accent line -->
+  <rect x="1685" y="310" width="700" height="3" rx="2" fill="url(#borderGradBlue)"/>
+  <!-- Scan lines -->
+  <rect x="1685" y="310" width="700" height="870" rx="24" fill="url(#scanlines3d)"/>
+
+  <!-- Panel header -->
+  <rect x="1685" y="310" width="700" height="70" rx="24" fill="#00d4ff" fill-opacity="0.06"/>
+  <rect x="1685" y="356" width="700" height="24" fill="#00d4ff" fill-opacity="0.03"/>
+  <!-- Bell icon -->
+  <path d="M 1725 340 Q 1725 328 1735 325 Q 1745 318 1755 325 Q 1765 328 1765 340 L 1765 352 L 1775 365 L 1715 365 L 1725 352 Z" fill="#00d4ff" opacity="0.7"/>
+  <circle cx="1745" cy="370" r="6" fill="#00d4ff" opacity="0.6"/>
+  <circle cx="1800" cy="325" r="10" fill="#ff4444" opacity="0.9"/>
+  <text x="1800" y="330" text-anchor="middle" font-family="Arial Black" font-size="11" fill="white" font-weight="900">3</text>
+
+  <text x="1820" y="345" font-family="Arial Black" font-size="22" font-weight="900" fill="#ffffff" opacity="0.95">ALERTS &amp; ORDERS</text>
+  <text x="1820" y="368" font-family="Arial" font-size="14" fill="#00d4ff" opacity="0.6" letter-spacing="2">LIVE UPDATES</text>
+
+  <!-- === NOTIFICATION ITEMS === -->
+  <!-- Alert 1: High priority load -->
+  <rect x="1705" y="398" width="660" height="110" rx="12" fill="url(#notifItemGrad)"/>
+  <rect x="1705" y="398" width="4" height="110" rx="2" fill="#00ff88"/>
+  <rect x="1705" y="398" width="660" height="110" rx="12" fill="none" stroke="#00ff88" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="1735" cy="430" r="14" fill="#00ff88" fill-opacity="0.2"/>
+  <text x="1735" y="436" text-anchor="middle" font-family="Arial" font-size="18" fill="#00ff88">$</text>
+  <text x="1765" y="425" font-family="Arial Black" font-size="17" fill="#00ff88">NEW LOAD AVAILABLE</text>
+  <text x="1765" y="447" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.85">Detroit → Boston  •  680 miles</text>
+  <text x="1765" y="467" font-family="Arial Black" font-size="20" fill="#00ff88">$1,820</text>
+  <text x="1765" y="487" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">Pickup: Tomorrow 08:00  •  Dry Freight  •  42,000 lbs</text>
+  <rect x="2290" y="415" width="65" height="30" rx="8" fill="#00ff88" fill-opacity="0.2" stroke="#00ff88" stroke-width="1.5"/>
+  <text x="2322" y="434" text-anchor="middle" font-family="Arial Black" font-size="13" fill="#00ff88">ACCEPT</text>
+
+  <!-- Alert 2: ELD reminder -->
+  <rect x="1705" y="522" width="660" height="90" rx="12" fill="#ffcc44" fill-opacity="0.05"/>
+  <rect x="1705" y="522" width="4" height="90" rx="2" fill="#ffcc44"/>
+  <rect x="1705" y="522" width="660" height="90" rx="12" fill="none" stroke="#ffcc44" stroke-width="1" stroke-opacity="0.25"/>
+  <circle cx="1735" cy="550" r="14" fill="#ffcc44" fill-opacity="0.15"/>
+  <text x="1735" y="557" text-anchor="middle" font-family="Arial" font-size="18" fill="#ffcc44">!</text>
+  <text x="1765" y="545" font-family="Arial Black" font-size="16" fill="#ffcc44">HOS REMINDER</text>
+  <text x="1765" y="567" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.8">4h 22min drive time remaining</text>
+  <text x="1765" y="587" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">Plan rest stop before Ohio border</text>
+  <text x="2360" y="572" text-anchor="end" font-family="Arial" font-size="12" fill="#ffcc44" opacity="0.6">2 min ago</text>
+
+  <!-- Alert 3: Weather -->
+  <rect x="1705" y="626" width="660" height="90" rx="12" fill="#00d4ff" fill-opacity="0.04"/>
+  <rect x="1705" y="626" width="4" height="90" rx="2" fill="#00d4ff"/>
+  <rect x="1705" y="626" width="660" height="90" rx="12" fill="none" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.2"/>
+  <circle cx="1735" cy="654" r="14" fill="#00d4ff" fill-opacity="0.12"/>
+  <text x="1735" y="661" text-anchor="middle" font-family="Arial" font-size="18" fill="#00d4ff">&#9928;</text>
+  <text x="1765" y="649" font-family="Arial Black" font-size="16" fill="#00d4ff">WEATHER ALERT</text>
+  <text x="1765" y="671" font-family="Arial" font-size="14" fill="#ffffff" opacity="0.8">Light rain expected near Columbus, OH</text>
+  <text x="1765" y="691" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">~30min from now  •  Reduce speed advised</text>
+  <text x="2360" y="676" text-anchor="end" font-family="Arial" font-size="12" fill="#00d4ff" opacity="0.5">12 min ago</text>
+
+  <!-- Divider -->
+  <line x1="1705" y1="734" x2="2345" y2="734" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.2"/>
+
+  <!-- === UPCOMING ORDERS === -->
+  <text x="1715" y="762" font-family="Arial" font-size="15" fill="#00d4ff" opacity="0.7" letter-spacing="2">UPCOMING OPPORTUNITIES</text>
+
+  <!-- Load card 1 -->
+  <rect x="1705" y="778" width="660" height="80" rx="10" fill="#0a1422"/>
+  <rect x="1705" y="778" width="660" height="80" rx="10" fill="none" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="1725" y="802" font-family="Arial Black" font-size="15" fill="#ffffff" opacity="0.9">Boston → Philadelphia</text>
+  <text x="1725" y="822" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">280 miles  •  28,000 lbs  •  Pickup Dec 18</text>
+  <text x="1725" y="844" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">Refrigerated Freight</text>
+  <text x="2355" y="820" text-anchor="end" font-family="Arial Black" font-size="22" fill="#00d4ff">$780</text>
+  <text x="2355" y="844" text-anchor="end" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">$2.79/mi</text>
+
+  <!-- Load card 2 -->
+  <rect x="1705" y="872" width="660" height="80" rx="10" fill="#0a1422"/>
+  <rect x="1705" y="872" width="660" height="80" rx="10" fill="none" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+  <text x="1725" y="896" font-family="Arial Black" font-size="15" fill="#ffffff" opacity="0.9">Philadelphia → Miami</text>
+  <text x="1725" y="916" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">1,280 miles  •  35,000 lbs  •  Pickup Dec 19</text>
+  <text x="1725" y="936" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">Dry Van  •  Team Driver Bonus Available</text>
+  <text x="2355" y="910" text-anchor="end" font-family="Arial Black" font-size="22" fill="#7c3aed" filter="url(#textGlow)">$3,200</text>
+  <text x="2355" y="930" text-anchor="end" font-family="Arial" font-size="13" fill="#aa88ff" opacity="0.7">$2.50/mi</text>
+
+  <!-- Load card 3 -->
+  <rect x="1705" y="966" width="660" height="80" rx="10" fill="#0a1422"/>
+  <rect x="1705" y="966" width="660" height="80" rx="10" fill="none" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.15"/>
+  <text x="1725" y="990" font-family="Arial Black" font-size="15" fill="#ffffff" opacity="0.8">New York → Chicago</text>
+  <text x="1725" y="1010" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">790 miles  •  40,000 lbs  •  Pickup Dec 20</text>
+  <text x="1725" y="1030" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">Flatbed  •  HAZMAT certified required</text>
+  <text x="2355" y="1004" text-anchor="end" font-family="Arial Black" font-size="22" fill="#ffffff" opacity="0.8">$1,950</text>
+  <text x="2355" y="1024" text-anchor="end" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.6">$2.47/mi</text>
+
+  <!-- Bottom status bar in right panel -->
+  <line x1="1705" y1="1070" x2="2345" y2="1070" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.2"/>
+  <circle cx="1725" cy="1095" r="7" fill="#00ff88" opacity="0.9" filter="url(#particleGlow)"/>
+  <text x="1742" y="1100" font-family="Arial" font-size="14" fill="#00ff88" opacity="0.8">Load Board Connected</text>
+  <text x="2345" y="1100" text-anchor="end" font-family="Arial" font-size="13" fill="#aaccee" opacity="0.5">Updated: Just now</text>
+
+  <!-- ===== FLOATING ELEMENTS (depth/3D accents) ===== -->
+  <!-- Connection lines between panels (perspective lines) -->
+  <line x1="875" y1="720" x2="930" y2="750" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+  <line x1="875" y1="800" x2="930" y2="780" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+  <line x1="1630" y1="750" x2="1685" y2="720" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+  <line x1="1630" y1="780" x2="1685" y2="800" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.2"/>
+
+  <!-- Floating data dots (holographic feel) -->
+  <circle cx="855" cy="550" r="4" fill="#00d4ff" opacity="0.5" filter="url(#particleGlow)"/>
+  <circle cx="855" cy="620" r="3" fill="#7c3aed" opacity="0.4" filter="url(#particleGlow)"/>
+  <circle cx="855" cy="690" r="4" fill="#00d4ff" opacity="0.3" filter="url(#particleGlow)"/>
+  <circle cx="1705" cy="560" r="4" fill="#00d4ff" opacity="0.4" filter="url(#particleGlow)"/>
+  <circle cx="1705" cy="640" r="3" fill="#7c3aed" opacity="0.5" filter="url(#particleGlow)"/>
+
+  <!-- Bottom status bar -->
+  <rect x="0" y="1390" width="2560" height="50" fill="#050510" fill-opacity="0.9"/>
+  <line x1="0" y1="1390" x2="2560" y2="1390" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.4"/>
+
+  <!-- Status items -->
+  <circle cx="60" cy="1415" r="7" fill="#00ff88" opacity="0.9" filter="url(#particleGlow)"/>
+  <text x="78" y="1421" font-family="Arial" font-size="15" fill="#00ff88" opacity="0.8">System Online</text>
+
+  <line x1="230" y1="1397" x2="230" y2="1433" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="250" cy="1415" r="5" fill="#00d4ff" opacity="0.7"/>
+  <text x="265" y="1421" font-family="Arial" font-size="14" fill="#00d4ff" opacity="0.7">GPS: Active</text>
+
+  <line x1="400" y1="1397" x2="400" y2="1433" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="420" cy="1415" r="5" fill="#00d4ff" opacity="0.7"/>
+  <text x="435" y="1421" font-family="Arial" font-size="14" fill="#00d4ff" opacity="0.7">ELD: Connected</text>
+
+  <line x1="590" y1="1397" x2="590" y2="1433" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="610" cy="1415" r="5" fill="#7c3aed" opacity="0.8"/>
+  <text x="625" y="1421" font-family="Arial" font-size="14" fill="#aa88ff" opacity="0.7">Android XR  v2.4.1</text>
+
+  <text x="1280" y="1421" text-anchor="middle" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.4">HaulWallet  •  Professional Trucking Platform</text>
+
+  <line x1="1900" y1="1397" x2="1900" y2="1433" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="1920" cy="1415" r="5" fill="#00d4ff" opacity="0.7"/>
+  <text x="1935" y="1421" font-family="Arial" font-size="14" fill="#00d4ff" opacity="0.7">Load Board: Live</text>
+
+  <line x1="2090" y1="1397" x2="2090" y2="1433" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="2110" cy="1415" r="5" fill="#ffcc44" opacity="0.7"/>
+  <text x="2125" y="1421" font-family="Arial" font-size="14" fill="#ffcc44" opacity="0.7">Fri, Dec 17  •  10:45 AM</text>
+
+  <line x1="2340" y1="1397" x2="2340" y2="1433" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="2360" cy="1415" r="5" fill="#00ff88" opacity="0.7"/>
+  <text x="2375" y="1421" font-family="Arial" font-size="14" fill="#aaccee" opacity="0.6">4G LTE</text>
+</svg>

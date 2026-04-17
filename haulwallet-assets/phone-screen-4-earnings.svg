@@ -1,0 +1,253 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A2B4A"/>
+      <stop offset="100%" stop-color="#0F1C33"/>
+    </linearGradient>
+    <linearGradient id="heroCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#C94E1B"/>
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#253A5E"/>
+      <stop offset="100%" stop-color="#1E2F4D"/>
+    </linearGradient>
+    <linearGradient id="barGrad1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#C94E1B"/>
+    </linearGradient>
+    <linearGradient id="barGradFaded" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#C94E1B" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="barGradHighlight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFB347"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="heroShadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#FF6B35" flood-opacity="0.3"/>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#bgGrad)" rx="60" ry="60"/>
+
+  <!-- Status Bar -->
+  <rect x="0" y="0" width="1080" height="80" fill="#0F1C33" opacity="0.95"/>
+  <text x="80" y="52" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">9:41</text>
+  <circle cx="900" cy="40" r="7" fill="white"/>
+  <circle cx="925" cy="40" r="7" fill="white"/>
+  <circle cx="950" cy="40" r="7" fill="white"/>
+  <path d="M975 50 Q990 35 1005 50" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M982 57 Q990 49 998 57" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="990" cy="62" r="4" fill="white"/>
+  <rect x="1020" y="28" width="42" height="22" rx="4" stroke="white" stroke-width="2.5" fill="none"/>
+  <rect x="1062" y="34" width="5" height="10" rx="2" fill="white"/>
+  <rect x="1023" y="31" width="30" height="16" rx="2" fill="white"/>
+
+  <!-- Header -->
+  <rect x="0" y="80" width="1080" height="120" fill="#0F1C33"/>
+  <text x="80" y="158" font-family="SF Pro Display, Arial" font-size="48" fill="white" font-weight="800">Earnings</text>
+
+  <!-- Period selector -->
+  <rect x="700" y="110" width="330" height="58" rx="29" fill="#1E2F4D"/>
+  <rect x="704" y="114" width="158" height="50" rx="25" fill="#FF6B35"/>
+  <text x="783" y="145" font-family="SF Pro Display, Arial" font-size="24" fill="white" font-weight="700" text-anchor="middle">Monthly</text>
+  <text x="949" y="145" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8" text-anchor="middle">Yearly</text>
+
+  <!-- Hero earnings card -->
+  <rect x="50" y="225" width="980" height="240" rx="32" fill="url(#heroCard)" filter="url(#heroShadow)"/>
+  <!-- Decorative circles -->
+  <circle cx="950" cy="250" r="130" fill="white" opacity="0.05"/>
+  <circle cx="870" cy="410" r="90" fill="white" opacity="0.05"/>
+  <circle cx="150" cy="380" r="80" fill="white" opacity="0.05"/>
+
+  <text x="90" y="285" font-family="SF Pro Display, Arial" font-size="26" fill="rgba(255,255,255,0.7)" font-weight="500">APRIL 2026 — TOTAL EARNINGS</text>
+  <text x="90" y="390" font-family="SF Pro Display, Arial" font-size="110" fill="white" font-weight="900">$12,480</text>
+  <!-- Up trend -->
+  <rect x="90" y="415" width="200" height="38" rx="19" fill="rgba(255,255,255,0.2)"/>
+  <text x="190" y="440" font-family="SF Pro Display, Arial" font-size="22" fill="white" font-weight="600" text-anchor="middle">↑ +18% vs March</text>
+  <!-- Miles -->
+  <text x="700" y="415" font-family="SF Pro Display, Arial" font-size="24" fill="rgba(255,255,255,0.7)">Miles driven</text>
+  <text x="700" y="455" font-family="SF Pro Display, Arial" font-size="42" fill="white" font-weight="700">4,820 mi</text>
+
+  <!-- Weekly bar chart -->
+  <rect x="50" y="492" width="980" height="400" rx="28" fill="url(#cardDark)" filter="url(#shadow)"/>
+
+  <text x="90" y="548" font-family="SF Pro Display, Arial" font-size="30" fill="white" font-weight="700">This Week</text>
+  <text x="600" y="548" font-family="SF Pro Display, Arial" font-size="24" fill="#8FA8C8">Apr 13 — Apr 17</text>
+  <text x="990" y="548" font-family="SF Pro Display, Arial" font-size="30" fill="#FF6B35" font-weight="700" text-anchor="end">$4,240</text>
+
+  <!-- Y-axis labels -->
+  <text x="72" y="596" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="end">$1,500</text>
+  <text x="72" y="656" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="end">$1,000</text>
+  <text x="72" y="716" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="end">$500</text>
+  <text x="72" y="776" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="end">$0</text>
+
+  <!-- Grid lines -->
+  <line x1="90" y1="593" x2="990" y2="593" stroke="#2D4570" stroke-width="1.5" stroke-dasharray="8,6"/>
+  <line x1="90" y1="653" x2="990" y2="653" stroke="#2D4570" stroke-width="1.5" stroke-dasharray="8,6"/>
+  <line x1="90" y1="713" x2="990" y2="713" stroke="#2D4570" stroke-width="1.5" stroke-dasharray="8,6"/>
+  <line x1="90" y1="773" x2="990" y2="773" stroke="#253A5E" stroke-width="1.5"/>
+
+  <!-- Bars — Mon to Sun, max bar = $1500 = 180px height -->
+  <!-- Mon: $680 = 81px -->
+  <rect x="108" y="692" width="96" height="81" rx="10" fill="url(#barGradFaded)"/>
+  <text x="156" y="688" font-family="SF Pro Display, Arial" font-size="20" fill="#FF6B35" font-weight="600" text-anchor="middle">$680</text>
+
+  <!-- Tue: $920 = 110px -->
+  <rect x="237" y="663" width="96" height="110" rx="10" fill="url(#barGradFaded)"/>
+  <text x="285" y="659" font-family="SF Pro Display, Arial" font-size="20" fill="#FF6B35" font-weight="600" text-anchor="middle">$920</text>
+
+  <!-- Wed: $1,240 = 149px -->
+  <rect x="366" y="624" width="96" height="149" rx="10" fill="url(#barGrad1)"/>
+  <text x="414" y="620" font-family="SF Pro Display, Arial" font-size="20" fill="#FF6B35" font-weight="600" text-anchor="middle">$1,240</text>
+
+  <!-- Thu: $750 = 90px -->
+  <rect x="495" y="683" width="96" height="90" rx="10" fill="url(#barGradFaded)"/>
+  <text x="543" y="679" font-family="SF Pro Display, Arial" font-size="20" fill="#FF6B35" font-weight="600" text-anchor="middle">$750</text>
+
+  <!-- Fri: $1,500 = 180px — today, highlighted -->
+  <rect x="624" y="593" width="96" height="180" rx="10" fill="url(#barGradHighlight)" filter="url(#softGlow)"/>
+  <text x="672" y="589" font-family="SF Pro Display, Arial" font-size="20" fill="white" font-weight="700" text-anchor="middle">$1,500</text>
+  <!-- Today marker -->
+  <rect x="630" y="776" width="84" height="28" rx="14" fill="#FF6B35"/>
+  <text x="672" y="795" font-family="SF Pro Display, Arial" font-size="19" fill="white" font-weight="700" text-anchor="middle">TODAY</text>
+
+  <!-- Sat: $150 (partial) = 18px -->
+  <rect x="753" y="755" width="96" height="18" rx="9" fill="#253A5E"/>
+  <text x="801" y="750" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="middle">$150</text>
+
+  <!-- Sun: $0 -->
+  <rect x="882" y="769" width="96" height="4" rx="2" fill="#253A5E"/>
+  <text x="930" y="755" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="middle">—</text>
+
+  <!-- Day labels -->
+  <text x="156" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Mon</text>
+  <text x="285" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Tue</text>
+  <text x="414" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Wed</text>
+  <text x="543" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Thu</text>
+  <text x="672" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#FF6B35" font-weight="600" text-anchor="middle">Fri</text>
+  <text x="801" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Sat</text>
+  <text x="930" y="840" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Sun</text>
+
+  <!-- Stats row -->
+  <rect x="50" y="918" width="310" height="150" rx="24" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <text x="205" y="968" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">AVG PER MILE</text>
+  <text x="205" y="1030" font-family="SF Pro Display, Arial" font-size="54" fill="white" font-weight="700" text-anchor="middle">$2.59</text>
+  <text x="205" y="1058" font-family="SF Pro Display, Arial" font-size="20" fill="#4CAF50" text-anchor="middle">↑ Great rate</text>
+
+  <rect x="388" y="918" width="310" height="150" rx="24" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <text x="543" y="968" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">LOADS THIS MO.</text>
+  <text x="543" y="1030" font-family="SF Pro Display, Arial" font-size="54" fill="white" font-weight="700" text-anchor="middle">14</text>
+  <text x="543" y="1058" font-family="SF Pro Display, Arial" font-size="20" fill="#8FA8C8" text-anchor="middle">11 delivered</text>
+
+  <rect x="726" y="918" width="304" height="150" rx="24" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <text x="878" y="968" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">FUEL COST</text>
+  <text x="878" y="1030" font-family="SF Pro Display, Arial" font-size="54" fill="white" font-weight="700" text-anchor="middle">$1,840</text>
+  <text x="878" y="1058" font-family="SF Pro Display, Arial" font-size="20" fill="#FF6B35" text-anchor="middle">14.7% of earn.</text>
+
+  <!-- Recent trips -->
+  <text x="80" y="1122" font-family="SF Pro Display, Arial" font-size="32" fill="white" font-weight="700">Recent Trips</text>
+  <text x="990" y="1122" font-family="SF Pro Display, Arial" font-size="24" fill="#FF6B35" font-weight="500" text-anchor="end">See all →</text>
+
+  <!-- Trip 1 -->
+  <rect x="50" y="1142" width="980" height="100" rx="20" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <circle cx="110" cy="1192" r="34" fill="#FF6B35" opacity="0.2"/>
+  <!-- Truck mini icon -->
+  <rect x="92" y="1184" width="36" height="22" rx="3" fill="#FF6B35"/>
+  <rect x="99" y="1176" width="24" height="14" rx="3" fill="#FF6B35"/>
+  <circle cx="98" cy="1208" r="6" fill="#1E2F4D" stroke="#FF6B35" stroke-width="2"/>
+  <circle cx="118" cy="1208" r="6" fill="#1E2F4D" stroke="#FF6B35" stroke-width="2"/>
+
+  <text x="168" y="1180" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">Chicago → Dallas</text>
+  <text x="168" y="1215" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Apr 16 • 921 mi • 14h 30min</text>
+  <text x="990" y="1195" font-family="SF Pro Display, Arial" font-size="36" fill="#FF6B35" font-weight="700" text-anchor="end">+$1,240</text>
+
+  <!-- Trip 2 -->
+  <rect x="50" y="1258" width="980" height="100" rx="20" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <circle cx="110" cy="1308" r="34" fill="#4CAF50" opacity="0.15"/>
+  <rect x="92" y="1300" width="36" height="22" rx="3" fill="#4CAF50"/>
+  <rect x="99" y="1292" width="24" height="14" rx="3" fill="#4CAF50"/>
+  <circle cx="98" cy="1324" r="6" fill="#1E2F4D" stroke="#4CAF50" stroke-width="2"/>
+  <circle cx="118" cy="1324" r="6" fill="#1E2F4D" stroke="#4CAF50" stroke-width="2"/>
+
+  <text x="168" y="1296" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">Memphis → Atlanta</text>
+  <text x="168" y="1331" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Apr 15 • 394 mi • 6h 10min</text>
+  <text x="990" y="1311" font-family="SF Pro Display, Arial" font-size="36" fill="#FF6B35" font-weight="700" text-anchor="end">+$720</text>
+
+  <!-- Trip 3 -->
+  <rect x="50" y="1374" width="980" height="100" rx="20" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <circle cx="110" cy="1424" r="34" fill="#FF6B35" opacity="0.2"/>
+  <rect x="92" y="1416" width="36" height="22" rx="3" fill="#FF6B35"/>
+  <rect x="99" y="1408" width="24" height="14" rx="3" fill="#FF6B35"/>
+  <circle cx="98" cy="1440" r="6" fill="#1E2F4D" stroke="#FF6B35" stroke-width="2"/>
+  <circle cx="118" cy="1440" r="6" fill="#1E2F4D" stroke="#FF6B35" stroke-width="2"/>
+
+  <text x="168" y="1412" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">St. Louis → Kansas City</text>
+  <text x="168" y="1447" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Apr 14 • 248 mi • 3h 50min</text>
+  <text x="990" y="1427" font-family="SF Pro Display, Arial" font-size="36" fill="#FF6B35" font-weight="700" text-anchor="end">+$490</text>
+
+  <!-- Trip 4 -->
+  <rect x="50" y="1490" width="980" height="100" rx="20" fill="url(#cardDark)" filter="url(#shadow)"/>
+  <circle cx="110" cy="1540" r="34" fill="#3D8EF0" opacity="0.15"/>
+  <rect x="92" y="1532" width="36" height="22" rx="3" fill="#3D8EF0"/>
+  <rect x="99" y="1524" width="24" height="14" rx="3" fill="#3D8EF0"/>
+  <circle cx="98" cy="1556" r="6" fill="#1E2F4D" stroke="#3D8EF0" stroke-width="2"/>
+  <circle cx="118" cy="1556" r="6" fill="#1E2F4D" stroke="#3D8EF0" stroke-width="2"/>
+
+  <text x="168" y="1528" font-family="SF Pro Display, Arial" font-size="28" fill="white" font-weight="600">Indianapolis → Columbus</text>
+  <text x="168" y="1563" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8">Apr 13 • 176 mi • 2h 45min</text>
+  <text x="990" y="1543" font-family="SF Pro Display, Arial" font-size="36" fill="#FF6B35" font-weight="700" text-anchor="end">+$380</text>
+
+  <!-- Export Report Button -->
+  <rect x="50" y="1614" width="980" height="90" rx="28" fill="url(#heroCard)" filter="url(#shadow)"/>
+  <!-- Download icon -->
+  <line x1="540" y1="1637" x2="540" y2="1672" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <polyline points="522,1657 540,1678 558,1657" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="516" y1="1686" x2="564" y2="1686" stroke="white" stroke-width="4" stroke-linecap="round"/>
+
+  <text x="590" y="1669" font-family="SF Pro Display, Arial" font-size="34" fill="white" font-weight="700">Export Report</text>
+  <text x="590" y="1695" font-family="SF Pro Display, Arial" font-size="22" fill="rgba(255,255,255,0.7)">PDF • IFTA • CSV</text>
+
+  <!-- Bottom Navigation -->
+  <rect x="0" y="1730" width="1080" height="190" fill="#0D1929"/>
+  <rect x="0" y="1730" width="1080" height="2" fill="#253A5E"/>
+
+  <!-- Home -->
+  <path d="M125 1758 L95 1783 L95 1820 L155 1820 L155 1783 Z" fill="#8FA8C8"/>
+  <rect x="112" y="1796" width="26" height="24" rx="4" fill="#0D1929"/>
+  <text x="125" y="1855" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Home</text>
+
+  <!-- Loads -->
+  <rect x="256" y="1770" width="40" height="8" rx="3" fill="#8FA8C8"/>
+  <rect x="256" y="1788" width="40" height="8" rx="3" fill="#8FA8C8"/>
+  <rect x="256" y="1806" width="40" height="8" rx="3" fill="#8FA8C8"/>
+  <rect x="248" y="1762" width="56" height="60" rx="6" stroke="#8FA8C8" stroke-width="3" fill="none"/>
+  <text x="276" y="1855" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Loads</text>
+
+  <!-- Map -->
+  <circle cx="540" cy="1790" r="28" fill="none" stroke="#8FA8C8" stroke-width="3"/>
+  <circle cx="540" cy="1790" r="10" fill="#8FA8C8"/>
+  <text x="540" y="1855" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Map</text>
+
+  <!-- Earnings (active) -->
+  <rect x="666" y="1730" width="183" height="130" rx="18" fill="#FF6B35" opacity="0.15"/>
+  <text x="757" y="1800" font-family="SF Pro Display, Arial" font-size="54" fill="#FF6B35" text-anchor="middle" filter="url(#softGlow)">$</text>
+  <text x="757" y="1855" font-family="SF Pro Display, Arial" font-size="22" fill="#FF6B35" font-weight="600" text-anchor="middle">Earnings</text>
+
+  <!-- Profile -->
+  <circle cx="960" cy="1790" r="26" fill="none" stroke="#8FA8C8" stroke-width="3"/>
+  <circle cx="960" cy="1782" r="11" fill="#8FA8C8"/>
+  <path d="M935 1820 Q960 1805 985 1820" stroke="#8FA8C8" stroke-width="3" fill="none"/>
+  <text x="960" y="1855" font-family="SF Pro Display, Arial" font-size="22" fill="#8FA8C8" text-anchor="middle">Profile</text>
+
+  <rect x="430" y="1905" width="220" height="7" rx="4" fill="#8FA8C8" opacity="0.5"/>
+</svg>

@@ -1,0 +1,327 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1920" width="1200" height="1920">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1923"/>
+      <stop offset="100%" style="stop-color:#0A1118"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A2535"/>
+      <stop offset="100%" style="stop-color:#152030"/>
+    </linearGradient>
+    <linearGradient id="barGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50"/>
+      <stop offset="100%" style="stop-color:#2E7D32"/>
+    </linearGradient>
+    <linearGradient id="barOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF7A45"/>
+      <stop offset="100%" style="stop-color:#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="chartAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35" stop-opacity="0.3"/>
+      <stop offset="100%" style="stop-color:#FF6B35" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="chartLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B35"/>
+      <stop offset="50%" style="stop-color:#FF8C35"/>
+      <stop offset="100%" style="stop-color:#4CAF50"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1920" fill="url(#bgGrad)"/>
+
+  <!-- Status Bar -->
+  <rect x="0" y="0" width="1200" height="72" fill="#0B1520"/>
+  <rect x="0" y="72" width="1200" height="1" fill="#1E3048" opacity="0.8"/>
+  <text x="52" y="48" font-family="SF Pro Display, Helvetica Neue, Arial, sans-serif" font-size="30" font-weight="600" fill="#FFFFFF">9:41</text>
+  <rect x="960" y="30" width="6" height="18" rx="2" fill="#FFFFFF" opacity="0.4"/>
+  <rect x="971" y="24" width="6" height="24" rx="2" fill="#FFFFFF" opacity="0.6"/>
+  <rect x="982" y="18" width="6" height="30" rx="2" fill="#FFFFFF" opacity="0.8"/>
+  <rect x="993" y="12" width="6" height="36" rx="2" fill="#FFFFFF"/>
+  <path d="M1030 40 Q1045 25 1060 40" stroke="#FFFFFF" stroke-width="4" fill="none" opacity="0.5" stroke-linecap="round"/>
+  <path d="M1035 47 Q1045 35 1055 47" stroke="#FFFFFF" stroke-width="4" fill="none" opacity="0.8" stroke-linecap="round"/>
+  <circle cx="1045" cy="52" r="4" fill="#FFFFFF"/>
+  <rect x="1090" y="24" width="70" height="28" rx="6" stroke="#FFFFFF" stroke-width="2.5" fill="none" opacity="0.9"/>
+  <rect x="1160" y="33" width="6" height="10" rx="2" fill="#FFFFFF" opacity="0.7"/>
+  <rect x="1093" y="27" width="52" height="22" rx="4" fill="#4CAF50"/>
+
+  <!-- Top Navigation Bar -->
+  <rect x="0" y="73" width="1200" height="88" fill="#111D2A"/>
+  <rect x="0" y="161" width="1200" height="1" fill="#1E3048"/>
+  <rect x="36" y="93" width="52" height="52" rx="14" fill="#FF6B35"/>
+  <text x="62" y="127" font-family="SF Pro Display, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="800" fill="#FFFFFF" text-anchor="middle">H</text>
+  <text x="105" y="120" font-family="SF Pro Display, Helvetica Neue, Arial, sans-serif" font-size="30" font-weight="700" fill="#FFFFFF">HaulWallet</text>
+  <text x="105" y="145" font-family="SF Pro Display, Helvetica Neue, Arial, sans-serif" font-size="20" fill="#5B8AB5">Earnings Analytics</text>
+
+  <!-- Period selector -->
+  <rect x="680" y="96" width="100" height="44" rx="22" fill="#1A2D40"/>
+  <text x="730" y="124" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5" text-anchor="middle">Week</text>
+  <rect x="790" y="96" width="100" height="44" rx="22" fill="#FF6B35" opacity="0.15"/>
+  <text x="840" y="124" font-family="SF Pro, sans-serif" font-size="19" font-weight="600" fill="#FF6B35" text-anchor="middle">Month</text>
+  <rect x="900" y="96" width="100" height="44" rx="22" fill="#1A2D40"/>
+  <text x="950" y="124" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5" text-anchor="middle">Year</text>
+  <!-- Export button -->
+  <rect x="1050" y="96" width="120" height="44" rx="22" fill="#1A2D40"/>
+  <text x="1110" y="124" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5" text-anchor="middle">↑ Export</text>
+
+  <!-- KPI CARDS ROW -->
+  <rect x="20" y="176" width="360" height="130" rx="18" fill="url(#cardGrad)" filter="url(#shadow)"/>
+  <rect x="20" y="176" width="360" height="4" rx="2" fill="#4CAF50"/>
+  <text x="48" y="224" font-family="SF Pro, sans-serif" font-size="22" fill="#5B8AB5">Total Miles</text>
+  <text x="48" y="278" font-family="SF Pro Display, sans-serif" font-size="48" font-weight="700" fill="#FFFFFF">8,240</text>
+  <text x="186" y="278" font-family="SF Pro, sans-serif" font-size="24" fill="#5B8AB5"> mi</text>
+  <text x="310" y="224" font-family="SF Pro, sans-serif" font-size="19" fill="#4CAF50">↑ 12%</text>
+
+  <rect x="420" y="176" width="360" height="130" rx="18" fill="url(#cardGrad)" filter="url(#shadow)"/>
+  <rect x="420" y="176" width="360" height="4" rx="2" fill="#FF6B35"/>
+  <text x="448" y="224" font-family="SF Pro, sans-serif" font-size="22" fill="#5B8AB5">Total Earnings</text>
+  <text x="448" y="278" font-family="SF Pro Display, sans-serif" font-size="48" font-weight="700" fill="#FF6B35">$18,450</text>
+  <text x="716" y="224" font-family="SF Pro, sans-serif" font-size="19" fill="#4CAF50">↑ 8%</text>
+
+  <rect x="820" y="176" width="360" height="130" rx="18" fill="url(#cardGrad)" filter="url(#shadow)"/>
+  <rect x="820" y="176" width="360" height="4" rx="2" fill="#4FC3F7"/>
+  <text x="848" y="224" font-family="SF Pro, sans-serif" font-size="22" fill="#5B8AB5">Loads Delivered</text>
+  <text x="848" y="278" font-family="SF Pro Display, sans-serif" font-size="48" font-weight="700" fill="#FFFFFF">47</text>
+  <text x="920" y="278" font-family="SF Pro, sans-serif" font-size="24" fill="#5B8AB5"> loads</text>
+  <text x="1110" y="224" font-family="SF Pro, sans-serif" font-size="19" fill="#4CAF50">↑ 5%</text>
+
+  <!-- MAIN EARNINGS CHART -->
+  <rect x="20" y="330" width="1160" height="620" rx="20" fill="url(#cardGrad)" filter="url(#shadow)"/>
+
+  <!-- Chart header -->
+  <text x="52" y="382" font-family="SF Pro Display, Helvetica Neue, Arial, sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">Monthly Earnings Overview</text>
+  <text x="52" y="412" font-family="SF Pro, sans-serif" font-size="20" fill="#5B8AB5">April 2026 · Daily breakdown</text>
+
+  <!-- Chart legend -->
+  <rect x="860" y="370" width="16" height="16" rx="4" fill="#FF6B35"/>
+  <text x="884" y="384" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">Earnings</text>
+  <rect x="986" y="370" width="16" height="16" rx="4" fill="#4FC3F7"/>
+  <text x="1010" y="384" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">Avg Rate</text>
+  <rect x="1112" y="370" width="16" height="16" rx="4" fill="#4CAF50"/>
+  <text x="1136" y="384" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">Miles</text>
+
+  <!-- Y-axis labels -->
+  <text x="44" y="456" font-family="SF Pro, sans-serif" font-size="17" fill="#3A5570" text-anchor="end">$3K</text>
+  <line x1="56" y1="450" x2="1148" y2="450" stroke="#1E3048" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="44" y="530" font-family="SF Pro, sans-serif" font-size="17" fill="#3A5570" text-anchor="end">$2K</text>
+  <line x1="56" y1="524" x2="1148" y2="524" stroke="#1E3048" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="44" y="604" font-family="SF Pro, sans-serif" font-size="17" fill="#3A5570" text-anchor="end">$1K</text>
+  <line x1="56" y1="598" x2="1148" y2="598" stroke="#1E3048" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="44" y="678" font-family="SF Pro, sans-serif" font-size="17" fill="#3A5570" text-anchor="end">$0</text>
+  <line x1="56" y1="672" x2="1148" y2="672" stroke="#1E3048" stroke-width="1"/>
+
+  <!-- Area chart fill -->
+  <path d="M60 620 L102 600 L144 580 L186 570 L228 610 L270 565 L312 540 L354 555 L396 520 L438 505 L480 530 L522 480 L564 460 L606 475 L648 450 L690 470 L732 455 L774 490 L816 510 L858 495 L900 475 L942 510 L984 530 L1026 500 L1068 520 L1110 510 L1148 495 L1148 672 L60 672 Z" fill="url(#chartAreaGrad)"/>
+
+  <!-- Main earnings line -->
+  <polyline points="60,620 102,600 144,580 186,570 228,610 270,565 312,540 354,555 396,520 438,505 480,530 522,480 564,460 606,475 648,450 690,470 732,455 774,490 816,510 858,495 900,475 942,510 984,530 1026,500 1068,520 1110,510 1148,495" stroke="url(#chartLine)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Data points -->
+  <circle cx="648" cy="450" r="8" fill="#FF6B35" stroke="#0F1923" stroke-width="2"/>
+  <!-- Tooltip on highest point -->
+  <rect x="590" y="400" width="130" height="44" rx="10" fill="#1A2535" stroke="#FF6B35" stroke-width="1.5"/>
+  <text x="655" y="421" font-family="SF Pro, sans-serif" font-size="14" fill="#5B8AB5" text-anchor="middle">Apr 14</text>
+  <text x="655" y="438" font-family="SF Pro Display, sans-serif" font-size="18" font-weight="700" fill="#FF6B35" text-anchor="middle">$2,840</text>
+  <line x1="648" y1="444" x2="648" y2="450" stroke="#FF6B35" stroke-width="1.5"/>
+
+  <!-- Current day indicator -->
+  <line x1="1110" y1="430" x2="1110" y2="672" stroke="#FF6B35" stroke-width="2" stroke-dasharray="8 4" opacity="0.5"/>
+  <circle cx="1110" cy="510" r="6" fill="#FF6B35"/>
+
+  <!-- X-axis month labels -->
+  <text x="60" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">1</text>
+  <text x="144" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">3</text>
+  <text x="228" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">5</text>
+  <text x="312" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">7</text>
+  <text x="396" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">9</text>
+  <text x="480" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">11</text>
+  <text x="564" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">13</text>
+  <text x="648" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#FF6B35" text-anchor="middle" font-weight="600">15</text>
+  <text x="732" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">17</text>
+  <text x="816" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">19</text>
+  <text x="900" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">21</text>
+  <text x="984" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">23</text>
+  <text x="1068" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#3A5570" text-anchor="middle">25</text>
+  <text x="1148" y="700" font-family="SF Pro, sans-serif" font-size="16" fill="#FF6B35" text-anchor="middle" font-weight="600">Now</text>
+
+  <!-- Chart stats bottom -->
+  <rect x="52" y="720" width="520" height="2" fill="#1E3048"/>
+  <rect x="660" y="720" width="480" height="2" fill="#1E3048"/>
+  <rect x="36" y="730" width="250" height="80" rx="12" fill="#1A2535"/>
+  <text x="56" y="758" font-family="SF Pro, sans-serif" font-size="16" fill="#5B8AB5">Best Day This Month</text>
+  <text x="56" y="794" font-family="SF Pro Display, sans-serif" font-size="28" font-weight="700" fill="#FF6B35">$2,840 · Apr 14</text>
+  <rect x="300" y="730" width="250" height="80" rx="12" fill="#1A2535"/>
+  <text x="320" y="758" font-family="SF Pro, sans-serif" font-size="16" fill="#5B8AB5">Daily Average</text>
+  <text x="320" y="794" font-family="SF Pro Display, sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">$1,082 / day</text>
+  <rect x="660" y="730" width="250" height="80" rx="12" fill="#1A2535"/>
+  <text x="680" y="758" font-family="SF Pro, sans-serif" font-size="16" fill="#5B8AB5">On Track For</text>
+  <text x="680" y="794" font-family="SF Pro Display, sans-serif" font-size="28" font-weight="700" fill="#4CAF50">$22,100 / mo</text>
+  <rect x="924" y="730" width="250" height="80" rx="12" fill="#1A2535"/>
+  <text x="944" y="758" font-family="SF Pro, sans-serif" font-size="16" fill="#5B8AB5">Avg Rate/Mile</text>
+  <text x="944" y="794" font-family="SF Pro Display, sans-serif" font-size="28" font-weight="700" fill="#4FC3F7">$4.24 / mi</text>
+
+  <!-- TRIPS TABLE -->
+  <rect x="20" y="980" width="1160" height="800" rx="20" fill="url(#cardGrad)" filter="url(#shadow)"/>
+
+  <!-- Table header -->
+  <text x="52" y="1032" font-family="SF Pro Display, Helvetica Neue, Arial, sans-serif" font-size="28" font-weight="700" fill="#FFFFFF">Trip History</text>
+  <text x="52" y="1060" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">April 2026 · 17 trips completed</text>
+
+  <!-- Filter/search row -->
+  <rect x="700" y="1010" width="220" height="44" rx="10" fill="#1A2535"/>
+  <text x="726" y="1039" font-family="SF Pro, sans-serif" font-size="18" fill="#3A5570">🔍 Search trips...</text>
+  <rect x="940" y="1010" width="106" height="44" rx="10" fill="#1A2535"/>
+  <text x="993" y="1038" font-family="SF Pro, sans-serif" font-size="18" fill="#5B8AB5" text-anchor="middle">Filter ▾</text>
+  <rect x="1058" y="1010" width="100" height="44" rx="22" fill="#FF6B35" opacity="0.15"/>
+  <text x="1108" y="1039" font-family="SF Pro, sans-serif" font-size="18" fill="#FF6B35" text-anchor="middle">Export</text>
+
+  <!-- Table column headers -->
+  <rect x="36" y="1078" width="1128" height="52" rx="8" fill="#1A2535"/>
+  <text x="64" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">TRIP ID</text>
+  <text x="220" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">DATE</text>
+  <text x="360" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">ORIGIN → DESTINATION</text>
+  <text x="680" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">MILES</text>
+  <text x="780" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">WEIGHT</text>
+  <text x="900" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">RATE/MI</text>
+  <text x="1020" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">EARNINGS</text>
+  <text x="1130" y="1110" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#5B8AB5">STATUS</text>
+
+  <!-- Table rows -->
+  <!-- Row 1 - highlighted/selected -->
+  <rect x="36" y="1142" width="1128" height="60" rx="6" fill="#1E3550"/>
+  <rect x="36" y="1142" width="4" height="60" rx="2" fill="#FF6B35"/>
+  <text x="64" y="1179" font-family="SF Pro, sans-serif" font-size="19" font-weight="600" fill="#FFFFFF">TRK-2839</text>
+  <text x="220" y="1179" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">Apr 17</text>
+  <text x="360" y="1179" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">Indianapolis → Columbus</text>
+  <text x="680" y="1179" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">284 mi</text>
+  <text x="780" y="1179" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">15,200</text>
+  <text x="900" y="1179" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$3.06</text>
+  <text x="1020" y="1179" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$870</text>
+  <rect x="1120" y="1152" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1167" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Row 2 -->
+  <rect x="36" y="1214" width="1128" height="60" rx="6" fill="transparent"/>
+  <rect x="36" y="1272" width="1128" height="1" fill="#1E3048"/>
+  <text x="64" y="1251" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">TRK-2835</text>
+  <text x="220" y="1251" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">Apr 16</text>
+  <text x="360" y="1251" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">Cleveland → Pittsburgh</text>
+  <text x="680" y="1251" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">131 mi</text>
+  <text x="780" y="1251" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">22,000</text>
+  <text x="900" y="1251" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$7.48</text>
+  <text x="1020" y="1251" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$980</text>
+  <rect x="1120" y="1224" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1239" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Row 3 -->
+  <rect x="36" y="1286" width="1128" height="60" rx="6" fill="#111D2A"/>
+  <rect x="36" y="1344" width="1128" height="1" fill="#1E3048"/>
+  <text x="64" y="1323" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">TRK-2831</text>
+  <text x="220" y="1323" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">Apr 15</text>
+  <text x="360" y="1323" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">Chicago → Milwaukee</text>
+  <text x="680" y="1323" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">92 mi</text>
+  <text x="780" y="1323" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">18,500</text>
+  <text x="900" y="1323" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$4.24</text>
+  <text x="1020" y="1323" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$390</text>
+  <rect x="1120" y="1296" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1311" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Row 4 -->
+  <rect x="36" y="1358" width="1128" height="60" rx="6" fill="transparent"/>
+  <rect x="36" y="1416" width="1128" height="1" fill="#1E3048"/>
+  <text x="64" y="1395" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">TRK-2829</text>
+  <text x="220" y="1395" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">Apr 14</text>
+  <text x="360" y="1395" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">Detroit → Cincinnati</text>
+  <text x="680" y="1395" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">263 mi</text>
+  <text x="780" y="1395" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">30,000</text>
+  <text x="900" y="1395" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$5.29</text>
+  <text x="1020" y="1395" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$1,392</text>
+  <rect x="1120" y="1368" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1383" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Row 5 -->
+  <rect x="36" y="1430" width="1128" height="60" rx="6" fill="#111D2A"/>
+  <rect x="36" y="1488" width="1128" height="1" fill="#1E3048"/>
+  <text x="64" y="1467" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">TRK-2825</text>
+  <text x="220" y="1467" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">Apr 13</text>
+  <text x="360" y="1467" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">Columbus → Buffalo, NY</text>
+  <text x="680" y="1467" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">188 mi</text>
+  <text x="780" y="1467" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">26,400</text>
+  <text x="900" y="1467" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$3.83</text>
+  <text x="1020" y="1467" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$720</text>
+  <rect x="1120" y="1440" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1455" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Row 6 -->
+  <rect x="36" y="1502" width="1128" height="60" rx="6" fill="transparent"/>
+  <rect x="36" y="1560" width="1128" height="1" fill="#1E3048"/>
+  <text x="64" y="1539" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">TRK-2819</text>
+  <text x="220" y="1539" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">Apr 12</text>
+  <text x="360" y="1539" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">Nashville → Memphis</text>
+  <text x="680" y="1539" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">212 mi</text>
+  <text x="780" y="1539" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">19,800</text>
+  <text x="900" y="1539" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$4.01</text>
+  <text x="1020" y="1539" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$850</text>
+  <rect x="1120" y="1512" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1527" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Row 7 -->
+  <rect x="36" y="1574" width="1128" height="60" rx="6" fill="#111D2A"/>
+  <rect x="36" y="1632" width="1128" height="1" fill="#1E3048"/>
+  <text x="64" y="1611" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">TRK-2814</text>
+  <text x="220" y="1611" font-family="SF Pro, sans-serif" font-size="19" fill="#5B8AB5">Apr 11</text>
+  <text x="360" y="1611" font-family="SF Pro, sans-serif" font-size="19" fill="#FFFFFF">St. Louis → Kansas City</text>
+  <text x="680" y="1611" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">248 mi</text>
+  <text x="780" y="1611" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">24,000</text>
+  <text x="900" y="1611" font-family="SF Pro, sans-serif" font-size="19" fill="#A0BECF">$5.04</text>
+  <text x="1020" y="1611" font-family="SF Pro, sans-serif" font-size="19" font-weight="700" fill="#4CAF50">$1,250</text>
+  <rect x="1120" y="1584" width="34" height="20" rx="10" fill="#4CAF50" opacity="0.2"/>
+  <text x="1136" y="1599" font-family="SF Pro, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">✓</text>
+
+  <!-- Table footer total -->
+  <rect x="36" y="1704" width="1128" height="60" rx="6" fill="#1A2535"/>
+  <text x="64" y="1741" font-family="SF Pro Display, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">TOTAL (17 trips)</text>
+  <text x="680" y="1741" font-family="SF Pro Display, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">8,240 mi</text>
+  <text x="1020" y="1741" font-family="SF Pro Display, sans-serif" font-size="22" font-weight="700" fill="#4CAF50">$18,450</text>
+
+  <!-- Pagination -->
+  <text x="600" y="1790" font-family="SF Pro, sans-serif" font-size="18" fill="#5B8AB5" text-anchor="middle">Showing 7 of 17 trips · Page 1 of 3</text>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <rect x="0" y="1780" width="1200" height="140" fill="#0B1520"/>
+  <rect x="0" y="1780" width="1200" height="1" fill="#1E3048"/>
+  <!-- Dashboard -->
+  <rect x="80" y="1800" width="80" height="80" rx="16" fill="transparent"/>
+  <path d="M112 1825 L120 1818 L128 1825 L128 1845 L112 1845 Z" fill="#5B8AB5"/>
+  <rect x="116" y="1835" width="8" height="10" rx="2" fill="#0B1520"/>
+  <text x="120" y="1880" font-family="SF Pro, sans-serif" font-size="18" fill="#5B8AB5" text-anchor="middle">Dashboard</text>
+  <!-- Loads -->
+  <rect x="320" y="1810" width="80" height="80" rx="16" fill="transparent"/>
+  <rect x="340" y="1828" width="40" height="32" rx="4" stroke="#5B8AB5" stroke-width="2.5" fill="none"/>
+  <line x1="348" y1="1836" x2="372" y2="1836" stroke="#5B8AB5" stroke-width="2"/>
+  <line x1="348" y1="1844" x2="372" y2="1844" stroke="#5B8AB5" stroke-width="2"/>
+  <text x="360" y="1880" font-family="SF Pro, sans-serif" font-size="18" fill="#5B8AB5" text-anchor="middle">Loads</text>
+  <!-- Route -->
+  <rect x="560" y="1810" width="80" height="80" rx="16" fill="transparent"/>
+  <path d="M572 1855 C572 1840 600 1820 600 1820 C600 1820 628 1840 628 1855" stroke="#5B8AB5" stroke-width="2.5" fill="none"/>
+  <circle cx="600" cy="1825" r="6" fill="#5B8AB5"/>
+  <text x="600" y="1880" font-family="SF Pro, sans-serif" font-size="18" fill="#5B8AB5" text-anchor="middle">Route</text>
+  <!-- Earnings (active) -->
+  <rect x="0" y="1781" width="1200" height="0" fill="transparent"/>
+  <rect x="760" y="1781" width="240" height="2" fill="#FF6B35"/>
+  <rect x="800" y="1800" width="80" height="80" rx="16" fill="#FF6B35" opacity="0.12"/>
+  <text x="840" y="1860" font-family="SF Pro, sans-serif" font-size="36" fill="#FF6B35" text-anchor="middle">$</text>
+  <text x="840" y="1880" font-family="SF Pro, sans-serif" font-size="18" font-weight="600" fill="#FF6B35" text-anchor="middle">Earnings</text>
+  <!-- Profile -->
+  <rect x="1040" y="1810" width="80" height="80" rx="16" fill="transparent"/>
+  <circle cx="1080" cy="1835" r="14" stroke="#5B8AB5" stroke-width="2.5" fill="none"/>
+  <path d="M1060 1865 C1062 1852 1070 1848 1080 1848 C1090 1848 1098 1852 1100 1865" stroke="#5B8AB5" stroke-width="2.5" fill="none"/>
+  <text x="1080" y="1880" font-family="SF Pro, sans-serif" font-size="18" fill="#5B8AB5" text-anchor="middle">Profile</text>
+</svg>

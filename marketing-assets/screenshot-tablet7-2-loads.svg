@@ -1,0 +1,409 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1920" viewBox="0 0 1200 1920">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B2A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#112236;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A2E42;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#152438;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2B6CB0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3182CE;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F6C060;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="selectedCard" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1D3A58;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#173050;stop-opacity:1" />
+    </linearGradient>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="glowBlue">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#2B6CB0" flood-opacity="0.5"/>
+    </filter>
+    <filter id="selectedGlow">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#2B6CB0" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1920" fill="url(#bgGrad)"/>
+
+  <!-- Status Bar -->
+  <rect width="1200" height="48" fill="#0A1520"/>
+  <text x="40" y="32" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="500">9:41 AM</text>
+  <rect x="980" y="16" width="6" height="16" rx="1" fill="#8AACCC"/>
+  <rect x="990" y="12" width="6" height="20" rx="1" fill="#8AACCC"/>
+  <rect x="1000" y="8" width="6" height="24" rx="1" fill="#8AACCC"/>
+  <rect x="1010" y="4" width="6" height="28" rx="1" fill="#8AACCC"/>
+  <path d="M1040 28 Q1050 18 1060 28" stroke="#8AACCC" stroke-width="2" fill="none"/>
+  <path d="M1036 32 Q1050 14 1064 32" stroke="#8AACCC" stroke-width="2" fill="none"/>
+  <circle cx="1050" cy="33" r="3" fill="#8AACCC"/>
+  <rect x="1090" y="14" width="72" height="22" rx="4" fill="none" stroke="#8AACCC" stroke-width="2"/>
+  <rect x="1162" y="19" width="5" height="12" rx="2" fill="#8AACCC"/>
+  <rect x="1093" y="17" width="52" height="16" rx="2" fill="#34D399"/>
+
+  <!-- Header -->
+  <rect x="0" y="48" width="1200" height="80" fill="#0F1E2E"/>
+  <rect x="30" y="62" width="44" height="44" rx="10" fill="url(#accentGrad)" filter="url(#glowBlue)"/>
+  <path d="M38 88 L38 78 L52 78 L52 72 L62 72 L68 78 L72 78 L72 92 L38 92 Z" fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="45" cy="93" r="4" fill="white"/>
+  <circle cx="65" cy="93" r="4" fill="white"/>
+  <path d="M52 78 L52 84 L68 84" stroke="white" stroke-width="1.5" fill="none"/>
+  <text x="90" y="81" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="28" font-weight="700">HaulWallet</text>
+  <text x="90" y="105" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18">Load Management</text>
+  <!-- Filter button -->
+  <rect x="1000" y="64" width="100" height="42" rx="10" fill="#1A3352"/>
+  <text x="1050" y="90" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">Filters</text>
+  <!-- Add Load button -->
+  <rect x="1112" y="64" width="72" height="42" rx="10" fill="url(#accentGrad)"/>
+  <text x="1148" y="90" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">+ Add</text>
+
+  <!-- Tab Navigation -->
+  <rect x="0" y="128" width="1200" height="60" fill="#0F1E2E"/>
+  <text x="100" y="165" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle">Dashboard</text>
+  <rect x="200" y="185" width="200" height="3" fill="url(#accentGrad)"/>
+  <text x="300" y="165" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="600" text-anchor="middle">My Loads</text>
+  <text x="500" y="165" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle">Analytics</text>
+  <text x="700" y="165" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle">Documents</text>
+  <text x="900" y="165" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle">Expenses</text>
+  <text x="1100" y="165" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle">Settings</text>
+
+  <!-- Subtabs for Loads -->
+  <rect x="0" y="188" width="1200" height="56" fill="#0D1B2A"/>
+  <rect x="20" y="198" width="140" height="36" rx="18" fill="url(#accentGrad)"/>
+  <text x="90" y="221" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" text-anchor="middle">All Loads</text>
+  <rect x="172" y="198" width="130" height="36" rx="18" fill="#1A2E42"/>
+  <text x="237" y="221" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">In Transit</text>
+  <rect x="314" y="198" width="130" height="36" rx="18" fill="#1A2E42"/>
+  <text x="379" y="221" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">Upcoming</text>
+  <rect x="456" y="198" width="130" height="36" rx="18" fill="#1A2E42"/>
+  <text x="521" y="221" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">Delivered</text>
+
+  <!-- Search bar -->
+  <rect x="630" y="198" width="550" height="36" rx="18" fill="#1A2E42"/>
+  <text x="680" y="220" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16">Search loads, cities, brokers...</text>
+  <circle cx="1160" cy="216" r="14" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <line x1="1152" y1="208" x2="1147" y2="203" stroke="#3A6A8A" stroke-width="2"/>
+
+  <!-- TWO COLUMN LAYOUT -->
+  <!-- LEFT: Load List Panel -->
+  <rect x="0" y="244" width="580" height="1592" fill="#0D1B2A"/>
+  <!-- Sort row -->
+  <text x="30" y="278" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Sort: </text>
+  <text x="72" y="278" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Date ↓</text>
+  <text x="400" y="278" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15" text-anchor="end">24 loads total</text>
+
+  <!-- Load Card 1 - SELECTED (In Transit) -->
+  <rect x="10" y="290" width="560" height="110" rx="14" fill="url(#selectedCard)" filter="url(#selectedGlow)"/>
+  <rect x="10" y="290" width="6" height="110" rx="3" fill="#F5A623"/>
+  <rect x="10" y="290" width="560" height="2" rx="1" fill="#2B6CB0" fill-opacity="0.4"/>
+  <rect x="490" y="302" width="72" height="26" rx="13" fill="#2D1F00"/>
+  <text x="526" y="319" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="600">In Transit</text>
+  <text x="28" y="320" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Cleveland, OH</text>
+  <path d="M174 314 L200 314" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="200,311 206,314 200,317" fill="#3A6A8A"/>
+  <text x="216" y="320" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Pittsburgh, PA</text>
+  <text x="28" y="346" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 17, 2026 · Auto Parts · 24,800 lbs</text>
+  <text x="28" y="370" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">134 mi</text>
+  <text x="28" y="390" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Echo Global Freight</text>
+  <text x="550" y="375" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$412</text>
+  <text x="550" y="396" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">→</text>
+
+  <!-- Load Card 2 (Delivered) -->
+  <rect x="10" y="412" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="412" width="6" height="100" rx="3" fill="#34D399"/>
+  <rect x="490" y="422" width="72" height="26" rx="13" fill="#0D3320"/>
+  <text x="526" y="439" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="600">Delivered</text>
+  <text x="28" y="442" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Chicago, IL</text>
+  <path d="M162 436 L188 436" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="188,433 194,436 188,439" fill="#3A6A8A"/>
+  <text x="204" y="442" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Detroit, MI</text>
+  <text x="28" y="466" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 18, 2026 · Steel Coils · 44,000 lbs</text>
+  <text x="28" y="488" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">292 mi</text>
+  <text x="200" y="488" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Coyote Logistics</text>
+  <text x="550" y="476" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$780</text>
+
+  <!-- Load Card 3 (Confirmed) -->
+  <rect x="10" y="524" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="524" width="6" height="100" rx="3" fill="#3182CE"/>
+  <rect x="478" y="534" width="84" height="26" rx="13" fill="#0A1E35"/>
+  <text x="520" y="551" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="600">Confirmed</text>
+  <text x="28" y="554" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Columbus, OH</text>
+  <path d="M186 548 L212 548" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="212,545 218,548 212,551" fill="#3A6A8A"/>
+  <text x="228" y="554" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Indianapolis, IN</text>
+  <text x="28" y="578" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 16, 2026 · Packaged Goods · 18,200 lbs</text>
+  <text x="28" y="600" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">176 mi</text>
+  <text x="200" y="600" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">TQL</text>
+  <text x="550" y="588" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$528</text>
+
+  <!-- Load Card 4 (Delivered) -->
+  <rect x="10" y="636" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="636" width="6" height="100" rx="3" fill="#34D399"/>
+  <rect x="490" y="646" width="72" height="26" rx="13" fill="#0D3320"/>
+  <text x="526" y="663" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Delivered</text>
+  <text x="28" y="666" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Cincinnati, OH</text>
+  <path d="M192 660 L218 660" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="218,657 224,660 218,663" fill="#3A6A8A"/>
+  <text x="234" y="666" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Nashville, TN</text>
+  <text x="28" y="690" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 15, 2026 · Electronics · 8,400 lbs</text>
+  <text x="28" y="712" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">277 mi</text>
+  <text x="200" y="712" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Arrive Logistics</text>
+  <text x="550" y="700" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$830</text>
+
+  <!-- Load Card 5 -->
+  <rect x="10" y="748" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="748" width="6" height="100" rx="3" fill="#34D399"/>
+  <rect x="490" y="758" width="72" height="26" rx="13" fill="#0D3320"/>
+  <text x="526" y="775" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Delivered</text>
+  <text x="28" y="778" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Indianapolis, IN</text>
+  <path d="M200 772 L226 772" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="226,769 232,772 226,775" fill="#3A6A8A"/>
+  <text x="242" y="778" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">St. Louis, MO</text>
+  <text x="28" y="802" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 14, 2026 · Food/Beverage · 38,000 lbs</text>
+  <text x="28" y="824" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">241 mi</text>
+  <text x="200" y="824" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Echo Global Freight</text>
+  <text x="550" y="812" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$723</text>
+
+  <!-- Load Card 6 -->
+  <rect x="10" y="860" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="860" width="6" height="100" rx="3" fill="#9B59B6"/>
+  <rect x="478" y="870" width="84" height="26" rx="13" fill="#200A35"/>
+  <text x="520" y="887" fill="#9B59B6" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Cancelled</text>
+  <text x="28" y="890" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Louisville, KY</text>
+  <path d="M182 884 L208 884" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="208,881 214,884 208,887" fill="#3A6A8A"/>
+  <text x="224" y="890" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Memphis, TN</text>
+  <text x="28" y="914" fill="#4A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 13, 2026 · Lumber · 32,600 lbs</text>
+  <text x="28" y="936" fill="#3A5A7A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">389 mi · Broker TQL</text>
+  <text x="550" y="924" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end" text-decoration="line-through">$1,165</text>
+
+  <!-- Load Card 7 -->
+  <rect x="10" y="972" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="972" width="6" height="100" rx="3" fill="#34D399"/>
+  <rect x="490" y="982" width="72" height="26" rx="13" fill="#0D3320"/>
+  <text x="526" y="999" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Delivered</text>
+  <text x="28" y="1002" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Detroit, MI</text>
+  <path d="M150 996 L176 996" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="176,993 182,996 176,999" fill="#3A6A8A"/>
+  <text x="192" y="1002" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Toledo, OH</text>
+  <text x="28" y="1026" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 12, 2026 · Machinery · 28,100 lbs</text>
+  <text x="28" y="1048" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">60 mi · XPO Logistics</text>
+  <text x="550" y="1036" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$245</text>
+
+  <!-- Load Card 8 -->
+  <rect x="10" y="1084" width="560" height="100" rx="14" fill="url(#cardGrad1)"/>
+  <rect x="10" y="1084" width="6" height="100" rx="3" fill="#34D399"/>
+  <rect x="490" y="1094" width="72" height="26" rx="13" fill="#0D3320"/>
+  <text x="526" y="1111" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Delivered</text>
+  <text x="28" y="1114" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Pittsburgh, PA</text>
+  <path d="M182 1108 L208 1108" stroke="#3A6A8A" stroke-width="1.5"/>
+  <polygon points="208,1105 214,1108 208,1111" fill="#3A6A8A"/>
+  <text x="224" y="1114" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Baltimore, MD</text>
+  <text x="28" y="1138" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 11, 2026 · Chemical Drums · 19,800 lbs</text>
+  <text x="28" y="1160" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">246 mi · Coyote Logistics</text>
+  <text x="550" y="1148" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$689</text>
+
+  <!-- Pagination dots -->
+  <circle cx="260" cy="1210" r="5" fill="#3182CE"/>
+  <circle cx="276" cy="1210" r="4" fill="#1A3352"/>
+  <circle cx="290" cy="1210" r="4" fill="#1A3352"/>
+  <text x="290" y="1240" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">1–8 of 24</text>
+
+  <!-- RIGHT COLUMN: Load Detail Panel -->
+  <rect x="620" y="244" width="580" height="1592" fill="#0D1B2A"/>
+  <line x1="600" y1="244" x2="600" y2="1836" stroke="#1A3050" stroke-width="2"/>
+
+  <!-- Detail Header -->
+  <text x="650" y="280" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="1">LOAD DETAILS #HL-2024-0417</text>
+
+  <!-- Status Banner -->
+  <rect x="630" y="292" width="550" height="72" rx="14" fill="#2D1F00" filter="url(#cardShadow)"/>
+  <rect x="630" y="292" width="550" height="4" rx="2" fill="#F5A623"/>
+  <!-- Truck icon -->
+  <path d="M660 340 L660 322 L690 322 L690 313 L710 313 L720 322 L728 322 L728 344 L660 344 Z" fill="none" stroke="#F5A623" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="672" cy="345" r="5" fill="#F5A623"/>
+  <circle cx="716" cy="345" r="5" fill="#F5A623"/>
+  <line x1="690" y1="322" x2="690" y2="333" stroke="#F5A623" stroke-width="1.5"/>
+  <line x1="690" y1="333" x2="728" y2="333" stroke="#F5A623" stroke-width="1.5"/>
+  <text x="748" y="322" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700">In Transit</text>
+  <text x="748" y="352" fill="#B07020" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16">Last ping: 3 min ago · I-76 East</text>
+  <!-- Progress on route -->
+  <rect x="950" y="316" width="200" height="12" rx="6" fill="#1A1000"/>
+  <rect x="950" y="316" width="124" height="12" rx="6" fill="#F5A623"/>
+  <text x="950" y="345" fill="#B07020" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">62% — 51 mi left</text>
+
+  <!-- Route section -->
+  <rect x="630" y="376" width="550" height="200" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="412" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Route</text>
+
+  <!-- Origin -->
+  <circle cx="670" cy="446" r="12" fill="#34D399"/>
+  <circle cx="670" cy="446" r="5" fill="white"/>
+  <text x="692" y="440" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">ORIGIN · Pickup 04:30 AM ✓</text>
+  <text x="692" y="460" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="600">Cleveland, OH 44101</text>
+  <text x="692" y="478" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">4800 Pearl Rd · Terminal C</text>
+
+  <!-- Route line -->
+  <line x1="670" y1="458" x2="670" y2="498" stroke="#1E3D5A" stroke-width="2" stroke-dasharray="4,4"/>
+
+  <!-- Destination -->
+  <circle cx="670" cy="510" r="12" fill="#EF4444" fill-opacity="0.8"/>
+  <text x="670" cy="514" fill="white" font-family="Arial" font-size="14" text-anchor="middle">!</text>
+  <text x="692" y="504" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">DESTINATION · Delivery by 10:00 AM</text>
+  <text x="692" y="524" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="600">Pittsburgh, PA 15201</text>
+  <text x="692" y="542" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">200 Riverview Dr · Dock 7</text>
+
+  <!-- Distance row -->
+  <rect x="650" y="558" width="500" height="2" fill="#1A3050"/>
+  <text x="660" y="584" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">134 miles</text>
+  <text x="780" y="584" fill="#1E3D5A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">·</text>
+  <text x="800" y="584" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">ETA: 10:18 AM</text>
+  <text x="960" y="584" fill="#1E3D5A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">·</text>
+  <text x="980" y="584" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">18 min late</text>
+
+  <!-- Cargo section -->
+  <rect x="630" y="588" width="550" height="180" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="624" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Cargo</text>
+
+  <!-- Cargo details grid -->
+  <text x="660" y="658" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Commodity</text>
+  <text x="660" y="678" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="500">Auto Parts</text>
+
+  <text x="850" y="658" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Weight</text>
+  <text x="850" y="678" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="500">24,800 lbs</text>
+
+  <text x="1040" y="658" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Pieces</text>
+  <text x="1040" y="678" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="500">156 pallets</text>
+
+  <line x1="650" y1="695" x2="1170" y2="695" stroke="#1A3050" stroke-width="1"/>
+
+  <text x="660" y="718" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Trailer Type</text>
+  <text x="660" y="738" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="500">53' Dry Van</text>
+
+  <text x="850" y="718" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Hazmat</text>
+  <text x="850" y="738" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="500">No</text>
+
+  <text x="1040" y="718" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Temp Control</text>
+  <text x="1040" y="738" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="500">No</text>
+
+  <line x1="650" y1="750" x2="1170" y2="750" stroke="#1A3050" stroke-width="1"/>
+  <text x="660" y="770" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Special Instructions:</text>
+  <text x="850" y="770" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Liftgate required at destination</text>
+
+  <!-- Payment section -->
+  <rect x="630" y="780" width="550" height="210" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="816" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Payment</text>
+
+  <text x="660" y="850" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Gross Pay</text>
+  <text x="1160" y="850" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="end">$412.00</text>
+
+  <line x1="650" y1="862" x2="1170" y2="862" stroke="#1A3050" stroke-width="1"/>
+  <text x="660" y="884" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Fuel Surcharge</text>
+  <text x="1160" y="884" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15" text-anchor="end">+$38.50</text>
+
+  <line x1="650" y1="896" x2="1170" y2="896" stroke="#1A3050" stroke-width="1"/>
+  <text x="660" y="918" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Fuel Cost (est.)</text>
+  <text x="1160" y="918" fill="#EF4444" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15" text-anchor="end">−$69.00</text>
+
+  <line x1="650" y1="930" x2="1170" y2="930" stroke="#2B6CB0" stroke-width="1"/>
+  <text x="660" y="956" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">Net Profit</text>
+  <text x="1160" y="956" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" text-anchor="end">$381.50</text>
+
+  <line x1="650" y1="966" x2="1170" y2="966" stroke="#1A3050" stroke-width="1"/>
+  <text x="660" y="988" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Rate/mile: $3.07</text>
+  <text x="900" y="988" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Payment: Quick Pay (2 days)</text>
+
+  <!-- Broker section -->
+  <rect x="630" y="1002" width="550" height="150" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="1038" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Broker</text>
+  <circle cx="680" cy="1098" r="32" fill="#1A3352"/>
+  <text x="680" y="1102" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="700">EGF</text>
+  <text x="722" y="1072" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="600">Echo Global Freight</text>
+  <text x="722" y="1096" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Dispatcher: Marcus T.</text>
+  <text x="722" y="1118" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">+1 (312) 555-0198</text>
+  <rect x="1050" y="1072" width="110" height="36" rx="10" fill="#1A3352"/>
+  <text x="1105" y="1095" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle">Call Now</text>
+
+  <!-- Documents section -->
+  <rect x="630" y="1164" width="550" height="180" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="1200" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Documents</text>
+  <text x="1150" y="1200" fill="#3182CE" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="end">+ Upload</text>
+  <!-- Doc rows -->
+  <rect x="650" y="1214" width="500" height="48" rx="10" fill="#0F2035"/>
+  <rect x="660" y="1226" width="28" height="28" rx="4" fill="#1A3352"/>
+  <text x="674" y="1245" fill="#4A9FE8" font-family="Arial" font-size="12" text-anchor="middle">PDF</text>
+  <text x="700" y="1238" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Bill of Lading</text>
+  <text x="700" y="1256" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">BOL-2024-0417-CLE.pdf · 2.1 MB</text>
+  <text x="1140" y="1247" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">Signed ✓</text>
+
+  <rect x="650" y="1270" width="500" height="48" rx="10" fill="#0F2035"/>
+  <rect x="660" y="1282" width="28" height="28" rx="4" fill="#1A3352"/>
+  <text x="674" y="1301" fill="#4A9FE8" font-family="Arial" font-size="12" text-anchor="middle">PDF</text>
+  <text x="700" y="1294" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Rate Confirmation</text>
+  <text x="700" y="1312" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">RC-EGF-20240417.pdf · 1.4 MB</text>
+  <text x="1140" y="1303" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">Signed ✓</text>
+
+  <rect x="650" y="1326" width="500" height="48" rx="10" fill="#0F2035"/>
+  <rect x="660" y="1338" width="28" height="28" rx="4" fill="#2D1F00"/>
+  <text x="674" y="1357" fill="#F5A623" font-family="Arial" font-size="11" text-anchor="middle">WAIT</text>
+  <text x="700" y="1350" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Delivery Receipt</text>
+  <text x="700" y="1368" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Required at drop-off</text>
+  <text x="1140" y="1359" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">Pending</text>
+
+  <!-- Notes section -->
+  <rect x="630" y="1356" width="550" height="120" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="1392" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Notes</text>
+  <rect x="650" y="1406" width="510" height="54" rx="8" fill="#0F2035"/>
+  <text x="668" y="1426" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Dock opens at 8 AM. Bring safety vest.</text>
+  <text x="668" y="1448" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Check in with security at main gate.</text>
+
+  <!-- Action Buttons -->
+  <rect x="630" y="1490" width="550" height="90" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <rect x="645" y="1506" width="156" height="56" rx="12" fill="url(#accentGrad)"/>
+  <text x="723" y="1539" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" text-anchor="middle">Navigate</text>
+  <rect x="813" y="1506" width="156" height="56" rx="12" fill="#1A3352"/>
+  <text x="891" y="1539" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">Call Broker</text>
+  <rect x="981" y="1506" width="185" height="56" rx="12" fill="#0D3320"/>
+  <text x="1074" y="1534" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle">Mark Delivered</text>
+
+  <!-- Timeline/history -->
+  <rect x="630" y="1596" width="550" height="200" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="660" y="1632" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600">Timeline</text>
+  <!-- Timeline events -->
+  <circle cx="664" cy="1664" r="6" fill="#34D399"/>
+  <line x1="664" y1="1670" x2="664" y2="1694" stroke="#1E3D5A" stroke-width="2"/>
+  <text x="680" y="1660" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">04:30 AM</text>
+  <text x="760" y="1660" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Pickup confirmed · Cleveland Terminal</text>
+
+  <circle cx="664" cy="1700" r="6" fill="#34D399"/>
+  <line x1="664" y1="1706" x2="664" y2="1730" stroke="#1E3D5A" stroke-width="2"/>
+  <text x="680" y="1696" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">05:12 AM</text>
+  <text x="760" y="1696" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Departed Cleveland · I-76 East</text>
+
+  <circle cx="664" cy="1736" r="6" fill="#F5A623"/>
+  <line x1="664" y1="1742" x2="664" y2="1766" stroke="#1E3D5A" stroke-width="2"/>
+  <text x="680" y="1732" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">08:05 AM</text>
+  <text x="760" y="1732" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Currently 51 miles from destination</text>
+
+  <circle cx="664" cy="1772" r="6" fill="#1E3D5A"/>
+  <text x="680" y="1768" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">10:00 AM</text>
+  <text x="760" y="1768" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15">Expected delivery — Pittsburgh Dock 7</text>
+
+  <!-- Bottom navigation -->
+  <rect x="0" y="1836" width="1200" height="84" fill="#0A1520"/>
+  <rect x="0" y="1836" width="1200" height="1" fill="#1E3D5A"/>
+  <rect x="200" y="1848" width="28" height="28" rx="4" fill="none" stroke="#4A9FE8" stroke-width="2"/>
+  <text x="214" y="1866" fill="white" font-family="Arial" font-size="14" text-anchor="middle">≡</text>
+  <text x="214" y="1904" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="600">Loads</text>
+  <text x="600" y="1904" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">Dashboard</text>
+
+  <!-- App name watermark -->
+  <text x="600" y="1916" fill="#1E3D5A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" text-anchor="middle">HaulWallet — Load Management</text>
+</svg>

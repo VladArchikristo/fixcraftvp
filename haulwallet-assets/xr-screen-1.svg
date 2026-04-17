@@ -1,0 +1,469 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2064 2208" width="2064" height="2208">
+  <defs>
+    <!-- Deep space background -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#0A1628;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#050D1A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#020810;stop-opacity:1" />
+    </radialGradient>
+    <!-- Panel glow gradients -->
+    <linearGradient id="panelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1E33;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#080F1C;stop-opacity:0.95" />
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8C42;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D2040;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#091830;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glowOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0" />
+    </linearGradient>
+    <linearGradient id="glowBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:0" />
+    </linearGradient>
+    <linearGradient id="hologramGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A3A6E;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#0D2040;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#0A1830;stop-opacity:0.8" />
+    </linearGradient>
+
+    <!-- Blur filters -->
+    <filter id="panelBlur">
+      <feGaussianBlur in="BackgroundImage" stdDeviation="20" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur"/>
+    </filter>
+    <filter id="glowFilter">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="strongGlow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softBlur">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+    <filter id="panelShadow">
+      <feDropShadow dx="0" dy="20" stdDeviation="30" flood-color="#FF6B35" flood-opacity="0.15"/>
+    </filter>
+    <filter id="bluePanelShadow">
+      <feDropShadow dx="0" dy="20" stdDeviation="30" flood-color="#3B82F6" flood-opacity="0.15"/>
+    </filter>
+    <filter id="deepShadow">
+      <feDropShadow dx="0" dy="40" stdDeviation="40" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Deep space background -->
+  <rect width="2064" height="2208" fill="url(#bgGrad)"/>
+
+  <!-- Background depth particles (stars) -->
+  <circle cx="120" cy="180" r="1.5" fill="#FFFFFF" opacity="0.2"/>
+  <circle cx="340" cy="80" r="1" fill="#FFFFFF" opacity="0.15"/>
+  <circle cx="680" cy="140" r="2" fill="#FFFFFF" opacity="0.1"/>
+  <circle cx="1200" cy="90" r="1.5" fill="#FFFFFF" opacity="0.15"/>
+  <circle cx="1600" cy="160" r="1" fill="#FFFFFF" opacity="0.2"/>
+  <circle cx="1900" cy="60" r="2" fill="#FFFFFF" opacity="0.12"/>
+  <circle cx="200" cy="600" r="1" fill="#FFFFFF" opacity="0.1"/>
+  <circle cx="1850" cy="400" r="1.5" fill="#FFFFFF" opacity="0.15"/>
+  <circle cx="100" cy="1200" r="2" fill="#FFFFFF" opacity="0.1"/>
+  <circle cx="1980" cy="1000" r="1" fill="#FFFFFF" opacity="0.15"/>
+  <circle cx="500" cy="2000" r="1.5" fill="#FFFFFF" opacity="0.1"/>
+  <circle cx="1700" cy="2100" r="1" fill="#FFFFFF" opacity="0.15"/>
+
+  <!-- Ambient depth glow - floor projection -->
+  <ellipse cx="1032" cy="2100" rx="600" ry="80" fill="#FF6B35" opacity="0.04" filter="url(#softBlur)"/>
+  <ellipse cx="1032" cy="2100" rx="900" ry="60" fill="#3B82F6" opacity="0.03" filter="url(#softBlur)"/>
+
+  <!-- Depth grid (floor perspective) -->
+  <line x1="1032" y1="1800" x2="200" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.3"/>
+  <line x1="1032" y1="1800" x2="500" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.3"/>
+  <line x1="1032" y1="1800" x2="800" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.2"/>
+  <line x1="1032" y1="1800" x2="1100" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.2"/>
+  <line x1="1032" y1="1800" x2="1400" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.2"/>
+  <line x1="1032" y1="1800" x2="1700" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.3"/>
+  <line x1="1032" y1="1800" x2="1900" y2="2208" stroke="#1A3050" stroke-width="1" opacity="0.3"/>
+
+  <!-- Horizontal depth lines -->
+  <line x1="300" y1="1950" x2="1764" y2="1950" stroke="#1A3050" stroke-width="1" opacity="0.2"/>
+  <line x1="400" y1="2050" x2="1664" y2="2050" stroke="#1A3050" stroke-width="1" opacity="0.15"/>
+  <line x1="500" y1="2130" x2="1564" y2="2130" stroke="#1A3050" stroke-width="1" opacity="0.1"/>
+
+  <!-- HaulWallet header bar (floating) -->
+  <rect x="532" y="60" width="1000" height="80" rx="16" fill="#0A1628" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.5" filter="url(#deepShadow)"/>
+  <!-- Inner glow edge -->
+  <rect x="533" y="61" width="998" height="78" rx="15" fill="none" stroke="#FF6B35" stroke-width="0.5" stroke-opacity="0.3"/>
+
+  <!-- Logo in header -->
+  <rect x="570" y="80" width="36" height="36" rx="8" fill="url(#orangeGrad)" filter="url(#glowFilter)"/>
+  <text x="578" y="104" font-family="Arial Black, sans-serif" font-size="18" font-weight="900" fill="#0A0E14">H</text>
+  <text x="618" y="106" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF" letter-spacing="2">HAUL</text>
+  <text x="670" y="106" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#FF6B35" letter-spacing="2">WALLET</text>
+
+  <!-- Header title -->
+  <text x="1032" y="98" font-family="Arial, sans-serif" font-size="14" fill="#6B7280" text-anchor="middle" letter-spacing="3">SPATIAL INTERFACE · XR MODE</text>
+  <text x="1032" y="118" font-family="Arial, sans-serif" font-size="12" fill="#4A5568" text-anchor="middle">Android XR · Fleet Command Center</text>
+
+  <!-- Status indicators in header -->
+  <circle cx="1440" cy="100" r="6" fill="#22C55E" filter="url(#glowFilter)"/>
+  <text x="1453" y="104" font-family="Arial, sans-serif" font-size="12" fill="#22C55E">Live</text>
+
+  <!-- ============================================ -->
+  <!-- CENTRAL 3D MAP PANEL (main, largest element) -->
+  <!-- ============================================ -->
+
+  <!-- Map panel shadow/depth effect -->
+  <rect x="182" y="192" width="1700" height="960" rx="24" fill="#FF6B35" opacity="0.05" filter="url(#softBlur)"/>
+
+  <!-- Main map panel -->
+  <rect x="192" y="202" width="1680" height="940" rx="20" fill="url(#mapGrad)" stroke="#FF6B35" stroke-width="1.5" stroke-opacity="0.6" filter="url(#panelShadow)"/>
+  <!-- Inner glow border -->
+  <rect x="193" y="203" width="1678" height="938" rx="19" fill="none" stroke="#FF6B35" stroke-width="0.5" stroke-opacity="0.3"/>
+
+  <!-- Map panel header -->
+  <rect x="192" y="202" width="1680" height="56" rx="20" fill="#0D2040" opacity="0.8"/>
+  <rect x="192" y="238" width="1680" height="20" fill="#0D2040" opacity="0.8"/>
+  <rect x="192" y="238" width="1680" height="1" fill="#FF6B35" opacity="0.3"/>
+
+  <text x="240" y="238" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF">Live Fleet Map</text>
+  <circle cx="398" cy="230" r="5" fill="#22C55E" filter="url(#glowFilter)"/>
+  <text x="410" y="234" font-family="Arial, sans-serif" font-size="12" fill="#22C55E">8 Active</text>
+  <text x="1700" y="238" font-family="Arial, sans-serif" font-size="12" fill="#6B7280" text-anchor="end">Real-time · 3s refresh</text>
+
+  <!-- Map grid -->
+  <line x1="192" y1="380" x2="1872" y2="380" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="192" y1="520" x2="1872" y2="520" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="192" y1="660" x2="1872" y2="660" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="192" y1="800" x2="1872" y2="800" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="192" y1="940" x2="1872" y2="940" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="400" y1="258" x2="400" y2="1142" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="640" y1="258" x2="640" y2="1142" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="880" y1="258" x2="880" y2="1142" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="1120" y1="258" x2="1120" y2="1142" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="1360" y1="258" x2="1360" y2="1142" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+  <line x1="1600" y1="258" x2="1600" y2="1142" stroke="#1A3050" stroke-width="1" opacity="0.4"/>
+
+  <!-- US Map (simplified polygon) -->
+  <path d="M430 400 L560 360 L700 340 L860 350 L1020 330 L1180 345 L1320 360 L1400 400 L1380 500 L1360 560 L1300 620 L1240 680 L1100 720 L960 740 L820 720 L680 700 L560 660 L460 600 L420 520 Z"
+        fill="#162540" stroke="#2D5070" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- State borders -->
+  <line x1="760" y1="340" x2="740" y2="740" stroke="#2D5070" stroke-width="0.8" opacity="0.5"/>
+  <line x1="1000" y1="335" x2="985" y2="740" stroke="#2D5070" stroke-width="0.8" opacity="0.5"/>
+  <line x1="430" y1="540" x2="1390" y2="540" stroke="#2D5070" stroke-width="0.8" opacity="0.5"/>
+
+  <!-- Route A (orange, glowing): Dallas → Chicago -->
+  <!-- Glow layer -->
+  <path d="M860 660 Q900 600 940 560 Q980 520 1020 490 Q1040 460 1000 430"
+        fill="none" stroke="#FF6B35" stroke-width="8" stroke-linecap="round" opacity="0.2"/>
+  <!-- Main line -->
+  <path d="M860 660 Q900 600 940 560 Q980 520 1020 490 Q1040 460 1000 430"
+        fill="none" stroke="#FF6B35" stroke-width="3" stroke-dasharray="16,6" stroke-linecap="round" filter="url(#glowFilter)"/>
+
+  <!-- Route B (blue, glowing): LA → Phoenix -->
+  <path d="M490 600 Q560 580 620 570 Q670 562 720 558"
+        fill="none" stroke="#3B82F6" stroke-width="8" stroke-linecap="round" opacity="0.2"/>
+  <path d="M490 600 Q560 580 620 570 Q670 562 720 558"
+        fill="none" stroke="#3B82F6" stroke-width="3" stroke-dasharray="16,6" stroke-linecap="round" filter="url(#glowFilter)"/>
+
+  <!-- Route C (green): Houston → Memphis -->
+  <path d="M880 700 Q960 680 1020 650 Q1060 630 1080 600"
+        fill="none" stroke="#22C55E" stroke-width="8" stroke-linecap="round" opacity="0.2"/>
+  <path d="M880 700 Q960 680 1020 650 Q1060 630 1080 600"
+        fill="none" stroke="#22C55E" stroke-width="3" stroke-dasharray="16,6" stroke-linecap="round" filter="url(#glowFilter)"/>
+
+  <!-- Truck markers with 3D-style halos -->
+  <!-- Truck A-102 (on Dallas-Chicago route) -->
+  <circle cx="970" cy="520" r="28" fill="#FF6B35" opacity="0.1" filter="url(#strongGlow)"/>
+  <circle cx="970" cy="520" r="18" fill="#FF6B35" opacity="0.2"/>
+  <circle cx="970" cy="520" r="10" fill="#FF6B35" opacity="0.9" filter="url(#glowFilter)"/>
+  <!-- Truck shape -->
+  <rect x="960" y="515" width="20" height="11" rx="2" fill="#FF6B35"/>
+  <rect x="968" y="511" width="13" height="8" rx="1" fill="#FF8C42"/>
+  <circle cx="964" cy="528" r="3" fill="#0A0E14"/>
+  <circle cx="974" cy="528" r="3" fill="#0A0E14"/>
+  <!-- Label -->
+  <rect x="938" y="498" width="66" height="20" rx="10" fill="#0A1628" stroke="#FF6B35" stroke-width="1" opacity="0.9"/>
+  <text x="971" y="512" font-family="Arial, sans-serif" font-size="10" fill="#FF6B35" text-anchor="middle" font-weight="600">#A-102</text>
+
+  <!-- Truck B-047 (on LA-Phoenix route) -->
+  <circle cx="640" cy="568" r="28" fill="#3B82F6" opacity="0.1" filter="url(#strongGlow)"/>
+  <circle cx="640" cy="568" r="18" fill="#3B82F6" opacity="0.2"/>
+  <circle cx="640" cy="568" r="10" fill="#3B82F6" opacity="0.9" filter="url(#glowFilter)"/>
+  <rect x="630" y="563" width="20" height="11" rx="2" fill="#3B82F6"/>
+  <rect x="638" y="559" width="13" height="8" rx="1" fill="#60A5FA"/>
+  <circle cx="634" cy="576" r="3" fill="#0A0E14"/>
+  <circle cx="644" cy="576" r="3" fill="#0A0E14"/>
+  <rect x="606" y="546" width="66" height="20" rx="10" fill="#0A1628" stroke="#3B82F6" stroke-width="1" opacity="0.9"/>
+  <text x="639" y="560" font-family="Arial, sans-serif" font-size="10" fill="#3B82F6" text-anchor="middle" font-weight="600">#B-047</text>
+
+  <!-- Truck C-219 (rest, yellow) -->
+  <circle cx="820" cy="510" r="22" fill="#F59E0B" opacity="0.15" filter="url(#strongGlow)"/>
+  <circle cx="820" cy="510" r="10" fill="#F59E0B" opacity="0.7"/>
+  <rect x="812" y="506" width="16" height="9" rx="2" fill="#F59E0B"/>
+  <rect x="818" y="502" width="11" height="7" rx="1" fill="#FCD34D"/>
+  <circle cx="815" cy="517" r="2.5" fill="#0A0E14"/>
+  <circle cx="824" cy="517" r="2.5" fill="#0A0E14"/>
+  <rect x="790" y="492" width="62" height="18" rx="9" fill="#0A1628" stroke="#F59E0B" stroke-width="1" opacity="0.9"/>
+  <text x="821" y="505" font-family="Arial, sans-serif" font-size="9" fill="#F59E0B" text-anchor="middle" font-weight="600">REST</text>
+
+  <!-- City markers (glowing dots) -->
+  <circle cx="860" cy="662" r="20" fill="#FF6B35" opacity="0.08" filter="url(#softBlur)"/>
+  <circle cx="860" cy="662" r="10" fill="#FF6B35" opacity="0.3"/>
+  <circle cx="860" cy="662" r="5" fill="#FF6B35" opacity="0.9"/>
+  <text x="860" y="690" font-family="Arial, sans-serif" font-size="12" fill="#E5E7EB" text-anchor="middle" font-weight="600">Dallas</text>
+
+  <circle cx="1000" cy="430" r="20" fill="#FF6B35" opacity="0.08" filter="url(#softBlur)"/>
+  <circle cx="1000" cy="430" r="10" fill="#FF6B35" opacity="0.3"/>
+  <circle cx="1000" cy="430" r="5" fill="#FF6B35" opacity="0.9"/>
+  <text x="1000" y="420" font-family="Arial, sans-serif" font-size="12" fill="#E5E7EB" text-anchor="middle" font-weight="600">Chicago</text>
+
+  <circle cx="490" cy="600" r="18" fill="#3B82F6" opacity="0.08" filter="url(#softBlur)"/>
+  <circle cx="490" cy="600" r="8" fill="#3B82F6" opacity="0.3"/>
+  <circle cx="490" cy="600" r="4" fill="#3B82F6" opacity="0.9"/>
+  <text x="490" y="628" font-family="Arial, sans-serif" font-size="11" fill="#E5E7EB" text-anchor="middle">Los Angeles</text>
+
+  <circle cx="722" cy="558" r="18" fill="#3B82F6" opacity="0.08" filter="url(#softBlur)"/>
+  <circle cx="722" cy="558" r="8" fill="#3B82F6" opacity="0.3"/>
+  <circle cx="722" cy="558" r="4" fill="#3B82F6" opacity="0.9"/>
+  <text x="722" y="546" font-family="Arial, sans-serif" font-size="11" fill="#E5E7EB" text-anchor="middle">Phoenix</text>
+
+  <!-- Map zoom controls (holographic) -->
+  <rect x="1800" y="280" width="48" height="48" rx="10" fill="#0A1628" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="1824" y="310" font-family="Arial, sans-serif" font-size="22" fill="#FF6B35" text-anchor="middle">+</text>
+  <rect x="1800" y="336" width="48" height="48" rx="10" fill="#0A1628" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.6"/>
+  <line x1="1812" y1="360" x2="1836" y2="360" stroke="#FF6B35" stroke-width="2"/>
+
+  <!-- Map legend (holographic style) -->
+  <rect x="216" y="270" width="240" height="94" rx="12" fill="#0A1628" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.5" opacity="0.95"/>
+  <text x="232" y="294" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#9CA3AF" letter-spacing="2">ROUTES</text>
+  <line x1="232" y1="310" x2="256" y2="310" stroke="#FF6B35" stroke-width="2.5" filter="url(#glowFilter)"/>
+  <text x="264" y="314" font-family="Arial, sans-serif" font-size="12" fill="#E5E7EB">A-102 · Dallas→Chicago</text>
+  <line x1="232" y1="332" x2="256" y2="332" stroke="#3B82F6" stroke-width="2.5" filter="url(#glowFilter)"/>
+  <text x="264" y="336" font-family="Arial, sans-serif" font-size="12" fill="#E5E7EB">B-047 · LA→Phoenix</text>
+  <line x1="232" y1="352" x2="256" y2="352" stroke="#22C55E" stroke-width="2.5" filter="url(#glowFilter)"/>
+  <text x="264" y="356" font-family="Arial, sans-serif" font-size="12" fill="#E5E7EB">D-088 · Houston→Mem.</text>
+
+  <!-- ============================================ -->
+  <!-- LEFT FLOATING PANEL - Truck Status           -->
+  <!-- ============================================ -->
+
+  <!-- Panel depth glow -->
+  <rect x="40" y="1190" width="620" height="500" rx="24" fill="#3B82F6" opacity="0.04" filter="url(#softBlur)"/>
+
+  <!-- Panel background -->
+  <rect x="60" y="1210" width="580" height="460" rx="20" fill="url(#panelGrad)" stroke="#3B82F6" stroke-width="1.5" stroke-opacity="0.5" filter="url(#bluePanelShadow)"/>
+  <!-- Top edge accent -->
+  <rect x="60" y="1210" width="580" height="3" rx="20" fill="#3B82F6" opacity="0.8" filter="url(#glowFilter)"/>
+  <!-- Inner border -->
+  <rect x="61" y="1211" width="578" height="458" rx="19" fill="none" stroke="#3B82F6" stroke-width="0.5" stroke-opacity="0.3"/>
+
+  <!-- Panel header -->
+  <text x="100" y="1254" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">Active Fleet</text>
+  <circle cx="230" cy="1246" r="5" fill="#22C55E" filter="url(#glowFilter)"/>
+  <text x="242" y="1250" font-family="Arial, sans-serif" font-size="12" fill="#22C55E">8 online</text>
+
+  <!-- Connection indicator dots -->
+  <circle cx="580" cy="1246" r="4" fill="#3B82F6" opacity="0.8"/>
+  <circle cx="596" cy="1246" r="4" fill="#3B82F6" opacity="0.5"/>
+  <circle cx="612" cy="1246" r="4" fill="#3B82F6" opacity="0.3"/>
+
+  <!-- Divider -->
+  <line x1="80" y1="1268" x2="620" y2="1268" stroke="#1E3A5F" stroke-width="1"/>
+
+  <!-- Truck entries -->
+  <!-- Truck 1: A-102 -->
+  <rect x="80" y="1278" width="540" height="72" rx="12" fill="#0D1E35" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.4"/>
+  <rect x="80" y="1278" width="4" height="72" rx="2" fill="#FF6B35" filter="url(#glowFilter)"/>
+  <!-- Truck icon area -->
+  <rect x="96" y="1292" width="36" height="20" rx="4" fill="#FF6B35" opacity="0.2"/>
+  <rect x="100" y="1296" width="24" height="12" rx="2" fill="#FF6B35" opacity="0.6"/>
+  <rect x="110" y="1292" width="16" height="9" rx="1" fill="#FF8C42" opacity="0.5"/>
+  <circle cx="104" cy="1312" r="3.5" fill="#0A0E14"/>
+  <circle cx="116" cy="1312" r="3.5" fill="#0A0E14"/>
+  <text x="148" y="1300" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Truck #A-102</text>
+  <text x="148" y="1318" font-family="Arial, sans-serif" font-size="12" fill="#9CA3AF">Dallas → Chicago</text>
+  <text x="148" y="1338" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">Mike Johnson · 62% complete</text>
+  <!-- Progress bar -->
+  <rect x="390" y="1295" width="200" height="6" rx="3" fill="#1E3A5F"/>
+  <rect x="390" y="1295" width="124" height="6" rx="3" fill="#FF6B35" filter="url(#glowFilter)"/>
+  <text x="390" y="1315" font-family="Arial, sans-serif" font-size="11" fill="#FF6B35">ETA 6h 20m</text>
+  <rect x="490" y="1325" width="80" height="22" rx="11" fill="#22C55E" opacity="0.15"/>
+  <text x="518" y="1341" font-family="Arial, sans-serif" font-size="11" fill="#22C55E" text-anchor="middle">● Transit</text>
+
+  <!-- Truck 2: B-047 -->
+  <rect x="80" y="1360" width="540" height="72" rx="12" fill="#0D1E35" stroke="#3B82F6" stroke-width="1" stroke-opacity="0.4"/>
+  <rect x="80" y="1360" width="4" height="72" rx="2" fill="#3B82F6" filter="url(#glowFilter)"/>
+  <rect x="96" y="1374" width="36" height="20" rx="4" fill="#3B82F6" opacity="0.2"/>
+  <rect x="100" y="1378" width="24" height="12" rx="2" fill="#3B82F6" opacity="0.6"/>
+  <rect x="110" y="1374" width="16" height="9" rx="1" fill="#60A5FA" opacity="0.5"/>
+  <circle cx="104" cy="1394" r="3.5" fill="#0A0E14"/>
+  <circle cx="116" cy="1394" r="3.5" fill="#0A0E14"/>
+  <text x="148" y="1382" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Truck #B-047</text>
+  <text x="148" y="1400" font-family="Arial, sans-serif" font-size="12" fill="#9CA3AF">Los Angeles → Phoenix</text>
+  <text x="148" y="1420" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">Sarah Chen · 75% complete</text>
+  <rect x="390" y="1377" width="200" height="6" rx="3" fill="#1E3A5F"/>
+  <rect x="390" y="1377" width="150" height="6" rx="3" fill="#3B82F6" filter="url(#glowFilter)"/>
+  <text x="390" y="1397" font-family="Arial, sans-serif" font-size="11" fill="#3B82F6">ETA 2h 10m</text>
+  <rect x="490" y="1407" width="80" height="22" rx="11" fill="#3B82F6" opacity="0.15"/>
+  <text x="518" y="1423" font-family="Arial, sans-serif" font-size="11" fill="#3B82F6" text-anchor="middle">● Transit</text>
+
+  <!-- Truck 3: C-219 -->
+  <rect x="80" y="1442" width="540" height="72" rx="12" fill="#0D1E35" stroke="#F59E0B" stroke-width="1" stroke-opacity="0.4"/>
+  <rect x="80" y="1442" width="4" height="72" rx="2" fill="#F59E0B" filter="url(#glowFilter)"/>
+  <rect x="96" y="1456" width="36" height="20" rx="4" fill="#F59E0B" opacity="0.2"/>
+  <rect x="100" y="1460" width="24" height="12" rx="2" fill="#F59E0B" opacity="0.6"/>
+  <rect x="110" y="1456" width="16" height="9" rx="1" fill="#FCD34D" opacity="0.5"/>
+  <circle cx="104" cy="1476" r="3.5" fill="#0A0E14"/>
+  <circle cx="116" cy="1476" r="3.5" fill="#0A0E14"/>
+  <text x="148" y="1464" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Truck #C-219</text>
+  <text x="148" y="1482" font-family="Arial, sans-serif" font-size="12" fill="#9CA3AF">Denver → Salt Lake City</text>
+  <text x="148" y="1502" font-family="Arial, sans-serif" font-size="11" fill="#F59E0B">⚠ HOS Warning · 2h remaining</text>
+  <rect x="390" y="1459" width="200" height="6" rx="3" fill="#1E3A5F"/>
+  <rect x="390" y="1459" width="80" height="6" rx="3" fill="#F59E0B" filter="url(#glowFilter)"/>
+  <text x="390" y="1479" font-family="Arial, sans-serif" font-size="11" fill="#F59E0B">40% complete</text>
+  <rect x="490" y="1489" width="80" height="22" rx="11" fill="#F59E0B" opacity="0.15"/>
+  <text x="518" y="1505" font-family="Arial, sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle">● Rest Stop</text>
+
+  <!-- Truck 4: D-088 -->
+  <rect x="80" y="1524" width="540" height="72" rx="12" fill="#0D1E35" stroke="#22C55E" stroke-width="1" stroke-opacity="0.4"/>
+  <rect x="80" y="1524" width="4" height="72" rx="2" fill="#22C55E" filter="url(#glowFilter)"/>
+  <rect x="96" y="1538" width="36" height="20" rx="4" fill="#22C55E" opacity="0.2"/>
+  <rect x="100" y="1542" width="24" height="12" rx="2" fill="#22C55E" opacity="0.6"/>
+  <rect x="110" y="1538" width="16" height="9" rx="1" fill="#4ADE80" opacity="0.5"/>
+  <circle cx="104" cy="1558" r="3.5" fill="#0A0E14"/>
+  <circle cx="116" cy="1558" r="3.5" fill="#0A0E14"/>
+  <text x="148" y="1546" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Truck #D-088</text>
+  <text x="148" y="1564" font-family="Arial, sans-serif" font-size="12" fill="#9CA3AF">Houston → Memphis</text>
+  <text x="148" y="1584" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">David Rivera · 88% complete</text>
+  <rect x="390" y="1541" width="200" height="6" rx="3" fill="#1E3A5F"/>
+  <rect x="390" y="1541" width="176" height="6" rx="3" fill="#22C55E" filter="url(#glowFilter)"/>
+  <text x="390" y="1561" font-family="Arial, sans-serif" font-size="11" fill="#22C55E">ETA 0h 52m</text>
+  <rect x="490" y="1571" width="80" height="22" rx="11" fill="#22C55E" opacity="0.15"/>
+  <text x="518" y="1587" font-family="Arial, sans-serif" font-size="11" fill="#22C55E" text-anchor="middle">● Arriving</text>
+
+  <!-- View all button -->
+  <rect x="80" y="1610" width="540" height="42" rx="12" fill="#FF6B35" opacity="0.1" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="350" y="1636" font-family="Arial, sans-serif" font-size="13" fill="#FF6B35" text-anchor="middle" font-weight="600">View All 8 Trucks →</text>
+
+  <!-- ============================================ -->
+  <!-- RIGHT FLOATING PANEL - Quick Metrics         -->
+  <!-- ============================================ -->
+
+  <!-- Panel glow -->
+  <rect x="1404" y="1190" width="620" height="500" rx="24" fill="#FF6B35" opacity="0.04" filter="url(#softBlur)"/>
+
+  <!-- Panel background -->
+  <rect x="1424" y="1210" width="580" height="460" rx="20" fill="url(#panelGrad)" stroke="#FF6B35" stroke-width="1.5" stroke-opacity="0.5" filter="url(#panelShadow)"/>
+  <!-- Top accent -->
+  <rect x="1424" y="1210" width="580" height="3" rx="20" fill="#FF6B35" opacity="0.8" filter="url(#glowFilter)"/>
+  <!-- Inner border -->
+  <rect x="1425" y="1211" width="578" height="458" rx="19" fill="none" stroke="#FF6B35" stroke-width="0.5" stroke-opacity="0.3"/>
+
+  <!-- Panel header -->
+  <text x="1464" y="1254" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">Today's Metrics</text>
+  <text x="1464" y="1272" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">April 17, 2026</text>
+
+  <line x1="1444" y1="1284" x2="1984" y2="1284" stroke="#1E3A5F" stroke-width="1"/>
+
+  <!-- Metric cards grid 2x2 -->
+  <!-- Revenue -->
+  <rect x="1444" y="1296" width="250" height="110" rx="14" fill="#0D1E35" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="1464" y="1324" font-family="Arial, sans-serif" font-size="11" fill="#9CA3AF" letter-spacing="1">REVENUE</text>
+  <text x="1464" y="1368" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="#FFFFFF">$4,280</text>
+  <text x="1464" y="1392" font-family="Arial, sans-serif" font-size="12" fill="#22C55E">↑ 18% vs yesterday</text>
+
+  <!-- Loads -->
+  <rect x="1714" y="1296" width="250" height="110" rx="14" fill="#0D1E35" stroke="#3B82F6" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="1734" y="1324" font-family="Arial, sans-serif" font-size="11" fill="#9CA3AF" letter-spacing="1">LOADS</text>
+  <text x="1734" y="1368" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="#FFFFFF">12</text>
+  <text x="1734" y="1392" font-family="Arial, sans-serif" font-size="12" fill="#3B82F6">+3 assigned today</text>
+
+  <!-- Miles -->
+  <rect x="1444" y="1420" width="250" height="110" rx="14" fill="#0D1E35" stroke="#22C55E" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="1464" y="1448" font-family="Arial, sans-serif" font-size="11" fill="#9CA3AF" letter-spacing="1">MILES</text>
+  <text x="1464" y="1492" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="#FFFFFF">2,847</text>
+  <text x="1464" y="1516" font-family="Arial, sans-serif" font-size="12" fill="#22C55E">Active routes total</text>
+
+  <!-- Fuel -->
+  <rect x="1714" y="1420" width="250" height="110" rx="14" fill="#0D1E35" stroke="#F59E0B" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="1734" y="1448" font-family="Arial, sans-serif" font-size="11" fill="#9CA3AF" letter-spacing="1">FUEL COST</text>
+  <text x="1734" y="1492" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="#FFFFFF">$1,240</text>
+  <text x="1734" y="1516" font-family="Arial, sans-serif" font-size="12" fill="#F59E0B">6.8 MPG avg fleet</text>
+
+  <!-- Mini sparkline chart -->
+  <rect x="1444" y="1546" width="520" height="100" rx="12" fill="#0D1E35" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="1464" y="1572" font-family="Arial, sans-serif" font-size="11" fill="#9CA3AF">Revenue last 7 days</text>
+  <!-- Chart line -->
+  <polyline points="1464,1628 1530,1620 1600,1616 1668,1610 1736,1604 1804,1598 1872,1590 1940,1582"
+            fill="none" stroke="#FF6B35" stroke-width="2.5" filter="url(#glowFilter)"/>
+  <!-- Dots -->
+  <circle cx="1464" cy="1628" r="3.5" fill="#FF6B35"/>
+  <circle cx="1530" cy="1620" r="3.5" fill="#FF6B35"/>
+  <circle cx="1600" cy="1616" r="3.5" fill="#FF6B35"/>
+  <circle cx="1668" cy="1610" r="3.5" fill="#FF6B35"/>
+  <circle cx="1736" cy="1604" r="3.5" fill="#FF6B35"/>
+  <circle cx="1804" cy="1598" r="3.5" fill="#FF6B35"/>
+  <circle cx="1940" cy="1582" r="5" fill="#FF6B35" filter="url(#glowFilter)"/>
+  <!-- Last value tooltip -->
+  <rect x="1900" y="1564" width="80" height="28" rx="6" fill="#0A1628" stroke="#FF6B35" stroke-width="1"/>
+  <text x="1940" y="1582" font-family="Arial, sans-serif" font-size="11" fill="#FF6B35" text-anchor="middle" font-weight="600">$4,280</text>
+
+  <!-- ============================================ -->
+  <!-- BOTTOM CENTER PANEL - Command Bar            -->
+  <!-- ============================================ -->
+
+  <!-- Panel glow -->
+  <rect x="332" y="1730" width="1400" height="100" rx="20" fill="#FF6B35" opacity="0.03" filter="url(#softBlur)"/>
+
+  <!-- Command bar panel -->
+  <rect x="362" y="1760" width="1340" height="90" rx="20" fill="url(#panelGrad)" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.4" filter="url(#panelShadow)"/>
+  <rect x="363" y="1761" width="1338" height="88" rx="19" fill="none" stroke="#FF6B35" stroke-width="0.5" stroke-opacity="0.2"/>
+
+  <!-- Action buttons in command bar -->
+  <rect x="394" y="1779" width="160" height="52" rx="12" fill="url(#orangeGrad)" filter="url(#glowFilter)"/>
+  <text x="474" y="1810" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0A0E14" text-anchor="middle">+ New Load</text>
+
+  <rect x="566" y="1779" width="160" height="52" rx="12" fill="#0D1E35" stroke="#3B82F6" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="646" y="1810" font-family="Arial, sans-serif" font-size="14" fill="#3B82F6" text-anchor="middle">Assign Driver</text>
+
+  <rect x="738" y="1779" width="160" height="52" rx="12" fill="#0D1E35" stroke="#22C55E" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="818" y="1810" font-family="Arial, sans-serif" font-size="14" fill="#22C55E" text-anchor="middle">View Analytics</text>
+
+  <rect x="910" y="1779" width="160" height="52" rx="12" fill="#0D1E35" stroke="#F59E0B" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="990" y="1810" font-family="Arial, sans-serif" font-size="14" fill="#F59E0B" text-anchor="middle">⚠ Alerts (2)</text>
+
+  <rect x="1082" y="1779" width="160" height="52" rx="12" fill="#0D1E35" stroke="#8B5CF6" stroke-width="1" stroke-opacity="0.6"/>
+  <text x="1162" y="1810" font-family="Arial, sans-serif" font-size="14" fill="#8B5CF6" text-anchor="middle">Documents</text>
+
+  <rect x="1254" y="1779" width="160" height="52" rx="12" fill="#0D1E35" stroke="#9CA3AF" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="1334" y="1810" font-family="Arial, sans-serif" font-size="14" fill="#9CA3AF" text-anchor="middle">Settings</text>
+
+  <rect x="1426" y="1779" width="240" height="52" rx="12" fill="#0D1E35" stroke="#FF6B35" stroke-width="1" stroke-opacity="0.3"/>
+  <circle cx="1452" cy="1805" r="6" fill="#22C55E" filter="url(#glowFilter)"/>
+  <text x="1474" y="1809" font-family="Arial, sans-serif" font-size="13" fill="#9CA3AF">All Systems OK</text>
+
+  <!-- ============================================ -->
+  <!-- FLOATING NOTIFICATION (top right)            -->
+  <!-- ============================================ -->
+
+  <rect x="1604" y="100" width="400" height="82" rx="16" fill="#0D1E35" stroke="#F59E0B" stroke-width="1.5" stroke-opacity="0.8" filter="url(#panelShadow)"/>
+  <rect x="1604" y="100" width="4" height="82" rx="2" fill="#F59E0B" filter="url(#glowFilter)"/>
+  <rect x="1605" y="101" width="398" height="80" rx="15" fill="none" stroke="#F59E0B" stroke-width="0.5" stroke-opacity="0.3"/>
+  <circle cx="1636" cy="130" r="12" fill="#F59E0B" opacity="0.2"/>
+  <text x="1630" y="135" font-family="Arial, sans-serif" font-size="14">⚠</text>
+  <text x="1658" y="126" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#F59E0B">HOS Alert</text>
+  <text x="1658" y="144" font-family="Arial, sans-serif" font-size="12" fill="#9CA3AF">Truck #C-219 · Tom Wallace</text>
+  <text x="1658" y="162" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">2 hours until mandatory rest period</text>
+  <rect x="1888" y="110" width="100" height="26" rx="13" fill="#F59E0B" opacity="0.15" stroke="#F59E0B" stroke-width="1"/>
+  <text x="1938" y="127" font-family="Arial, sans-serif" font-size="11" fill="#F59E0B" text-anchor="middle" font-weight="600">View Now</text>
+
+  <!-- Footer indicator -->
+  <text x="1032" y="2180" font-family="Arial, sans-serif" font-size="13" fill="#3A5070" text-anchor="middle" letter-spacing="2">HAULWALLET XR · SPATIAL FLEET COMMANDER · v3.2.1</text>
+</svg>
