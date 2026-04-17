@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-17T10:00:22.847340+00:00",
+  "timestamp": "2026-04-17T13:00:24.043654+00:00",
   "sentiment": "bearish",
-  "score": -0.79,
+  "score": -0.73,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
@@ -15,7 +15,6 @@
     "At least a dozen crypto entities attacked since Drift Protocol hack"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "XRP",
@@ -23,18 +22,18 @@
     "LINK"
   ],
   "trending_coins": [
+    "ASTEROID",
     "RAVE",
     "SIREN",
-    "MOVR",
     "PENGU",
-    "BTC",
-    "SOON",
-    "ORDI"
+    "MOVR",
+    "ORDI",
+    "SOL"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.24,
-  "cached_at": 1776420022.847575
+  "fetch_time_sec": 2.35,
+  "cached_at": 1776430824.0438762
 }
