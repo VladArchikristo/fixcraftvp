@@ -1204,8 +1204,10 @@ async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_clear(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
+    uid = update.effective_user.id
     user_history.clear()
     _save_history()
+    sm_clear_history(uid, "kostya")
     await update.message.reply_text("История очищена. Начнём с чистого листа.")
 
 
@@ -1355,10 +1357,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         _t_start = time.monotonic()
         thinking_msg = await update.message.reply_text("⚙️ Костя работает... 0 сек")
         _ticker_task = asyncio.create_task(_thinking_ticker(thinking_msg, _t_start))
-        _log_conversation("user", user_text, update.effective_user.id)
+        uid = update.effective_user.id
+        _log_conversation("user", user_text, uid)
         user_history.append({"role": "user", "text": user_text})
+        save_message(uid, "kostya", "user", user_text[:5000])
 
-        ok, answer = await ask_claude(user_text)
+        ok, answer = await ask_claude(user_text, user_id=uid)
 
         if _ticker_task:
             _ticker_task.cancel()
@@ -1372,6 +1376,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if ok and answer:
             user_history.append({"role": "assistant", "text": answer})
             _save_history()
+            save_message(uid, "kostya", "assistant", answer[:5000])
             _log_conversation("assistant", answer)
             for chunk in _split_message(answer):
                 await update.message.reply_text(chunk)
@@ -1447,10 +1452,12 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         caption = (update.message.caption or "").strip()
         user_text = caption or "Что на этом изображении? Если это код или ошибка — проанализируй."
-        _log_conversation("user", f"[PHOTO] {user_text}", update.effective_user.id)
+        uid = update.effective_user.id
+        _log_conversation("user", f"[PHOTO] {user_text}", uid)
         user_history.append({"role": "user", "text": f"[PHOTO] {user_text}"})
+        save_message(uid, "kostya", "user", f"[PHOTO] {user_text[:5000]}")
 
-        ok, answer = await ask_claude(user_text, image_path=str(photo_path))
+        ok, answer = await ask_claude(user_text, image_path=str(photo_path), user_id=uid)
 
         if _ticker_task:
             _ticker_task.cancel()
@@ -1464,6 +1471,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if ok and answer:
             user_history.append({"role": "assistant", "text": answer})
             _save_history()
+            save_message(uid, "kostya", "assistant", answer[:5000])
             _log_conversation("assistant", answer)
             for chunk in _split_message(answer):
                 await update.message.reply_text(chunk)

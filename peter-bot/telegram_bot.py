@@ -436,7 +436,17 @@ def _save_history():
                 pass
 
 
-def history_prompt() -> str:
+def history_prompt(user_id: int | None = None) -> str:
+    # Если есть user_id — берём из SQLite shared memory
+    if user_id is not None:
+        msgs = sm_get_history(user_id, "peter", limit=20)
+        if msgs:
+            lines = []
+            for msg in msgs:
+                role = "Пользователь" if msg["role"] == "user" else "Доктор Пётр"
+                lines.append(f"{role}: {msg['content'][:2000]}")
+            return "\n".join(lines)
+    # Fallback на in-memory deque
     if not user_history:
         return ""
     lines = []
@@ -560,7 +570,7 @@ def build_system_prompt(user_id: int) -> str:
 
 
 async def ask_claude(user_text: str, user_id: int) -> tuple[bool, str]:
-    hist = history_prompt()
+    hist = history_prompt(user_id)
     system = build_system_prompt(user_id)
     full_prompt = ""
     if hist:

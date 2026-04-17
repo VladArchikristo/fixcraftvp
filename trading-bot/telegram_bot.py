@@ -379,7 +379,22 @@ def _save_history():
                 pass
 
 
-def history_prompt() -> str:
+def history_prompt(user_id: int | None = None) -> str:
+    # Если есть user_id — берём из SQLite shared memory
+    if user_id is not None:
+        msgs = sm_get_history(user_id, "vasily", limit=20)
+        if msgs:
+            lines = []
+            total_chars = 0
+            for msg in msgs:
+                role = "Пользователь" if msg["role"] == "user" else "Василий"
+                line = f"{role}: {msg['content'][:1000]}"
+                total_chars += len(line)
+                if total_chars > 15000:
+                    break
+                lines.append(line)
+            return "\n".join(lines)
+    # Fallback на in-memory deque
     if not user_history:
         return ""
     lines = []
@@ -587,9 +602,9 @@ def _call_claude_sync(full_prompt: str, extra_flags: list[str] | None = None) ->
     return False, "Произошла ошибка при обработке запроса (3 попытки). Попробуй ещё раз через минуту."
 
 
-async def ask_claude(user_text: str, image_path: str | None = None) -> tuple[bool, str]:
+async def ask_claude(user_text: str, image_path: str | None = None, user_id: int | None = None) -> tuple[bool, str]:
     """Returns (success, answer_text). If image_path is set, Claude will read the image."""
-    hist = history_prompt()
+    hist = history_prompt(user_id)
     full_prompt = ""
     if hist:
         full_prompt += f"История диалога:\n{hist}\n\n"
@@ -1012,9 +1027,9 @@ async def _process_single_message(update: Update, user_text: str, is_photo: bool
 
         if is_photo and image_path:
             caption = update.message.caption or ""
-            success, answer = await ask_claude(caption, image_path=image_path)
+            success, answer = await ask_claude(caption, image_path=image_path, user_id=uid)
         else:
-            success, answer = await ask_claude(user_text)
+            success, answer = await ask_claude(user_text, user_id=uid)
 
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
