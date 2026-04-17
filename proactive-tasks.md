@@ -10,7 +10,7 @@ _Модели: 🟢 Sonnet (средние) | 🔴 Opus (сложные)_
 
 ## Приоритет: средний
 
-- [ ] 🟢 Проверить git статус и запушить незакоммиченное (philip-bot, shared-memory)
+- [x] 2026-04-17 🟢 Запушено: philip-bot, shared-memory, proactive skill
 
 ## Приоритет: низкий
 
