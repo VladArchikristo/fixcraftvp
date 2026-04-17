@@ -19,9 +19,13 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
+    password TEXT,
+    name TEXT,
     truck_type TEXT DEFAULT '2-axle',
     truck_mpg REAL DEFAULT 6.5,
+    oauth_provider TEXT,
+    oauth_id TEXT,
+    avatar_url TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -148,6 +152,11 @@ const migrateColumns = [
   `ALTER TABLE users ADD COLUMN full_name TEXT`,
   // MPG по умолчанию для профиля водителя
   `ALTER TABLE users ADD COLUMN truck_mpg REAL DEFAULT 6.5`,
+  // OAuth fields
+  `ALTER TABLE users ADD COLUMN name TEXT`,
+  `ALTER TABLE users ADD COLUMN oauth_provider TEXT`,
+  `ALTER TABLE users ADD COLUMN oauth_id TEXT`,
+  `ALTER TABLE users ADD COLUMN avatar_url TEXT`,
 ];
 migrateColumns.forEach(sql => { try { db.exec(sql); } catch (_) {} });
 

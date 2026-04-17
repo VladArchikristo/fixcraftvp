@@ -4,14 +4,26 @@ import {
   ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
 import { login } from '../services/api';
 import { saveToken, saveUser } from '../services/auth';
+import { handleGoogleAuth, handleAppleAuth } from '../services/socialAuth';
+import { GOOGLE_CLIENT_ID, GOOGLE_IOS_CLIENT_ID } from '../config';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen({ navigation, onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState(null);
   const [showPass, setShowPass] = useState(false);
+
+  const [, , promptAsync] = Google.useAuthRequest({
+    clientId: GOOGLE_CLIENT_ID,
+    iosClientId: GOOGLE_IOS_CLIENT_ID,
+  });
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -30,6 +42,18 @@ export default function LoginScreen({ navigation, onLogin }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const onGooglePress = async () => {
+    setSocialLoading('google');
+    await handleGoogleAuth(navigation, onLogin, promptAsync);
+    setSocialLoading(null);
+  };
+
+  const onApplePress = async () => {
+    setSocialLoading('apple');
+    await handleAppleAuth(navigation, onLogin);
+    setSocialLoading(null);
   };
 
   return (
@@ -94,6 +118,49 @@ export default function LoginScreen({ navigation, onLogin }) {
           }
         </TouchableOpacity>
 
+        {/* Divider */}
+        <View style={styles.divider}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>or</Text>
+          <View style={styles.dividerLine} />
+        </View>
+
+        {/* Google Button */}
+        <TouchableOpacity
+          style={[styles.socialBtn, socialLoading === 'google' && styles.btnDisabled]}
+          onPress={onGooglePress}
+          disabled={socialLoading !== null}
+        >
+          {socialLoading === 'google' ? (
+            <ActivityIndicator color="#fff" size="small" />
+          ) : (
+            <>
+              <View style={styles.googleIcon}>
+                <Text style={styles.googleG}>G</Text>
+              </View>
+              <Text style={styles.socialBtnText}>Continue with Google</Text>
+            </>
+          )}
+        </TouchableOpacity>
+
+        {/* Apple Button — iOS only */}
+        {Platform.OS === 'ios' && (
+          <TouchableOpacity
+            style={[styles.socialBtn, socialLoading === 'apple' && styles.btnDisabled]}
+            onPress={onApplePress}
+            disabled={socialLoading !== null}
+          >
+            {socialLoading === 'apple' ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <>
+                <Ionicons name="logo-apple" size={20} color="#fff" style={styles.socialIcon} />
+                <Text style={styles.socialBtnText}>Continue with Apple</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        )}
+
         {/* Register link */}
         <TouchableOpacity
           style={styles.link}
@@ -150,7 +217,40 @@ const styles = StyleSheet.create({
   btnDisabled: { opacity: 0.6 },
   btnText: { color: '#000', fontSize: 16, fontWeight: '800' },
 
-  link: { alignItems: 'center', paddingVertical: 8 },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  dividerLine: { flex: 1, height: 1, backgroundColor: '#1e1e3a' },
+  dividerText: { color: '#555', fontSize: 13, marginHorizontal: 12 },
+
+  socialBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 52,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#3a3a5a',
+    backgroundColor: '#12122a',
+    marginBottom: 12,
+  },
+  socialIcon: { marginRight: 10 },
+  socialBtnText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+
+  googleIcon: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  googleG: { color: '#4285F4', fontSize: 13, fontWeight: '800' },
+
+  link: { alignItems: 'center', paddingVertical: 8, marginTop: 4 },
   linkText: { color: '#666', fontSize: 14 },
   linkAccent: { color: '#4fc3f7', fontWeight: '700' },
 });

@@ -31,6 +31,7 @@ api.interceptors.request.use(async (config) => {
 // Auth
 export const register = (data) => api.post('/api/auth/register', data);
 export const login = (data) => api.post('/api/auth/login', data);
+export const oauthLogin = (data) => api.post('/api/auth/oauth', data);
 
 // Toll Calculator — GET /api/tolls/route
 export const calculateRoute = (from, to, truckType) =>

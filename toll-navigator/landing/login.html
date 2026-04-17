@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HaulWallet — Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d1a;
+      --card: #12122a;
+      --accent: #4fc3f7;
+      --text: #ffffff;
+      --muted: #8892a4;
+      --border: rgba(79,195,247,0.15);
+      --input-bg: #0d0d1a;
+      --input-border: rgba(255,255,255,0.1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: #0d0d1a; }
+    .btn-primary:hover {
+      background: #81d4fa;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(79,195,247,0.3);
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .auth-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .auth-card h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .auth-card .sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    /* OAUTH BUTTONS */
+    .oauth-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+
+    .btn-google {
+      background: #ffffff;
+      color: #1f1f1f;
+      border: none;
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 0.93rem;
+    }
+    .btn-google:hover { background: #f0f0f0; transform: translateY(-1px); }
+
+    .btn-apple {
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.18);
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 0.93rem;
+    }
+    .btn-apple:hover { background: #1a1a1a; transform: translateY(-1px); }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--input-border);
+    }
+    .divider span { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+
+    /* FORM */
+    .form-group { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 7px;
+      letter-spacing: 0.3px;
+    }
+
+    input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.93rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--muted); }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d1a;
+      padding: 13px;
+      font-size: 0.97rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+    .btn-submit:hover {
+      background: #81d4fa;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(79,195,247,0.3);
+    }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .auth-link {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .auth-link a { color: var(--accent); font-weight: 600; }
+    .auth-link a:hover { text-decoration: underline; }
+
+    .error-msg {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #fc8181;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 20px; }
+      .auth-card { padding: 28px 20px; border-radius: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Haul<span>Wallet</span></a>
+    <a href="register.html" class="btn btn-primary">Get Started</a>
+  </nav>
+
+  <main>
+    <div class="auth-card">
+      <h1>Welcome Back</h1>
+      <p class="sub">Sign in to your HaulWallet account.</p>
+
+      <div id="error-msg" class="error-msg"></div>
+
+      <div class="oauth-group">
+        <button class="btn btn-google" onclick="oauthAlert()">
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Continue with Google
+        </button>
+        <button class="btn btn-apple" id="apple-btn" onclick="oauthAlert()">
+          <svg width="17" height="17" viewBox="0 0 814 1000" fill="white">
+            <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 411.5 8 312.7 8 218.5c0-135.1 87.8-206.7 174.3-206.7 77.8 0 121.8 52.2 162.7 52.2 38.4 0 88.1-55.2 173.5-55.2zm-188.2-19.4c-4.5-28.3-16-78.1-47.6-117.4-28.3-35.8-72.6-61.7-113.5-61.7-1.9 0-3.8.1-5.7.3 1.9 31.1 13.8 78.9 46.3 120.5 34.6 43.8 83.9 70.7 120.5 58.3z"/>
+          </svg>
+          Continue with Apple
+        </button>
+      </div>
+
+      <div class="divider"><span>or</span></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="john@example.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Your password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn-submit" id="submit-btn">Sign In</button>
+      </form>
+
+      <p class="auth-link">Don't have an account? <a href="register.html">Sign Up</a></p>
+    </div>
+  </main>
+
+  <script>
+    // Detect Android — hide Apple button
+    if (/Android/i.test(navigator.userAgent)) {
+      document.getElementById('apple-btn').style.display = 'none';
+    }
+
+    function oauthAlert() {
+      alert('OAuth coming soon — use mobile app');
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const errEl = document.getElementById('error-msg');
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      errEl.style.display = 'none';
+
+      const payload = {
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value
+      };
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          if (data.token) {
+            localStorage.setItem('haulwallet_token', data.token);
+          }
+          window.location.href = 'dashboard.html';
+        } else {
+          errEl.textContent = data.message || 'Invalid email or password.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please check your connection.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+  </script>
+
+</body>
+</html>
