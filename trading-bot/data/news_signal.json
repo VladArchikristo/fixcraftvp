@@ -1,42 +1,40 @@
 {
-  "timestamp": "2026-04-16T22:00:23.012995+00:00",
+  "timestamp": "2026-04-17T01:00:22.998773+00:00",
   "sentiment": "bearish",
-  "score": -0.73,
+  "score": -0.77,
   "fear_greed": {
-    "value": 23,
+    "value": 21,
     "label": "Extreme Fear",
-    "trend": "stable"
+    "trend": "falling"
   },
   "key_events": [
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
-    "Drift gets $148 million funding from Tether and partners as it replaces Circle stablecoin with USDT after massive exploit",
     "U.S. CFTC's Selig says AI has helped make up for staffing cuts at key crypto watchdog",
     "Cardano's Charles Hoskinson says Bitcoin's quantum fix is a hard fork that can't save Satoshi's coins",
-    "Crypto for Advisors: Tokenization’s evolution"
+    "Crypto for Advisors: Tokenization’s evolution",
+    "Bitcoin slides back below $74,000 as breakout to higher levels fails again"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "XRP",
-    "DOGE",
     "ADA",
     "UNI",
     "OP"
   ],
   "trending_coins": [
-    "ORDI",
-    "PENGU",
     "SIREN",
     "RAVE",
-    "BASED",
-    "TAO",
-    "MON"
+    "ORDI",
+    "PENGU",
+    "SOL",
+    "BIO",
+    "BASED"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.59,
-  "cached_at": 1776376823.013247
+  "fetch_time_sec": 3.12,
+  "cached_at": 1776387622.99902
 }
