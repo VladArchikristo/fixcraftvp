@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-17T04:00:25.480547+00:00",
+  "timestamp": "2026-04-17T07:00:24.528891+00:00",
   "sentiment": "bearish",
-  "score": -0.87,
+  "score": -0.83,
   "fear_greed": {
     "value": 21,
     "label": "Extreme Fear",
@@ -9,32 +9,33 @@
   },
   "key_events": [
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
-    "Ex-Treasury chief warns of US bond crash, calls for contingency plan",
-    "Stablecoin issuer Circle faces lawsuit over $280M Drift Protocol hack",
-    "Bitcoin bulls target $125,000 as U.S.-Iran peace talks trigger risk-on mood",
-    "U.S. CFTC's Selig says AI has helped make up for staffing cuts at key crypto watchdog"
+    "The U.S. government moves $606,000 in bitcoin linked to the 2016 Bitfinex hack to Coinbase",
+    "At least a dozen crypto entities attacked since Drift Protocol hack",
+    "Russia-linked crypto exchange Grinex halts trading after $14M hack",
+    "Ex-Treasury chief warns of US bond crash, calls for contingency plan"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
+    "XRP",
     "ADA",
-    "UNI",
-    "OP"
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
-    "RAVE",
-    "ORDI",
-    "PENGU",
     "SIREN",
-    "GENIUS",
+    "SOON",
+    "RAVE",
+    "MOVR",
+    "PENGU",
     "BASED",
-    "ENJ"
+    "ORDI"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.65,
-  "cached_at": 1776398425.480784
+  "fetch_time_sec": 2.41,
+  "cached_at": 1776409224.5291252
 }
