@@ -197,7 +197,11 @@ job_monitor() {
         status+="❌ Nexus: not running\n"
     fi
 
-    send_telegram "$status"
+    # Only alert if something is wrong
+    if echo "$status" | grep -qE "❌|⚠️"; then
+        send_telegram "$status"
+    fi
+    echo "$(date): monitor — done" >> "$LOG_DIR/monitor.log"
 }
 
 job_self_check() {
@@ -205,7 +209,7 @@ job_self_check() {
     local problems=""
 
     # Check bots via heartbeat files (reliable — updated every ~60s by live bots)
-    for bot_entry in "Beast:beast" "Вася:vasily" "Маша:masha" "Костя:kostya" "Филип:philip" "Питер:peter"; do
+    for bot_entry in "Beast:beast" "Вася:vasily" "Маша:masha" "Костя:kostya" "Филип:philip" "Питер:peter" "Зина:zina"; do
         local label="${bot_entry%%:*}"
         local hb_name="${bot_entry##*:}"
         local hb_file="$HOME/logs/${hb_name}-heartbeat"
@@ -254,16 +258,16 @@ job_self_check() {
 
     if [ -n "$problems" ]; then
         status+="\n⚠️ Есть проблемы!\n$problems"
+        send_telegram "$status"
     fi
-
-    send_telegram "$status"
+    echo "$(date): self-check — done" >> "$LOG_DIR/self-check.log"
 }
 
 job_auto_save() {
     # Copy Claude memory to Obsidian
     local obsidian="$HOME/ObsidianVault"
     if [ -d "$obsidian" ]; then
-        local memory_src="$HOME/.claude/projects/-Users-vladimirprihodko/memory"
+        local memory_src="$HOME/.claude/projects/-Users-vladimirprihodko------------fixcraftvp/memory"
         local memory_dst="$obsidian/Claude-Memory"
         mkdir -p "$memory_dst"
         if [ -d "$memory_src" ]; then
@@ -300,7 +304,8 @@ job_git_auto_save() {
         if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
             git add -A 2>/dev/null
             git commit -m "auto-save: $(date '+%Y-%m-%d %H:%M')" 2>/dev/null && {
-                status+="✅ fixcraftvp: committed\n"
+                git push origin main 2>/dev/null
+                status+="✅ fixcraftvp: committed & pushed\n"
                 saved=$((saved + 1))
             }
         else
@@ -315,7 +320,8 @@ job_git_auto_save() {
         if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
             git add -A 2>/dev/null
             git commit -m "auto-save: $(date '+%Y-%m-%d %H:%M')" 2>/dev/null && {
-                status+="✅ agents: committed\n"
+                git push origin main 2>/dev/null
+                status+="✅ agents: committed & pushed\n"
                 saved=$((saved + 1))
             }
         else
