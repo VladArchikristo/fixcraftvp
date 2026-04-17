@@ -1,0 +1,95 @@
+<svg width="600" height="960" viewBox="0 0 600 960" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1D35"/>
+      <stop offset="100%" style="stop-color:#1A2B4A"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#243557"/>
+      <stop offset="100%" style="stop-color:#1C2E4A"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B2B"/>
+      <stop offset="100%" style="stop-color:#FF8C5A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="960" fill="url(#bg)"/>
+  <text x="24" y="36" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">9:41</text>
+
+  <!-- Header -->
+  <text x="24" y="80" font-family="Arial, sans-serif" font-size="16" fill="#8FA8CC">Good morning, Vladimir 👋</text>
+  <text x="24" y="118" font-family="Arial Black, Arial, sans-serif" font-size="36" font-weight="900" fill="#FFFFFF">Dashboard</text>
+
+  <!-- TWO COLUMN LAYOUT -->
+
+  <!-- LEFT COL -->
+  <!-- Earnings card -->
+  <rect x="24" y="140" width="270" height="160" rx="20" fill="url(#orange)"/>
+  <text x="48" y="178" font-family="Arial, sans-serif" font-size="14" fill="#FFFFFF" opacity="0.85">WEEKLY EARNINGS</text>
+  <text x="48" y="232" font-family="Arial Black, Arial, sans-serif" font-size="50" font-weight="900" fill="#FFFFFF">$2,847</text>
+  <text x="48" y="278" font-family="Arial, sans-serif" font-size="13" fill="#FFFFFF" opacity="0.85">▲ +12.4% vs last week</text>
+
+  <!-- Active Load -->
+  <rect x="24" y="316" width="270" height="130" rx="16" fill="url(#card1)"/>
+  <rect x="24" y="316" width="270" height="130" rx="16" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.4"/>
+  <text x="48" y="344" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">ACTIVE LOAD</text>
+  <text x="48" y="374" font-family="Arial Black, Arial, sans-serif" font-size="17" font-weight="bold" fill="#FFFFFF">Charlotte → Houston</text>
+  <text x="48" y="396" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">$890  •  487 mi left</text>
+  <rect x="40" y="412" width="230" height="6" rx="3" fill="#1A2B4A"/>
+  <rect x="40" y="412" width="138" height="6" rx="3" fill="#3B82F6"/>
+  <text x="48" y="436" font-family="Arial, sans-serif" font-size="12" fill="#60A5FA">60% complete</text>
+
+  <!-- Month stats -->
+  <rect x="24" y="462" width="270" height="100" rx="16" fill="url(#card1)"/>
+  <text x="48" y="490" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">APRIL  •  24 TRIPS</text>
+  <text x="48" y="526" font-family="Arial Black, Arial, sans-serif" font-size="32" font-weight="900" fill="#FFFFFF">$9,240</text>
+  <text x="48" y="550" font-family="Arial, sans-serif" font-size="12" fill="#4CAF50">▲ +8.2% vs March</text>
+
+  <!-- RIGHT COL -->
+  <!-- Recent trips list -->
+  <text x="314" y="162" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">Recent Trips</text>
+
+  <rect x="314" y="176" width="262" height="70" rx="14" fill="url(#card1)"/>
+  <text x="338" y="202" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Memphis → Atlanta</text>
+  <text x="338" y="222" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">382 mi  •  Apr 16</text>
+  <text x="556" y="212" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$640</text>
+
+  <rect x="314" y="256" width="262" height="70" rx="14" fill="url(#card1)"/>
+  <text x="338" y="282" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Nashville → Dallas</text>
+  <text x="338" y="302" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">648 mi  •  Apr 14</text>
+  <text x="556" y="292" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$1,020</text>
+
+  <rect x="314" y="336" width="262" height="70" rx="14" fill="url(#card1)"/>
+  <text x="338" y="362" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Atlanta → Charlotte</text>
+  <text x="338" y="382" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">248 mi  •  Apr 12</text>
+  <text x="556" y="372" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$430</text>
+
+  <rect x="314" y="416" width="262" height="70" rx="14" fill="url(#card1)"/>
+  <text x="338" y="442" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Dallas → Phoenix</text>
+  <text x="338" y="462" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">1,021 mi  •  Apr 10</text>
+  <text x="556" y="452" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$1,680</text>
+
+  <rect x="314" y="496" width="262" height="70" rx="14" fill="url(#card1)"/>
+  <text x="338" y="522" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Phoenix → LA</text>
+  <text x="338" y="542" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">372 mi  •  Apr 8</text>
+  <text x="556" y="532" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$580</text>
+
+  <!-- Goal progress (full width) -->
+  <rect x="24" y="586" width="552" height="80" rx="16" fill="url(#card1)"/>
+  <text x="48" y="614" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">MONTHLY GOAL PROGRESS</text>
+  <text x="554" y="614" font-family="Arial, sans-serif" font-size="13" fill="#FF6B2B" text-anchor="end">$9,240 / $12,000  •  77%</text>
+  <rect x="40" y="626" width="520" height="10" rx="5" fill="#1A2B4A"/>
+  <rect x="40" y="626" width="400" height="10" rx="5" fill="#FF6B2B"/>
+  <text x="48" y="656" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">$2,760 more to hit your April goal  •  13 days left</text>
+
+  <!-- Bottom Nav (sidebar style for tablet) -->
+  <rect x="0" y="900" width="600" height="60" fill="#0A1525"/>
+  <rect x="0" y="900" width="600" height="1" fill="#243557"/>
+  <text x="80" y="936" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">🏠</text>
+  <text x="200" y="936" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">📦</text>
+  <text x="300" y="936" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">📍</text>
+  <text x="400" y="936" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">💰</text>
+  <text x="520" y="936" font-family="Arial, sans-serif" font-size="24" text-anchor="middle">👤</text>
+  <rect x="68" y="900" width="24" height="3" rx="1.5" fill="#FF6B2B"/>
+</svg>

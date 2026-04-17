@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E3560;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D1829;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Orange accent gradient -->
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8C55;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Glow filter for orange elements -->
+    <filter id="orangeGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feFlood flood-color="#FF6B35" flood-opacity="0.4" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <!-- Inner glow for icon -->
+    <filter id="iconGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feFlood flood-color="#FF6B35" flood-opacity="0.25" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Clip for rounded corners -->
+    <clipPath id="roundedClip">
+      <rect x="0" y="0" width="512" height="512" rx="80" ry="80"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background with rounded corners -->
+  <g clip-path="url(#roundedClip)">
+    <rect x="0" y="0" width="512" height="512" fill="url(#bgGrad)"/>
+
+    <!-- Subtle grid lines -->
+    <g stroke="#FFFFFF" stroke-opacity="0.04" stroke-width="1">
+      <line x1="0" y1="128" x2="512" y2="128"/>
+      <line x1="0" y1="256" x2="512" y2="256"/>
+      <line x1="0" y1="384" x2="512" y2="384"/>
+      <line x1="128" y1="0" x2="128" y2="512"/>
+      <line x1="256" y1="0" x2="256" y2="512"/>
+      <line x1="384" y1="0" x2="384" y2="512"/>
+    </g>
+
+    <!-- Radial glow in center -->
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0"/>
+    </radialGradient>
+    <rect x="0" y="0" width="512" height="512" fill="url(#centerGlow)"/>
+
+    <!-- ====== TRUCK SILHOUETTE ====== -->
+    <!-- Truck body (cab) -->
+    <g filter="url(#shadow)">
+      <!-- Truck cab -->
+      <path d="M 120 240 L 120 330 L 175 330 L 175 240 Z" fill="white" opacity="0.95"/>
+      <!-- Cab roof curved -->
+      <path d="M 120 240 Q 120 210 148 205 L 175 205 L 175 240 Z" fill="white" opacity="0.95"/>
+      <!-- Windshield -->
+      <path d="M 126 240 Q 126 218 148 213 L 169 213 L 169 240 Z" fill="#1A2B4A" opacity="0.7"/>
+      <!-- Cab window highlight -->
+      <path d="M 128 238 Q 128 220 148 216 L 160 216 L 160 238 Z" fill="#FFFFFF" opacity="0.15"/>
+
+      <!-- Cargo box (trailer) -->
+      <rect x="175" y="218" width="230" height="112" rx="4" fill="white" opacity="0.95"/>
+      <!-- Trailer door lines -->
+      <line x1="290" y1="222" x2="290" y2="326" stroke="#E0E0E0" stroke-width="2"/>
+      <line x1="175" y1="270" x2="405" y2="270" stroke="#E0E0E0" stroke-width="1.5"/>
+
+      <!-- Trailer logo area — orange stripe -->
+      <rect x="175" y="218" width="230" height="22" rx="4" fill="url(#orangeGrad)" opacity="0.9"/>
+      <text x="290" y="234" text-anchor="middle" font-family="'Arial Black', sans-serif" font-size="13" font-weight="900" fill="white" letter-spacing="2">HW</text>
+
+      <!-- Chassis / underframe -->
+      <rect x="120" y="330" width="285" height="12" rx="3" fill="#E8E8E8" opacity="0.8"/>
+
+      <!-- Wheels -->
+      <!-- Front wheel -->
+      <circle cx="158" cy="348" r="26" fill="#2A3A5A"/>
+      <circle cx="158" cy="348" r="18" fill="#1A2B4A"/>
+      <circle cx="158" cy="348" r="8" fill="url(#orangeGrad)"/>
+      <!-- Rear wheel 1 -->
+      <circle cx="325" cy="348" r="26" fill="#2A3A5A"/>
+      <circle cx="325" cy="348" r="18" fill="#1A2B4A"/>
+      <circle cx="325" cy="348" r="8" fill="url(#orangeGrad)"/>
+      <!-- Rear wheel 2 -->
+      <circle cx="368" cy="348" r="26" fill="#2A3A5A"/>
+      <circle cx="368" cy="348" r="18" fill="#1A2B4A"/>
+      <circle cx="368" cy="348" r="8" fill="url(#orangeGrad)"/>
+
+      <!-- Headlight -->
+      <rect x="112" y="260" width="12" height="24" rx="3" fill="url(#orangeGrad)" opacity="1"/>
+      <!-- Headlight beam -->
+      <path d="M 112 268 L 60 250 L 60 280 L 112 276 Z" fill="url(#orangeGrad)" opacity="0.15"/>
+
+      <!-- Exhaust stack -->
+      <rect x="170" y="190" width="8" height="30" rx="4" fill="#CCCCCC" opacity="0.8"/>
+      <!-- Smoke puffs -->
+      <circle cx="174" cy="184" r="6" fill="#FFFFFF" opacity="0.2"/>
+      <circle cx="178" cy="175" r="5" fill="#FFFFFF" opacity="0.12"/>
+      <circle cx="171" cy="167" r="4" fill="#FFFFFF" opacity="0.07"/>
+    </g>
+
+    <!-- ====== DOLLAR BADGE (bottom-right overlay) ====== -->
+    <g filter="url(#iconGlow)">
+      <!-- Badge circle background -->
+      <circle cx="375" cy="155" r="62" fill="#0D1829" opacity="0.85"/>
+      <circle cx="375" cy="155" r="58" fill="url(#orangeGrad)"/>
+      <!-- Inner circle -->
+      <circle cx="375" cy="155" r="46" fill="#0D1829"/>
+
+      <!-- Dollar sign -->
+      <text x="375" y="174" text-anchor="middle"
+            font-family="'Arial Black', Georgia, serif"
+            font-size="60" font-weight="900"
+            fill="url(#orangeGrad)">$</text>
+
+      <!-- Badge ring -->
+      <circle cx="375" cy="155" r="58" fill="none" stroke="url(#orangeGrad)" stroke-width="3" opacity="0.5"/>
+    </g>
+
+    <!-- ====== ROAD LINE (bottom decoration) ====== -->
+    <rect x="0" y="390" width="512" height="122" fill="#0D1829" opacity="0.6"/>
+    <!-- Road dashes -->
+    <g fill="#FF6B35" opacity="0.25">
+      <rect x="40" y="408" width="60" height="6" rx="3"/>
+      <rect x="140" y="408" width="60" height="6" rx="3"/>
+      <rect x="240" y="408" width="60" height="6" rx="3"/>
+      <rect x="340" y="408" width="60" height="6" rx="3"/>
+      <rect x="440" y="408" width="40" height="6" rx="3"/>
+    </g>
+
+    <!-- Road horizon perspective lines -->
+    <g stroke="#FF6B35" stroke-opacity="0.1" stroke-width="1">
+      <line x1="256" y1="390" x2="0" y2="512"/>
+      <line x1="256" y1="390" x2="512" y2="512"/>
+    </g>
+
+    <!-- ====== STARS (top area) ====== -->
+    <g fill="white">
+      <circle cx="60" cy="60" r="2" opacity="0.6"/>
+      <circle cx="95" cy="42" r="1.5" opacity="0.5"/>
+      <circle cx="140" cy="75" r="1" opacity="0.4"/>
+      <circle cx="42" cy="90" r="1.5" opacity="0.5"/>
+      <circle cx="460" cy="55" r="2" opacity="0.6"/>
+      <circle cx="430" cy="30" r="1.5" opacity="0.4"/>
+      <circle cx="480" cy="80" r="1" opacity="0.3"/>
+      <circle cx="415" cy="70" r="2" opacity="0.5"/>
+      <circle cx="50" cy="160" r="1" opacity="0.3"/>
+      <circle cx="460" cy="150" r="1.5" opacity="0.4"/>
+    </g>
+
+    <!-- Border frame subtle -->
+    <rect x="8" y="8" width="496" height="496" rx="76" ry="76"
+          fill="none" stroke="white" stroke-width="1.5" stroke-opacity="0.06"/>
+  </g>
+</svg>

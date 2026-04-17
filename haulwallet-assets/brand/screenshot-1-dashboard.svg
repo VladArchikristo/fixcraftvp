@@ -1,0 +1,106 @@
+<svg width="390" height="844" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1D35"/>
+      <stop offset="100%" style="stop-color:#1A2B4A"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#243557"/>
+      <stop offset="100%" style="stop-color:#1C2E4A"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B2B"/>
+      <stop offset="100%" style="stop-color:#FF8C5A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Phone bg -->
+  <rect width="390" height="844" fill="url(#bg)"/>
+
+  <!-- Status bar -->
+  <text x="20" y="30" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">9:41</text>
+  <text x="340" y="30" font-family="Arial, sans-serif" font-size="12" fill="#FFFFFF">●●● WiFi 🔋</text>
+
+  <!-- Header -->
+  <text x="20" y="74" font-family="Arial, sans-serif" font-size="14" fill="#8FA8CC">Good morning, Vladimir 👋</text>
+  <text x="20" y="106" font-family="Arial Black, Arial, sans-serif" font-size="28" font-weight="900" fill="#FFFFFF">Dashboard</text>
+
+  <!-- Weekly earnings card -->
+  <rect x="20" y="124" width="350" height="140" rx="20" fill="url(#orange)"/>
+  <text x="44" y="160" font-family="Arial, sans-serif" font-size="13" fill="#FFFFFF" opacity="0.8">WEEKLY EARNINGS</text>
+  <text x="44" y="210" font-family="Arial Black, Arial, sans-serif" font-size="46" font-weight="900" fill="#FFFFFF">$2,847</text>
+  <text x="44" y="242" font-family="Arial, sans-serif" font-size="13" fill="#FFFFFF" opacity="0.85">▲ +12.4%  vs last week</text>
+  <!-- Mini chart bars -->
+  <rect x="240" y="185" width="12" height="40" rx="4" fill="#FFFFFF" opacity="0.3"/>
+  <rect x="258" y="175" width="12" height="50" rx="4" fill="#FFFFFF" opacity="0.4"/>
+  <rect x="276" y="165" width="12" height="60" rx="4" fill="#FFFFFF" opacity="0.5"/>
+  <rect x="294" y="172" width="12" height="53" rx="4" fill="#FFFFFF" opacity="0.4"/>
+  <rect x="312" y="158" width="12" height="67" rx="4" fill="#FFFFFF" opacity="0.6"/>
+  <rect x="330" y="148" width="14" height="77" rx="4" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- Section: Active Load -->
+  <text x="20" y="296" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">Active Load</text>
+
+  <rect x="20" y="308" width="350" height="110" rx="16" fill="url(#card1)"/>
+  <rect x="20" y="308" width="350" height="110" rx="16" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="52" cy="346" r="14" fill="#3B82F6" opacity="0.2"/>
+  <text x="52" y="351" font-family="Arial, sans-serif" font-size="14" fill="#60A5FA" text-anchor="middle">📍</text>
+  <text x="76" y="342" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">Charlotte → Houston</text>
+  <text x="76" y="362" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">Load #4821  •  $890</text>
+  <text x="36" y="396" font-family="Arial, sans-serif" font-size="12" fill="#60A5FA">En route  •  487 mi remaining</text>
+  <rect x="36" y="406" width="280" height="5" rx="2.5" fill="#1A2B4A"/>
+  <rect x="36" y="406" width="168" height="5" rx="2.5" fill="#3B82F6"/>
+
+  <!-- Section: Quick Stats -->
+  <text x="20" y="452" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">This Month</text>
+
+  <!-- Trips stat -->
+  <rect x="20" y="466" width="108" height="90" rx="16" fill="url(#card1)"/>
+  <text x="74" y="502" font-family="Arial, sans-serif" font-size="11" fill="#8FA8CC" text-anchor="middle">TRIPS</text>
+  <text x="74" y="530" font-family="Arial Black, Arial, sans-serif" font-size="28" font-weight="900" fill="#FFFFFF" text-anchor="middle">24</text>
+  <text x="74" y="548" font-family="Arial, sans-serif" font-size="10" fill="#4CAF50" text-anchor="middle">+3 ▲</text>
+
+  <!-- Miles stat -->
+  <rect x="141" y="466" width="108" height="90" rx="16" fill="url(#card1)"/>
+  <text x="195" y="502" font-family="Arial, sans-serif" font-size="11" fill="#8FA8CC" text-anchor="middle">MILES</text>
+  <text x="195" y="530" font-family="Arial Black, Arial, sans-serif" font-size="22" font-weight="900" fill="#FFFFFF" text-anchor="middle">8,420</text>
+  <text x="195" y="548" font-family="Arial, sans-serif" font-size="10" fill="#4CAF50" text-anchor="middle">+410 ▲</text>
+
+  <!-- Income stat -->
+  <rect x="262" y="466" width="108" height="90" rx="16" fill="url(#card1)"/>
+  <text x="316" y="502" font-family="Arial, sans-serif" font-size="11" fill="#8FA8CC" text-anchor="middle">INCOME</text>
+  <text x="316" y="530" font-family="Arial Black, Arial, sans-serif" font-size="20" font-weight="900" fill="#FF6B2B" text-anchor="middle">$9,240</text>
+  <text x="316" y="548" font-family="Arial, sans-serif" font-size="10" fill="#4CAF50" text-anchor="middle">+8.2% ▲</text>
+
+  <!-- Recent Trips -->
+  <text x="20" y="590" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">Recent Trips</text>
+
+  <!-- Trip row 1 -->
+  <rect x="20" y="604" width="350" height="60" rx="14" fill="url(#card1)"/>
+  <text x="44" y="630" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Memphis → Atlanta</text>
+  <text x="44" y="650" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">382 mi  •  Apr 16</text>
+  <text x="330" y="640" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$640</text>
+
+  <!-- Trip row 2 -->
+  <rect x="20" y="674" width="350" height="60" rx="14" fill="url(#card1)"/>
+  <text x="44" y="700" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Nashville → Dallas</text>
+  <text x="44" y="720" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">648 mi  •  Apr 14</text>
+  <text x="330" y="710" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$1,020</text>
+
+  <!-- Trip row 3 -->
+  <rect x="20" y="744" width="350" height="60" rx="14" fill="url(#card1)"/>
+  <text x="44" y="770" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Atlanta → Charlotte</text>
+  <text x="44" y="790" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">248 mi  •  Apr 12</text>
+  <text x="330" y="780" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$430</text>
+
+  <!-- Bottom Nav -->
+  <rect x="0" y="800" width="390" height="44" fill="#0A1525"/>
+  <rect x="0" y="800" width="390" height="1" fill="#243557"/>
+  <text x="45" y="826" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">🏠</text>
+  <text x="130" y="826" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">📦</text>
+  <text x="215" y="826" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">📍</text>
+  <text x="300" y="826" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">💰</text>
+  <text x="360" y="826" font-family="Arial, sans-serif" font-size="22" text-anchor="middle">👤</text>
+  <!-- Active indicator -->
+  <rect x="33" y="800" width="24" height="3" rx="1.5" fill="#FF6B2B"/>
+</svg>

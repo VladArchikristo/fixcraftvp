@@ -1,0 +1,147 @@
+<svg width="800" height="1280" viewBox="0 0 800 1280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1D35"/>
+      <stop offset="100%" style="stop-color:#1A2B4A"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#243557"/>
+      <stop offset="100%" style="stop-color:#1C2E4A"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B2B"/>
+      <stop offset="100%" style="stop-color:#FF8C5A"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B2B"/>
+      <stop offset="100%" style="stop-color:#FF8C5A" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="1280" fill="url(#bg)"/>
+
+  <!-- Side nav bar -->
+  <rect x="0" y="0" width="80" height="1280" fill="#0A1525"/>
+  <rect x="80" y="0" width="1" height="1280" fill="#1A2B4A"/>
+  <text x="40" y="80" font-family="Arial, sans-serif" font-size="26" text-anchor="middle">🏠</text>
+  <rect x="16" y="58" width="48" height="48" rx="12" fill="#FF6B2B" opacity="0.15"/>
+  <text x="40" y="180" font-family="Arial, sans-serif" font-size="26" text-anchor="middle">📦</text>
+  <text x="40" y="280" font-family="Arial, sans-serif" font-size="26" text-anchor="middle">📍</text>
+  <text x="40" y="380" font-family="Arial, sans-serif" font-size="26" text-anchor="middle">💰</text>
+  <text x="40" y="1220" font-family="Arial, sans-serif" font-size="26" text-anchor="middle">👤</text>
+  <!-- Active dot -->
+  <rect x="0" y="58" width="4" height="48" rx="2" fill="#FF6B2B"/>
+
+  <!-- MAIN CONTENT (offset by 80 for sidebar) -->
+  <!-- Header -->
+  <text x="110" y="60" font-family="Arial, sans-serif" font-size="16" fill="#8FA8CC">Good morning, Vladimir 👋</text>
+  <text x="110" y="96" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900" fill="#FFFFFF">Dashboard</text>
+
+  <!-- TOP CARDS ROW -->
+  <!-- Earnings orange -->
+  <rect x="110" y="120" width="210" height="180" rx="20" fill="url(#orange)"/>
+  <text x="134" y="158" font-family="Arial, sans-serif" font-size="13" fill="#FFFFFF" opacity="0.85">WEEKLY EARNINGS</text>
+  <text x="134" y="220" font-family="Arial Black, Arial, sans-serif" font-size="52" font-weight="900" fill="#FFFFFF">$2,847</text>
+  <text x="134" y="270" font-family="Arial, sans-serif" font-size="13" fill="#FFFFFF" opacity="0.85">▲ +12.4% vs last week</text>
+
+  <!-- Monthly income -->
+  <rect x="334" y="120" width="210" height="180" rx="20" fill="url(#card1)"/>
+  <text x="358" y="158" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">APRIL INCOME</text>
+  <text x="358" y="220" font-family="Arial Black, Arial, sans-serif" font-size="52" font-weight="900" fill="#FFFFFF">$9,240</text>
+  <text x="358" y="270" font-family="Arial, sans-serif" font-size="13" fill="#4CAF50">▲ +8.2% vs March</text>
+
+  <!-- Trips count -->
+  <rect x="558" y="120" width="210" height="180" rx="20" fill="url(#card1)"/>
+  <text x="582" y="158" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">APRIL TRIPS</text>
+  <text x="663" y="230" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#FFFFFF" text-anchor="middle">24</text>
+  <text x="663" y="272" font-family="Arial, sans-serif" font-size="13" fill="#4CAF50" text-anchor="middle">▲ +3 vs March</text>
+
+  <!-- MIDDLE ROW -->
+  <!-- Active load (wide) -->
+  <rect x="110" y="320" width="440" height="140" rx="20" fill="url(#card1)"/>
+  <rect x="110" y="320" width="440" height="140" rx="20" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0.5"/>
+  <text x="134" y="352" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">ACTIVE LOAD</text>
+  <rect x="134" y="364" width="72" height="24" rx="12" fill="#3B82F6" opacity="0.2"/>
+  <text x="170" y="380" font-family="Arial, sans-serif" font-size="12" fill="#60A5FA" text-anchor="middle">● En route</text>
+  <text x="134" y="414" font-family="Arial Black, Arial, sans-serif" font-size="22" font-weight="bold" fill="#FFFFFF">Charlotte → Houston, TX</text>
+  <text x="134" y="438" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Load #4821  •  Dry Van  •  34,000 lbs  •  $890 pay</text>
+  <rect x="134" y="448" width="380" height="6" rx="3" fill="#1A2B4A"/>
+  <rect x="134" y="448" width="228" height="6" rx="3" fill="#3B82F6"/>
+
+  <!-- Goal -->
+  <rect x="564" y="320" width="204" height="140" rx="20" fill="url(#card1)"/>
+  <text x="588" y="352" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">GOAL: $12,000</text>
+  <text x="666" y="406" font-family="Arial Black, Arial, sans-serif" font-size="36" font-weight="900" fill="#FF6B2B" text-anchor="middle">77%</text>
+  <rect x="580" y="420" width="176" height="10" rx="5" fill="#1A2B4A"/>
+  <rect x="580" y="420" width="135" height="10" rx="5" fill="#FF6B2B"/>
+  <text x="588" y="450" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">13 days left</text>
+
+  <!-- CHART (full width) -->
+  <rect x="110" y="480" width="658" height="240" rx="20" fill="url(#card1)"/>
+  <text x="134" y="514" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">Earnings This Month</text>
+
+  <!-- Bar chart bars -->
+  <rect x="140" y="640" width="32" height="80" rx="6" fill="url(#barGrad)" opacity="0.7"/>
+  <text x="156" y="658" font-family="Arial, sans-serif" font-size="9" fill="#8FA8CC" text-anchor="middle">Apr 1</text>
+  <rect x="190" y="610" width="32" height="110" rx="6" fill="url(#barGrad)" opacity="0.8"/>
+  <rect x="240" y="590" width="32" height="130" rx="6" fill="url(#barGrad)"/>
+  <rect x="290" y="620" width="32" height="100" rx="6" fill="url(#barGrad)" opacity="0.75"/>
+  <rect x="340" y="570" width="32" height="150" rx="6" fill="url(#barGrad)"/>
+  <rect x="390" y="630" width="32" height="90" rx="6" fill="url(#barGrad)" opacity="0.7"/>
+  <rect x="440" y="580" width="32" height="140" rx="6" fill="url(#barGrad)"/>
+  <rect x="490" y="600" width="32" height="120" rx="6" fill="url(#barGrad)" opacity="0.8"/>
+  <rect x="540" y="555" width="32" height="165" rx="6" fill="url(#barGrad)"/>
+  <rect x="590" y="620" width="32" height="100" rx="6" fill="url(#barGrad)" opacity="0.75"/>
+  <rect x="640" y="540" width="32" height="180" rx="6" fill="url(#barGrad)"/>
+  <text x="656" y="536" font-family="Arial, sans-serif" font-size="10" fill="#FF6B2B" text-anchor="middle">$1,680</text>
+  <rect x="690" y="568" width="32" height="152" rx="6" fill="url(#barGrad)" opacity="0.9"/>
+
+  <!-- Y-axis labels -->
+  <text x="134" y="544" font-family="Arial, sans-serif" font-size="10" fill="#8FA8CC">$1.5k</text>
+  <text x="134" y="594" font-family="Arial, sans-serif" font-size="10" fill="#8FA8CC">$1.0k</text>
+  <text x="134" y="644" font-family="Arial, sans-serif" font-size="10" fill="#8FA8CC">$0.5k</text>
+  <line x1="160" y1="720" x2="740" y2="720" stroke="#243557" stroke-width="1"/>
+
+  <!-- RECENT TRIPS TABLE -->
+  <text x="110" y="760" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">Recent Trips</text>
+
+  <!-- Table header -->
+  <rect x="110" y="772" width="658" height="36" rx="10" fill="#0A1525"/>
+  <text x="134" y="795" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">ROUTE</text>
+  <text x="370" y="795" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">DATE</text>
+  <text x="470" y="795" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">MILES</text>
+  <text x="570" y="795" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC">TYPE</text>
+  <text x="700" y="795" font-family="Arial, sans-serif" font-size="12" fill="#8FA8CC" text-anchor="end">EARNINGS</text>
+
+  <!-- Row 1 -->
+  <rect x="110" y="812" width="658" height="52" rx="10" fill="url(#card1)"/>
+  <text x="134" y="842" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Memphis → Atlanta</text>
+  <text x="370" y="842" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Apr 16</text>
+  <text x="470" y="842" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">382 mi</text>
+  <text x="570" y="842" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Reefer</text>
+  <text x="750" y="842" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$640</text>
+
+  <!-- Row 2 -->
+  <rect x="110" y="870" width="658" height="52" rx="10" fill="url(#card1)"/>
+  <text x="134" y="900" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Nashville → Dallas</text>
+  <text x="370" y="900" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Apr 14</text>
+  <text x="470" y="900" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">648 mi</text>
+  <text x="570" y="900" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Flatbed</text>
+  <text x="750" y="900" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$1,020</text>
+
+  <!-- Row 3 -->
+  <rect x="110" y="928" width="658" height="52" rx="10" fill="url(#card1)"/>
+  <text x="134" y="958" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Atlanta → Charlotte</text>
+  <text x="370" y="958" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Apr 12</text>
+  <text x="470" y="958" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">248 mi</text>
+  <text x="570" y="958" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Dry Van</text>
+  <text x="750" y="958" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$430</text>
+
+  <!-- Row 4 -->
+  <rect x="110" y="986" width="658" height="52" rx="10" fill="url(#card1)"/>
+  <text x="134" y="1016" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">Dallas → Phoenix</text>
+  <text x="370" y="1016" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Apr 10</text>
+  <text x="470" y="1016" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">1,021 mi</text>
+  <text x="570" y="1016" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC">Dry Van</text>
+  <text x="750" y="1016" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4CAF50" text-anchor="end">+$1,680</text>
+</svg>

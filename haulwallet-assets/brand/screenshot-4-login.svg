@@ -1,0 +1,83 @@
+<svg width="390" height="844" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A1525"/>
+      <stop offset="100%" style="stop-color:#1A2B4A"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B2B"/>
+      <stop offset="100%" style="stop-color:#FF8C5A"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="390" height="844" fill="url(#bg)"/>
+
+  <!-- Glow circle behind logo -->
+  <circle cx="195" cy="200" r="120" fill="#FF6B2B" opacity="0.07" filter="url(#glow)"/>
+
+  <!-- App Icon centered -->
+  <!-- Icon bg -->
+  <rect x="147" y="120" width="96" height="96" rx="22" fill="#1A2B4A"/>
+  <rect x="147" y="120" width="96" height="96" rx="22" fill="none" stroke="#FF6B2B" stroke-width="1.5" opacity="0.5"/>
+  <!-- Wallet -->
+  <rect x="163" y="142" width="64" height="42" rx="8" fill="#FFFFFF" opacity="0.9"/>
+  <rect x="163" y="142" width="64" height="14" rx="8" fill="#D0DCF0"/>
+  <!-- Truck mini -->
+  <rect x="163" y="172" width="38" height="18" rx="4" fill="#FF6B2B"/>
+  <rect x="197" y="176" width="26" height="14" rx="4" fill="#FF8C5A"/>
+  <circle cx="172" cy="194" r="5" fill="#0A1525"/>
+  <circle cx="193" cy="194" r="5" fill="#0A1525"/>
+  <circle cx="215" cy="194" r="5" fill="#0A1525"/>
+
+  <!-- App Name -->
+  <text x="195" y="248" font-family="Arial Black, Arial, sans-serif" font-size="32" font-weight="900" fill="#FFFFFF" text-anchor="middle">HaulWallet</text>
+  <text x="195" y="272" font-family="Arial, sans-serif" font-size="15" fill="#8FA8CC" text-anchor="middle">Your co-pilot for every mile</text>
+
+  <!-- Divider -->
+  <rect x="60" y="295" width="270" height="1" fill="#243557"/>
+
+  <!-- Sign In title -->
+  <text x="195" y="340" font-family="Arial Black, Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Welcome back</text>
+  <text x="195" y="364" font-family="Arial, sans-serif" font-size="14" fill="#8FA8CC" text-anchor="middle">Sign in to your account</text>
+
+  <!-- Email field -->
+  <rect x="30" y="384" width="330" height="52" rx="14" fill="#1C2E4A"/>
+  <rect x="30" y="384" width="330" height="52" rx="14" fill="none" stroke="#334D73" stroke-width="1.5"/>
+  <text x="56" y="415" font-family="Arial, sans-serif" font-size="14" fill="#8FA8CC">✉  Email address</text>
+
+  <!-- Password field -->
+  <rect x="30" y="450" width="330" height="52" rx="14" fill="#1C2E4A"/>
+  <rect x="30" y="450" width="330" height="52" rx="14" fill="none" stroke="#FF6B2B" stroke-width="1.5" opacity="0.6"/>
+  <text x="56" y="481" font-family="Arial, sans-serif" font-size="14" fill="#8FA8CC">🔒  Password</text>
+  <text x="330" y="481" font-family="Arial, sans-serif" font-size="12" fill="#FF6B2B" text-anchor="end">Show</text>
+
+  <!-- Forgot password -->
+  <text x="340" y="522" font-family="Arial, sans-serif" font-size="13" fill="#FF6B2B" text-anchor="end">Forgot password?</text>
+
+  <!-- Sign In button -->
+  <rect x="30" y="538" width="330" height="54" rx="16" fill="url(#orange)"/>
+  <text x="195" y="570" font-family="Arial Black, Arial, sans-serif" font-size="17" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Sign In</text>
+
+  <!-- Divider OR -->
+  <line x1="30" y1="614" x2="175" y2="614" stroke="#243557" stroke-width="1.5"/>
+  <text x="195" y="619" font-family="Arial, sans-serif" font-size="13" fill="#8FA8CC" text-anchor="middle">or</text>
+  <line x1="215" y1="614" x2="360" y2="614" stroke="#243557" stroke-width="1.5"/>
+
+  <!-- Google Sign In -->
+  <rect x="30" y="630" width="330" height="52" rx="14" fill="#FFFFFF"/>
+  <text x="195" y="661" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#1A2B4A" text-anchor="middle">G  Continue with Google</text>
+
+  <!-- Apple Sign In -->
+  <rect x="30" y="694" width="330" height="52" rx="14" fill="#000000"/>
+  <text x="195" y="725" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF" text-anchor="middle"> Continue with Apple</text>
+
+  <!-- Sign up link -->
+  <text x="195" y="778" font-family="Arial, sans-serif" font-size="14" fill="#8FA8CC" text-anchor="middle">Don't have an account?  <tspan fill="#FF6B2B" font-weight="bold">Sign up free</tspan></text>
+
+  <!-- Bottom safe area -->
+  <rect x="155" y="820" width="80" height="5" rx="2.5" fill="#FFFFFF" opacity="0.3"/>
+</svg>
