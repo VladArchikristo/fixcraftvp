@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-18T16:00:27.323049+00:00",
+  "timestamp": "2026-04-18T19:00:24.919998+00:00",
   "sentiment": "bearish",
-  "score": -0.75,
+  "score": -0.79,
   "fear_greed": {
     "value": 26,
     "label": "Fear",
@@ -10,9 +10,9 @@
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
     "SEC charges Donald Basile in $16M crypto fraud tied to ‘insured’ token",
-    "Zondacrypto under fire as Poland's prime minister links exchange to legislative interference",
-    "Wrapped XRP goes live on Solana, broadening DeFi access for Ripple-linked token",
-    "Ethereum co-founder Joseph Lubin warns of the dangers of AI being controlled by a few big tech firms"
+    "Binance and Bitget to probe RAVE’s 4,500% token surge as claims of insider-orchestrated rally grow",
+    "The Lightning Network isn’t ‘helplessly broken’",
+    "Zondacrypto under fire as Poland's prime minister links exchange to legislative interference"
   ],
   "affected_assets": [
     "BTC",
@@ -25,16 +25,16 @@
   "trending_coins": [
     "RAVE",
     "SIREN",
-    "MON",
-    "BTC",
-    "AVNT",
-    "ETH",
-    "REQ"
+    "REQ",
+    "PENGU",
+    "AAVE",
+    "ASTEROID",
+    "TAO"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 14,
+  "news_count": 15,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.42,
-  "cached_at": 1776528027.3232021
+  "fetch_time_sec": 2.43,
+  "cached_at": 1776538824.920186
 }
