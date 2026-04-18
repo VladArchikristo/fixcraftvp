@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-17T22:00:25.276442+00:00",
+  "timestamp": "2026-04-18T01:00:25.089142+00:00",
   "sentiment": "bearish",
-  "score": -0.88,
+  "score": -0.74,
   "fear_greed": {
-    "value": 21,
-    "label": "Extreme Fear",
-    "trend": "falling"
+    "value": 26,
+    "label": "Fear",
+    "trend": "rising"
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
@@ -31,14 +31,14 @@
     "RAVE",
     "SIREN",
     "PENGU",
-    "OVPP",
     "BTC",
-    "TAO"
+    "HYPE",
+    "ETH"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.55,
-  "cached_at": 1776463225.2766871
+  "fetch_time_sec": 2.66,
+  "cached_at": 1776474025.089374
 }
