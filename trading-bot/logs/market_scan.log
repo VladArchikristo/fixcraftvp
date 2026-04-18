@@ -753,3 +753,15 @@ OPEN_POSITION: {
 2026-04-18 00:00:23,910 [INFO] news_agent: NewsAgent: done in 2.92s | score=-0.720 | sentiment=bearish | risk=CRITICAL
 2026-04-18 00:00:23,911 [INFO] vasily_scan: Prompt length: 14178 chars
 2026-04-18 00:01:41,924 [WARNING] vasily_scan: OPEN ETH: size_usd $280 превышает 30% лимит $219, обрезаем
+2026-04-18 01:04:36,909 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-18 01:05:36,554 [INFO] vasily_scan: Trailing SL XRP LONG: $1.44 → $1.44 (price $1.47)
+2026-04-18 01:05:36,555 [INFO] vasily_scan: Trailing SL ETH LONG: $2340.00 → $2359.99 (price $2408.15)
+2026-04-18 01:05:36,557 [INFO] news_agent: NewsAgent: fetching fresh data...
+2026-04-18 01:06:23,949 [INFO] news_agent: NewsAgent: done in 47.39s | score=-0.720 | sentiment=bearish | risk=CRITICAL
+2026-04-18 01:06:23,950 [INFO] vasily_scan: Prompt length: 14440 chars
+2026-04-18 03:00:08,023 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-18 03:00:22,738 [INFO] vasily_scan: Trailing SL XRP LONG: $1.44 → $1.44 (price $1.47)
+2026-04-18 03:00:22,739 [INFO] vasily_scan: Trailing SL ETH LONG: $2359.99 → $2360.09 (price $2408.25)
+2026-04-18 03:00:22,739 [INFO] news_agent: NewsAgent: fetching fresh data...
+2026-04-18 03:00:25,957 [INFO] news_agent: NewsAgent: done in 3.22s | score=-0.820 | sentiment=bearish | risk=CRITICAL
+2026-04-18 03:00:25,958 [INFO] vasily_scan: Prompt length: 14372 chars
