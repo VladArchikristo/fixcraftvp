@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-18T19:00:24.919998+00:00",
+  "timestamp": "2026-04-18T22:00:27.702095+00:00",
   "sentiment": "bearish",
-  "score": -0.79,
+  "score": -0.91,
   "fear_greed": {
     "value": 26,
     "label": "Fear",
@@ -9,32 +9,33 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
-    "SEC charges Donald Basile in $16M crypto fraud tied to ‘insured’ token",
-    "Binance and Bitget to probe RAVE’s 4,500% token surge as claims of insider-orchestrated rally grow",
-    "The Lightning Network isn’t ‘helplessly broken’",
-    "Zondacrypto under fire as Poland's prime minister links exchange to legislative interference"
+    "2026's biggest crypto exploit: $292 million gets drained from Kelp DAO with wrapped ether stranded across 20 chains",
+    "Why Michael Saylor's Strategy decided to make STRC's dividend bi-monthly",
+    "From smelters to servers: Alcoa to cash in on crypto’s thirst for energy",
+    "AI is increasingly eating into VC fundings and here is how crypto firms are adapting"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
     "XRP",
+    "ADA",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "RAVE",
-    "SIREN",
-    "REQ",
-    "PENGU",
-    "AAVE",
     "ASTEROID",
-    "TAO"
+    "AAVE",
+    "ZRO",
+    "SIREN",
+    "PENGU",
+    "KERNEL"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 15,
+  "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.43,
-  "cached_at": 1776538824.920186
+  "fetch_time_sec": 2.52,
+  "cached_at": 1776549627.702328
 }
