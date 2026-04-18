@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-18T01:00:25.089142+00:00",
+  "timestamp": "2026-04-18T04:00:23.908537+00:00",
   "sentiment": "bearish",
-  "score": -0.74,
+  "score": -0.72,
   "fear_greed": {
     "value": 26,
     "label": "Fear",
@@ -11,8 +11,8 @@
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
     "[HACK] SlowMist Hacking Time Invites You to Explore the New Frontie",
     "Singapore Gulf Bank adds stablecoin mint and redeem for 24/7 settlement",
-    "Strategy proposes semi-monthly dividends on its popular STRC preferred stock",
-    "Sam Altman’s World project launches major upgrade to fight deepfakes and bots"
+    "How a quantum computer can be used to actually steal your bitcoin in '9 minutes'",
+    "Strategy proposes semi-monthly dividends on its popular STRC preferred stock"
   ],
   "affected_assets": [
     "BTC",
@@ -22,23 +22,22 @@
     "DOGE",
     "BNB",
     "ADA",
-    "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "ASTEROID",
     "RAVE",
-    "SIREN",
-    "PENGU",
+    "ASTEROID",
+    "OVPP",
     "BTC",
-    "HYPE",
+    "PENGU",
+    "SIREN",
     "ETH"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.66,
-  "cached_at": 1776474025.089374
+  "fetch_time_sec": 2.92,
+  "cached_at": 1776484823.9087842
 }
