@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-18T07:00:25.956739+00:00",
+  "timestamp": "2026-04-18T08:06:51.353143+00:00",
   "sentiment": "bearish",
-  "score": -0.82,
+  "score": -0.86,
   "fear_greed": {
     "value": 26,
     "label": "Fear",
@@ -23,17 +23,17 @@
   ],
   "trending_coins": [
     "RAVE",
-    "ASTEROID",
-    "SIREN",
     "GENIUS",
-    "PI",
+    "SIREN",
+    "PENGU",
     "OVPP",
-    "PENGU"
+    "MON",
+    "SOL"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 19,
+  "news_count": 15,
   "hacks_detected": 2,
-  "fetch_time_sec": 3.22,
-  "cached_at": 1776495625.957079
+  "fetch_time_sec": 62.99,
+  "cached_at": 1776499611.353387
 }

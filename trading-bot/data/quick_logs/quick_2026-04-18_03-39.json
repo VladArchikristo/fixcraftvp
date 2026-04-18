@@ -1,0 +1,19 @@
+{
+  "time": "2026-04-18T03:39:12.047349",
+  "elapsed_sec": 116.3,
+  "signals_count": 1,
+  "strong_count": 0,
+  "top_signals": [
+    {
+      "coin": "XRP",
+      "direction": "NEUTRAL",
+      "net_score": 5,
+      "rec": "NEUTRAL",
+      "strategies": [
+        "MTF_CONFLUENCE",
+        "ADX_FILTER",
+        "WHALE_WALLS"
+      ]
+    }
+  ]
+}
