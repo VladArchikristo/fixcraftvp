@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-19T07:00:24.843031+00:00",
+  "timestamp": "2026-04-19T10:00:22.128033+00:00",
   "sentiment": "bearish",
-  "score": -0.87,
+  "score": -0.83,
   "fear_greed": {
     "value": 27,
     "label": "Fear",
@@ -9,15 +9,13 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
-    "2026's biggest crypto exploit: $292 million gets drained from Kelp DAO with wrapped ether stranded across 20 chains",
     "Kelp restaking platform exploited, $293M drained in attack",
-    "Kelp DAO’s rsETH bridge apparently exploited for roughly $292 million in LayerZero-based attack",
-    "Why Michael Saylor's Strategy decided to make STRC's dividend bi-monthly"
+    "RaveDAO denies manipulation as Binance, Bitget probe RAVE trading activity",
+    "Charles Schwab, Citadel Securities weigh entering prediction markets",
+    "Caitlyn Jenner escapes memecoin lawsuit as judge says token not a security"
   ],
   "affected_assets": [
     "ETH",
-    "SOL",
-    "ADA",
     "OP",
     "LINK"
   ],
@@ -27,13 +25,13 @@
     "AAVE",
     "ZRO",
     "SIREN",
-    "MON",
-    "PENGU"
+    "PENGU",
+    "ORDI"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 14,
+  "news_count": 6,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.47,
-  "cached_at": 1776582024.8432682
+  "fetch_time_sec": 2.34,
+  "cached_at": 1776592822.128226
 }
