@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-19T04:00:21.992698+00:00",
+  "timestamp": "2026-04-19T07:00:24.843031+00:00",
   "sentiment": "bearish",
   "score": -0.87,
   "fear_greed": {
@@ -15,7 +15,6 @@
     "Why Michael Saylor's Strategy decided to make STRC's dividend bi-monthly"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "ADA",
@@ -25,16 +24,16 @@
   "trending_coins": [
     "RAVE",
     "ASTEROID",
-    "ZRO",
     "AAVE",
-    "BTC",
-    "ETH",
+    "ZRO",
+    "SIREN",
+    "MON",
     "PENGU"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 17,
+  "news_count": 14,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.43,
-  "cached_at": 1776571221.992865
+  "fetch_time_sec": 2.47,
+  "cached_at": 1776582024.8432682
 }

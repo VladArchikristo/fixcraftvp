@@ -322,9 +322,14 @@ def make_scene2(t):
     draw_text_at(draw, "GPS", ph_x - 20, ph_y - 60, mini_f, C_TEAL)
     draw_text_at(draw, "●  Active", ph_x - 30, ph_y - 30, mini_f, C_DGREEN)
 
-    # LEFT SIDE TEXTS
+    # Location pin icon (simple) — drawn BEFORE text, positioned at far left edge
+    px, py = 35, 155
+    draw.ellipse([px-18, py-18, px+18, py+18], fill=C_ORANGE, outline=C_WHITE, width=3)
+    draw.polygon([(px, py+28), (px-14, py+8), (px+14, py+8)], fill=C_ORANGE)
+
+    # LEFT SIDE TEXTS — start at x=180 to avoid overlap with pin icon
     txt_p = ease_out(alpha(t, 0.3, 1.5))
-    txt_x = int(-400 + txt_p * 500)
+    txt_x = int(-500 + txt_p * 680)
 
     f_main = get_font(64, bold=True)
     f_sub  = get_font(38)
@@ -333,19 +338,14 @@ def make_scene2(t):
     draw_text_at(draw, "Real-Time GPS Tracking", txt_x, 120, f_main, C_WHITE)
 
     sub_p = ease_out(alpha(t, 0.8, 2.0))
-    sub_x = int(-400 + sub_p * 500)
+    sub_x = int(-500 + sub_p * 680)
     draw_text_at(draw, "Never lose a mile", sub_x, 210, f_sub, C_LGRAY)
 
     # Counter animation
     cnt_p = ease_in_out(alpha(t, 1.5, 4.0))
     miles = int(2847 * cnt_p)
-    cnt_x = int(-400 + min(1.0, cnt_p*3) * 500)
+    cnt_x = int(-500 + min(1.0, cnt_p*3) * 680)
     draw_text_at(draw, f"{miles:,} miles logged", cnt_x, 310, f_cnt, C_TEAL)
-
-    # Location pin icon (simple)
-    px, py = 70, 140
-    draw.ellipse([px-18, py-18, px+18, py+18], fill=C_ORANGE, outline=C_WHITE, width=3)
-    draw.polygon([(px, py+28), (px-14, py+8), (px+14, py+8)], fill=C_ORANGE)
 
     return np.array(img)
 
@@ -370,12 +370,12 @@ def make_scene3(t):
     f_label= get_font(26)
 
     head_p = ease_out(alpha(t, 0.0, 1.0))
-    head_x = int(-400 + head_p * 500)
+    head_x = int(-500 + head_p * 680)
     draw_text_at(draw, "Track Every Dollar You Earn", head_x, 80, f_main, C_WHITE)
 
-    # Dollar icon
-    draw_text_at(draw, "$", 70, 70, get_font(80, bold=True), C_TEAL, shadow=False)
-    draw.ellipse([50, 60, 130, 180], outline=C_TEAL, width=4)
+    # Dollar icon — moved to far left edge to avoid text overlap
+    draw_text_at(draw, "$", 28, 65, get_font(80, bold=True), C_TEAL, shadow=False)
+    draw.ellipse([10, 55, 90, 175], outline=C_TEAL, width=4)
 
     # Earnings counter (center-right)
     earn_p = ease_in_out(alpha(t, 0.5, 4.5))
@@ -451,14 +451,14 @@ def make_scene4(t):
     f_badge = get_font(22, bold=True)
 
     head_p = ease_out(alpha(t, 0.0, 1.0))
-    head_x = int(-400 + head_p * 500)
+    head_x = int(-500 + head_p * 680)
     draw_text_at(draw, "Manage Every Load", head_x, 80, f_main, C_WHITE)
 
-    # Package icon
-    pkg_cx, pkg_cy = 80, 100
-    draw.rectangle([pkg_cx-30, pkg_cy-25, pkg_cx+30, pkg_cy+25], fill=C_ORANGE, outline=C_WHITE, width=3)
-    draw.line([(pkg_cx-30, pkg_cy), (pkg_cx+30, pkg_cy)], fill=C_WHITE, width=3)
-    draw.line([(pkg_cx, pkg_cy-25), (pkg_cx, pkg_cy+25)], fill=C_WHITE, width=2)
+    # Package icon — moved to far left edge to avoid text overlap
+    pkg_cx, pkg_cy = 38, 100
+    draw.rectangle([pkg_cx-28, pkg_cy-23, pkg_cx+28, pkg_cy+23], fill=C_ORANGE, outline=C_WHITE, width=3)
+    draw.line([(pkg_cx-28, pkg_cy), (pkg_cx+28, pkg_cy)], fill=C_WHITE, width=3)
+    draw.line([(pkg_cx, pkg_cy-23), (pkg_cx, pkg_cy+23)], fill=C_WHITE, width=2)
 
     # Load items
     loads = [
