@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-19T13:00:29.128737+00:00",
+  "timestamp": "2026-04-19T16:00:26.191125+00:00",
   "sentiment": "bearish",
-  "score": -0.87,
+  "score": -0.79,
   "fear_greed": {
     "value": 27,
     "label": "Fear",
@@ -9,28 +9,29 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
-    "One person holds the keys to $200 million of a project’s crypto. His co-founder says that has to end",
-    "Bitcoin price drops to $75K as new Hormuz closure puts focus on oil",
-    "Aluminum giant Alcoa to sell dormant smelter to Bitcoin miner NYDIG: Report",
-    "RaveDAO denies manipulation as Binance, Bitget probe RAVE trading activity"
+    "Aave sees $6 billion deposit drop as Kelp hack exposes structural risk for DeFi lender",
+    "RaveDAO's RAVE token collapses 90% in a day as exchange probes widen",
+    "Inside the rise of wrench attacks against crypto holders and how France has become the focus",
+    "Nomura study says 65% of institutional investors see crypto as a vital portfolio diversifier"
   ],
   "affected_assets": [
+    "ETH",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "RAVE",
     "ASTEROID",
+    "RAVE",
     "AAVE",
-    "ZRO",
     "SIREN",
-    "ETH",
-    "TAO"
+    "ZRO",
+    "BTC",
+    "PEPE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 6,
+  "news_count": 10,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.32,
-  "cached_at": 1776603629.128926
+  "fetch_time_sec": 2.66,
+  "cached_at": 1776614426.1913369
 }
