@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-19T19:00:29.168723+00:00",
+  "timestamp": "2026-04-19T22:00:25.218262+00:00",
   "sentiment": "bearish",
-  "score": -0.79,
+  "score": -0.83,
   "fear_greed": {
     "value": 27,
     "label": "Fear",
@@ -15,25 +15,27 @@
     "Kelp exploit highlights problem with non-isolated DeFi lending: Crypto execs"
   ],
   "affected_assets": [
+    "BTC",
     "ETH",
     "SOL",
+    "MATIC",
     "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "RAVE",
+    "WOJAK",
     "AAVE",
-    "ASTEROID",
     "PIEVERSE",
+    "ASTEROID",
     "BOME",
-    "PENGU",
-    "BTC"
+    "MON"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 17,
+  "news_count": 19,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.48,
-  "cached_at": 1776625229.168888
+  "fetch_time_sec": 2.65,
+  "cached_at": 1776636025.218431
 }
