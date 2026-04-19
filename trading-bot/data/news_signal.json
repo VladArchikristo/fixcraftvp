@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-19T01:00:26.173770+00:00",
+  "timestamp": "2026-04-19T04:00:21.992698+00:00",
   "sentiment": "bearish",
   "score": -0.87,
   "fear_greed": {
@@ -25,16 +25,16 @@
   "trending_coins": [
     "RAVE",
     "ASTEROID",
-    "AAVE",
-    "SIREN",
     "ZRO",
+    "AAVE",
     "BTC",
+    "ETH",
     "PENGU"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 19,
+  "news_count": 17,
   "hacks_detected": 1,
-  "fetch_time_sec": 3.35,
-  "cached_at": 1776560426.1739478
+  "fetch_time_sec": 2.43,
+  "cached_at": 1776571221.992865
 }
