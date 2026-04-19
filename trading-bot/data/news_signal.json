@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-19T16:00:26.191125+00:00",
+  "timestamp": "2026-04-19T19:00:29.168723+00:00",
   "sentiment": "bearish",
   "score": -0.79,
   "fear_greed": {
@@ -9,29 +9,31 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
+    "'DeFi is dead': crypto community scrambles after this year's biggest hack exposes contagion risks",
     "Aave sees $6 billion deposit drop as Kelp hack exposes structural risk for DeFi lender",
     "RaveDAO's RAVE token collapses 90% in a day as exchange probes widen",
-    "Inside the rise of wrench attacks against crypto holders and how France has become the focus",
-    "Nomura study says 65% of institutional investors see crypto as a vital portfolio diversifier"
+    "Kelp exploit highlights problem with non-isolated DeFi lending: Crypto execs"
   ],
   "affected_assets": [
     "ETH",
+    "SOL",
+    "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "ASTEROID",
     "RAVE",
     "AAVE",
-    "SIREN",
-    "ZRO",
-    "BTC",
-    "PEPE"
+    "ASTEROID",
+    "PIEVERSE",
+    "BOME",
+    "PENGU",
+    "BTC"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 10,
+  "news_count": 17,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.66,
-  "cached_at": 1776614426.1913369
+  "fetch_time_sec": 2.48,
+  "cached_at": 1776625229.168888
 }
