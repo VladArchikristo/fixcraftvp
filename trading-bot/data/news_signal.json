@@ -1,24 +1,23 @@
 {
-  "timestamp": "2026-04-18T22:00:27.702095+00:00",
+  "timestamp": "2026-04-19T01:00:26.173770+00:00",
   "sentiment": "bearish",
-  "score": -0.91,
+  "score": -0.87,
   "fear_greed": {
-    "value": 26,
+    "value": 27,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
     "2026's biggest crypto exploit: $292 million gets drained from Kelp DAO with wrapped ether stranded across 20 chains",
-    "Why Michael Saylor's Strategy decided to make STRC's dividend bi-monthly",
-    "From smelters to servers: Alcoa to cash in on crypto’s thirst for energy",
-    "AI is increasingly eating into VC fundings and here is how crypto firms are adapting"
+    "Kelp restaking platform exploited, $293M drained in attack",
+    "Kelp DAO’s rsETH bridge apparently exploited for roughly $292 million in LayerZero-based attack",
+    "Why Michael Saylor's Strategy decided to make STRC's dividend bi-monthly"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "XRP",
     "ADA",
     "OP",
     "LINK"
@@ -27,15 +26,15 @@
     "RAVE",
     "ASTEROID",
     "AAVE",
-    "ZRO",
     "SIREN",
-    "PENGU",
-    "KERNEL"
+    "ZRO",
+    "BTC",
+    "PENGU"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 20,
+  "news_count": 19,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.52,
-  "cached_at": 1776549627.702328
+  "fetch_time_sec": 3.35,
+  "cached_at": 1776560426.1739478
 }
