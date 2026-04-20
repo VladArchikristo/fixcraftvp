@@ -1,33 +1,30 @@
 ---
-date: 2026-04-14
+date: 2026-04-20
 type: hot
 ---
 
-## Последняя сессия (14 апреля)
-
-- **Toll Navigator MVP** — 5 критических багов исправлены (коммит `76f27f2`): API endpoint, IFTA rates sync, auto-save errors, MPG validation, health endpoint. OCR чеков, история поездок с пагинацией, профиль пользователя, toast-уведомления
-- **Брокерская система** — полный цикл: backend routes, 3 мобильных экрана, сервис. Аудит выявил 7 багов (SQL-инъекция, пагинация, дубли отзывов) — **все 7/7 исправлены**, готово к деплою. Файлы НЕ закоммичены
-- **Зина-бот** — запущена, астро/нумерология на Claude Sonnet 4.6, wiki система работает
+## Последняя сессия
+- Heartbeat-мониторинг весь день: все системы OK, trading bot генерирует quick logs
+- Git auto-save коммит 1089e2b (11:09), новые quick logs накопились (11:14–11:56)
+- Session cache обновлялся дважды после обнаружения устаревания
 
 ## Активные проекты
-
-- **Toll Navigator** — MVP + брокеры готовы, деплой на Hetzner pending (высокий приоритет)
-- **Trading Bot (Василий)** — активен, paper portfolio, фоновый режим
-- **Philip-bot** — оркестратор с /k /m /v /p /z делегацией, стабильный
-- **Зина-бот** — запущена, стабильна
-- **Beast v10** — работает, аудит 5.9/10
-- **Сайт FixCraft** — site-source, Vercel деплой по запросу
+- **Trading Bot (Василий)** — работает, quick logs каждые 5 мин, paper portfolio активен
+- **Telegram Bots** — все боты с трёхуровневой memory system (L1/L2/L3), Philip восстановлен
+- **Shared Memory** — 63 факта извлечены, Haiku extraction интегрирован во все боты
+- **Site (FixCraft)** — CSRF origin validation задеплоен (3ebb7c4)
+- **Костя** — фикс тикера (continue вместо break) работает, PID через LaunchAgent
 
 ## Незавершённое
-
-- **Деплой Toll Navigator на Hetzner** — скрипт `deploy/hetzner-setup.sh` готов, нужен VPS + JWT_SECRET
-- **Брокерская система** — 7 багов исправлены, 5+ файлов не закоммичены, нужен git-save
-- **Philip парсинг** — 5000 toll roads, проверить завершение парсинга OSM
-- **vasily-daily-report.py** — изменён, не закоммичен
+- git-save: submodule changes + trading quick logs + news_signal не запушены
+- Костя: механизм прерывания стриминга (стоп-команда) — не реализован
+- Хук перед задачами (с 17 апр) — pending
+- FixCraft TMA — не начата
+- Google Play Developer регистрация — ручная через VNC
+- Дубликат shared_memory.db в корне — нужен cleanup
 
 ## Важные правила
-
-- **git-save = только GitHub**. Vercel — исключительно для деплоя сайта (site-source)
-- **НИКОГДА не редактировать** beast-bot/bot.py, .env, launcher.sh, LaunchAgent plist
-- **Статус ботов** — проверять через PID файлы (`~/logs/*.pid`), НЕ через `ps aux | grep имя`
-- **Аудит ботов** — только читать и отвечать, НЕ менять файлы
+- **git-save = только GitHub**, Vercel только для site-source деплоя
+- **НЕ редактировать** beast-bot/bot.py, .env, launcher.sh, LaunchAgent plist
+- Проверка ботов только через PID файлы (`~/logs/<bot>.pid`)
+- Экономия токенов: Haiku для не-срочных поисков, сжимай контекст

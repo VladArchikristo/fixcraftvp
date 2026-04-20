@@ -233,55 +233,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-17T09:03:08.606707",
-      "total_value": 1021.41,
-      "portfolio_value": 1021.41,
-      "pnl": 21.41,
-      "sentiment": "bullish",
-      "actions_taken": 0,
-      "summary": "## VASILY TRADING REPORT — 2026-04-17 09:00 UTC",
-      "trades": [
-        "🔄 HOLD ETH | Тренд STRONG BULL, whale walls держат $2368-2369, позиция в +2.6%.               MACD 4h медвежий — риск есть, но SL подтягиваем выше whale wall.               News CRITICAL блокирует новые входы.",
-        "🔄 HOLD XRP | ADX 53.9 VERY STRONG — тренд настоящий. P&L +2.0%.               Цена у $1.47 resistance, TP $1.50 реальный.               SL подтягиваем в безубыток.",
-        "⏸️ NO_ACTION | News Agent = STOP_NEW_ENTRIES (Score -0.73, CRITICAL).               Fear & Greed 21 Extreme Fear. BTC у $76k с стеной $450M.               12+ хаков за неделю. Orderbook ETH/AVAX ASK-HEAVY.               Кэш $712.60 сохраняем — ждём нормализации рисков."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 25,
-          "rec": "BUY",
-          "rsi": 60.5
-        },
-        "XRP": {
-          "score": 70,
-          "rec": "STRONG_BUY",
-          "rsi": 62.1
-        },
-        "AVAX": {
-          "score": 30,
-          "rec": "BUY",
-          "rsi": 57.3
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 22.5
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 40.0
-        },
-        "AVAX": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 30.8
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-17T10:05:18.628183",
       "total_value": 1028.93,
       "portfolio_value": 1028.93,
@@ -2617,7 +2568,55 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-20T12:01:34.010347",
+      "total_value": 1020.56,
+      "portfolio_value": 1020.56,
+      "pnl": 20.56,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА — 2026-04-20 12:00 UTC",
+      "trades": [
+        "🔄 HOLD XRP | 4h ADX 31.6 сильный тренд, whale walls держат $1.43,    1d BUY. 1h overbought StochRSI 90 — не добавлять.    SL подтянуть с $1.40 до $1.41 для защиты прибыли.",
+        "⏸️ NO_ACTION | News Agent: CRITICAL риск, STOP_NEW_ENTRIES.    Fear & Greed 29, активный hack-сигнал (Kelp $290M).    ETH whale walls сильные но 4h медвежий. AVAX 4h SELL.   Открытие новых позиций нецелесообразно до стабилизации новостного фона."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 53.4
+        },
+        "XRP": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 59.4
+        },
+        "AVAX": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 52.5
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": 5.8
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 15.0
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -9.2
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-20T10:22:43.106225"
+  "updated_at": "2026-04-20T12:01:34.010388"
 }

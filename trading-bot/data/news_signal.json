@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-20T14:21:03.912277+00:00",
+  "timestamp": "2026-04-20T16:00:23.589825+00:00",
   "sentiment": "bearish",
-  "score": -0.71,
+  "score": -0.63,
   "fear_greed": {
     "value": 29,
     "label": "Fear",
@@ -9,15 +9,14 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
+    "U.S. crypto adoption is rebounding, bitcoin still dominates, Deutsche Bank says",
     "Strategy buys 34,164 bitcoin for $2.54 billion, third-largest purchase on record",
     "Nearly $1 billion in bitcoin ETF inflows power bull case as Kelp hack fuels DeFi jitters",
-    "Bitcoin drops from recent highs as traders watch CME gap, DeFi hack fallout",
-    "Here's how bitcoin's $7.9 billion April options expiry impact prices"
+    "Bitcoin drops from recent highs as traders watch CME gap, DeFi hack fallout"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "SOL",
     "BNB",
     "OP",
     "LINK"
@@ -25,16 +24,16 @@
   "trending_coins": [
     "AAVE",
     "RAVE",
-    "WOJAK",
     "ASTEROID",
+    "WOJAK",
     "ZRO",
-    "M",
-    "PENGU"
+    "PENGU",
+    "BTC"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.34,
-  "cached_at": 1776694863.912407
+  "fetch_time_sec": 2.46,
+  "cached_at": 1776700823.589996
 }
