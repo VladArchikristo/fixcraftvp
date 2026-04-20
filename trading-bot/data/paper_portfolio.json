@@ -233,54 +233,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-17T12:02:00.233164",
-      "total_value": 1028.56,
-      "portfolio_value": 1028.56,
-      "pnl": 28.56,
-      "sentiment": "bullish",
-      "actions_taken": 1,
-      "summary": "## 📊 VASILY MARKET REPORT — 2026-04-17 12:00 UTC",
-      "trades": [
-        "✅ ЗАКРЫТА LONG XRP @ $1.49 | P&L: +5.75$ (+3.8%) | Цена $1.49 — в 1 цент от TP $1.50. StochRSI bearish cross на 1h, RSI 74.2 overbought на 4h, daily Bollinger pos 1.243 (выше верхней полосы). Volume 4h declining. News agent STOP_NEW_ENTRIES с BEARISH -0.81. Фиксируем +3.8% прибыли на TP-уровне.",
-        "⏸️ NO_ACTION | ETH: RSI 73.7 блокирует LONG по правилам риск-менеджмента. AVAX: STOP_NEW_ENTRIES + ASK-heavy order book + слабый ADX 17.7. Все активы: News agent сигнал STOP_NEW_ENTRIES при Extreme Fear 21. Ждём отката к EMA уровням перед новыми входами."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 15,
-          "rec": "BUY",
-          "rsi": 73.7
-        },
-        "XRP": {
-          "score": 50,
-          "rec": "STRONG_BUY",
-          "rsi": 66.6
-        },
-        "AVAX": {
-          "score": 40,
-          "rec": "STRONG_BUY",
-          "rsi": 58.3
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 5.0
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 21.7
-        },
-        "AVAX": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 24.2
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-17T13:05:46.156396",
       "total_value": 1028.56,
       "portfolio_value": 1028.56,
@@ -2615,7 +2567,56 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-20T15:01:45.843800",
+      "total_value": 1020.5,
+      "portfolio_value": 1020.5,
+      "pnl": 20.5,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА — 2026-04-20 15:00 UTC",
+      "trades": [
+        "🔄 HOLD XRP | MTF 100% confluence BUY, ADX 31.7 STRONG, whale bids @ $1.43, short squeeze potential (funding -0.0016% falling). SL подтянуть до $1.41",
+        "🔄 HOLD XRP | Вторая позиция аналогична, TP $1.51 = следующий ключевой уровень",
+        "⏸️ NO_ACTION | ETH: краткосрочно перекуплен (StochRSI 96, ASK -81.1%), ждать коррекции к $2316-2296 для входа в LONG. AVAX: 4h SELL, StochRSI 98 — не трогать. Новостной фон BEARISH -0.61, HACK incident → News Agent: STOP_NEW_ENTRIES соблюдаем"
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 59.0
+        },
+        "XRP": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 57.4
+        },
+        "AVAX": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 60.3
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 10.0
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 19.2
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -2.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-20T13:22:39.642475"
+  "updated_at": "2026-04-20T15:01:45.843847"
 }

@@ -511,6 +511,13 @@ def history_prompt(user_id: int | None = None) -> str:
 
 import re as _re
 
+# Google Calendar integration (optional — graceful fallback if not available)
+try:
+    from calendar_service import get_events_today, get_events_week, create_event, format_events
+    CALENDAR_AVAILABLE = True
+except ImportError:
+    CALENDAR_AVAILABLE = False
+
 
 def _sanitize_markdown(text: str) -> str:
     """Clean up Markdown so Telegram can parse it without errors."""
@@ -742,6 +749,10 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "/rewrite — полная переработка промта\n\n"
         "/clear — очистить историю\n"
         "/status — статус бота\n\n"
+        "Google Calendar:\n"
+        "/calendar — события на сегодня\n"
+        "/week — события на 7 дней\n"
+        "/event <название> <дата> [время] — добавить событие\n\n"
         "Просто напиши свой промт или идею — начнём."
     )
 
@@ -908,6 +919,111 @@ async def cmd_zina(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Использование: /з <вопрос для Зины>")
         return
     await _delegate_to(update, "Зина", "ask-zina.sh", task)
+
+
+async def cmd_calendar(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Показать события на сегодня: /calendar"""
+    if not is_allowed(update):
+        return
+    if not CALENDAR_AVAILABLE:
+        await update.message.reply_text("Google Calendar не подключён.")
+        return
+    try:
+        events = get_events_today()
+        text = f"*📅 Сегодня:*\n{format_events(events)}"
+        await _safe_reply(update.message, text)
+    except Exception as e:
+        log.error("Calendar error: %s", e)
+        await update.message.reply_text(f"Ошибка Calendar: {e}")
+
+
+async def cmd_week(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Показать события на неделю: /week"""
+    if not is_allowed(update):
+        return
+    if not CALENDAR_AVAILABLE:
+        await update.message.reply_text("Google Calendar не подключён.")
+        return
+    try:
+        events = get_events_week()
+        text = f"*📅 Ближайшие 7 дней:*\n{format_events(events)}"
+        await _safe_reply(update.message, text)
+    except Exception as e:
+        log.error("Calendar week error: %s", e)
+        await update.message.reply_text(f"Ошибка Calendar: {e}")
+
+
+async def cmd_add_event(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Добавить событие: /event <название> <дата> [время]
+    Примеры:
+      /event Встреча с клиентом завтра 14:00
+      /event День рождения 25.04
+      /event Дедлайн сегодня
+    """
+    if not is_allowed(update):
+        return
+    if not CALENDAR_AVAILABLE:
+        await update.message.reply_text("Google Calendar не подключён.")
+        return
+
+    args = ctx.args if ctx.args else []
+    if not args:
+        await update.message.reply_text(
+            "Использование: /event <название> <дата> [время]\n\n"
+            "Примеры:\n"
+            "`/event Встреча завтра 14:00`\n"
+            "`/event Дедлайн сегодня`\n"
+            "`/event День рождения 25.04`\n\n"
+            "Дата: сегодня / завтра / послезавтра / ДД.ММ / ГГГГ-ММ-ДД\n"
+            "Время: ЧЧ:ММ (если не указано — создаётся как целодневное)"
+        )
+        return
+
+    # Parse: last token = time if HH:MM, second-to-last = date keyword or date
+    # Strategy: scan tokens for date/time markers
+    DATE_KEYWORDS = {"сегодня", "завтра", "послезавтра", "today", "tomorrow"}
+    time_str = ""
+    date_str = ""
+    title_parts = []
+
+    import re as _re2
+    time_pattern = _re2.compile(r"^\d{1,2}:\d{2}$")
+    date_pattern = _re2.compile(r"^\d{1,2}[./]\d{2}([./]\d{2,4})?$|^\d{4}-\d{2}-\d{2}$")
+
+    tokens = list(args)
+    remaining = []
+    for tok in tokens:
+        if time_pattern.match(tok) and not time_str:
+            time_str = tok
+        elif (tok.lower() in DATE_KEYWORDS or date_pattern.match(tok)) and not date_str:
+            date_str = tok
+        else:
+            remaining.append(tok)
+
+    title = " ".join(remaining).strip()
+
+    if not title:
+        await update.message.reply_text("Укажи название события. Пример: `/event Встреча завтра 14:00`")
+        return
+    if not date_str:
+        await update.message.reply_text("Укажи дату. Пример: `/event Встреча завтра 14:00`")
+        return
+
+    try:
+        created = create_event(title, date_str, time_str)
+        event_url = created.get("htmlLink", "")
+        date_display = date_str
+        time_display = f" в {time_str}" if time_str else " (весь день)"
+        await update.message.reply_text(
+            f"✅ Событие добавлено!\n\n"
+            f"*{title}*\n"
+            f"📅 {date_display}{time_display}"
+        )
+    except ValueError as e:
+        await update.message.reply_text(f"⚠️ {e}")
+    except Exception as e:
+        log.error("Create event error: %s", e)
+        await update.message.reply_text(f"Ошибка при создании события: {e}")
 
 
 async def cmd_beast(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -1311,6 +1427,10 @@ def main():
     app.add_handler(CommandHandler("p", cmd_peter))
     app.add_handler(CommandHandler("z", cmd_zina))
     app.add_handler(CommandHandler("b", cmd_beast))
+    # Google Calendar
+    app.add_handler(CommandHandler("calendar", cmd_calendar))
+    app.add_handler(CommandHandler("week", cmd_week))
+    app.add_handler(CommandHandler("event", cmd_add_event))
 
     for mode_name in MODE_PREFIXES:
         app.add_handler(CommandHandler(mode_name, cmd_set_mode))

@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-20T17:21:05.099293+00:00",
+  "timestamp": "2026-04-20T19:00:25.427018+00:00",
   "sentiment": "bearish",
-  "score": -0.63,
+  "score": -0.61,
   "fear_greed": {
     "value": 29,
     "label": "Fear",
@@ -22,18 +22,18 @@
     "LINK"
   ],
   "trending_coins": [
-    "RAVE",
     "AAVE",
+    "RAVE",
     "PENGU",
     "ASTEROID",
-    "WOJAK",
     "ZRO",
+    "WOJAK",
     "MON"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.48,
-  "cached_at": 1776705665.099541
+  "fetch_time_sec": 2.5,
+  "cached_at": 1776711625.427294
 }

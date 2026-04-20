@@ -32,6 +32,12 @@ beast-bot/conversation_log.jsonl
 beast-bot/history_state.json
 coder-bot/conversation_log.jsonl
 coder-bot/history.json
+philip-bot/conversation_log.jsonl
+philip-bot/history.json
+
+# Philip bot secrets (Google OAuth)
+philip-bot/token.json
+philip-bot/credentials.json
 
 # Lock files
 *.json.lock
