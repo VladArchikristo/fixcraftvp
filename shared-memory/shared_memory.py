@@ -42,6 +42,28 @@ def init_db():
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (user_id, key)
         );
+
+        CREATE TABLE IF NOT EXISTS facts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            bot_name TEXT NOT NULL,
+            category TEXT NOT NULL DEFAULT 'general',
+            fact TEXT NOT NULL,
+            source TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_facts_user ON facts(user_id, bot_name, category);
+
+        CREATE TABLE IF NOT EXISTS session_summaries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            bot_name TEXT NOT NULL,
+            summary TEXT NOT NULL,
+            message_count INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_sessions_user ON session_summaries(user_id, bot_name, created_at);
     """)
     conn.commit()
     conn.close()
@@ -98,6 +120,147 @@ def get_profile(user_id: int) -> dict:
     ).fetchall()
     conn.close()
     return {r["key"]: r["value"] for r in rows}
+
+
+# ===================== LEVEL 2: ФАКТЫ =====================
+
+def save_fact(user_id: int, bot_name: str, fact: str, category: str = "general", source: str = None):
+    """Сохраняет ключевой факт. Если такой факт уже есть — обновляет timestamp."""
+    conn = _get_conn()
+    # Проверяем дубликат (точное совпадение текста)
+    existing = conn.execute(
+        "SELECT id FROM facts WHERE user_id=? AND bot_name=? AND fact=?",
+        (user_id, bot_name, fact)
+    ).fetchone()
+    if existing:
+        conn.execute(
+            "UPDATE facts SET updated_at=?, category=? WHERE id=?",
+            (datetime.now().isoformat(), category, existing["id"])
+        )
+    else:
+        conn.execute(
+            "INSERT INTO facts (user_id, bot_name, category, fact, source) VALUES (?, ?, ?, ?, ?)",
+            (user_id, bot_name, category, fact, source)
+        )
+    conn.commit()
+    conn.close()
+
+
+def get_facts(user_id: int, bot_name: str, category: str = None, limit: int = 50) -> list:
+    """Возвращает факты. Если category=None — все факты. Формат: [{category, fact, updated_at}]."""
+    conn = _get_conn()
+    if category:
+        rows = conn.execute(
+            """SELECT category, fact, updated_at FROM facts
+               WHERE user_id=? AND bot_name=? AND category=?
+               ORDER BY updated_at DESC LIMIT ?""",
+            (user_id, bot_name, category, limit)
+        ).fetchall()
+    else:
+        rows = conn.execute(
+            """SELECT category, fact, updated_at FROM facts
+               WHERE user_id=? AND bot_name=?
+               ORDER BY updated_at DESC LIMIT ?""",
+            (user_id, bot_name, limit)
+        ).fetchall()
+    conn.close()
+    return [{"category": r["category"], "fact": r["fact"], "updated_at": r["updated_at"]} for r in rows]
+
+
+def get_all_facts(user_id: int, limit: int = 100) -> list:
+    """Возвращает факты от ВСЕХ ботов — для кросс-бот памяти."""
+    conn = _get_conn()
+    rows = conn.execute(
+        """SELECT bot_name, category, fact, updated_at FROM facts
+           WHERE user_id=?
+           ORDER BY updated_at DESC LIMIT ?""",
+        (user_id, limit)
+    ).fetchall()
+    conn.close()
+    return [{"bot_name": r["bot_name"], "category": r["category"], "fact": r["fact"], "updated_at": r["updated_at"]} for r in rows]
+
+
+def delete_fact(user_id: int, bot_name: str, fact: str):
+    """Удаляет конкретный факт."""
+    conn = _get_conn()
+    conn.execute(
+        "DELETE FROM facts WHERE user_id=? AND bot_name=? AND fact=?",
+        (user_id, bot_name, fact)
+    )
+    conn.commit()
+    conn.close()
+
+
+def count_facts(user_id: int, bot_name: str) -> int:
+    """Количество фактов у бота."""
+    conn = _get_conn()
+    row = conn.execute(
+        "SELECT COUNT(*) as cnt FROM facts WHERE user_id=? AND bot_name=?",
+        (user_id, bot_name)
+    ).fetchone()
+    conn.close()
+    return row["cnt"] if row else 0
+
+
+# ===================== LEVEL 3: РЕЗЮМЕ СЕССИЙ =====================
+
+def save_session_summary(user_id: int, bot_name: str, summary: str, message_count: int = 0):
+    """Сохраняет краткое резюме завершённой сессии."""
+    conn = _get_conn()
+    conn.execute(
+        "INSERT INTO session_summaries (user_id, bot_name, summary, message_count) VALUES (?, ?, ?, ?)",
+        (user_id, bot_name, summary, message_count)
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_session_summaries(user_id: int, bot_name: str, limit: int = 5) -> list:
+    """Возвращает последние N резюме сессий."""
+    conn = _get_conn()
+    rows = conn.execute(
+        """SELECT summary, message_count, created_at FROM session_summaries
+           WHERE user_id=? AND bot_name=?
+           ORDER BY created_at DESC LIMIT ?""",
+        (user_id, bot_name, limit)
+    ).fetchall()
+    conn.close()
+    return [{"summary": r["summary"], "message_count": r["message_count"], "created_at": r["created_at"]} for r in reversed(rows)]
+
+
+def build_memory_prompt(user_id: int, bot_name: str) -> str:
+    """Строит блок памяти для system prompt: факты + последние сессии. ~500-800 токенов."""
+    parts = []
+
+    # Факты (Level 2)
+    facts = get_facts(user_id, bot_name, limit=30)
+    if facts:
+        parts.append("=== ДОЛГОСРОЧНАЯ ПАМЯТЬ (ключевые факты) ===")
+        by_cat = {}
+        for f in facts:
+            by_cat.setdefault(f["category"], []).append(f["fact"])
+        for cat, items in by_cat.items():
+            parts.append(f"[{cat}]")
+            for item in items[:10]:
+                parts.append(f"  • {item}")
+
+    # Кросс-бот факты (от других ботов, последние 10)
+    all_facts = get_all_facts(user_id, limit=20)
+    cross_facts = [f for f in all_facts if f["bot_name"] != bot_name][:10]
+    if cross_facts:
+        parts.append("\n=== ФАКТЫ ОТ ДРУГИХ БОТОВ ===")
+        for f in cross_facts:
+            parts.append(f"  [{f['bot_name']}] {f['fact']}")
+
+    # Резюме сессий (Level 3)
+    sessions = get_session_summaries(user_id, bot_name, limit=3)
+    if sessions:
+        parts.append("\n=== ПРЕДЫДУЩИЕ СЕССИИ ===")
+        for s in sessions:
+            date = s["created_at"][:16].replace("T", " ") if s["created_at"] else "?"
+            parts.append(f"[{date}] ({s['message_count']} сообщ.) {s['summary']}")
+
+    return "\n".join(parts) if parts else ""
 
 
 # Автоматически инициализируем БД при импорте

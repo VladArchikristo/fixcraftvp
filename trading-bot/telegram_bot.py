@@ -30,7 +30,8 @@ from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
 
 # Shared memory
 sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
-from shared_memory import save_message as sm_save, get_history as sm_get_history
+from shared_memory import save_message as sm_save, get_history as sm_get_history, save_fact, get_facts, build_memory_prompt, save_session_summary
+from fact_extractor import extract_facts_from_exchange
 
 # NewsAgent — внутренний суб-агент новостей (может отсутствовать при первом запуске)
 try:
@@ -380,11 +381,17 @@ def _save_history():
 
 
 def history_prompt(user_id: int | None = None) -> str:
-    # Если есть user_id — берём из SQLite shared memory
+    parts = []
+    # Level 2+3: долгосрочная память
+    if user_id is not None:
+        mem = build_memory_prompt(user_id, "vasily")
+        if mem:
+            parts.append(mem)
+    # Level 1: последние сообщения
     if user_id is not None:
         msgs = sm_get_history(user_id, "vasily", limit=20)
         if msgs:
-            lines = []
+            parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
             total_chars = 0
             for msg in msgs:
                 role = "Пользователь" if msg["role"] == "user" else "Василий"
@@ -392,11 +399,11 @@ def history_prompt(user_id: int | None = None) -> str:
                 total_chars += len(line)
                 if total_chars > 15000:
                     break
-                lines.append(line)
-            return "\n".join(lines)
+                parts.append(line)
+            return "\n".join(parts)
     # Fallback на in-memory deque
     if not user_history:
-        return ""
+        return "\n".join(parts) if parts else ""
     lines = []
     total_chars = 0
     for msg in reversed(list(user_history)):
@@ -407,7 +414,10 @@ def history_prompt(user_id: int | None = None) -> str:
             break
         lines.append(line)
     lines.reverse()
-    return "\n".join(lines)
+    if lines:
+        parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
+        parts.extend(lines)
+    return "\n".join(parts)
 
 
 def _load_portfolio() -> dict:
@@ -1034,6 +1044,10 @@ async def _process_single_message(update: Update, user_text: str, is_photo: bool
         if success:
             user_history.append({"role": "assistant", "text": answer[:2000]})
             sm_save(uid, "vasily", "assistant", answer[:5000])
+            try:
+                extract_facts_from_exchange(uid, "vasily", user_text, answer)
+            except Exception:
+                pass
             _log_conversation("assistant", answer, uid)
         else:
             _log_conversation("error", answer or "no response", update.effective_user.id)

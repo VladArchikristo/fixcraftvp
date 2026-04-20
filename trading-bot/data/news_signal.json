@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-20T01:00:24.015935+00:00",
+  "timestamp": "2026-04-20T04:00:24.890965+00:00",
   "sentiment": "bearish",
-  "score": -0.83,
+  "score": -0.79,
   "fear_greed": {
     "value": 29,
     "label": "Fear",
@@ -9,10 +9,10 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
+    "Hack at Vercel sends crypto developers scrambling to lock down API keys",
     "The $292 million Kelp exploit: how it happened, and what it means for DeFi",
-    "'DeFi is dead': crypto community scrambles after this year's biggest hack exposes contagion risks",
-    "Aave sees $6 billion deposit drop as Kelp hack exposes structural risk for DeFi lender",
-    "RaveDAO's RAVE token collapses 90% in a day as exchange probes widen"
+    "'DeFi is dead': crypto community scrambles after this year's biggest hack exposes contagion risk",
+    "Aave's TVL tanks $8B a day after $293M Kelp DAO hack"
   ],
   "affected_assets": [
     "BTC",
@@ -25,17 +25,17 @@
   ],
   "trending_coins": [
     "RAVE",
-    "WOJAK",
     "ASTEROID",
+    "WOJAK",
     "AAVE",
-    "PENGU",
     "PIEVERSE",
-    "BTC"
+    "PENGU",
+    "ZRO"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 17,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.88,
-  "cached_at": 1776646824.016094
+  "fetch_time_sec": 2.31,
+  "cached_at": 1776657624.891186
 }

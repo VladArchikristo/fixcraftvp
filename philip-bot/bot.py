@@ -24,7 +24,8 @@ from concurrent.futures import ThreadPoolExecutor
 # Shared memory
 import sys as _sys
 _sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
-from shared_memory import save_message as sm_save, get_history as sm_get_history, clear_history as sm_clear_history
+from shared_memory import save_message as sm_save, get_history as sm_get_history, clear_history as sm_clear_history, save_fact, get_facts, build_memory_prompt, save_session_summary
+from fact_extractor import extract_facts_from_exchange
 
 from dotenv import load_dotenv
 from telegram import Update
@@ -149,6 +150,7 @@ MODE_PREFIXES = {
 
 START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
+_delegate_executor = ThreadPoolExecutor(max_workers=2)  # separate pool for delegation — doesn't block main queue
 _processing = False
 _processing_since: float = 0.0  # monotonic timestamp when processing started
 _processing_lock = asyncio.Lock()
@@ -267,6 +269,17 @@ def _find_claude_children() -> list[int]:
     return pids
 
 
+def _recover_executor():
+    """Recreate the Claude executor if it's stuck after timeout/kill."""
+    global _claude_executor
+    try:
+        _claude_executor.shutdown(wait=False, cancel_futures=True)
+    except Exception:
+        pass
+    _claude_executor = ThreadPoolExecutor(max_workers=1)
+    log.info("Claude executor recovered (new ThreadPoolExecutor created)")
+
+
 def _kill_claude_children():
     """Kill all Claude child processes spawned by this bot."""
     pids = _find_claude_children()
@@ -297,6 +310,7 @@ async def watchdog_job(context: ContextTypes.DEFAULT_TYPE):
             dropped = len(_message_queue)
             log.warning("Watchdog HARD LIMIT: _processing stuck %.0fs — force killing Claude and resetting!", elapsed)
             _kill_claude_children()
+            _recover_executor()
             async with _processing_lock:
                 _processing = False
                 _processing_since = 0.0
@@ -461,31 +475,38 @@ def project_memory_prompt() -> str:
 
 
 def history_prompt(user_id: int | None = None) -> str:
-    # Если есть user_id — берём из SQLite shared memory
+    parts = []
+    # Level 2+3: долгосрочная память
+    if user_id is not None:
+        mem = build_memory_prompt(user_id, "philip")
+        if mem:
+            parts.append(mem)
+    # Level 1: последние сообщения
     if user_id is not None:
         msgs = sm_get_history(user_id, "philip", limit=20)
         if msgs:
-            lines = []
+            parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
             for msg in msgs:
                 role = "Пользователь" if msg["role"] == "user" else "Филип"
-                lines.append(f"{role}: {msg['content'][:1500]}")
-            return "\n".join(lines)
+                parts.append(f"{role}: {msg['content'][:1500]}")
+            return "\n".join(parts)
     # Fallback на in-memory deque
     if not user_history:
-        return ""
+        return "\n".join(parts) if parts else ""
     lines = []
     total_chars = 0
-    max_total = 8000
-    recent = list(user_history)[-20:]
-    for msg in reversed(recent):
+    for msg in reversed(list(user_history)[-20:]):
         role = "Пользователь" if msg["role"] == "user" else "Филип"
         line = f"{role}: {msg['text'][:1500]}"
         total_chars += len(line)
-        if total_chars > max_total:
+        if total_chars > 8000:
             break
         lines.append(line)
     lines.reverse()
-    return "\n".join(lines)
+    if lines:
+        parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
+        parts.extend(lines)
+    return "\n".join(parts)
 
 
 import re as _re
@@ -501,16 +522,17 @@ def _sanitize_markdown(text: str) -> str:
     text = text.replace('[', '').replace(']', '')
     # Fix bold/italic combos (***text*** → *text*)
     text = _re.sub(r'\*{3,}([^*]+)\*{3,}', r'*\1*', text)
-    # Ensure paired markers: **, *, _, `
-    for marker in ['**', '*', '_', '`']:
+    # Fix unclosed code blocks FIRST (before single backtick check)
+    if text.count('```') % 2 != 0:
+        text += '\n```'
+    # Ensure paired markers: **, *, _
+    # Note: skip single backtick to avoid breaking ``` blocks
+    for marker in ['**', '*', '_']:
         count = text.count(marker)
         if marker == '**':
             count = len(_re.findall(r'(?<!\*)\*\*(?!\*)', text))
         if count % 2 != 0:
             text = text.replace(marker, '', 1)
-    # Fix unclosed code blocks
-    if text.count('```') % 2 != 0:
-        text += '\n```'
     return text
 
 
@@ -675,10 +697,19 @@ async def ask_claude(user_text: str, user_id: int, image_path: str | None = None
 
     model = CLAUDE_MODEL_OPUS if force_opus else _choose_model(user_text)
     loop = asyncio.get_running_loop()
-    return await loop.run_in_executor(
-        _claude_executor,
-        lambda: _call_claude_sync(full_prompt, system, model=model),
-    )
+    try:
+        return await asyncio.wait_for(
+            loop.run_in_executor(
+                _claude_executor,
+                lambda: _call_claude_sync(full_prompt, system, model=model),
+            ),
+            timeout=CLAUDE_TIMEOUT + 60,  # asyncio safety net above subprocess timeout
+        )
+    except asyncio.TimeoutError:
+        log.warning("ask_claude asyncio timeout (%ds) — killing children and recovering executor", CLAUDE_TIMEOUT + 60)
+        _kill_claude_children()
+        _recover_executor()
+        return False, "⏱ Таймаут. Попробуй разбить задачу на части."
 
 
 # ---------------------------------------------------------------------------
@@ -816,7 +847,7 @@ async def _delegate_to(update: Update, bot_name: str, script_name: str, task: st
     thinking = await update.message.reply_text(f"Передаю задачу {bot_name}...")
     loop = asyncio.get_running_loop()
     answer = await loop.run_in_executor(
-        _claude_executor,
+        _delegate_executor,  # separate pool — doesn't block main Claude calls
         lambda: _delegate_sync(script_name, task),
     )
     try:
@@ -960,6 +991,10 @@ async def _process_single_message(update: Update, user_text: str, image_path: st
             _consecutive_errors = 0
             user_history.append({"role": "assistant", "text": answer[:2000]})
             sm_save(uid, "philip", "assistant", answer[:5000])
+            try:
+                extract_facts_from_exchange(uid, "philip", user_text, answer)
+            except Exception:
+                pass
             _save_history()
             _log_conversation("assistant", answer, uid)
         elif answer and "объёмная" in answer:
@@ -1175,6 +1210,7 @@ def _cleanup():
     _save_history()
     _save_project_memory()
     _claude_executor.shutdown(wait=True, cancel_futures=True)
+    _delegate_executor.shutdown(wait=False, cancel_futures=True)
     try:
         if _lock_fd and not _lock_fd.closed:
             _lock_fd.close()

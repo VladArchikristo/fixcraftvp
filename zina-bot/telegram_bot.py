@@ -24,7 +24,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Shared memory
 sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
-from shared_memory import save_message, get_history as sm_get_history, clear_history as sm_clear_history
+from shared_memory import save_message, get_history as sm_get_history, clear_history as sm_clear_history, save_fact, get_facts, build_memory_prompt, save_session_summary
+from fact_extractor import extract_facts_from_exchange
 
 from dotenv import load_dotenv
 from telegram import Update
@@ -351,23 +352,32 @@ def _save_history():
 
 
 def history_prompt(user_id: int | None = None) -> str:
-    # Если есть user_id — берём из SQLite shared memory
+    parts = []
+    # Level 2+3: долгосрочная память
+    if user_id is not None:
+        mem = build_memory_prompt(user_id, "zina")
+        if mem:
+            parts.append(mem)
+    # Level 1: последние сообщения
     if user_id is not None:
         msgs = sm_get_history(user_id, "zina", limit=20)
         if msgs:
-            lines = []
+            parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
             for msg in msgs:
                 role = "Пользователь" if msg["role"] == "user" else "Зина"
-                lines.append(f"{role}: {msg['content'][:2000]}")
-            return "\n".join(lines)
+                parts.append(f"{role}: {msg['content'][:2000]}")
+            return "\n".join(parts)
     # Fallback на in-memory deque
     if not user_history:
-        return ""
+        return "\n".join(parts) if parts else ""
     lines = []
     for msg in list(user_history)[-20:]:
         role = "Пользователь" if msg["role"] == "user" else "Зина"
         lines.append(f"{role}: {msg['text'][:2000]}")
-    return "\n".join(lines)
+    if lines:
+        parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
+        parts.extend(lines)
+    return "\n".join(parts)
 
 
 # ---------------------------------------------------------------------------
@@ -653,6 +663,10 @@ async def _process_single_message(update: Update, user_text: str):
             user_history.append({"role": "assistant", "text": answer[:2000]})
             _save_history()
             save_message(uid, "zina", "assistant", answer[:5000])
+            try:
+                extract_facts_from_exchange(uid, "zina", user_text, answer)
+            except Exception:
+                pass
             _log_conversation("assistant", answer, uid)
 
         try:
