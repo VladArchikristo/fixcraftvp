@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-20T07:00:25.242518+00:00",
+  "timestamp": "2026-04-20T10:00:25.786499+00:00",
   "sentiment": "bearish",
   "score": -0.75,
   "fear_greed": {
@@ -9,30 +9,31 @@
   },
   "key_events": [
     "[HACK] Sanctioned Russia-Linked Exchange Grinex Suspends Operations",
+    "Here's how bitcoin's $7.9 billion April options expiry impact prices",
+    "A $300 million borrowing spike on Aave signals liquidity crunch after exploit",
     "LayerZero blames Kelp's setup for $290 million exploit, attributes it to North Korea's Lazarus",
-    "The $13 billion DeFi wipeout in two days, and it started with KelpDAO attack",
-    "Hack at Vercel sends crypto developers scrambling to lock down API keys",
-    "The $292 million Kelp exploit: how it happened, and what it means for DeFi"
+    "The $13 billion DeFi wipeout in two days, and it started with KelpDAO attack"
   ],
   "affected_assets": [
+    "BTC",
     "ETH",
     "SOL",
     "OP",
     "LINK"
   ],
   "trending_coins": [
+    "ADA",
     "RAVE",
-    "ASTEROID",
-    "PIEVERSE",
-    "WOJAK",
     "AAVE",
-    "PENGU",
-    "SIREN"
+    "PLLD",
+    "ASTEROID",
+    "WOJAK",
+    "ZRO"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.36,
-  "cached_at": 1776668425.2427251
+  "fetch_time_sec": 2.47,
+  "cached_at": 1776679225.7867122
 }
