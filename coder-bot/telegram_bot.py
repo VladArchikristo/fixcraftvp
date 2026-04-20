@@ -854,7 +854,9 @@ async def _thinking_ticker(msg, start: float, prefix: str = "⚙️ Костя �
                 break
             try:
                 await msg.edit_text(f"{prefix}... {elapsed} сек")
-            except Exception:
+            except Exception as e:
+                if "message is not modified" in str(e).lower():
+                    continue
                 break
     except asyncio.CancelledError:
         pass
