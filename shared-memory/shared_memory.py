@@ -367,13 +367,17 @@ def build_memory_prompt(user_id: int, bot_name: str) -> str:
             for item in items[:10]:
                 parts.append(f"  • {item}")
 
-    # Кросс-бот факты (от других ботов, последние 10)
-    all_facts = get_all_facts(user_id, limit=20)
-    cross_facts = [f for f in all_facts if f["bot_name"] != bot_name][:10]
+    # Кросс-бот факты (от других ботов — только УНИКАЛЬНЫЕ, которых у этого бота нет)
+    own_facts_set = {f["fact"] for f in facts} if facts else set()
+    all_facts = get_all_facts(user_id, limit=100)
+    cross_facts = [f for f in all_facts if f["bot_name"] != bot_name and f["fact"] not in own_facts_set][:10]
     if cross_facts:
         parts.append("\n=== ФАКТЫ ОТ ДРУГИХ БОТОВ ===")
+        seen = set()
         for f in cross_facts:
-            parts.append(f"  [{f['bot_name']}] {f['fact']}")
+            if f["fact"] not in seen:
+                seen.add(f["fact"])
+                parts.append(f"  [{f['bot_name']}] {f['fact']}")
 
     # Резюме сессий (Level 3)
     sessions = get_session_summaries(user_id, bot_name, limit=3)

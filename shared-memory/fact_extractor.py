@@ -1,85 +1,151 @@
 #!/usr/bin/env python3
 """
-Автоматическое извлечение ключевых фактов из сообщений пользователя.
-Лёгкий модуль — regex-паттерны, без вызовов AI.
+Автоматическое извлечение ключевых фактов из сообщений.
 
-v2: расширенные паттерны (RU + EN), лучшее покрытие,
-    извлечение из ответов бота, нормализация фактов.
+v3: Haiku AI extraction (основной) + regex fallback.
+    Haiku через Claude CLI — не нужен API ключ.
+    Фоновое извлечение — не блокирует ответ бота.
 """
 
 import re
+import os
+import json
+import subprocess
+import threading
+import logging
 from shared_memory import save_fact
 
-# ===================== ПАТТЕРНЫ ПОЛЬЗОВАТЕЛЯ =====================
+log = logging.getLogger("fact_extractor")
 
-# Формат: (regex, category, template)
-# template: None = используем match group, str = форматируем с match groups
+# Claude CLI path — ищем во всех возможных местах
+CLAUDE_PATH = None
+_candidates = [
+    os.path.expanduser("~/.local/bin/claude"),  # основной путь на Mac Mini
+    "/usr/local/bin/claude",
+    "/opt/homebrew/bin/claude",
+    os.path.expanduser("~/.claude/local/claude"),
+]
+for _p in _candidates:
+    if os.path.exists(_p):
+        CLAUDE_PATH = _p
+        break
+if CLAUDE_PATH is None:
+    # fallback — попробуем через which
+    import shutil
+    CLAUDE_PATH = shutil.which("claude") or "claude"
+
+HAIKU_MODEL = "haiku"
+HAIKU_TIMEOUT = 60  # секунд — Claude CLI ~35 сек cold start + Haiku ответ
+
+# Минимальная длина сообщения для вызова Haiku (экономия)
+MIN_TEXT_FOR_HAIKU = 15
+# Минимальная длина ответа бота для анализа
+MIN_RESPONSE_FOR_HAIKU = 30
+
+# ===================== HAIKU EXTRACTION =====================
+
+EXTRACTION_SYSTEM = (
+    "Извлеки ключевые факты о пользователе из диалога. "
+    "Только КОНКРЕТНЫЕ: имя, локация, проект, предпочтение, решение, число, дата. "
+    "НЕ извлекай команды, вопросы, приветствия. "
+    'Категории: personal, preference, project, decision, trading, finance, health, config, status. '
+    'Ответ: JSON массив [{"fact":"...","category":"..."}]. Макс 3 факта. Если нет — []. '
+    "Факт до 100 символов."
+)
+
+
+def _call_haiku(user_text: str, bot_response: str) -> list[dict]:
+    """Вызывает Haiku через CLI для извлечения фактов. Возвращает [{fact, category}]."""
+    # Инструкция + данные в одном промте (через stdin)
+    prompt = (
+        f"{EXTRACTION_SYSTEM}\n\n"
+        f"User: {user_text[:500]}\n"
+        f"Bot: {bot_response[:500] if bot_response else '(нет)'}"
+    )
+
+    try:
+        proc = subprocess.run(
+            [CLAUDE_PATH, "-p", "--model", HAIKU_MODEL, "--output-format", "text",
+             "--max-turns", "1"],
+            input=prompt,
+            capture_output=True,
+            text=True,
+            timeout=HAIKU_TIMEOUT,
+        )
+        if proc.returncode != 0:
+            log.debug("Haiku exited %d", proc.returncode)
+            return []
+
+        raw = proc.stdout.strip()
+        # Извлекаем JSON из ответа
+        # Haiku может обернуть в ```json ... ``` или вернуть просто массив
+        raw = re.sub(r'^```(?:json)?\s*', '', raw)
+        raw = re.sub(r'\s*```$', '', raw)
+        raw = raw.strip()
+
+        if not raw or raw == "[]":
+            return []
+
+        facts = json.loads(raw)
+        if not isinstance(facts, list):
+            return []
+
+        # Валидация
+        result = []
+        for f in facts[:3]:
+            if isinstance(f, dict) and "fact" in f:
+                fact_text = str(f["fact"]).strip()
+                category = str(f.get("category", "general")).strip()
+                if 5 <= len(fact_text) <= 150:
+                    result.append({"fact": fact_text, "category": category})
+        return result
+
+    except subprocess.TimeoutExpired:
+        log.debug("Haiku timed out")
+        return []
+    except (json.JSONDecodeError, Exception) as e:
+        log.debug("Haiku parse error: %s", e)
+        return []
+
+
+# ===================== REGEX FALLBACK =====================
+
 PATTERNS_RU = [
-    # Предпочтения
     (r"(?:я\s+)?(?:предпочитаю|люблю|обожаю|выбираю)\s+(.{5,80})", "preference", None),
     (r"(?:мне\s+)?(?:нравится|подходит|удобно)\s+(.{5,80})", "preference", None),
     (r"(?:я\s+)?(?:использую|юзаю|пользуюсь)\s+(.{5,80})", "preference", "использует: {0}"),
-    # Личное
     (r"(?:мой|моя|моё|мои)\s+(\w+)\s+(?:—|это|[-–:])\s*(.{3,60})", "personal", "{0}: {1}"),
     (r"я\s+(?:живу|нахожусь)\s+(?:в|на)\s+(.{3,60})", "personal", "локация: {0}"),
     (r"я\s+(?:работаю|тружусь)\s+(.{5,80})", "personal", "работа: {0}"),
-    (r"я\s+(?:учусь|изучаю|занимаюсь)\s+(.{5,80})", "personal", "занятие: {0}"),
     (r"мне\s+(\d+)\s+(?:лет|год|года)", "personal", "возраст: {0}"),
     (r"меня\s+зовут\s+(\w+)", "personal", "имя: {0}"),
-    # Проекты и задачи
     (r"(?:работаю\s+над|делаю|пилю|строю)\s+(.{5,80})", "project", None),
-    (r"(?:проект|приложение|бот|сайт)\s+(.{5,80})", "project", None),
     (r"(?:запустил|создал|развернул|задеплоил)\s+(.{5,80})", "project", "запустил: {0}"),
-    # Решения и планы
-    (r"(?:решил|буду|планирую|собираюсь|хочу)\s+(.{5,80})", "decision", None),
-    (r"(?:надо|нужно|пора)\s+(.{5,80})", "decision", "план: {0}"),
-    # Дизлайки
-    (r"(?:не\s+люблю|ненавижу|не\s+хочу|бесит|раздражает)\s+(.{5,80})", "dislike", None),
-    # Финансы / трейдинг
+    (r"(?:решил|буду|планирую|собираюсь)\s+(.{5,80})", "decision", None),
     (r"(?:купил|продал|открыл|закрыл)\s+(.{5,80})", "trading", None),
-    (r"(?:портфель|баланс|депозит|счёт)\s*[:—-]\s*(.{5,80})", "trading", None),
-    (r"(?:бюджет|трачу|подписка|стоит)\s+(.{5,80})", "finance", None),
-    # Здоровье (для Петра)
     (r"(?:болит|аллергия|принимаю|диагноз)\s+(.{5,80})", "health", None),
-    # Технические
-    (r"(?:токен|api.?key|пароль|ключ)\s+(?:для\s+)?(\w+)\s+(.{5,50})", "config", "config {0}: {1}"),
-    (r"(?:версия|version)\s+(.{3,30})", "config", "версия: {0}"),
 ]
 
-PATTERNS_EN = [
-    (r"(?:I\s+)?(?:prefer|like|love|use)\s+(.{5,80})", "preference", None),
-    (r"(?:I\s+)?(?:work|live|study)\s+(?:on|in|at)\s+(.{5,80})", "personal", None),
-    (r"(?:I\s+)?(?:want|plan|need)\s+to\s+(.{5,80})", "decision", None),
-    (r"(?:bought|sold|opened|closed)\s+(.{5,80})", "trading", None),
-    (r"(?:budget|spend|cost|price)\s*[:—-]?\s*(.{5,80})", "finance", None),
-    (r"(?:my\s+)(\w+)\s+(?:is|are|was)\s+(.{3,60})", "personal", "{0}: {1}"),
-]
-
-# Команды-подсказки (прямое "запомни")
 REMEMBER_PATTERNS = [
     r"запомни[:\s]+(.{5,200})",
     r"помни[:\s]+(.{5,200})",
     r"важно[:\s]+(.{5,200})",
     r"не\s*забудь[:\s]+(.{5,200})",
     r"remember[:\s]+(.{5,200})",
-    r"note[:\s]+(.{5,200})",
-    r"save[:\s]+(.{5,200})",
 ]
 
 
 def _normalize_fact(text: str) -> str:
-    """Нормализует факт: убирает лишние пробелы, пунктуацию в конце."""
+    """Нормализует факт: убирает лишние пробелы, пунктуацию."""
     text = text.strip()
     text = re.sub(r'\s+', ' ', text)
     text = text.rstrip(".,;:!?…")
-    # Ограничиваем длину
     if len(text) > 150:
         text = text[:147] + "…"
     return text
 
 
 def _apply_template(template, groups):
-    """Применяет шаблон к группам regex."""
     if template is None:
         return " ".join(g.strip() for g in groups if g)
     try:
@@ -88,87 +154,85 @@ def _apply_template(template, groups):
         return " ".join(g.strip() for g in groups if g)
 
 
-def extract_facts(user_id: int, bot_name: str, user_text: str) -> list[str]:
-    """
-    Извлекает факты из текста пользователя и сохраняет в БД.
-    Возвращает список извлечённых фактов (для логирования).
-    """
+def _regex_extract(user_text: str) -> list[tuple[str, str]]:
+    """Regex fallback — возвращает [(fact, category)]."""
     if not user_text or len(user_text) < 5:
         return []
 
-    extracted = []
-    text = user_text.strip()
-    text_lower = text.lower()
+    results = []
+    text_lower = user_text.strip().lower()
 
-    # 1. Прямые команды "запомни" — приоритет
+    # Прямые команды "запомни"
     for pattern in REMEMBER_PATTERNS:
         match = re.search(pattern, text_lower, re.IGNORECASE)
         if match:
             fact = _normalize_fact(match.group(1))
             if len(fact) >= 5:
-                save_fact(user_id, bot_name, fact, "explicit")
-                extracted.append(fact)
+                results.append((fact, "explicit"))
+    if results:
+        return results[:3]
 
-    # Если нашли явную команду — не ищем автоматически
-    if extracted:
-        return extracted[:3]
-
-    # 2. Автоматические паттерны (RU)
+    # Авто-паттерны
     for pattern, category, template in PATTERNS_RU:
         matches = list(re.finditer(pattern, text_lower, re.IGNORECASE))
         for match in matches:
-            groups = match.groups()
-            raw = _apply_template(template, groups)
+            raw = _apply_template(template, match.groups())
             fact = _normalize_fact(raw)
             if 5 <= len(fact) <= 200:
-                save_fact(user_id, bot_name, fact, category)
-                extracted.append(fact)
-                break  # одного факта на паттерн
-
-    # 3. Автоматические паттерны (EN)
-    for pattern, category, template in PATTERNS_EN:
-        matches = list(re.finditer(pattern, text, re.IGNORECASE))
-        for match in matches:
-            groups = match.groups()
-            raw = _apply_template(template, groups)
-            fact = _normalize_fact(raw)
-            if 5 <= len(fact) <= 200:
-                save_fact(user_id, bot_name, fact, category)
-                extracted.append(fact)
+                results.append((fact, category))
                 break
+    return results[:5]
 
-    return extracted[:5]  # максимум 5 фактов за сообщение
+
+# ===================== MAIN API =====================
+
+def extract_facts(user_id: int, bot_name: str, user_text: str) -> list[str]:
+    """
+    Извлекает факты из текста пользователя (regex only, синхронно).
+    Сохраняет в БД. Возвращает список фактов.
+    """
+    extracted = []
+    for fact, category in _regex_extract(user_text):
+        save_fact(user_id, bot_name, fact, category)
+        extracted.append(fact)
+    return extracted
 
 
 def extract_facts_from_exchange(user_id: int, bot_name: str,
                                  user_text: str, bot_response: str) -> list[str]:
     """
-    Извлекает факты из обмена сообщениями (user + bot response).
+    Извлекает факты из обмена (user + bot response).
+    Использует Haiku в фоне + regex как быстрый fallback.
     Вызывается ПОСЛЕ каждого ответа бота.
     """
-    facts = extract_facts(user_id, bot_name, user_text)
+    # 1. Regex — мгновенно, синхронно (для прямых команд "запомни")
+    quick_facts = []
+    for fact, category in _regex_extract(user_text):
+        save_fact(user_id, bot_name, fact, category)
+        quick_facts.append(fact)
 
-    # Из ответа бота — рекомендации, итоги, решения
-    if bot_response and len(bot_response) > 20:
-        response_lower = bot_response.lower()
-        bot_patterns = [
-            (r"рекомендую\s+(.{10,100})", "recommendation"),
-            (r"итог[:\s]+(.{10,200})", "summary"),
-            (r"вывод[:\s]+(.{10,200})", "summary"),
-            (r"решение[:\s]+(.{10,200})", "decision"),
-            (r"результат[:\s]+(.{10,200})", "summary"),
-            (r"статус[:\s]+(.{10,100})", "status"),
-            # Числовые результаты (портфель, прибыль)
-            (r"(?:прибыль|убыток|доход|P&L)[:\s]*([+-]?\$?[\d,.]+%?)", "trading"),
-            (r"(?:profit|loss|P&L)[:\s]*([+-]?\$?[\d,.]+%?)", "trading"),
-        ]
-        for pattern, category in bot_patterns:
-            match = re.search(pattern, response_lower)
-            if match:
-                fact = _normalize_fact(match.group(1))
-                if len(fact) >= 5:
-                    save_fact(user_id, bot_name, f"[бот] {fact}", category)
-                    facts.append(fact)
-                    break
+    # 2. Haiku — в фоновом потоке (не блокирует)
+    user_len = len(user_text) if user_text else 0
+    resp_len = len(bot_response) if bot_response else 0
 
-    return facts[:5]
+    if user_len >= MIN_TEXT_FOR_HAIKU or resp_len >= MIN_RESPONSE_FOR_HAIKU:
+        thread = threading.Thread(
+            target=_haiku_extract_background,
+            args=(user_id, bot_name, user_text or "", bot_response or ""),
+            daemon=True,
+        )
+        thread.start()
+
+    return quick_facts
+
+
+def _haiku_extract_background(user_id: int, bot_name: str,
+                               user_text: str, bot_response: str):
+    """Фоновое извлечение фактов через Haiku."""
+    try:
+        facts = _call_haiku(user_text, bot_response)
+        for f in facts:
+            save_fact(user_id, bot_name, f["fact"], f["category"], source="haiku")
+            log.info("[%s] Haiku fact: [%s] %s", bot_name, f["category"], f["fact"])
+    except Exception as e:
+        log.debug("Haiku background error: %s", e)

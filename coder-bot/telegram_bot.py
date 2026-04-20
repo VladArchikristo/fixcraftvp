@@ -21,7 +21,7 @@ from pathlib import Path
 
 # Суб-агенты — параллельное выполнение маленьких задач
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS
+from shared.subagent_utils import two_pass_call, DELEGATION_INSTRUCTIONS, _get_claude_env
 from datetime import datetime
 
 # Shared memory
@@ -264,36 +264,7 @@ _current_proc: "subprocess.Popen | None" = None
 _current_proc_lock = threading.Lock()
 
 
-def _get_claude_env() -> dict:
-    home = Path.home()
-    # Find active nvm node bin dir (if any)
-    nvm_node_bin = ""
-    nvm_dir = home / ".nvm" / "versions" / "node"
-    if nvm_dir.exists():
-        versions = sorted(nvm_dir.iterdir(), reverse=True)
-        if versions:
-            nvm_node_bin = str(versions[0] / "bin")
-            # Ensure node is reachable via ~/.local/bin (no sudo needed)
-            local_bin = home / ".local" / "bin"
-            local_bin.mkdir(parents=True, exist_ok=True)
-            local_node = local_bin / "node"
-            nvm_node = Path(nvm_node_bin) / "node"
-            if not local_node.exists() and nvm_node.exists():
-                local_node.symlink_to(nvm_node)
-    base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
-    extra = f"{home}/.local/bin:{nvm_node_bin}:{home}/.bun/bin" if nvm_node_bin else f"{home}/.local/bin:{home}/.bun/bin"
-    env = {
-        "HOME": str(home),
-        "PATH": f"{extra}:{base_path}",
-        "USER": os.environ.get("USER", ""),
-        "LANG": os.environ.get("LANG", "en_US.UTF-8"),
-        "TERM": os.environ.get("TERM", "xterm-256color"),
-    }
-    tmpdir = os.environ.get("TMPDIR")
-    if tmpdir:
-        env["TMPDIR"] = tmpdir
-    return env
-
+# _get_claude_env() импортирован из shared.subagent_utils (единая версия)
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -306,6 +277,10 @@ _file_handler.setFormatter(_log_formatter)
 # Только file handler — LaunchAgent redirects stdout to the same file, causing duplicates
 logging.basicConfig(level=logging.INFO, handlers=[_file_handler])
 log = logging.getLogger("kostya")
+
+# Подавляем httpx/telegram логгеры — они сливают BOT_TOKEN в логи
+for _noisy in ("httpx", "httpcore", "telegram.ext", "telegram.bot"):
+    logging.getLogger(_noisy).setLevel(logging.WARNING)
 
 # ---------------------------------------------------------------------------
 # Singleton lock

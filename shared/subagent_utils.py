@@ -27,7 +27,7 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
-SUBAGENT_MODEL = "claude-sonnet-4-6"
+SUBAGENT_MODEL = "claude-haiku-4-5"
 SUBAGENT_TIMEOUT = 60  # секунд — быстро!
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 
@@ -118,23 +118,33 @@ DELEGATION_INSTRUCTIONS = """
 
 
 def _get_claude_env() -> dict:
-    """Минимальное окружение для subprocess."""
+    """Окружение для subprocess — единая версия для всех ботов."""
     home = Path.home()
-    nvm_dir = home / ".nvm" / "versions" / "node"
     nvm_node_bin = ""
+    nvm_dir = home / ".nvm" / "versions" / "node"
     if nvm_dir.exists():
         versions = sorted(nvm_dir.iterdir(), reverse=True)
         if versions:
             nvm_node_bin = str(versions[0] / "bin")
+            local_bin = home / ".local" / "bin"
+            local_bin.mkdir(parents=True, exist_ok=True)
+            local_node = local_bin / "node"
+            nvm_node = Path(nvm_node_bin) / "node"
+            if not local_node.exists() and nvm_node.exists():
+                local_node.symlink_to(nvm_node)
     base_path = os.environ.get("PATH", "/usr/bin:/usr/local/bin")
     extra = f"{home}/.local/bin:{nvm_node_bin}:{home}/.bun/bin" if nvm_node_bin else f"{home}/.local/bin:{home}/.bun/bin"
-    return {
+    env = {
         "HOME": str(home),
         "PATH": f"{extra}:{base_path}",
         "USER": os.environ.get("USER", ""),
         "LANG": os.environ.get("LANG", "en_US.UTF-8"),
-        "TERM": "xterm-256color",
+        "TERM": os.environ.get("TERM", "xterm-256color"),
     }
+    tmpdir = os.environ.get("TMPDIR")
+    if tmpdir:
+        env["TMPDIR"] = tmpdir
+    return env
 
 
 def run_subagent(task: str, agent_type: str = "quick") -> str:
