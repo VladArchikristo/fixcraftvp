@@ -212,102 +212,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-16T16:05:17.228250",
-      "total_value": 1017.39,
-      "portfolio_value": 1017.39,
-      "pnl": 17.39,
-      "sentiment": "bullish",
-      "actions_taken": 0,
-      "summary": "## АНАЛИЗ РЫНКА | 16.04.2026 16:03 UTC",
-      "trades": [
-        "🔄 HOLD ETH | Позиция +$2.79, whale walls держат $2354-2354.50, BID-HEAVY стакан, MACD bullish, тренд STRONG_BULL. Поднять SL с $2313.14 до $2326 (ниже EMA20, защита прибыли). TP $2393 актуален.",
-        "⏸️ NO_ACTION | XRP: RSI 75.4 блокирует LONG. AVAX: ASK-HEAVY стакан -55.9%, overbought на всех ТФ, 1d медведи чуть сильнее. Общий фон: STOP_NEW_ENTRIES по news signal, hack Drift, Extreme Fear 23. Кэш $862 сохранить для входа после коррекции."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 30,
-          "rec": "BUY",
-          "rsi": 55.7
-        },
-        "XRP": {
-          "score": 10,
-          "rec": "NEUTRAL",
-          "rsi": 75.4
-        },
-        "AVAX": {
-          "score": 30,
-          "rec": "BUY",
-          "rsi": 66.6
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 23.3
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 8.3
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 16.7
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
-      "time": "2026-04-16T18:02:14.623142",
-      "total_value": 1016.44,
-      "portfolio_value": 1016.44,
-      "pnl": 16.44,
-      "sentiment": "bullish",
-      "actions_taken": 0,
-      "summary": "## VASILY MARKET REPORT — 2026-04-16 18:00 UTC",
-      "trades": [
-        "🔄 HOLD ETH | Позиция +$1.84, whale floors держат $2341-2342,               4h ADX 27.6 STRONG + StochRSI oversold = потенциал к $2345+.               Поднять SL до $2,323 для защиты прибыли.",
-        "⏸️ NO_ACTION | News Sentiment BEARISH -0.73, Risk CRITICAL, STOP_NEW_ENTRIES.               Hack incident активен. Fear & Greed 23.               XRP и AVAX перекуплены на 4h.               Новые позиции не открывать до снижения risk level."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 25,
-          "rec": "BUY",
-          "rsi": 51.9
-        },
-        "XRP": {
-          "score": 55,
-          "rec": "STRONG_BUY",
-          "rsi": 65.5
-        },
-        "AVAX": {
-          "score": 55,
-          "rec": "STRONG_BUY",
-          "rsi": 60.0
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 25.8
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 15.8
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 20.8
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-16T19:06:00.106753",
       "total_value": 1016.61,
       "portfolio_value": 1016.61,
@@ -2611,7 +2515,101 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-19T19:05:36.808481",
+      "total_value": 1017.52,
+      "portfolio_value": 1017.52,
+      "pnl": 17.52,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ ВАСИЛИЯ | 19 апр 2026, 19:04 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | News Agent: STOP_NEW_ENTRIES — критический риск из-за $292M Kelp exploit.   Системный риск DeFi не отыгран: Aave bad debt неизвестен, возможно заражение.   ETH orderbook -98.4% ASK-HEAVY + ADX 43.5 — тренд убийственный.   AVAX: Death Cross + score -35 блокирует LONG.   XRP: whale walls выглядят сильно (Strategy +42), НО:     - funding +0.0013% (лонги перегружены),     - news agent BEARISH -0.83,     - системный крипто-страх перевешивает технику.   Оптимальное действие: сохранить кэш $1017.52, ждать стабилизации после Kelp.   Перевход в активный режим: когда Fear & Greed > 35 ИЛИ ETH orderbook > -50%"
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 21.6
+        },
+        "XRP": {
+          "score": 5,
+          "rec": "NEUTRAL",
+          "rsi": 26.4
+        },
+        "AVAX": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 24.9
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 5.8
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 8.3
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "SHORT",
+          "weighted": -15.8
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-19T21:02:04.062241",
+      "total_value": 1017.52,
+      "portfolio_value": 1017.52,
+      "pnl": 17.52,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ | Анализ 2026-04-19 21:00 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | Kelp DeFi exploit $292M создаёт системный риск для ETH экосистемы.    News agent CRITICAL, все 1h сигналы STRONG_SELL.    4h oversold условия не компенсируют фундаментальный риск.    Whale wall ETH $2.34M у $2279.80 — единственный потенциальный триггер для re-entry,    но требует подтверждения удержания уровня на следующей 4h свече.    Кэш $1017.52 — держим полностью до прояснения ситуации."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -55,
+          "rec": "STRONG_SELL",
+          "rsi": 34.5
+        },
+        "XRP": {
+          "score": -40,
+          "rec": "STRONG_SELL",
+          "rsi": 38.3
+        },
+        "AVAX": {
+          "score": -45,
+          "rec": "STRONG_SELL",
+          "rsi": 36.9
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -3.3
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -0.8
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -14.2
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-19T18:02:04.472669"
+  "updated_at": "2026-04-19T21:02:04.062301"
 }
