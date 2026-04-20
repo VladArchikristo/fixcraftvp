@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Beast v10 — Claude Code Telegram Bot (production-grade)
+Beast v11 — Claude Code Telegram Bot (production-grade)
 - Singleton lock via fcntl.flock
 - Error handler: 409 Conflict auto-exit, NetworkError retry
 - Atomic heartbeat, proper shutdown cleanup
@@ -16,6 +16,8 @@ Beast v10 — Claude Code Telegram Bot (production-grade)
 - History persistence across restarts
 - System prompt + allowedTools + bypassPermissions
 - Full stderr capture for debugging
+- Three-level shared memory (facts + sessions + cross-bot)
+- Haiku AI fact extraction after each response
 """
 
 from __future__ import annotations
@@ -36,6 +38,11 @@ import uuid
 from datetime import datetime
 from collections import deque
 from pathlib import Path
+
+import sys
+sys.path.insert(0, '/Users/vladimirprihodko/Папка тест/fixcraftvp/shared-memory')
+from shared_memory import save_message, build_memory_prompt, save_session_summary
+from fact_extractor import extract_facts_from_exchange
 
 from dotenv import load_dotenv
 from telegram import Update
@@ -81,13 +88,16 @@ CONVERSATION_LOG = Path(__file__).parent / "conversation_log.jsonl"
 MAX_LOG_SIZE = 10 * 1024 * 1024  # 10 MB
 
 BASE_SYSTEM_PROMPT = (
-    "Ты Beast — мощный AI-ассистент с доступом к Claude Code CLI. "
-    "Помогаешь с программированием, DevOps, анализом кода и любыми техническими задачами. "
-    "Говоришь по-русски, кратко и по делу. "
-    "У тебя есть доступ к инструментам: Read, Edit, Write, Grep, Glob, Bash. "
-    "Можешь читать и изменять файлы проекта.\n\n"
-    "ПАМЯТЬ: после каждого важного разговора сохраняй краткое резюме "
-    f"в файл {OBSIDIAN_MEMORY} через Write — это твоя долгосрочная память в Obsidian."
+    "Ты Beast (@Antropic_BeastBot) — главный AI-ассистент Владимира. "
+    "Точка входа для всех задач. Доступ к Claude Code CLI, инструменты: Read, Edit, Write, Grep, Glob, Bash.\n\n"
+    "ХОЗЯИН: Владимир (Влад), предприниматель, Telegram ID 244710532. "
+    "FixCraft VP — handyman бизнес в Charlotte NC. Суперпроект: Остров → научный хаб.\n\n"
+    "БОТЫ: Костя (@KostyaCoderBot) — программист | Маша (@masha_marketer_bot) — маркетолог | "
+    "Василий (@vasily_trader_bot) — трейдер | Филип (@PhilipThinkerBot) — промт-инженер | "
+    "Пётр (@PeterMedBot) — медицина | Зина (@ZinaAstroBot) — астрология\n\n"
+    "СТИЛЬ: русский, кратко, по делу. Не начинай с 'Привет!' — сразу к задаче. Markdown для форматирования.\n\n"
+    "ПРАВИЛА: не показывай токены/ключи, не делай деструктивных команд без запроса, "
+    "git-save только на GitHub (не Vercel)."
 )
 
 # ---------------------------------------------------------------------------
@@ -394,15 +404,26 @@ async def safe_reply(message, text: str, parse_mode=None) -> None:
 # ---------------------------------------------------------------------------
 
 def build_system_context() -> str:
-    """Build a system-prompt string with recent conversation history."""
-    if not history:
-        return ""
-    lines = ["Recent conversation history (for context only):"]
-    for role, text in history:
-        prefix = "User" if role == "user" else "Assistant"
-        short = text[:1000] + "..." if len(text) > 1000 else text
-        lines.append(f"{prefix}: {short}")
-    return "\n".join(lines)
+    """Build a system-prompt string with memory + recent conversation history."""
+    lines = []
+
+    # Трёхуровневая память из shared_memory
+    try:
+        memory_block = build_memory_prompt(ALLOWED_USER, "beast")
+        if memory_block:
+            lines.append(memory_block)
+    except Exception as e:
+        log.warning("Failed to build memory prompt: %s", e)
+
+    # Короткая история из deque
+    if history:
+        lines.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
+        for role, text in history:
+            prefix = "Влад" if role == "user" else "Beast"
+            short = text[:500] + "..." if len(text) > 500 else text
+            lines.append(f"{prefix}: {short}")
+
+    return "\n".join(lines) if lines else ""
 
 # ---------------------------------------------------------------------------
 # Call claude CLI
@@ -563,7 +584,7 @@ async def cmd_start(update: Update, _):
     if not is_allowed(update):
         return
     await update.message.reply_text(
-        "Beast v10 online.\n"
+        "Beast v11 online.\n"
         "Пиши сообщение — я отправлю его в Claude Code CLI и верну ответ."
     )
 
@@ -576,7 +597,7 @@ async def cmd_status(update: Update, _):
     minutes, secs = divmod(remainder, 60)
     qsize = message_queue.qsize() if message_queue else 0
     await update.message.reply_text(
-        f"Beast v10\n"
+        f"Beast v11\n"
         f"PID: {os.getpid()}\n"
         f"Uptime: {hours}h {minutes}m {secs}s\n"
         f"History: {len(history)}/{HISTORY_SIZE} messages\n"
@@ -621,7 +642,7 @@ async def cmd_health(update: Update, _):
     except Exception:
         pass
     await update.message.reply_text(
-        f"Beast v10 Health Check\n"
+        f"Beast v11 Health Check\n"
         f"Uptime: {hours}h {minutes}m {secs}s\n"
         f"PID: {os.getpid()}\n"
         f"Errors in a row: {consecutive_errors}/{MAX_CONSECUTIVE_ERRORS}\n"
@@ -777,6 +798,12 @@ async def _queue_worker():
         history.append(("user", user_text))
         _log_conversation("user", user_text, update.effective_user.id)
 
+        # Shared memory: сохраняем сообщение пользователя
+        try:
+            save_message(ALLOWED_USER, "beast", "user", user_text[:2000])
+        except Exception as e:
+            log.warning("Failed to save user message to shared memory: %s", e)
+
         try:
             response = await call_claude(user_text)
         except Exception as exc:
@@ -819,6 +846,14 @@ async def _queue_worker():
         history.append(("assistant", response))
         _log_conversation("assistant", response, update.effective_user.id)
         _save_history()
+
+        # Shared memory: сохраняем ответ + извлекаем факты (Haiku в фоне)
+        try:
+            save_message(ALLOWED_USER, "beast", "assistant", response[:2000])
+            uid = update.effective_user.id
+            extract_facts_from_exchange(uid, "beast", user_text, response)
+        except Exception as e:
+            log.warning("Failed to save/extract to shared memory: %s", e)
 
         try:
             await status_msg.delete()
@@ -943,7 +978,7 @@ def main():
     start_time = time.time()
     message_queue = asyncio.Queue(maxsize=MAX_QUEUE_SIZE)
     _load_history()
-    log.info("Beast v10 starting, PID=%d, history=%d", os.getpid(), len(history))
+    log.info("Beast v11 starting, PID=%d, history=%d", os.getpid(), len(history))
 
     app = (
         Application.builder()

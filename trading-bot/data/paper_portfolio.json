@@ -5,7 +5,7 @@
       "side": "LONG",
       "size_usd": 200.0,
       "entry_price": 1.42135,
-      "stop_loss": 1.39,
+      "stop_loss": 1.4,
       "take_profit": 1.49,
       "trailing_stop_pct": 2.0,
       "opened_at": "2026-04-20T06:41:07.129529"
@@ -15,7 +15,7 @@
       "side": "LONG",
       "size_usd": 200.0,
       "entry_price": 1.42135,
-      "stop_loss": 1.39,
+      "stop_loss": 1.4,
       "take_profit": 1.51,
       "trailing_stop_pct": 2.0,
       "opened_at": "2026-04-20T06:41:07.129529"
@@ -232,55 +232,6 @@
     }
   ],
   "scan_history": [
-    {
-      "time": "2026-04-17T07:05:25.395641",
-      "total_value": 1017.71,
-      "portfolio_value": 1017.71,
-      "pnl": 17.71,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "# Василий — Торговый Анализ | 2026-04-17 07:03 UTC",
-      "trades": [
-        "🔄 HOLD ETH | Позиция в прибыли +$2.23, 4h STRONG BUY, whale walls защищают $2,345,               bullish cross StochRSI. Поднять SL с $2313 до $2320 (выше безубытка).              Держать до TP $2393.",
-        "🔄 HOLD XRP | ADX 50+ очень сильный тренд, whale walls на $1.44 держат.               SL $1.42 за whale wall = защита. Дождаться TP $1.50 или               коррекции которая покажет слабость.",
-        "⏸️ NO_ACTION | News Agent = STOP_NEW_ENTRIES (BEARISH -0.79, CRITICAL risk).               1 активный хак + 12 атак за неделю на крипто. BTC застрял под $76k.               F&G = 21 (Extreme Fear). Несмотря на бычьи TA сигналы по AVAX (4h +55),               macro риск перевешивает. Кэш $712.60 сохраняем до улучшения macro               или пробоя BTC через $76k с объёмом."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 25,
-          "rec": "BUY",
-          "rsi": 53.2
-        },
-        "XRP": {
-          "score": 25,
-          "rec": "BUY",
-          "rsi": 55.2
-        },
-        "AVAX": {
-          "score": -5,
-          "rec": "NEUTRAL",
-          "rsi": 48.6
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 29.2
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 29.2
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 25.0
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
     {
       "time": "2026-04-17T09:03:08.606707",
       "total_value": 1021.41,
@@ -2618,7 +2569,55 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-20T10:22:43.106185",
+      "total_value": 1019.54,
+      "portfolio_value": 1019.54,
+      "pnl": 19.54,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "# ВАСИЛИЙ — РЫНОЧНЫЙ БРИФИНГ | 2026-04-20 10:21 UTC",
+      "trades": [
+        "🔄 HOLD XRP | 4h ADX 32.2 STRONG bull trend, DI+ > DI-, whale walls $1.43 holding,               funding -0.0006% (crowd short = tailwind for longs), 4h+1d aligned BUY.               Обе позиции в прибыли, SL подтянуть до $1.415 для защиты.",
+        "⏸️ NO_ACTION | News Agent: CRITICAL risk, STOP_NEW_ENTRIES. ETH order book -96.6%               ASK-heavy, 4h bearish/neutral — нет сигнала. AVAX: 4h SELL,               конфликт TF. Новых позиций не открывать до смягчения риск-сигнала."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 0,
+          "rec": "NEUTRAL",
+          "rsi": 53.3
+        },
+        "XRP": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 58.7
+        },
+        "AVAX": {
+          "score": 20,
+          "rec": "BUY",
+          "rsi": 57.0
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 6.7
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 12.5
+        },
+        "AVAX": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": -5.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-20T09:01:43.917807"
+  "updated_at": "2026-04-20T10:22:43.106225"
 }

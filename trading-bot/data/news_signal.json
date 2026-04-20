@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-20T13:00:24.092670+00:00",
+  "timestamp": "2026-04-20T14:21:03.912277+00:00",
   "sentiment": "bearish",
-  "score": -0.57,
+  "score": -0.71,
   "fear_greed": {
     "value": 29,
     "label": "Fear",
@@ -18,22 +18,23 @@
     "BTC",
     "ETH",
     "SOL",
+    "BNB",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "RAVE",
     "AAVE",
-    "ASTEROID",
-    "M",
+    "RAVE",
     "WOJAK",
-    "AITECH",
-    "BTC"
+    "ASTEROID",
+    "ZRO",
+    "M",
+    "PENGU"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.62,
-  "cached_at": 1776690024.092875
+  "fetch_time_sec": 2.34,
+  "cached_at": 1776694863.912407
 }
