@@ -70,14 +70,137 @@ def init_db():
 
 
 def save_message(user_id: int, bot_name: str, role: str, content: str):
-    """Сохраняет сообщение в историю."""
+    """Сохраняет сообщение в историю. Автоматически детектирует границы сессий."""
     conn = _get_conn()
+
+    # Авто-детекция сессий: если прошло >30 мин с последнего сообщения — сохраняем резюме старой сессии
+    if role == "user":
+        try:
+            _auto_detect_session(conn, user_id, bot_name)
+        except Exception:
+            pass  # не блокируем основную логику
+
     conn.execute(
         "INSERT INTO messages (user_id, bot_name, role, content) VALUES (?, ?, ?, ?)",
         (user_id, bot_name, role, content)
     )
     conn.commit()
     conn.close()
+
+
+# Порог определения новой сессии (секунды)
+SESSION_GAP_SECONDS = 1800  # 30 минут
+MIN_MESSAGES_FOR_SUMMARY = 4  # минимум сообщений для создания резюме
+
+
+def _auto_detect_session(conn, user_id: int, bot_name: str):
+    """Проверяет, не началась ли новая сессия (пауза >30 мин). Если да — резюмирует предыдущую."""
+    last_msg = conn.execute(
+        """SELECT created_at FROM messages
+           WHERE user_id=? AND bot_name=?
+           ORDER BY created_at DESC LIMIT 1""",
+        (user_id, bot_name)
+    ).fetchone()
+
+    if not last_msg:
+        return
+
+    from datetime import datetime, timezone
+    last_time_str = last_msg["created_at"]
+    try:
+        last_time = datetime.strptime(last_time_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+    except (ValueError, TypeError):
+        try:
+            last_time = datetime.fromisoformat(last_time_str)
+            if last_time.tzinfo is None:
+                last_time = last_time.replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError):
+            return
+
+    now_utc = datetime.now(timezone.utc)
+    gap = (now_utc - last_time).total_seconds()
+    if gap < SESSION_GAP_SECONDS:
+        return
+
+    # Считаем сообщения с последнего резюме
+    last_summary = conn.execute(
+        """SELECT created_at FROM session_summaries
+           WHERE user_id=? AND bot_name=?
+           ORDER BY created_at DESC LIMIT 1""",
+        (user_id, bot_name)
+    ).fetchone()
+
+    if last_summary:
+        summary_time = last_summary["created_at"]
+        messages = conn.execute(
+            """SELECT role, content, created_at FROM messages
+               WHERE user_id=? AND bot_name=? AND created_at > ?
+               ORDER BY created_at ASC""",
+            (user_id, bot_name, summary_time)
+        ).fetchall()
+    else:
+        messages = conn.execute(
+            """SELECT role, content, created_at FROM messages
+               WHERE user_id=? AND bot_name=?
+               ORDER BY created_at ASC""",
+            (user_id, bot_name)
+        ).fetchall()
+
+    if len(messages) < MIN_MESSAGES_FOR_SUMMARY:
+        return
+
+    # Генерируем резюме из сообщений
+    summary = _generate_summary(messages)
+    conn.execute(
+        "INSERT INTO session_summaries (user_id, bot_name, summary, message_count) VALUES (?, ?, ?, ?)",
+        (user_id, bot_name, summary, len(messages))
+    )
+    conn.commit()
+
+
+def _generate_summary(messages) -> str:
+    """Генерирует краткое резюме сессии из сообщений (без AI, чистая экстракция)."""
+    user_msgs = [m for m in messages if m["role"] == "user"]
+    bot_msgs = [m for m in messages if m["role"] == "assistant"]
+
+    # Временной диапазон
+    if messages:
+        first_time = str(messages[0]["created_at"])[:16].replace("T", " ")
+        last_time = str(messages[-1]["created_at"])[:16].replace("T", " ")
+        time_range = f"{first_time} — {last_time}"
+    else:
+        time_range = "?"
+
+    # Извлекаем темы из пользовательских сообщений (первые 8 слов каждого)
+    topics = []
+    seen = set()
+    for m in user_msgs:
+        text = m["content"].strip()
+        if len(text) < 5:
+            continue
+        # Убираем команды
+        if text.startswith("/"):
+            topic = text.split()[0]
+        else:
+            words = text.split()[:8]
+            topic = " ".join(words)
+            if len(topic) > 80:
+                topic = topic[:80] + "…"
+        topic_key = topic.lower()[:30]
+        if topic_key not in seen:
+            seen.add(topic_key)
+            topics.append(topic)
+
+    # Ограничиваем до 5 тем
+    topics = topics[:5]
+
+    parts = [
+        f"{len(messages)} сообщ. ({time_range})",
+    ]
+    if topics:
+        parts.append("Темы: " + "; ".join(topics))
+
+    return " | ".join(parts)
 
 
 def get_history(user_id: int, bot_name: str, limit: int = 20) -> list:

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-20T10:00:25.786499+00:00",
+  "timestamp": "2026-04-20T10:39:20.423740+00:00",
   "sentiment": "bearish",
   "score": -0.75,
   "fear_greed": {
@@ -23,10 +23,10 @@
   ],
   "trending_coins": [
     "ADA",
-    "RAVE",
     "AAVE",
-    "PLLD",
+    "RAVE",
     "ASTEROID",
+    "PENGU",
     "WOJAK",
     "ZRO"
   ],
@@ -34,6 +34,6 @@
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.47,
-  "cached_at": 1776679225.7867122
+  "fetch_time_sec": 2.35,
+  "cached_at": 1776681560.4239519
 }
