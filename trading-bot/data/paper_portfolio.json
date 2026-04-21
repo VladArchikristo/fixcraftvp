@@ -2,7 +2,7 @@
   "positions": [],
   "history": [],
   "created": "2026-04-10T04:34:37.944182+00:00",
-  "cash": 818.9658412723983,
+  "cash": 1018.9658412723983,
   "initial_capital": 1000.0,
   "closed_trades": [
     {
@@ -223,102 +223,6 @@
     }
   ],
   "scan_history": [
-    {
-      "time": "2026-04-18T09:02:04.604640",
-      "total_value": 1017.52,
-      "portfolio_value": 1017.52,
-      "pnl": 17.52,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "## ВАСИЛИЙ | Анализ 2026-04-18 09:00 UTC",
-      "trades": [
-        "🛑 DAILY LOSS LIMIT: потери сегодня $-11.04 ≥ лимит $-10.00. Новые сделки заблокированы.",
-        "⏸️ NO_ACTION | News Agent CRITICAL STOP_NEW_ENTRIES. 1h bearish на ETH/XRP/AVAX.    BTC $76K после повторного закрытия Ормузского пролива — геополитический риск активен.    Hack детектирован. Несмотря на сильную 4h бычью структуру XRP (ADX 49.9) и whale walls ETH,    входить против 1h тренда в период геополитической неопределённости = неоправданный риск.    Кэш $1017 сохранён. Ждать: стабилизацию BTC выше $77K, 1h RSI ETH/XRP > 45,    разрешения иранского кризиса."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 35.6
-        },
-        "XRP": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 37.1
-        },
-        "AVAX": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 33.1
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 16.7
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 24.2
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 9.2
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
-      "time": "2026-04-18T10:05:37.510954",
-      "total_value": 1017.52,
-      "portfolio_value": 1017.52,
-      "pnl": 17.52,
-      "sentiment": "bearish",
-      "actions_taken": 0,
-      "summary": "## VASILY — Анализ 2026-04-18 10:03 UTC",
-      "trades": [
-        "🛑 DAILY LOSS LIMIT: потери сегодня $-11.04 ≥ лимит $-10.00. Новые сделки заблокированы.",
-        "⏸️ NO_ACTION | News Agent CRITICAL RISK + STOP_NEW_ENTRIES signal active.    Геополитика (Иран/Ормуз) непредсказуема. Все 1h тренды медвежьи.   XRP имеет сильный 4h/1d сигнал, но входить против дневного потока    при критическом риске нарушает риск-правила системы.    Ждём стабилизации: отбой от поддержки + 1h разворот + нормализация макро."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 34.8
-        },
-        "XRP": {
-          "score": -20,
-          "rec": "SELL",
-          "rsi": 37.1
-        },
-        "AVAX": {
-          "score": -35,
-          "rec": "SELL",
-          "rsi": 31.7
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 16.7
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 24.2
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": 0.0
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
     {
       "time": "2026-04-18T12:01:47.695910",
       "total_value": 1017.52,
@@ -2613,7 +2517,97 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-21T10:21:32.550287",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "⚠️ Claude не ответил. Данные получены, анализ недоступен.",
+      "trades": [],
+      "ta_scores": {
+        "ETH": {
+          "score": -25,
+          "rec": "SELL",
+          "rsi": 49.6
+        },
+        "XRP": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 56.6
+        },
+        "AVAX": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 57.8
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 5.8
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 7.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-21T12:00:46.903476",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "⚠️ Claude не ответил. Данные получены, анализ недоступен.",
+      "trades": [],
+      "ta_scores": {
+        "ETH": {
+          "score": -35,
+          "rec": "SELL",
+          "rsi": 49.4
+        },
+        "XRP": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 53.0
+        },
+        "AVAX": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 57.8
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 20,
+          "direction": "NEUTRAL",
+          "weighted": 4.2
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 12.5
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 5.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-21T09:02:14.864562"
+  "updated_at": "2026-04-21T12:00:46.903570"
 }

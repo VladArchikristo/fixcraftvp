@@ -133,7 +133,17 @@ class PaperTrader:
         self._data = self._load()
         # Normalize schema: market_scan uses "cash"/"closed_trades",
         # PaperTrader uses "balance"/"history". Unify to PaperTrader keys.
-        if self._data.get("cash") and not self._data.get("balance"):
+        # BUG FIX: if both "cash" and "balance" exist, take the larger value to
+        # prevent orphaned funds from schema conflicts between market_scan and PaperTrader.
+        cash_val = self._data.get("cash", 0)
+        bal_val = self._data.get("balance", 0)
+        if cash_val and bal_val:
+            # Both keys exist — schema conflict. Merge to balance (take max).
+            merged = max(cash_val, bal_val)
+            log.warning("Schema conflict: cash=%.2f balance=%.2f — merging to %.2f", cash_val, bal_val, merged)
+            self._data["balance"] = merged
+            del self._data["cash"]
+        elif cash_val and not bal_val:
             self._data["balance"] = self._data.pop("cash")
         if self._data.get("closed_trades") and not self._data.get("history"):
             self._data["history"] = self._data.get("closed_trades", [])

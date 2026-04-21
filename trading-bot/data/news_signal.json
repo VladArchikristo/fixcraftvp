@@ -1,32 +1,30 @@
 {
-  "timestamp": "2026-04-21T13:00:23.129911+00:00",
+  "timestamp": "2026-04-21T16:00:27.468590+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.46,
+  "score": -0.3,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "Cut the red tape: 39 financial giants demand an emergency fast-track for Europe's blockchain pilot",
+    "European banks are at risk of losing customers to rivals with better crypto tools",
     "Bitcoin climbs as risk sentiment improves, altcoins hit by exploit concerns",
     "Bank of Korea’s new governor signals CBDC and bank token push, skips stablecoins in key address",
-    "KelpDAO hackers are laundering millions in stolen crypto, data show",
-    "A dozen banks want a euro stablecoin. Fireblocks is making it happen",
-    "Arbitrum freezes $71 million in ether tied to Kelp DAO exploit"
+    "European investors may switch banks for better crypto access, survey finds"
   ],
   "affected_assets": [
-    "ETH",
-    "XRP",
-    "UNI",
-    "ARB",
-    "OP"
+    "SOL",
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
+    "CHIP",
     "RAVE",
     "OPG",
-    "ASTEROID",
-    "CHIP",
     "AAVE",
+    "ASTEROID",
     "PENGU",
     "HYPE"
   ],
@@ -34,6 +32,6 @@
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.7,
-  "cached_at": 1776776423.1301382
+  "fetch_time_sec": 2.73,
+  "cached_at": 1776787227.4687512
 }

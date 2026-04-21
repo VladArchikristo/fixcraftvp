@@ -103,7 +103,10 @@ def load_portfolio():
         with open(PORTFOLIO_FILE, "r") as f:
             data = json.load(f)
         # Normalize: "balance" → "cash" (backward compat with telegram_bot.py)
-        if "cash" not in data and "balance" in data:
+        # BUG FIX: if both keys exist, merge to "cash" taking the max to prevent orphaned funds
+        if "cash" in data and "balance" in data:
+            data["cash"] = max(data.pop("cash"), data.pop("balance"))
+        elif "cash" not in data and "balance" in data:
             data["cash"] = data.pop("balance")
         # Ensure all required keys exist
         data.setdefault("cash", 1000.0)
