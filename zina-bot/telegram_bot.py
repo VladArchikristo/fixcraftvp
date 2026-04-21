@@ -229,6 +229,19 @@ def init_db():
             updated_at  TEXT
         )
     """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS family_members (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id     INTEGER NOT NULL,
+            relation    TEXT NOT NULL,
+            name        TEXT,
+            birth_date  TEXT,
+            birth_time  TEXT,
+            birth_place TEXT,
+            updated_at  TEXT,
+            UNIQUE(user_id, relation)
+        )
+    """)
     conn.commit()
     conn.close()
     log.info("DB initialized at %s", DB_FILE)
@@ -276,6 +289,55 @@ def profile_summary(profile: dict) -> str:
     if profile.get("birth_place"):
         parts.append(f"Место рождения: {profile['birth_place']}")
     return "\n".join(parts) if parts else "(профиль пуст)"
+
+
+def save_family_member(user_id: int, relation: str, **fields):
+    conn = sqlite3.connect(str(DB_FILE))
+    fields["updated_at"] = datetime.now().isoformat()
+    existing = conn.execute(
+        "SELECT id FROM family_members WHERE user_id = ? AND relation = ?", (user_id, relation)
+    ).fetchone()
+    if existing:
+        sets = ", ".join(f"{k} = ?" for k in fields)
+        vals = list(fields.values()) + [user_id, relation]
+        conn.execute(f"UPDATE family_members SET {sets} WHERE user_id = ? AND relation = ?", vals)
+    else:
+        fields["user_id"] = user_id
+        fields["relation"] = relation
+        cols = ", ".join(fields.keys())
+        placeholders = ", ".join("?" * len(fields))
+        conn.execute(f"INSERT INTO family_members ({cols}) VALUES ({placeholders})", list(fields.values()))
+    conn.commit()
+    conn.close()
+
+
+def get_family_members(user_id: int) -> list[dict]:
+    conn = sqlite3.connect(str(DB_FILE))
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute(
+        "SELECT * FROM family_members WHERE user_id = ? ORDER BY relation", (user_id,)
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def family_summary(user_id: int) -> str:
+    members = get_family_members(user_id)
+    if not members:
+        return "(семья не добавлена)"
+    lines = []
+    for m in members:
+        line = f"[{m['relation']}]"
+        if m.get("name"):
+            line += f" {m['name']}"
+        if m.get("birth_date"):
+            line += f", {m['birth_date']}"
+        if m.get("birth_time"):
+            line += f", {m['birth_time']}"
+        if m.get("birth_place"):
+            line += f", {m['birth_place']}"
+        lines.append(line)
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
@@ -496,6 +558,10 @@ def build_system_prompt(user_id: int) -> str:
     if profile:
         extra = f"\n\nПрофиль пользователя:\n{profile_summary(profile)}"
 
+    family = get_family_members(user_id)
+    if family:
+        extra += f"\n\nСемья пользователя:\n{family_summary(user_id)}"
+
     astro_ctx = _get_astro_context(profile)
     if astro_ctx:
         extra += f"\n\n== РЕАЛЬНЫЕ АСТРОНОМИЧЕСКИЕ ДАННЫЕ (Swiss Ephemeris) ==\n{astro_ctx}\n\nИспользуй эти ТОЧНЫЕ данные при астрологических расчётах. Не выдумывай позиции планет — они указаны выше."
@@ -537,6 +603,7 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "/predict — предсказание\n"
         "/vedic — ведическая астрология и нумерология (Джйотиш)\n\n"
         "/profile — мой профиль (дата и место рождения)\n"
+        "/family — профили семьи (жена, дети и т.д.)\n"
         "/clear — очистить историю\n"
         "/status — статус\n\n"
         "Для точных расчётов сохрани данные через /profile."
@@ -618,6 +685,50 @@ async def cmd_profile(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     save_profile(uid, **{field_map[field]: value})
     await update.message.reply_text(f"Сохранено: {field} = {value}")
+
+
+async def cmd_family(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    uid = update.effective_user.id
+    args = ctx.args
+
+    if not args:
+        summary = family_summary(uid)
+        await update.message.reply_text(
+            f"Семья:\n{summary}\n\n"
+            "Добавить/обновить члена семьи:\n"
+            "/family <кто> name <имя>\n"
+            "/family <кто> date <дата>\n"
+            "/family <кто> time <время>\n"
+            "/family <кто> place <место>\n\n"
+            "Например:\n"
+            "/family жена name Оксана\n"
+            "/family жена date 1984-05-24\n"
+            "/family сын date 2013-09-10\n"
+            "/family сын name Тимофей"
+        )
+        return
+
+    if len(args) < 3:
+        await update.message.reply_text("Использование: /family <кто> <поле> <значение>\nПример: /family жена date 1984-05-24")
+        return
+
+    relation = args[0].lower()
+    field = args[1].lower()
+    value = " ".join(args[2:])
+    field_map = {
+        "name": "name",
+        "date": "birth_date",
+        "time": "birth_time",
+        "place": "birth_place",
+    }
+    if field not in field_map:
+        await update.message.reply_text("Поля: name, date, time, place")
+        return
+
+    save_family_member(uid, relation, **{field_map[field]: value})
+    await update.message.reply_text(f"Сохранено: {relation} → {field} = {value}")
 
 
 async def cmd_set_mode(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -855,6 +966,7 @@ def main():
     app.add_handler(CommandHandler("status", cmd_status))
     app.add_handler(CommandHandler("clear", cmd_clear))
     app.add_handler(CommandHandler("profile", cmd_profile))
+    app.add_handler(CommandHandler("family", cmd_family))
 
     for mode_name in MODE_PREFIXES:
         app.add_handler(CommandHandler(mode_name, cmd_set_mode))
