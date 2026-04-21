@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-04-20T22:00:23.870893+00:00",
-  "sentiment": "bearish",
-  "score": -0.5,
+  "timestamp": "2026-04-21T01:00:26.864863+00:00",
+  "sentiment": "slightly_bearish",
+  "score": -0.46,
   "fear_greed": {
-    "value": 29,
+    "value": 33,
     "label": "Fear",
     "trend": "rising"
   },
@@ -11,8 +11,8 @@
     "Aave could face up to $230 million in losses after Kelp DAO bridge exploit triggers DeFi chaos",
     "Bitcoin bounces above $76,000 as DeFi suffers $14 billion exodus after KelpDAO hack",
     "U.S. crypto adoption is rebounding, bitcoin still dominates, Deutsche Bank says",
-    "Strategy buys 34,164 bitcoin for $2.54 billion, third-largest purchase on record",
-    "North Korea’s crypto heist playbook is expanding and DeFi keeps getting hit"
+    "North Korea’s crypto heist playbook is expanding and DeFi keeps getting hit",
+    "Five times President Trump made a statement that moved bitcoin, and why it might happen again this week"
   ],
   "affected_assets": [
     "BTC",
@@ -26,18 +26,18 @@
     "LINK"
   ],
   "trending_coins": [
-    "AAVE",
-    "ASTEROID",
     "RAVE",
     "PENGU",
-    "BTC",
-    "HYPE",
-    "GUN"
+    "AAVE",
+    "ASTEROID",
+    "ORDI",
+    "ALGO",
+    "SOL"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.88,
-  "cached_at": 1776722423.8710349
+  "fetch_time_sec": 2.57,
+  "cached_at": 1776733226.865078
 }

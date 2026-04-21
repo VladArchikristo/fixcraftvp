@@ -233,101 +233,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-17T16:05:25.837581",
-      "total_value": 1028.56,
-      "portfolio_value": 1028.56,
-      "pnl": 28.56,
-      "sentiment": "bullish",
-      "actions_taken": 0,
-      "summary": "## АНАЛИЗ РЫНКА — Василий | 2026-04-17 16:04 UTC",
-      "trades": [
-        "⏸️ NO_ACTION | News Agent: STOP_NEW_ENTRIES (critical risk, score -0.63).    Fear & Greed 21 (Extreme Fear). ETH/AVAX дневной TA = NEUTRAL,    не подтверждает краткосрочный бычий импульс. XRP RSI 4h=74.6    блокирует LONG по правилам системы. ETH 4h StochRSI=89 —    overbought. $820M ликвидаций = высокая нестабильность.    Ждём либо откат к EMA20 для входа, либо разворот    macro-сентимента (F&G > 40)."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 55,
-          "rec": "STRONG_BUY",
-          "rsi": 65.5
-        },
-        "XRP": {
-          "score": 55,
-          "rec": "STRONG_BUY",
-          "rsi": 63.3
-        },
-        "AVAX": {
-          "score": 40,
-          "rec": "STRONG_BUY",
-          "rsi": 56.0
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 18.3
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 27.5
-        },
-        "AVAX": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 24.2
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
-      "time": "2026-04-17T18:02:10.637993",
-      "total_value": 1028.56,
-      "portfolio_value": 1028.56,
-      "pnl": 28.56,
-      "sentiment": "bullish",
-      "actions_taken": 0,
-      "summary": "# 📊 Анализ Рынка — Василий | 2026-04-17 18:00 UTC",
-      "trades": [
-        "⏸️ NO_ACTION | News Agent STOP_NEW_ENTRIES + сентимент -0.88 + 2 хака за сутки.    Техника бычья, но объём иссякает, 4h Bollinger overbought (ETH pos 1.013,    XRP pos 1.224). Ceasefire-импульс гаснет. Жду либо подтверждающий объём    на пробое $2,462 (ETH) / $1.51 (XRP), либо откат к EMA20 для входа    с нормальным R:R. Кэш сохраняем.",
-        "⏸️ NO_ACTION | News Agent STOP_NEW_ENTRIES + сентимент -0.88 + 2 хака за сутки.    Техника бычья, но объём иссякает, 4h Bollinger overbought (ETH pos 1.013,    XRP pos 1.224). Ceasefire-импульс гаснет. Жду либо подтверждающий объём    на пробое $2,462 (ETH) / $1.51 (XRP), либо откат к EMA20 для входа    с нормальным R:R. Кэш сохраняем."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 55,
-          "rec": "STRONG_BUY",
-          "rsi": 64.4
-        },
-        "XRP": {
-          "score": 20,
-          "rec": "BUY",
-          "rsi": 58.9
-        },
-        "AVAX": {
-          "score": 15,
-          "rec": "BUY",
-          "rsi": 54.8
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 18.3
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 18.3
-        },
-        "AVAX": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 20.0
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-17T19:05:28.702085",
       "total_value": 1028.56,
       "portfolio_value": 1028.56,
@@ -2619,7 +2524,104 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-20T19:23:03.964234",
+      "total_value": 1017.63,
+      "portfolio_value": 1017.63,
+      "pnl": 17.63,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ ВАСИЛИЯ | 2026-04-20 19:21 UTC",
+      "trades": [
+        "🔄 HOLD XRP | ADX 4h=32.7 STRONG с DI+>DI-, daily BUY, crowd short (funding -0.0017%) создаёт tailwind. Ужесточаю SL до $1.41 — под whale wall поддержкой. Объём слабый, значит позиция без наращивания.",
+        "🔄 HOLD XRP | Идентично первой позиции. SL → $1.41. TP оставляю $1.51 как финальная цель (1d resistance), но первый уровень выхода $1.44.",
+        "⏸️ NO_ACTION | Кэш $617.52 доступен, но: (1) news sentiment BEARISH -0.50 HIGH RISK, action=REDUCE_SIZE; (2) ETH — смешанные сигналы 1h SELL vs 1d BUY; (3) AVAX — 4h StochRSI 92 OVERBOUGHT; (4) XRP — уже 2 позиции, лимит достигнут. Жду коррекции и более чистых сигналов."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 49.6
+        },
+        "XRP": {
+          "score": -5,
+          "rec": "NEUTRAL",
+          "rsi": 50.5
+        },
+        "AVAX": {
+          "score": 25,
+          "rec": "BUY",
+          "rsi": 52.9
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": 4.2
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 10.0
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 0.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-20T21:01:56.164637",
+      "total_value": 1018.95,
+      "portfolio_value": 1018.95,
+      "pnl": 18.95,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ РЫНКА | 2026-04-20 21:00 UTC",
+      "trades": [
+        "🔄 HOLD XRP | ADX 4h=31.8 STRONG bull, whale walls $1.43 держат,  дневной тренд BUY. Подтянуть SL с $1.40 до $1.41 — за whale wall,  ATR 1h=0.0093 даёт пространство. StochRSI перекуплен краткосрочно —  возможен откат к $1.42, но trend intact.",
+        "⏸️ NO_ACTION | ETH — конфликт таймфреймов (1h/1d +20 vs 4h -25),  ASK-heavy orderbook, нет чёткого сигнала для входа.  AVAX — StochRSI 95.4 экстремально перекуплен, объём $4M микро,  ASK-heavy, не входить.  Macro: DeFi exploit, Fear=33, reduce_size режим активен.  Кэш $617 сохраняем для лучших возможностей."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": 20,
+          "rec": "BUY",
+          "rsi": 53.2
+        },
+        "XRP": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 53.6
+        },
+        "AVAX": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 55.5
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 5.0
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 15.0
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 10.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-20T18:02:09.772483"
+  "updated_at": "2026-04-20T21:01:56.164657"
 }
