@@ -91,6 +91,10 @@ SYSTEM_PROMPT = (
     "Для натальной карты используй точные данные: дату, время и место рождения.\n"
     "Когда данных нет — мягко попроси их через команду /profile.\n\n"
     "Отвечай на русском языке. Будь конкретен и глубок, избегай банальных предсказаний.\n\n"
+    "== ДОЛГОСРОЧНАЯ ПАМЯТЬ ==\n"
+    "В историю диалога (в начало) подгружаются ключевые факты из прошлых сессий и данные профиля.\n"
+    "ВСЕГДА используй эти данные. Если пользователь называет дату рождения кого-то — она сохраняется автоматически.\n"
+    "Для просмотра всего что ты знаешь — команда /memory.\n\n"
     "== КОМАНДА НА MAC MINI ==\n"
     "Ты часть команды ботов Владимира. Любой бот может обратиться к любому другому:\n\n"
     "• Костя (@KostyaCoderBot) — программист-архитектор.\n"
@@ -338,6 +342,102 @@ def family_summary(user_id: int) -> str:
             line += f", {m['birth_place']}"
         lines.append(line)
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Автоизвлечение дат рождения из текста
+# ---------------------------------------------------------------------------
+import re as _re
+
+_DATE_FORMATS = [
+    (r"(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{4})", "{2}-{1:02d}-{0:02d}"),   # DD.MM.YYYY
+    (r"(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})", "{0}-{1:02d}-{2:02d}"),   # YYYY-MM-DD
+]
+
+_MONTHS_RU = {
+    "января":1,"февраля":2,"марта":3,"апреля":4,"мая":5,"июня":6,
+    "июля":7,"августа":8,"сентября":9,"октября":10,"ноября":11,"декабря":12,
+}
+
+_RELATION_KEYWORDS = {
+    "жена": "жена", "супруга": "жена", "моя жена": "жена",
+    "муж": "муж", "супруг": "муж", "мой муж": "муж",
+    "сын": "сын", "мой сын": "сын",
+    "дочь": "дочь", "моя дочь": "дочь", "дочка": "дочь",
+    "мама": "мама", "мать": "мама",
+    "папа": "папа", "отец": "папа",
+    "брат": "брат", "сестра": "сестра",
+}
+
+
+def _parse_date_from_text(text: str) -> str | None:
+    """Извлекает дату из текста, возвращает YYYY-MM-DD или None."""
+    t = text.lower().strip()
+    # Формат DD.MM.YYYY или YYYY-MM-DD
+    for pattern, fmt in _DATE_FORMATS:
+        m = _re.search(pattern, t)
+        if m:
+            try:
+                g = [int(x) for x in m.groups()]
+                if fmt.startswith("{2}"):  # DD.MM.YYYY
+                    return f"{g[2]:04d}-{g[1]:02d}-{g[0]:02d}"
+                else:  # YYYY-MM-DD
+                    return f"{g[0]:04d}-{g[1]:02d}-{g[2]:02d}"
+            except (ValueError, IndexError):
+                pass
+    # Формат "27 сентября 1983"
+    m = _re.search(r"(\d{1,2})\s+(" + "|".join(_MONTHS_RU.keys()) + r")\s+(\d{4})", t)
+    if m:
+        try:
+            day = int(m.group(1))
+            month = _MONTHS_RU[m.group(2)]
+            year = int(m.group(3))
+            return f"{year:04d}-{month:02d}-{day:02d}"
+        except (ValueError, KeyError):
+            pass
+    return None
+
+
+def _auto_save_birth_dates(user_id: int, text: str):
+    """Автоматически извлекает и сохраняет даты рождения из текста пользователя."""
+    if not text or len(text) < 8:
+        return
+    t = text.lower()
+
+    # Моя дата рождения / я родился
+    birth_keywords = ["моя дата рождения", "я родился", "я родилась", "дата моего рождения", "мой день рождения"]
+    for kw in birth_keywords:
+        if kw in t:
+            date = _parse_date_from_text(text)
+            if date:
+                save_profile(user_id, birth_date=date)
+                log.info("Auto-saved user birth_date=%s", date)
+            return
+
+    # Время рождения пользователя
+    time_keywords = ["я родился в ", "я родилась в ", "время моего рождения", "родился в "]
+    for kw in time_keywords:
+        if kw in t:
+            m = _re.search(r"(\d{1,2})[:\.](\d{2})", text)
+            if m:
+                btime = f"{int(m.group(1)):02d}:{m.group(2)}"
+                save_profile(user_id, birth_time=btime)
+                log.info("Auto-saved user birth_time=%s", btime)
+
+    # Члены семьи — "жена родилась DD.MM.YYYY" / "жена ... DD.MM.YYYY"
+    for keyword, relation in _RELATION_KEYWORDS.items():
+        if keyword in t:
+            date = _parse_date_from_text(text)
+            if date:
+                save_family_member(user_id, relation, birth_date=date)
+                log.info("Auto-saved family %s birth_date=%s", relation, date)
+            # Имя: "жена Оксана" или "Оксана (жена)"
+            name_m = _re.search(r"(?:" + _re.escape(keyword) + r")\s+([А-ЯЁа-яё]{2,})", text, _re.IGNORECASE)
+            if name_m:
+                name = name_m.group(1).strip().capitalize()
+                if name not in ("Родилась", "Родился", "Дата", "День", "Мой", "Моя", "Это"):
+                    save_family_member(user_id, relation, name=name)
+                    log.info("Auto-saved family %s name=%s", relation, name)
 
 
 # ---------------------------------------------------------------------------
@@ -604,6 +704,7 @@ async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "/vedic — ведическая астрология и нумерология (Джйотиш)\n\n"
         "/profile — мой профиль (дата и место рождения)\n"
         "/family — профили семьи (жена, дети и т.д.)\n"
+        "/memory — что я помню о тебе\n"
         "/clear — очистить историю\n"
         "/status — статус\n\n"
         "Для точных расчётов сохрани данные через /profile."
@@ -831,6 +932,42 @@ async def _drain_queue(update: Update):
         await _process_single_message(queued_update, queued_text)
 
 
+async def cmd_memory(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+    uid = update.effective_user.id
+    from shared_memory import get_facts, get_session_summaries
+    profile = get_profile(uid)
+    family = get_family_members(uid)
+    facts = get_facts(uid, "zina", limit=20)
+    sessions = get_session_summaries(uid, "zina", limit=3)
+
+    lines = ["**Что я помню о тебе:**\n"]
+    if profile and any(profile.get(k) for k in ("name", "birth_date", "birth_time", "birth_place")):
+        lines.append("**Профиль:**")
+        lines.append(profile_summary(profile))
+    if family:
+        lines.append("\n**Семья:**")
+        lines.append(family_summary(uid))
+    if facts:
+        lines.append("\n**Факты из разговоров:**")
+        by_cat: dict = {}
+        for f in facts:
+            by_cat.setdefault(f["category"], []).append(f["fact"])
+        for cat, items in by_cat.items():
+            lines.append(f"[{cat}]")
+            for item in items[:5]:
+                lines.append(f"  • {item[:100]}")
+    if sessions:
+        lines.append("\n**Прошлые сессии:**")
+        for s in sessions:
+            date = s["created_at"][:16].replace("T", " ") if s["created_at"] else "?"
+            lines.append(f"[{date}] {s['summary'][:120]}")
+    if len(lines) == 1:
+        lines.append("(пока ничего не помню)")
+    await _safe_reply(update.message, "\n".join(lines))
+
+
 async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not is_allowed(update):
         return
@@ -838,6 +975,11 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not user_text:
         return
     log.info("Message from %s: %.100s", update.effective_user.id, user_text)
+    # Автосохранение дат рождения из текста
+    try:
+        _auto_save_birth_dates(update.effective_user.id, user_text)
+    except Exception as e:
+        log.debug("Auto birth date extract error: %s", e)
 
     global _processing
     async with _processing_lock:
@@ -967,6 +1109,7 @@ def main():
     app.add_handler(CommandHandler("clear", cmd_clear))
     app.add_handler(CommandHandler("profile", cmd_profile))
     app.add_handler(CommandHandler("family", cmd_family))
+    app.add_handler(CommandHandler("memory", cmd_memory))
 
     for mode_name in MODE_PREFIXES:
         app.add_handler(CommandHandler(mode_name, cmd_set_mode))

@@ -1,1 +1,1 @@
-{"heartbeat":{"nextAt":1776731515447},"jobs":[{"name":"compress-logs","nextAt":1776902520000}],"security":"moderate","telegram":true,"discord":false,"startedAt":1776729667937,"web":{"enabled":true,"host":"127.0.0.1","port":4632}}
+{"heartbeat":{"nextAt":1776735809675},"jobs":[{"name":"compress-logs","nextAt":1776906840000}],"security":"moderate","telegram":true,"discord":false,"startedAt":1776733965210,"web":{"enabled":true,"host":"127.0.0.1","port":4632}}

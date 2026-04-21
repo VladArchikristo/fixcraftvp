@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-21T01:00:26.864863+00:00",
+  "timestamp": "2026-04-21T02:21:08.157983+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.46,
+  "score": -0.48,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
@@ -11,8 +11,8 @@
     "Aave could face up to $230 million in losses after Kelp DAO bridge exploit triggers DeFi chaos",
     "Bitcoin bounces above $76,000 as DeFi suffers $14 billion exodus after KelpDAO hack",
     "U.S. crypto adoption is rebounding, bitcoin still dominates, Deutsche Bank says",
-    "North Korea’s crypto heist playbook is expanding and DeFi keeps getting hit",
-    "Five times President Trump made a statement that moved bitcoin, and why it might happen again this week"
+    "Playdate Gaming Handheld Maker Bans Generative AI Tools for Development",
+    "North Korea’s crypto heist playbook is expanding and DeFi keeps getting hit"
   ],
   "affected_assets": [
     "BTC",
@@ -28,16 +28,16 @@
   "trending_coins": [
     "RAVE",
     "PENGU",
-    "AAVE",
     "ASTEROID",
     "ORDI",
-    "ALGO",
-    "SOL"
+    "AAVE",
+    "BTC",
+    "HYPE"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.57,
-  "cached_at": 1776733226.865078
+  "fetch_time_sec": 7.0,
+  "cached_at": 1776738068.1582022
 }
