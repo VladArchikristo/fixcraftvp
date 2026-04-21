@@ -1,39 +1,41 @@
 {
-  "timestamp": "2026-04-21T07:00:27.652443+00:00",
+  "timestamp": "2026-04-21T10:00:36.821861+00:00",
   "sentiment": "bearish",
-  "score": -0.56,
+  "score": -0.52,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "KelpDAO hackers are laundering millions in stolen crypto, data show",
+    "A dozen banks want a euro stablecoin. Fireblocks is making it happen",
     "Arbitrum freezes $71 million in ether tied to Kelp DAO exploit",
-    "Aave could face up to $230 million in losses after Kelp DAO bridge exploit triggers DeFi chaos",
-    "Bitcoin bounces above $76,000 as DeFi suffers $14 billion exodus after KelpDAO hack",
-    "Arbitrum freezes $71M of Ether connected to Kelp exploit",
-    "Aave risk manager models 2 bad debt scenarios from Kelp DAO exploit"
+    "Bank of Korea governor backs CBDCs, deposit tokens in first address",
+    "European banks tap Fireblocks for MiCA-compliant euro stablecoin"
   ],
   "affected_assets": [
     "ETH",
     "SOL",
     "XRP",
+    "UNI",
     "ARB",
-    "OP"
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
     "RAVE",
     "ASTEROID",
-    "AAVE",
     "PENGU",
+    "AAVE",
     "BASED",
-    "ARB",
-    "BTC"
+    "TAO",
+    "HYPE"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.57,
-  "cached_at": 1776754827.6526499
+  "fetch_time_sec": 2.62,
+  "cached_at": 1776765636.822029
 }
