@@ -936,6 +936,12 @@ def execute_trades(actions, portfolio, prices, hl_market=None, ta_data=None, ext
             size_usd = float(data.get("size_usd", 0))
             reason = data.get("reason", "")
 
+            # --- Дублирование: запрет открывать позицию по уже открытому активу ---
+            existing = next((p for p in portfolio["positions"] if p.get("asset", "").upper() == asset), None)
+            if existing:
+                trade_log.append(f"🛑 SKIP OPEN {asset}: позиция уже открыта (side={existing.get('side')}, size=${existing.get('size_usd', 0):.0f})")
+                continue
+
             # --- Correlation Filter: max 2 same-direction positions ---
             same_dir = sum(1 for p in portfolio["positions"] if p.get("side", "LONG").upper() == side)
             if same_dir >= MAX_SAME_DIRECTION:

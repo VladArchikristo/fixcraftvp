@@ -614,6 +614,12 @@ class TradingExecutor:
         balance = self.get_balance()
         positions = self.get_positions()
 
+        # Duplicate position check
+        open_coins = [p["coin"] for p in positions]
+        if coin in open_coins:
+            log.warning("DUPLICATE BLOCKED: %s уже имеет открытую позицию", coin)
+            return {"ok": False, "error": f"Позиция по {coin} уже открыта"}
+
         # Risk check
         ok, reason = self.risk.check_order(size_usd, balance, len(positions))
         if not ok:
