@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-21T11:21:05.346566+00:00",
-  "sentiment": "bearish",
-  "score": -0.54,
+  "timestamp": "2026-04-21T13:00:23.129911+00:00",
+  "sentiment": "slightly_bearish",
+  "score": -0.46,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
@@ -16,7 +16,6 @@
   ],
   "affected_assets": [
     "ETH",
-    "SOL",
     "XRP",
     "UNI",
     "ARB",
@@ -24,17 +23,17 @@
   ],
   "trending_coins": [
     "RAVE",
-    "AAVE",
-    "ARB",
+    "OPG",
     "ASTEROID",
-    "HYPE",
-    "MON",
-    "PENGU"
+    "CHIP",
+    "AAVE",
+    "PENGU",
+    "HYPE"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.43,
-  "cached_at": 1776770465.346837
+  "fetch_time_sec": 2.7,
+  "cached_at": 1776776423.1301382
 }

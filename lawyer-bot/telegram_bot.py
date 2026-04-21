@@ -750,6 +750,48 @@ async def handle_message(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await _drain_queue(update)
 
 
+async def handle_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not is_allowed(update):
+        return
+
+    caption = update.message.caption or ""
+    log.info("Photo from %s, caption: %.100s", update.effective_user.id, caption)
+
+    # Download highest resolution photo
+    photo = update.message.photo[-1]
+    photo_file = await ctx.bot.get_file(photo.file_id)
+
+    tmp_path = f"/tmp/alexey_photo_{photo.file_id}.jpg"
+    await photo_file.download_to_drive(tmp_path)
+
+    user_query = f"Изучи это изображение (путь к файлу: {tmp_path}) и проанализируй его содержимое."
+    if caption:
+        user_query += f"\n\nКомментарий пользователя: {caption}"
+    else:
+        user_query += "\n\nОпиши что видишь и объясни юридическое значение документа или изображения, если применимо."
+
+    global _processing
+    async with _processing_lock:
+        if _processing:
+            if len(_message_queue) >= 5:
+                await update.message.reply_text("Очередь полная. Подожди немного.")
+                return
+            _message_queue.append((update, user_query))
+            pos = len(_message_queue)
+            await update.message.reply_text(f"В очереди ({pos}). Разберусь скоро.")
+            return
+        _processing = True
+
+    try:
+        await _process_single_message(update, user_query)
+        await _drain_queue(update)
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except Exception:
+            pass
+
+
 # ---------------------------------------------------------------------------
 # Error handler
 # ---------------------------------------------------------------------------
@@ -865,6 +907,7 @@ def main():
     app.add_handler(CommandHandler("close", cmd_close))
     app.add_handler(CommandHandler("memory", cmd_memory))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_error_handler(error_handler)
 
     app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
