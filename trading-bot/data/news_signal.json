@@ -1,37 +1,39 @@
 {
-  "timestamp": "2026-04-21T16:00:27.468590+00:00",
+  "timestamp": "2026-04-21T19:02:02.325708+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.3,
+  "score": -0.22,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "Crypto's massive exploit may force big banks to rethink their blockchain plans, Jefferies warns",
+    "Revolut targets a $200 billion IPO just months after its $75 billion share sale",
     "Cut the red tape: 39 financial giants demand an emergency fast-track for Europe's blockchain pilot",
     "European banks are at risk of losing customers to rivals with better crypto tools",
-    "Bitcoin climbs as risk sentiment improves, altcoins hit by exploit concerns",
-    "Bank of Korea’s new governor signals CBDC and bank token push, skips stablecoins in key address",
-    "European investors may switch banks for better crypto access, survey finds"
+    "Bitcoin slides toward $75,000 as Warsh says Trump didn't demand he cut rates"
   ],
   "affected_assets": [
+    "BTC",
+    "ETH",
     "SOL",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "CHIP",
     "RAVE",
+    "CHIP",
+    "ASTEROID",
     "OPG",
     "AAVE",
-    "ASTEROID",
-    "PENGU",
-    "HYPE"
+    "HYPE",
+    "PENGU"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.73,
-  "cached_at": 1776787227.4687512
+  "fetch_time_sec": 37.96,
+  "cached_at": 1776798122.325979
 }
