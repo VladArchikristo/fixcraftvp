@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-04-21T19:02:02.325708+00:00",
+  "timestamp": "2026-04-21T22:00:25.533821+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.22,
+  "score": -0.38,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "Core Scientific seeks $3.3 billion bond sale to further AI data center pivot",
+    "Mob boss John Gotti’s grandson is headed to prison for a $1.1 million Covid fraud and crypto scheme",
     "Crypto's massive exploit may force big banks to rethink their blockchain plans, Jefferies warns",
     "Revolut targets a $200 billion IPO just months after its $75 billion share sale",
-    "Cut the red tape: 39 financial giants demand an emergency fast-track for Europe's blockchain pilot",
-    "European banks are at risk of losing customers to rivals with better crypto tools",
-    "Bitcoin slides toward $75,000 as Warsh says Trump didn't demand he cut rates"
+    "Cut the red tape: 39 financial giants demand an emergency fast-track for Europe's blockchain pilot"
   ],
   "affected_assets": [
     "BTC",
@@ -24,16 +24,16 @@
   "trending_coins": [
     "RAVE",
     "CHIP",
-    "ASTEROID",
     "OPG",
+    "MAGA",
+    "PENGU",
     "AAVE",
-    "HYPE",
-    "PENGU"
+    "ASTEROID"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 37.96,
-  "cached_at": 1776798122.325979
+  "fetch_time_sec": 2.67,
+  "cached_at": 1776808825.534078
 }
