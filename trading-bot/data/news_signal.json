@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-04-21T10:00:36.821861+00:00",
+  "timestamp": "2026-04-21T11:21:05.346566+00:00",
   "sentiment": "bearish",
-  "score": -0.52,
+  "score": -0.54,
   "fear_greed": {
     "value": 33,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "Bitcoin climbs as risk sentiment improves, altcoins hit by exploit concerns",
+    "Bank of Korea’s new governor signals CBDC and bank token push, skips stablecoins in key address",
     "KelpDAO hackers are laundering millions in stolen crypto, data show",
     "A dozen banks want a euro stablecoin. Fireblocks is making it happen",
-    "Arbitrum freezes $71 million in ether tied to Kelp DAO exploit",
-    "Bank of Korea governor backs CBDCs, deposit tokens in first address",
-    "European banks tap Fireblocks for MiCA-compliant euro stablecoin"
+    "Arbitrum freezes $71 million in ether tied to Kelp DAO exploit"
   ],
   "affected_assets": [
     "ETH",
@@ -20,22 +20,21 @@
     "XRP",
     "UNI",
     "ARB",
-    "OP",
-    "LINK"
+    "OP"
   ],
   "trending_coins": [
     "RAVE",
-    "ASTEROID",
-    "PENGU",
     "AAVE",
-    "BASED",
-    "TAO",
-    "HYPE"
+    "ARB",
+    "ASTEROID",
+    "HYPE",
+    "MON",
+    "PENGU"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.62,
-  "cached_at": 1776765636.822029
+  "fetch_time_sec": 2.43,
+  "cached_at": 1776770465.346837
 }

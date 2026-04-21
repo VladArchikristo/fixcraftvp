@@ -992,3 +992,9 @@ OPEN_POSITION: {
 2026-04-21 06:00:34,202 [INFO] news_agent: NewsAgent: fetching fresh data...
 2026-04-21 06:00:36,822 [INFO] news_agent: NewsAgent: done in 2.62s | score=-0.520 | sentiment=bearish | risk=HIGH
 2026-04-21 06:00:36,823 [INFO] vasily_scan: Prompt length: 14113 chars
+2026-04-21 07:20:46,363 [INFO] vasily_hl: Fetching extended market data for 3 coins...
+2026-04-21 07:21:02,918 [INFO] vasily_scan: Trailing SL XRP LONG: $1.41 → $1.41 (price $1.44)
+2026-04-21 07:21:02,918 [INFO] vasily_scan: Trailing SL XRP LONG: $1.41 → $1.41 (price $1.44)
+2026-04-21 07:21:02,920 [INFO] news_agent: NewsAgent: fetching fresh data...
+2026-04-21 07:21:05,347 [INFO] news_agent: NewsAgent: done in 2.43s | score=-0.540 | sentiment=bearish | risk=HIGH
+2026-04-21 07:21:05,348 [INFO] vasily_scan: Prompt length: 14160 chars
