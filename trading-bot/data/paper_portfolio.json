@@ -233,53 +233,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-17T21:01:54.010310",
-      "total_value": 1028.56,
-      "portfolio_value": 1028.56,
-      "pnl": 28.56,
-      "sentiment": "bullish",
-      "actions_taken": 0,
-      "summary": "## АНАЛИЗ РЫНКА — 2026-04-17 21:00 UTC",
-      "trades": [
-        "⏸️ NO_ACTION | News Agent CRITICAL + STOP_NEW_ENTRIES. Sentiment -0.74, 2 хака за 24h.   Конфликт: TA бычий (ETH/XRP STRONG_BUY), но macro/news перевешивают.   Жду: подтверждения от азиатской сессии, спада новостного риска,   или отката ETH к $2413 / XRP к $1.47 для лучшего входа с меньшим риском.   Кэш $1028.56 сохраняется."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 45,
-          "rec": "STRONG_BUY",
-          "rsi": 59.4
-        },
-        "XRP": {
-          "score": 45,
-          "rec": "STRONG_BUY",
-          "rsi": 56.4
-        },
-        "AVAX": {
-          "score": 15,
-          "rec": "BUY",
-          "rsi": 51.5
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 29.2
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 32.5
-        },
-        "AVAX": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 27.5
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-17T22:05:40.133271",
       "total_value": 1028.56,
       "portfolio_value": 1028.56,
@@ -2623,7 +2576,55 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-21T00:01:36.026485",
+      "total_value": 1018.02,
+      "portfolio_value": 1018.02,
+      "pnl": 18.02,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "## АНАЛИЗ ВАСИЛИЯ | 2026-04-21 00:00 UTC",
+      "trades": [
+        "🔄 HOLD XRP | Обе LONG позиции держим. 4h ADX 30 STRONG быки, funding -0.0025% (шорты платят), whale walls $1.42 держат. SL $1.40 за поддержкой. Ждём движения к $1.44-$1.49.",
+        "⏸️ NO_ACTION | Новые позиции не открываем. News Agent BEARISH -0.56, Risk HIGH, режим REDUCE_SIZE -50%. ETH конфликт таймфреймов. AVAX orderbook ASK-heavy -56.7%, score -40. Кэш $617 сохраняем до прояснения ситуации после KelpDAO хайпа."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -35,
+          "rec": "SELL",
+          "rsi": 49.7
+        },
+        "XRP": {
+          "score": -15,
+          "rec": "SELL",
+          "rsi": 50.9
+        },
+        "AVAX": {
+          "score": -40,
+          "rec": "STRONG_SELL",
+          "rsi": 51.5
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -7.5
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 10.8
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -7.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-20T22:22:55.261532"
+  "updated_at": "2026-04-21T00:01:36.026518"
 }
