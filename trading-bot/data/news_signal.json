@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-21T04:00:26.020988+00:00",
+  "timestamp": "2026-04-21T07:00:27.652443+00:00",
   "sentiment": "bearish",
   "score": -0.56,
   "fear_greed": {
@@ -8,35 +8,32 @@
     "trend": "rising"
   },
   "key_events": [
+    "Arbitrum freezes $71 million in ether tied to Kelp DAO exploit",
     "Aave could face up to $230 million in losses after Kelp DAO bridge exploit triggers DeFi chaos",
     "Bitcoin bounces above $76,000 as DeFi suffers $14 billion exodus after KelpDAO hack",
-    "Playdate Gaming Handheld Maker Bans Generative AI Tools for Development",
-    "RaveDAO Token Crashes, Sheds $6.6 Billion in Value as Exchanges Probe Alleged Manipulation",
-    "North Korea’s crypto heist playbook is expanding and DeFi keeps getting hit"
+    "Arbitrum freezes $71M of Ether connected to Kelp exploit",
+    "Aave risk manager models 2 bad debt scenarios from Kelp DAO exploit"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "XRP",
-    "DOGE",
-    "BNB",
-    "ADA",
+    "ARB",
     "OP"
   ],
   "trending_coins": [
     "RAVE",
     "ASTEROID",
-    "PENGU",
     "AAVE",
-    "ZRO",
-    "ORDI",
-    "SOL"
+    "PENGU",
+    "BASED",
+    "ARB",
+    "BTC"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.39,
-  "cached_at": 1776744026.021188
+  "fetch_time_sec": 2.57,
+  "cached_at": 1776754827.6526499
 }
