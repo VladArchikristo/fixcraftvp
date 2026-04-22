@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-22T16:00:26.581523+00:00",
+  "timestamp": "2026-04-22T19:00:27.544972+00:00",
   "sentiment": "slightly_bearish",
   "score": -0.24,
   "fear_greed": {
@@ -8,11 +8,11 @@
     "trend": "falling"
   },
   "key_events": [
-    "Flight to safety: How Maker’s Spark and USDC are winning the $10 billion Aave breakup",
-    "Traders don’t see Kelp socializing losses after $292 million exploit",
-    "Aave deposits fall by $15B as Kelp exploit sparks flight from DeFi lender",
-    "Bitcoin breaks Strategy's STRC ex-dividend date slump for the first time in six months",
-    "Bitcoin tops $79,000 as crypto rally gathers steam; Circle, Coinbase, Strategy lead"
+    "Banks seek to slow down implementation of crypto's GENIUS Act on stablecoin oversight",
+    "The Protocol: Kelp DAO exploited for $292 million",
+    "The $292 million Kelp DAO exploit shows why crypto bridges are still one of the industry's weakest links",
+    "The question isn't whether privacy. It's what sort of privacy",
+    "Crypto Long & Short: Protecting the people building DeFi infrastructure"
   ],
   "affected_assets": [
     "BTC",
@@ -23,17 +23,17 @@
   ],
   "trending_coins": [
     "CHIP",
-    "OPG",
     "PENGU",
     "BTC",
-    "SPK",
     "RAVE",
-    "ASTEROID"
+    "ASTEROID",
+    "OPG",
+    "AAVE"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.52,
-  "cached_at": 1776873626.581725
+  "fetch_time_sec": 3.12,
+  "cached_at": 1776884427.545239
 }
