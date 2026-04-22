@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-22T01:00:25.225328+00:00",
+  "timestamp": "2026-04-22T04:00:23.877740+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.32,
+  "score": -0.4,
   "fear_greed": {
     "value": 32,
     "label": "Fear",
@@ -12,27 +12,26 @@
     "Mob boss John Gotti’s grandson is headed to prison for a $1.1 million Covid fraud and crypto scheme",
     "Crypto's massive exploit may force big banks to rethink their blockchain plans, Jefferies warns",
     "Revolut targets a $200 billion IPO just months after its $75 billion share sale",
-    "Cut the red tape: 39 financial giants demand an emergency fast-track for Europe's blockchain pilot"
+    "Crypto's great hope in Senate's Clarity Act still has a path to survive tight calendar"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "SOL",
     "OP"
   ],
   "trending_coins": [
+    "CHIP",
     "MAGA",
     "PENGU",
-    "CHIP",
     "RAVE",
     "ASTEROID",
-    "AAVE",
-    "BTC"
+    "OPG",
+    "ETH"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.53,
-  "cached_at": 1776819625.2254982
+  "fetch_time_sec": 3.23,
+  "cached_at": 1776830423.877991
 }
