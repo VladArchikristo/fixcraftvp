@@ -224,100 +224,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-19T03:02:27.957299",
-      "total_value": 1017.52,
-      "portfolio_value": 1017.52,
-      "pnl": 17.52,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "## ВАСИЛИЙ | АНАЛИЗ 2026-04-19 03:00 UTC",
-      "trades": [
-        "⏸️ NO_ACTION | CRITICAL risk environment. News agent: STOP_NEW_ENTRIES.    Kelp DAO hack $292M прямо давит на ETH экосистему.   ETH oversold (RSI 27.8, StochRSI 0.0) → шорт не даёт R:R 1:2.   XRP: конфликт TF сигналов, нет чёткого направления.   AVAX: $9.20 support слишком близко, R:R < 1:1.   Ожидаю разрешения хака (реакция рынка через 4-8h), затем переоцениваю."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 0,
-          "rec": "NEUTRAL",
-          "rsi": 27.8
-        },
-        "XRP": {
-          "score": -25,
-          "rec": "SELL",
-          "rsi": 37.9
-        },
-        "AVAX": {
-          "score": -35,
-          "rec": "SELL",
-          "rsi": 33.0
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 13.3
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 13.3
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -7.5
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
-      "time": "2026-04-19T04:06:02.257087",
-      "total_value": 1017.52,
-      "portfolio_value": 1017.52,
-      "pnl": 17.52,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "## АНАЛИЗ HYPERLIQUID — 2026-04-19 04:03 UTC",
-      "trades": [
-        "⏸️ NO_ACTION | News Agent: STOP_NEW_ENTRIES, CRITICAL risk level.    Kelp DAO $292M hack создаёт непредсказуемую волатильность в ETH-деривативах.   ETH SHORT заблокирован системой (RSI 24 < 25).    XRP LONG заблокирован системой (1h Score -35 < -30).   AVAX SHORT технически возможен (ADX 47.2 VERY STRONG, -74.5% ASK-heavy),    но RSI 27.9 близко к блоку (25), рынок экстремально перепродан —    риск V-reversal высок при любом позитивном катализаторе.   Капитал $1017 в безопасности. Ждём стабилизации после хака."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 0,
-          "rec": "NEUTRAL",
-          "rsi": 24.0
-        },
-        "XRP": {
-          "score": -35,
-          "rec": "SELL",
-          "rsi": 30.5
-        },
-        "AVAX": {
-          "score": -10,
-          "rec": "NEUTRAL",
-          "rsi": 27.9
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 13.3
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 11.7
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -3.3
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-19T06:02:05.235771",
       "total_value": 1017.52,
       "portfolio_value": 1017.52,
@@ -2579,7 +2485,97 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-22T04:21:19.979243",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "bullish",
+      "actions_taken": 0,
+      "summary": "⚠️ Claude не ответил. Данные получены, анализ недоступен.",
+      "trades": [],
+      "ta_scores": {
+        "ETH": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 69.9
+        },
+        "XRP": {
+          "score": 20,
+          "rec": "BUY",
+          "rsi": 64.1
+        },
+        "AVAX": {
+          "score": 35,
+          "rec": "BUY",
+          "rsi": 64.2
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 12.5
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 15.0
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 10.0
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-22T06:00:40.686741",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "bullish",
+      "actions_taken": 0,
+      "summary": "⚠️ Claude не ответил. Данные получены, анализ недоступен.",
+      "trades": [],
+      "ta_scores": {
+        "ETH": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 68.7
+        },
+        "XRP": {
+          "score": 30,
+          "rec": "BUY",
+          "rsi": 61.4
+        },
+        "AVAX": {
+          "score": 45,
+          "rec": "STRONG_BUY",
+          "rsi": 65.3
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 14.2
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 21.7
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 11.7
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-22T03:00:41.840305"
+  "updated_at": "2026-04-22T06:00:40.686810"
 }
