@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-21T22:00:25.533821+00:00",
+  "timestamp": "2026-04-22T01:00:25.225328+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.38,
+  "score": -0.32,
   "fear_greed": {
-    "value": 33,
+    "value": 32,
     "label": "Fear",
-    "trend": "rising"
+    "trend": "falling"
   },
   "key_events": [
     "Core Scientific seeks $3.3 billion bond sale to further AI data center pivot",
@@ -18,22 +18,21 @@
     "BTC",
     "ETH",
     "SOL",
-    "OP",
-    "LINK"
+    "OP"
   ],
   "trending_coins": [
-    "RAVE",
-    "CHIP",
-    "OPG",
     "MAGA",
     "PENGU",
+    "CHIP",
+    "RAVE",
+    "ASTEROID",
     "AAVE",
-    "ASTEROID"
+    "BTC"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.67,
-  "cached_at": 1776808825.534078
+  "fetch_time_sec": 2.53,
+  "cached_at": 1776819625.2254982
 }
