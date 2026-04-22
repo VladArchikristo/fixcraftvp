@@ -96,5 +96,12 @@
     "pnl_day": 0,
     "pnl_pct": 0.0,
     "trades": 0
+  },
+  {
+    "date": "2026-04-22",
+    "balance": 617.52,
+    "pnl_day": 0,
+    "pnl_pct": 0.0,
+    "trades": 0
   }
 ]

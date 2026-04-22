@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-22T10:00:23.976195+00:00",
+  "timestamp": "2026-04-22T13:00:28.743842+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.3,
+  "score": -0.44,
   "fear_greed": {
     "value": 32,
     "label": "Fear",
@@ -12,7 +12,7 @@
     "Traders don’t see Kelp socializing losses after $292 million exploit",
     "Another DeFi protocol loses millions in hack days after KelpDAO breach",
     "Bitcoin climbs to $78,100 on Trump ceasefire extension, Strategy's $2.5 billion buy",
-    "Privacy protocol Umbra shuts front end to stifle Kelp exploiters"
+    "‘Powerful move’ looms for Bitcoin price, says Bollinger Bands indicator"
   ],
   "affected_assets": [
     "BTC",
@@ -22,17 +22,17 @@
   ],
   "trending_coins": [
     "CHIP",
-    "OPG",
-    "MAGA",
     "RAVE",
+    "HYPE",
     "ASTEROID",
     "AAVE",
-    "BTC"
+    "OPG",
+    "PENGU"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 3.09,
-  "cached_at": 1776852023.9764102
+  "fetch_time_sec": 2.32,
+  "cached_at": 1776862828.7440991
 }
