@@ -1,37 +1,37 @@
 {
-  "timestamp": "2026-04-22T04:00:23.877740+00:00",
+  "timestamp": "2026-04-22T07:00:24.653932+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.4,
+  "score": -0.34,
   "fear_greed": {
     "value": 32,
     "label": "Fear",
     "trend": "falling"
   },
   "key_events": [
+    "Bitcoin climbs to $78,100 on Trump ceasefire extension, Strategy's $2.5 billion buy",
     "Core Scientific seeks $3.3 billion bond sale to further AI data center pivot",
     "Mob boss John Gotti’s grandson is headed to prison for a $1.1 million Covid fraud and crypto scheme",
-    "Crypto's massive exploit may force big banks to rethink their blockchain plans, Jefferies warns",
-    "Revolut targets a $200 billion IPO just months after its $75 billion share sale",
-    "Crypto's great hope in Senate's Clarity Act still has a path to survive tight calendar"
+    "Privacy protocol Umbra shuts front end to stifle Kelp exploiters",
+    "Bitcoin's 'Coinbase premium' just posted its longest bullish streak since October's record high of $126,000"
   ],
   "affected_assets": [
     "BTC",
-    "ETH",
-    "OP"
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
     "CHIP",
-    "MAGA",
-    "PENGU",
-    "RAVE",
-    "ASTEROID",
     "OPG",
-    "ETH"
+    "RAVE",
+    "PENGU",
+    "BTC",
+    "ASTEROID",
+    "SOL"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 3.23,
-  "cached_at": 1776830423.877991
+  "fetch_time_sec": 2.84,
+  "cached_at": 1776841224.654151
 }
