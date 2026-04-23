@@ -1,39 +1,43 @@
 {
-  "timestamp": "2026-04-22T22:00:24.451317+00:00",
-  "sentiment": "slightly_bearish",
-  "score": -0.24,
+  "timestamp": "2026-04-23T01:00:25.490698+00:00",
+  "sentiment": "neutral",
+  "score": 0.1,
   "fear_greed": {
-    "value": 32,
+    "value": 46,
     "label": "Fear",
-    "trend": "falling"
+    "trend": "rising"
   },
   "key_events": [
     "Banks seek to slow down implementation of crypto's GENIUS Act on stablecoin oversight",
     "The Protocol: Kelp DAO exploited for $292 million",
     "The $292 million Kelp DAO exploit shows why crypto bridges are still one of the industry's weakest links",
-    "Banking group asks for more time to comment on US stablecoin bill",
+    "Sam Bankman-Fried pulls motion for a new trial, still asks for new judge",
     "Kalshi flags more insider trading cases, including politician who appeared on FBoy Island"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
+    "XRP",
+    "DOGE",
+    "BNB",
+    "ADA",
     "OP",
     "LINK"
   ],
   "trending_coins": [
     "CHIP",
     "PENGU",
-    "RAVE",
-    "AAVE",
     "ASTEROID",
-    "TAO",
-    "SOL"
+    "RAVE",
+    "BTC",
+    "AAVE",
+    "SPK"
   ],
-  "risk_level": "HIGH",
-  "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
+  "risk_level": "LOW",
+  "vasily_action": "NORMAL — стандартное управление рисками",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.38,
-  "cached_at": 1776895224.45156
+  "fetch_time_sec": 2.72,
+  "cached_at": 1776906025.4909341
 }
