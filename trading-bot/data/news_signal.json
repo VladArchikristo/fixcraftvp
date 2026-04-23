@@ -1,42 +1,39 @@
 {
-  "timestamp": "2026-04-23T07:00:25.276034+00:00",
-  "sentiment": "neutral",
-  "score": -0.04,
+  "timestamp": "2026-04-23T10:00:28.328991+00:00",
+  "sentiment": "slightly_bearish",
+  "score": -0.35,
   "fear_greed": {
     "value": 46,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "[HACK] Hacking Time Recap",
     "FTX sold its Cursor stake for $200,000 in 2023. It would be worth $3 billion today",
-    "Phishing, deepfakes, supply chain attacks to fuel 2026's biggest crypto hacks: CertiK",
-    "Kalshi bans 3 US politicians for betting on their own election races",
-    "New York, Illinois sign EOs banning state employees from prediction markets",
-    "Sam Bankman-Fried pulls motion for a new trial, still asks for new judge"
+    "SocialFi app Believe founder arrested on strangulation charges following rug pull lawsuit",
+    "Sam Bankman-Fried withdraws new trial motion for now, says he won’t get ‘fair hearing’ from judge",
+    "Coinbase backer Blockchain Capital hunts $700 million for new funds"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "XRP",
     "DOGE",
-    "BNB",
-    "ADA",
     "OP"
   ],
   "trending_coins": [
-    "SPK",
     "CHIP",
-    "ASTEROID",
+    "SPK",
     "RAVE",
     "PENGU",
     "OPG",
-    "BTC"
+    "BTC",
+    "HYPE"
   ],
-  "risk_level": "LOW",
-  "vasily_action": "NORMAL — стандартное управление рисками",
-  "news_count": 20,
-  "hacks_detected": 0,
-  "fetch_time_sec": 2.38,
-  "cached_at": 1776927625.276254
+  "risk_level": "CRITICAL",
+  "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
+  "news_count": 13,
+  "hacks_detected": 1,
+  "fetch_time_sec": 2.4,
+  "cached_at": 1776938428.3291829
 }
