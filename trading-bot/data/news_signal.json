@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-23T10:00:28.328991+00:00",
+  "timestamp": "2026-04-23T13:00:27.839814+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.35,
+  "score": -0.23,
   "fear_greed": {
     "value": 46,
     "label": "Fear",
@@ -9,31 +9,33 @@
   },
   "key_events": [
     "[HACK] Hacking Time Recap",
+    "Sam Bankman-Fried withdraws retrial motion. He believes he would not get a fair trial.",
+    "The DAT collapse: Pantera wants Satsuma to dump its bitcoin as shares crash 99%",
     "FTX sold its Cursor stake for $200,000 in 2023. It would be worth $3 billion today",
-    "SocialFi app Believe founder arrested on strangulation charges following rug pull lawsuit",
-    "Sam Bankman-Fried withdraws new trial motion for now, says he won’t get ‘fair hearing’ from judge",
-    "Coinbase backer Blockchain Capital hunts $700 million for new funds"
+    "Andre Cronje’s Flying Tulip adds withdrawal circuit breaker as DeFi exploits mount"
   ],
   "affected_assets": [
+    "BTC",
     "ETH",
     "SOL",
     "XRP",
     "DOGE",
+    "ADA",
     "OP"
   ],
   "trending_coins": [
-    "CHIP",
     "SPK",
-    "RAVE",
+    "CHIP",
     "PENGU",
+    "RAVE",
+    "ASTEROID",
     "OPG",
-    "BTC",
-    "HYPE"
+    "AAVE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
-  "news_count": 13,
+  "news_count": 20,
   "hacks_detected": 1,
-  "fetch_time_sec": 2.4,
-  "cached_at": 1776938428.3291829
+  "fetch_time_sec": 2.64,
+  "cached_at": 1776949227.840032
 }
