@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-23T19:00:23.726051+00:00",
+  "timestamp": "2026-04-23T22:00:27.259890+00:00",
   "sentiment": "slightly_bearish",
   "score": -0.36,
   "fear_greed": {
@@ -10,13 +10,14 @@
   "key_events": [
     "[HACK] Inside the KelpDAO Bridge Exploit: $292.0M stolen",
     "[HACK] Hacking Time Recap",
+    "Aave rallies DeFi partners to contain fallout from $292 million KelpDAO hack",
     "BIS warns cryptocurrency exchanges are becoming ‘shadow banks,’ and why that's a risk",
-    "The $145 billion math: Why bitcoin’s quantum threat is manageable, not existential",
-    "More than 90% of Web3 games failed after $15 billion boom as gamers never showed up: Caladan"
+    "The $145 billion math: Why bitcoin’s quantum threat is manageable, not existential"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
+    "SOL",
     "XRP",
     "ADA",
     "UNI",
@@ -26,17 +27,17 @@
   ],
   "trending_coins": [
     "CHIP",
-    "MOVR",
-    "PENGU",
     "SPK",
+    "PENGU",
+    "AAVE",
     "BTC",
-    "HYPE",
+    "TAO",
     "ASTEROID"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.52,
-  "cached_at": 1776970823.726261
+  "fetch_time_sec": 2.57,
+  "cached_at": 1776981627.260073
 }
