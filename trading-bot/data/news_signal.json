@@ -1,23 +1,22 @@
 {
-  "timestamp": "2026-04-23T16:00:27.778025+00:00",
+  "timestamp": "2026-04-23T19:00:23.726051+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.23,
+  "score": -0.36,
   "fear_greed": {
     "value": 46,
     "label": "Fear",
     "trend": "rising"
   },
   "key_events": [
+    "[HACK] Inside the KelpDAO Bridge Exploit: $292.0M stolen",
     "[HACK] Hacking Time Recap",
     "BIS warns cryptocurrency exchanges are becoming ‘shadow banks,’ and why that's a risk",
     "The $145 billion math: Why bitcoin’s quantum threat is manageable, not existential",
-    "More than 90% of Web3 games failed after $15 billion boom as gamers never showed up: Caladan",
-    "Sam Bankman-Fried withdraws retrial motion. He believes he would not get a fair trial."
+    "More than 90% of Web3 games failed after $15 billion boom as gamers never showed up: Caladan"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "SOL",
     "XRP",
     "ADA",
     "UNI",
@@ -27,17 +26,17 @@
   ],
   "trending_coins": [
     "CHIP",
-    "SPK",
-    "RAVE",
     "MOVR",
+    "PENGU",
+    "SPK",
     "BTC",
-    "AAVE",
-    "HYPE"
+    "HYPE",
+    "ASTEROID"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
-  "hacks_detected": 1,
-  "fetch_time_sec": 3.09,
-  "cached_at": 1776960027.7781498
+  "hacks_detected": 2,
+  "fetch_time_sec": 2.52,
+  "cached_at": 1776970823.726261
 }

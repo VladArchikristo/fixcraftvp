@@ -224,102 +224,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-20T10:22:43.106185",
-      "total_value": 1019.54,
-      "portfolio_value": 1019.54,
-      "pnl": 19.54,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "# ВАСИЛИЙ — РЫНОЧНЫЙ БРИФИНГ | 2026-04-20 10:21 UTC",
-      "trades": [
-        "🔄 HOLD XRP | 4h ADX 32.2 STRONG bull trend, DI+ > DI-, whale walls $1.43 holding,               funding -0.0006% (crowd short = tailwind for longs), 4h+1d aligned BUY.               Обе позиции в прибыли, SL подтянуть до $1.415 для защиты.",
-        "⏸️ NO_ACTION | News Agent: CRITICAL risk, STOP_NEW_ENTRIES. ETH order book -96.6%               ASK-heavy, 4h bearish/neutral — нет сигнала. AVAX: 4h SELL,               конфликт TF. Новых позиций не открывать до смягчения риск-сигнала."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": 0,
-          "rec": "NEUTRAL",
-          "rsi": 53.3
-        },
-        "XRP": {
-          "score": -10,
-          "rec": "NEUTRAL",
-          "rsi": 58.7
-        },
-        "AVAX": {
-          "score": 20,
-          "rec": "BUY",
-          "rsi": 57.0
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": 6.7
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 12.5
-        },
-        "AVAX": {
-          "confluence": 20,
-          "direction": "NEUTRAL",
-          "weighted": -5.0
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
-      "time": "2026-04-20T12:01:34.010347",
-      "total_value": 1020.56,
-      "portfolio_value": 1020.56,
-      "pnl": 20.56,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "## АНАЛИЗ РЫНКА — 2026-04-20 12:00 UTC",
-      "trades": [
-        "🔄 HOLD XRP | 4h ADX 31.6 сильный тренд, whale walls держат $1.43,    1d BUY. 1h overbought StochRSI 90 — не добавлять.    SL подтянуть с $1.40 до $1.41 для защиты прибыли.",
-        "⏸️ NO_ACTION | News Agent: CRITICAL риск, STOP_NEW_ENTRIES.    Fear & Greed 29, активный hack-сигнал (Kelp $290M).    ETH whale walls сильные но 4h медвежий. AVAX 4h SELL.   Открытие новых позиций нецелесообразно до стабилизации новостного фона."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": -5,
-          "rec": "NEUTRAL",
-          "rsi": 53.4
-        },
-        "XRP": {
-          "score": -10,
-          "rec": "NEUTRAL",
-          "rsi": 59.4
-        },
-        "AVAX": {
-          "score": -5,
-          "rec": "NEUTRAL",
-          "rsi": 52.5
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": 5.8
-        },
-        "XRP": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 15.0
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -9.2
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-20T13:22:39.642453",
       "total_value": 1019.66,
       "portfolio_value": 1019.66,
@@ -2529,7 +2433,99 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-23T12:54:03.285160",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "⚠️ Claude не ответил. Данные получены, анализ недоступен.",
+      "trades": [],
+      "ta_scores": {
+        "ETH": {
+          "score": -55,
+          "rec": "STRONG_SELL",
+          "rsi": 40.4
+        },
+        "XRP": {
+          "score": 15,
+          "rec": "BUY",
+          "rsi": 53.4
+        },
+        "AVAX": {
+          "score": -10,
+          "rec": "NEUTRAL",
+          "rsi": 50.4
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -13.3
+        },
+        "XRP": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 11.7
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -2.5
+        }
+      },
+      "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-23T15:02:16.890130",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "bearish",
+      "actions_taken": 0,
+      "summary": "# Василий | Анализ рынка 2026-04-23 15:00 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | News Agent: CRITICAL / STOP_NEW_ENTRIES активен. KelpDAO $292M exploit   создаёт системную неопределённость по DeFi сектору. ETH/XRP/AVAX — все на   негативном фоне. ETH Score -45 блокирует LONG. Отрицательный фандинг по всем   активам — осторожно с SHORT. Ждём стабилизации и снижения risk level."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -45,
+          "rec": "STRONG_SELL",
+          "rsi": 33.8
+        },
+        "XRP": {
+          "score": 0,
+          "rec": "NEUTRAL",
+          "rsi": 53.4
+        },
+        "AVAX": {
+          "score": -25,
+          "rec": "SELL",
+          "rsi": 42.0
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -13.3
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 9.2
+        },
+        "AVAX": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -9.2
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-23T12:00:44.743992"
+  "updated_at": "2026-04-23T15:02:16.890223"
 }
