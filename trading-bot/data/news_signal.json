@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-24T01:00:26.133209+00:00",
+  "timestamp": "2026-04-24T07:00:30.929801+00:00",
   "sentiment": "bearish",
-  "score": -0.56,
+  "score": -0.62,
   "fear_greed": {
     "value": 39,
     "label": "Fear",
@@ -10,34 +10,30 @@
   "key_events": [
     "[HACK] Inside the KelpDAO Bridge Exploit: $292.0M stolen",
     "[HACK] Hacking Time Recap",
+    "Bitcoin ETFs just pulled $2 billion in 8 days while short-term holders quietly started selling",
     "Aave rallies DeFi partners to contain fallout from $292 million KelpDAO hack",
-    "BIS warns cryptocurrency exchanges are becoming ‘shadow banks,’ and why that's a risk",
-    "The $145 billion math: Why bitcoin’s quantum threat is manageable, not existential"
+    "Morgan Stanley is positioning itself as the reserve manager for the stablecoin industry"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "XRP",
-    "ADA",
     "UNI",
-    "ARB",
-    "OP",
-    "LINK"
+    "OP"
   ],
   "trending_coins": [
-    "PENGU",
-    "SPK",
     "RAVE",
     "CHIP",
+    "THETA",
+    "SPK",
     "AAVE",
-    "STABLE",
-    "ASTEROID"
+    "ASTEROID",
+    "OCT"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.49,
-  "cached_at": 1776992426.133367
+  "fetch_time_sec": 2.24,
+  "cached_at": 1777014030.930021
 }
