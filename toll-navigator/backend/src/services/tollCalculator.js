@@ -56,19 +56,17 @@ function calculateTollCost(states, distanceMiles, truckType = '2-axle', stateMil
         cost = toll.min_cost * config.multiplier;
       }
 
-      // Берём средний toll из доступных дорог в штате
+      // Sum realistic toll costs for this state
       stateCost += cost;
     }
 
-    // Используем среднее по штату (не сумму всех дорог)
-    const avgStateCost = stateCost / tolls.length;
-    total += avgStateCost;
+    total += stateCost;
 
     breakdown.push({
       state,
       roads: tolls.length,
       miles_in_state: Math.round(milesInState),
-      cost: parseFloat(avgStateCost.toFixed(2)),
+      cost: parseFloat(stateCost.toFixed(2)),
     });
   }
 

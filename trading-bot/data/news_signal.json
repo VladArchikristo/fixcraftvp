@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-24T10:00:26.585312+00:00",
+  "timestamp": "2026-04-24T13:00:26.589337+00:00",
   "sentiment": "bearish",
-  "score": -0.66,
+  "score": -0.54,
   "fear_greed": {
     "value": 39,
     "label": "Fear",
@@ -11,30 +11,29 @@
     "[HACK] Inside the KelpDAO Bridge Exploit: $292.0M stolen",
     "[HACK] Hacking Time Recap",
     "U.S. government sits on $26.5 billion gain from Intel stake, as shares surge 22%",
-    "Bitcoin ETFs just pulled $2 billion in 8 days while short-term holders quietly started selling",
-    "Spot bitcoin ETFs draw $2 billion in net inflows over 8-day positive streak"
+    "Bitcoin ETFs just pulled in $2 billion in 8 days while short-term holders quietly started selling",
+    "Bitcoin, dollar move in near-perfect opposition. It hasn't been this extreme in almost 4 years."
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "SOL",
-    "UNI",
+    "XRP",
     "OP",
     "LINK"
   ],
   "trending_coins": [
+    "KAT",
+    "GRASS",
+    "PENGU",
     "BSB",
     "CHIP",
-    "RAVE",
-    "AAVE",
-    "PENGU",
-    "BTC",
-    "MON"
+    "ASTEROID",
+    "AAVE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.44,
-  "cached_at": 1777024826.585474
+  "fetch_time_sec": 2.35,
+  "cached_at": 1777035626.589509
 }
