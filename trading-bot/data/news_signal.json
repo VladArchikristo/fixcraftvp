@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-23T22:00:27.259890+00:00",
-  "sentiment": "slightly_bearish",
-  "score": -0.36,
+  "timestamp": "2026-04-24T01:00:26.133209+00:00",
+  "sentiment": "bearish",
+  "score": -0.56,
   "fear_greed": {
-    "value": 46,
+    "value": 39,
     "label": "Fear",
-    "trend": "rising"
+    "trend": "falling"
   },
   "key_events": [
     "[HACK] Inside the KelpDAO Bridge Exploit: $292.0M stolen",
@@ -26,18 +26,18 @@
     "LINK"
   ],
   "trending_coins": [
-    "CHIP",
-    "SPK",
     "PENGU",
+    "SPK",
+    "RAVE",
+    "CHIP",
     "AAVE",
-    "BTC",
-    "TAO",
+    "STABLE",
     "ASTEROID"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.57,
-  "cached_at": 1776981627.260073
+  "fetch_time_sec": 2.49,
+  "cached_at": 1776992426.133367
 }
