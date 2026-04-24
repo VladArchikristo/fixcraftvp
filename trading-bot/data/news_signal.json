@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-24T07:00:30.929801+00:00",
+  "timestamp": "2026-04-24T07:53:46.002781+00:00",
   "sentiment": "bearish",
-  "score": -0.62,
+  "score": -0.58,
   "fear_greed": {
     "value": 39,
     "label": "Fear",
@@ -15,25 +15,24 @@
     "Morgan Stanley is positioning itself as the reserve manager for the stablecoin industry"
   ],
   "affected_assets": [
-    "BTC",
     "ETH",
     "SOL",
     "UNI",
     "OP"
   ],
   "trending_coins": [
-    "RAVE",
     "CHIP",
-    "THETA",
+    "RAVE",
+    "PENGU",
+    "OCT",
     "SPK",
-    "AAVE",
     "ASTEROID",
-    "OCT"
+    "AAVE"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.24,
-  "cached_at": 1777014030.930021
+  "fetch_time_sec": 2.47,
+  "cached_at": 1777017226.002947
 }

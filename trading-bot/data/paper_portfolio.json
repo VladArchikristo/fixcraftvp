@@ -224,55 +224,6 @@
   ],
   "scan_history": [
     {
-      "time": "2026-04-21T01:22:34.293648",
-      "total_value": 1019.77,
-      "portfolio_value": 1019.77,
-      "pnl": 19.77,
-      "sentiment": "neutral",
-      "actions_taken": 0,
-      "summary": "Рынок в зоне страха (F&G: 33). Главный драйвер — KelpDAO hack ($290M), Aave потенциальные потери $123-230M, DeFi exodus $14B. Это не локальная история",
-      "trades": [
-        "🔄 HOLD XRP | Whale BID walls $1.43 держат цену, ADX 4h 30.5 STRONG бычий тренд, MACD bullish cross, SL правильно за уровнем $1.40. Медвежий фон учтён — размер уже ограничен.",
-        "🔄 HOLD XRP | Второй лонг с более дальним TP $1.51 — позволяет поймать полное движение к resistance. Whale walls создают поддержку прямо сейчас.",
-        "⏸️ NO_ACTION | Медвежий news signal -0.56, KelpDAO DeFi hack $14B exodus, Fear 33. ETH в медвежьей структуре по 1h+4h. AVAX 4h overbought StochRSI 92. Кэш $617 сохраняем для следующей возможности."
-      ],
-      "ta_scores": {
-        "ETH": {
-          "score": -15,
-          "rec": "SELL",
-          "rsi": 51.7
-        },
-        "XRP": {
-          "score": 30,
-          "rec": "BUY",
-          "rsi": 55.8
-        },
-        "AVAX": {
-          "score": 25,
-          "rec": "BUY",
-          "rsi": 58.0
-        }
-      },
-      "confluence": {
-        "ETH": {
-          "confluence": 60,
-          "direction": "SHORT",
-          "weighted": -0.8
-        },
-        "XRP": {
-          "confluence": 100,
-          "direction": "LONG",
-          "weighted": 18.3
-        },
-        "AVAX": {
-          "confluence": 60,
-          "direction": "LONG",
-          "weighted": 6.7
-        }
-      },
-      "data_source": "hyperliquid_extended"
-    },
-    {
       "time": "2026-04-21T03:01:50.921997",
       "total_value": 1021.77,
       "portfolio_value": 1021.77,
@@ -2513,7 +2464,54 @@
         }
       },
       "data_source": "hyperliquid_extended"
+    },
+    {
+      "time": "2026-04-24T03:55:38.219791",
+      "total_value": 1018.97,
+      "portfolio_value": 1018.97,
+      "pnl": 18.97,
+      "sentiment": "neutral",
+      "actions_taken": 0,
+      "summary": "## ВАСИЛИЙ | Анализ Hyperliquid | 2026-04-24 03:53 UTC",
+      "trades": [
+        "⏸️ NO_ACTION | KelpDAO $292M hack создаёт CRITICAL системный риск для DeFi/ETH экосистемы.    News agent = STOP_NEW_ENTRIES. ETH под прямым давлением (ASK-HEAVY -22%,    медвежий тренд на 1h/4h). AVAX технически интересен (BID-HEAVY, bullish TF-confluence),    но хаковый фон + низкий volume + толпа в лонге делают вход преждевременным.    Ждём стабилизации рынка после хака (12-24ч). Кэш $1018.97 сохраняем."
+      ],
+      "ta_scores": {
+        "ETH": {
+          "score": -20,
+          "rec": "SELL",
+          "rsi": 42.1
+        },
+        "XRP": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 49.4
+        },
+        "AVAX": {
+          "score": 10,
+          "rec": "NEUTRAL",
+          "rsi": 50.7
+        }
+      },
+      "confluence": {
+        "ETH": {
+          "confluence": 60,
+          "direction": "SHORT",
+          "weighted": -2.5
+        },
+        "XRP": {
+          "confluence": 60,
+          "direction": "LONG",
+          "weighted": 4.2
+        },
+        "AVAX": {
+          "confluence": 100,
+          "direction": "LONG",
+          "weighted": 10.8
+        }
+      },
+      "data_source": "hyperliquid_extended"
     }
   ],
-  "updated_at": "2026-04-24T03:01:48.028168"
+  "updated_at": "2026-04-24T03:55:38.219874"
 }
