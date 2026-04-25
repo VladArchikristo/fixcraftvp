@@ -74,10 +74,7 @@
           "cameraPermission": "HaulWallet uses the camera to scan fuel receipts."
         }
       ],
-      "expo-font",
-      "expo-build-properties",
-      "expo-secure-store",
-      "expo-web-browser"
+      "expo-build-properties"
     ],
     "extra": {
       "apiUrl": "https://api.haulwallet.com",
