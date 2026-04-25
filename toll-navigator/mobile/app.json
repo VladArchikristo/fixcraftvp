@@ -48,6 +48,16 @@
     },
     "plugins": [
       [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          }
+        }
+      ],
+      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "HaulWallet tracks your location in the background to automatically record miles per state for your IFTA quarterly fuel tax report.",
@@ -64,7 +74,8 @@
           "cameraPermission": "HaulWallet uses the camera to scan fuel receipts."
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-build-properties"
     ],
     "extra": {
       "apiUrl": "https://api.haulwallet.com",
