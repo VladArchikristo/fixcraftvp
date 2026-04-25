@@ -50,7 +50,7 @@ ALLOWED_USER = int(os.getenv("ALLOWED_USER_ID", "244710532"))
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
-CLAUDE_TIMEOUT = 3600
+CLAUDE_TIMEOUT = 180
 
 LOG_DIR = Path.home() / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -1117,13 +1117,13 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     app.add_error_handler(error_handler)
 
-    app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+    app.job_queue.run_repeating(heartbeat_job, interval=21600, first=10)  # 6 hours
 
     _app_ref = app
 
     log.info("Зина polling started")
     try:
-        app.run_polling(drop_pending_updates=False, allowed_updates=Update.ALL_TYPES)
+        app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
     finally:
         _cleanup()
 

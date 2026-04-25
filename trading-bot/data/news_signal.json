@@ -1,39 +1,40 @@
 {
-  "timestamp": "2026-04-24T13:00:26.589337+00:00",
+  "timestamp": "2026-04-25T01:55:21.984538+00:00",
   "sentiment": "bearish",
-  "score": -0.54,
+  "score": -0.78,
   "fear_greed": {
-    "value": 39,
+    "value": 31,
     "label": "Fear",
     "trend": "falling"
   },
   "key_events": [
     "[HACK] Inside the KelpDAO Bridge Exploit: $292.0M stolen",
     "[HACK] Hacking Time Recap",
-    "U.S. government sits on $26.5 billion gain from Intel stake, as shares surge 22%",
-    "Bitcoin ETFs just pulled in $2 billion in 8 days while short-term holders quietly started selling",
-    "Bitcoin, dollar move in near-perfect opposition. It hasn't been this extreme in almost 4 years."
+    "Bitcoin is on track for its best month in a year. $5 billion USDT growth fuels the rebound",
+    "Jane Street asks court to reject Terraform claims tied to UST-LUNA crash",
+    "Crypto PAC Fellowship halts support of Texas AG for Senate: Report"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "XRP",
+    "SOL",
+    "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "KAT",
-    "GRASS",
+    "APE",
+    "RAVE",
     "PENGU",
-    "BSB",
     "CHIP",
     "ASTEROID",
-    "AAVE"
+    "ZEC",
+    "KAT"
   ],
   "risk_level": "CRITICAL",
   "vasily_action": "STOP_NEW_ENTRIES — критический риск, только защита существующих позиций",
   "news_count": 20,
   "hacks_detected": 2,
-  "fetch_time_sec": 2.35,
-  "cached_at": 1777035626.589509
+  "fetch_time_sec": 2.47,
+  "cached_at": 1777082121.9847481
 }

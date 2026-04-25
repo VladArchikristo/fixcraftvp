@@ -1336,11 +1336,11 @@ def main():
     # Error handler
     app.add_error_handler(error_handler)
 
-    # Heartbeat every 60 sec
-    app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+    # Heartbeat every 1 hour
+    app.job_queue.run_repeating(heartbeat_job, interval=3600, first=10)
 
     # Watchdog every 60 sec — сбрасывает зависший _processing
-    app.job_queue.run_repeating(watchdog_job, interval=60, first=30)
+    app.job_queue.run_repeating(watchdog_job, interval=300, first=30)
 
     # Daily snapshot — раз в 24 часа
     app.job_queue.run_repeating(daily_snapshot_job, interval=86400, first=60)

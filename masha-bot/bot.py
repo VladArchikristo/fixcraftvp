@@ -1058,21 +1058,21 @@ def main():
     # Error handler
     app.add_error_handler(error_handler)
 
-    # Heartbeat every 60 sec
-    app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+    # Heartbeat every 1 hour
+    app.job_queue.run_repeating(heartbeat_job, interval=3600, first=10)
 
-    # Watchdog — check every 60 sec if _processing is stuck
-    app.job_queue.run_repeating(watchdog_job, interval=60, first=30)
+    # Watchdog — check every 5 min if _processing is stuck
+    app.job_queue.run_repeating(watchdog_job, interval=300, first=30)
 
     # Polling health monitor — restart polling if dead for 15 min
-    app.job_queue.run_repeating(_polling_health_job, interval=60, first=60)
+    app.job_queue.run_repeating(_polling_health_job, interval=300, first=60)
 
     _app_ref = app
 
     log.info("Маша polling started")
     try:
         app.run_polling(
-            drop_pending_updates=False,
+            drop_pending_updates=True,
             allowed_updates=Update.ALL_TYPES,
         )
     finally:

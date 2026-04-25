@@ -52,7 +52,7 @@ WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
 CLAUDE_MODEL_OPUS = "claude-opus-4-6"
 COMPLEX_THRESHOLD = 500  # chars — longer messages use Opus
-CLAUDE_TIMEOUT = 600
+CLAUDE_TIMEOUT = 180
 
 LOG_DIR = Path.home() / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -157,7 +157,7 @@ _processing_lock = asyncio.Lock()
 _message_queue: deque = deque(maxlen=5)
 _last_message_time: float = 0.0  # rate limiting — monotonic
 RATE_LIMIT_SEC = 3  # minimum seconds between messages
-WATCHDOG_INTERVAL = 60  # check every 60 sec
+WATCHDOG_INTERVAL = 120  # check every 2 min
 WATCHDOG_TIMEOUT_SOFT = 300  # 5 minutes — reset if no Claude alive
 WATCHDOG_TIMEOUT_HARD = 600  # 10 minutes — force reset even if Claude alive
 
@@ -1439,7 +1439,7 @@ def main():
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_error_handler(error_handler)
 
-    app.job_queue.run_repeating(heartbeat_job, interval=60, first=10)
+    app.job_queue.run_repeating(heartbeat_job, interval=3600, first=10)  # 1 hour
     app.job_queue.run_repeating(watchdog_job, interval=WATCHDOG_INTERVAL, first=30)
 
     _app_ref = app
