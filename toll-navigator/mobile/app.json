@@ -75,7 +75,9 @@
         }
       ],
       "expo-font",
-      "expo-build-properties"
+      "expo-build-properties",
+      "expo-secure-store",
+      "expo-web-browser"
     ],
     "extra": {
       "apiUrl": "https://api.haulwallet.com",
