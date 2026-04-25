@@ -28,12 +28,12 @@
       }
     },
     "android": {
+      "targetSdkVersion": 35,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F172A"
       },
       "package": "com.haulwallet.app",
-      "versionCode": 1,
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.READ_EXTERNAL_STORAGE",
@@ -74,7 +74,7 @@
     },
     "owner": "vladimir92905",
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/ff7f070e-42d7-439b-9dc9-68ad352c23b0"
