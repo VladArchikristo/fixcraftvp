@@ -98,12 +98,12 @@ export default function TripDetailScreen({ route, navigation }) {
       <View style={styles.routeCard}>
         <View style={styles.routeRow}>
           <View style={styles.cityBlock}>
-            <Text style={styles.cityLabel}>ИЗ</Text>
+            <Text style={styles.cityLabel}>FROM</Text>
             <Text style={styles.cityName}>{trip.from_city}</Text>
           </View>
           <Ionicons name="arrow-forward" size={20} color="#4fc3f7" style={styles.arrow} />
           <View style={[styles.cityBlock, { alignItems: 'flex-end' }]}>
-            <Text style={styles.cityLabel}>В</Text>
+            <Text style={styles.cityLabel}>TO</Text>
             <Text style={styles.cityName}>{trip.to_city}</Text>
           </View>
         </View>

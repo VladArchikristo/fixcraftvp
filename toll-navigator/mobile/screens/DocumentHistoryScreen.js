@@ -72,7 +72,7 @@ export default function DocumentHistoryScreen({ navigation }) {
   const handleDelete = (item) => {
     Alert.alert(
       'Delete Document',
-      `Delete ${item.typeLabel || item.type} из истории?`,
+      `Delete ${item.typeLabel || item.type} from history?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {

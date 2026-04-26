@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const STORAGE_KEY = '@toll_navigator:document_history';
 
 /**
- * Получить всю историю документов (новые первыми)
- * @returns {Promise<Array>} массив записей
+ * Get all document history (newest first)
+ * @returns {Promise<Array>}
  */
 export async function getDocumentHistory() {
   try {
@@ -19,13 +19,13 @@ export async function getDocumentHistory() {
 }
 
 /**
- * Сохранить новую запись в историю
+ * Save new entry to history
  * @param {object} entry - { id, type, date, localPath, pages, pdfUri }
  */
 export async function saveDocumentToHistory(entry) {
   try {
     const existing = await getDocumentHistory();
-    const updated = [entry, ...existing].slice(0, 100); // максимум 100 записей
+    const updated = [entry, ...existing].slice(0, 100); // max 100 entries
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     return updated;
   } catch (e) {
@@ -35,7 +35,7 @@ export async function saveDocumentToHistory(entry) {
 }
 
 /**
- * Удалить запись из истории по id
+ * Delete entry from history by id
  * @param {string} id
  */
 export async function deleteDocumentFromHistory(id) {
@@ -51,7 +51,7 @@ export async function deleteDocumentFromHistory(id) {
 }
 
 /**
- * Очистить всю историю
+ * Clear all history
  */
 export async function clearDocumentHistory() {
   try {
@@ -63,14 +63,14 @@ export async function clearDocumentHistory() {
 }
 
 /**
- * Генерация уникального ID для записи
+ * Generate unique ID for entry
  */
 export function generateDocumentId() {
   return `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 /**
- * Formтирование даты для отображения
+ * Format date for display
  */
 export function formatDocumentDate(isoString) {
   const d = new Date(isoString);

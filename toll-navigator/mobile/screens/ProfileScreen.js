@@ -200,7 +200,7 @@ export default function ProfileScreen({ onLogout }) {
           </View>
         </View>
 
-        {/* Кнопка сохранить */}
+        {/* Save button */}
         <TouchableOpacity
           style={[styles.saveBtn, saving && styles.saveBtnDisabled]}
           onPress={saveProfile}

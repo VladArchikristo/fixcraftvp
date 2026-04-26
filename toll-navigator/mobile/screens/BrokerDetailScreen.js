@@ -18,7 +18,7 @@ function formatDate(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return dateStr;
-  return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  return d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 function getRatingColor(rating) {
@@ -349,11 +349,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
 }
 
 function getReviewWord(count) {
-  if (count % 100 >= 11 && count % 100 <= 19) return 's';
-  const last = count % 10;
-  if (last === 1) return '';
-  if (last >= 2 && last <= 4) return 'а';
-  return 's';
+  return count === 1 ? '' : 's';
 }
 
 const styles = StyleSheet.create({

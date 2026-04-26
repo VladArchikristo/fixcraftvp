@@ -101,11 +101,7 @@ function BrokerCard({ broker, onPress }) {
 }
 
 function getReviewWord(count) {
-  if (count % 100 >= 11 && count % 100 <= 19) return 's';
-  const last = count % 10;
-  if (last === 1) return '';
-  if (last >= 2 && last <= 4) return 'а';
-  return 's';
+  return count === 1 ? '' : 's';
 }
 
 export default function BrokerListScreen({ navigation }) {
@@ -339,11 +335,7 @@ export default function BrokerListScreen({ navigation }) {
 }
 
 function getBrokerWord(count) {
-  if (count % 100 >= 11 && count % 100 <= 19) return 's';
-  const last = count % 10;
-  if (last === 1) return '';
-  if (last >= 2 && last <= 4) return 'а';
-  return 's';
+  return count === 1 ? '' : 's';
 }
 
 const styles = StyleSheet.create({

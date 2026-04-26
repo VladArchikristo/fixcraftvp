@@ -304,7 +304,7 @@ export default function IFTADashboardScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Quarterы */}
+        {/* Quarters */}
         <View style={styles.quarterRow}>
           {QUARTERS.map((q) => (
             <TouchableOpacity
@@ -349,7 +349,7 @@ export default function IFTADashboardScreen() {
             <View style={styles.tableCard}>
               <Text style={styles.tableTitle}>State breakdown</Text>
 
-              {/* Header таблицы */}
+              {/* Table header */}
               <View style={styles.tableHeader}>
                 <Text style={[styles.thCell, { flex: 0.7 }]}>State</Text>
                 <Text style={[styles.thCell, { flex: 1 }]}>Miles</Text>
@@ -394,7 +394,7 @@ export default function IFTADashboardScreen() {
           ) : (
             <View style={styles.emptyCard}>
               <Ionicons name="document-text-outline" size={40} color="#333" />
-              <Text style={styles.emptyText}>No data за Q{quarter} {year}</Text>
+              <Text style={styles.emptyText}>No data for Q{quarter} {year}</Text>
               <Text style={styles.emptySub}>Calculate a route or add fuel purchases</Text>
             </View>
           )}

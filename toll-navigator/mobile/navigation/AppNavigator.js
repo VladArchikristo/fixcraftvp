@@ -57,8 +57,8 @@ function CalcStack() {
   return (
     <Stack.Navigator screenOptions={stackScreenOptions}>
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Result" component={ResultScreen} options={{ title: 'Маршрут и сборы' }} />
-      <Stack.Screen name="Map" component={MapScreen} options={{ title: 'Карта маршрута', headerShown: false }} />
+      <Stack.Screen name="Result" component={ResultScreen} options={{ title: 'Route & Tolls' }} />
+      <Stack.Screen name="Map" component={MapScreen} options={{ title: 'Route Map', headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -67,8 +67,8 @@ function CalcStack() {
 function HistoryStack() {
   return (
     <Stack.Navigator screenOptions={stackScreenOptions}>
-      <Stack.Screen name="HistoryList" component={TripHistoryScreen} options={{ title: 'История поездок' }} />
-      <Stack.Screen name="TripDetail" component={TripDetailScreen} options={{ title: 'Детали поездки' }} />
+      <Stack.Screen name="HistoryList" component={TripHistoryScreen} options={{ title: 'Trip History' }} />
+      <Stack.Screen name="TripDetail" component={TripDetailScreen} options={{ title: 'Trip Details' }} />
     </Stack.Navigator>
   );
 }
@@ -77,7 +77,7 @@ function HistoryStack() {
 function FuelStack() {
   return (
     <Stack.Navigator screenOptions={stackScreenOptions}>
-      <Stack.Screen name="FuelPurchase" component={FuelPurchaseScreen} options={{ title: 'Заправки' }} />
+      <Stack.Screen name="FuelPurchase" component={FuelPurchaseScreen} options={{ title: 'Fuel Purchases' }} />
     </Stack.Navigator>
   );
 }
@@ -95,9 +95,9 @@ function IFTAStack() {
 function BrokersStack() {
   return (
     <Stack.Navigator screenOptions={stackScreenOptions}>
-      <Stack.Screen name="BrokerList" component={BrokerListScreen} options={{ title: 'Брокеры' }} />
-      <Stack.Screen name="BrokerDetail" component={BrokerDetailScreen} options={{ title: 'Брокер' }} />
-      <Stack.Screen name="AddBrokerReview" component={AddBrokerReviewScreen} options={{ title: 'Добавить отзыв' }} />
+      <Stack.Screen name="BrokerList" component={BrokerListScreen} options={{ title: 'Brokers' }} />
+      <Stack.Screen name="BrokerDetail" component={BrokerDetailScreen} options={{ title: 'Broker' }} />
+      <Stack.Screen name="AddBrokerReview" component={AddBrokerReviewScreen} options={{ title: 'Add Review' }} />
     </Stack.Navigator>
   );
 }
@@ -190,22 +190,22 @@ function MainTabs({ onLogout }) {
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       })}
     >
-      <Tab.Screen name="Calc"      component={CalcStack}      options={{ tabBarLabel: 'Маршрут' }} />
-      <Tab.Screen name="Fuel"      component={FuelStack}      options={{ tabBarLabel: 'Заправки' }} />
-      <Tab.Screen name="History"   component={HistoryStack}   options={{ tabBarLabel: 'История' }} />
+      <Tab.Screen name="Calc"      component={CalcStack}      options={{ tabBarLabel: 'Route' }} />
+      <Tab.Screen name="Fuel"      component={FuelStack}      options={{ tabBarLabel: 'Fuel' }} />
+      <Tab.Screen name="History"   component={HistoryStack}   options={{ tabBarLabel: 'History' }} />
       <Tab.Screen name="IFTA"      component={IFTAStack}      options={{ tabBarLabel: 'IFTA' }} />
-      <Tab.Screen name="Brokers"   component={BrokersStack}   options={{ tabBarLabel: 'Брокеры' }} />
+      <Tab.Screen name="Brokers"   component={BrokersStack}   options={{ tabBarLabel: 'Brokers' }} />
       <Tab.Screen name="Documents" component={DocumentsStack} options={{ tabBarLabel: 'Docs' }} />
       <Tab.Screen name="Tracking"  component={TrackingStack}  options={{ tabBarLabel: 'Tracking' }} />
       <Tab.Screen name="Expenses"  component={ExpensesStack}  options={{ tabBarLabel: 'Expenses' }} />
-      <Tab.Screen name="Profile"   options={{ tabBarLabel: 'Профиль' }}>
+      <Tab.Screen name="Profile"   options={{ tabBarLabel: 'Profile' }}>
         {() => <ProfileScreen onLogout={handleLogout} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
 }
 
-// Root navigator — проверяем токен при старте
+// Root navigator
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 

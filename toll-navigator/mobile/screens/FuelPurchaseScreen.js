@@ -26,7 +26,7 @@ export default function FuelPurchaseScreen({ navigation }) {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [stationName, setStationName] = useState('');
 
-  // Запросить разрешение и выбрать фото
+  // Request permission and pick photo
   const pickImage = async (useCamera) => {
     try {
       let permResult;
@@ -70,7 +70,7 @@ export default function FuelPurchaseScreen({ navigation }) {
     try {
       const { data } = await api.post('/api/trips/scan-receipt', { image_base64: base64 });
 
-      // Автозаполнение из OCR
+      // Autofill from OCR
       if (data.state && US_STATES.includes(data.state)) setState(data.state);
       if (data.gallons) setGallons(String(data.gallons));
       if (data.price_per_gallon) setPricePerGallon(String(data.price_per_gallon));
@@ -121,21 +121,20 @@ export default function FuelPurchaseScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-      <Text style={styles.title}>Добавить заправку</Text>
+      <Text style={styles.title}>Add Fuel Purchase</Text>
 
-      {/* Кнопки выбора фото */}
       <View style={styles.photoRow}>
         <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage(true)} disabled={scanning}>
           <Ionicons name="camera" size={22} color="#4fc3f7" />
-          <Text style={styles.photoBtnText}>Камера</Text>
+          <Text style={styles.photoBtnText}>Camera</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage(false)} disabled={scanning}>
           <Ionicons name="images" size={22} color="#4fc3f7" />
-          <Text style={styles.photoBtnText}>Галерея</Text>
+          <Text style={styles.photoBtnText}>Gallery</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Превью фото */}
+      {/* Photo preview */}
       {photoUri && (
         <View style={styles.previewContainer}>
           <Image source={{ uri: photoUri }} style={styles.previewImage} resizeMode="contain" />
@@ -146,7 +145,7 @@ export default function FuelPurchaseScreen({ navigation }) {
       {scanning && (
         <View style={styles.scanningRow}>
           <ActivityIndicator size="small" color="#4fc3f7" />
-          <Text style={styles.scanningText}>Распознаём чек...</Text>
+          <Text style={styles.scanningText}>Scanning receipt...</Text>
         </View>
       )}
 
@@ -163,7 +162,7 @@ export default function FuelPurchaseScreen({ navigation }) {
           autoCapitalize="characters"
         />
 
-        <Text style={styles.label}>Галлоны *</Text>
+        <Text style={styles.label}>Gallons *</Text>
         <TextInput
           style={styles.input}
           placeholder="85.4"
@@ -173,7 +172,7 @@ export default function FuelPurchaseScreen({ navigation }) {
           keyboardType="decimal-pad"
         />
 
-        <Text style={styles.label}>Цена / галлон ($)</Text>
+        <Text style={styles.label}>Price / gallon ($)</Text>
         <TextInput
           style={styles.input}
           placeholder="3.89"
@@ -183,7 +182,7 @@ export default function FuelPurchaseScreen({ navigation }) {
           keyboardType="decimal-pad"
         />
 
-        <Text style={styles.label}>Дата (YYYY-MM-DD)</Text>
+        <Text style={styles.label}>Date (YYYY-MM-DD)</Text>
         <TextInput
           style={styles.input}
           placeholder="2026-04-14"
@@ -192,7 +191,7 @@ export default function FuelPurchaseScreen({ navigation }) {
           onChangeText={setDate}
         />
 
-        <Text style={styles.label}>Станция</Text>
+        <Text style={styles.label}>Station</Text>
         <TextInput
           style={styles.input}
           placeholder="Pilot Travel Center"
@@ -202,7 +201,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         />
       </View>
 
-      {/* Кнопка сохранить */}
+      {/* Save button */}
       <TouchableOpacity
         style={[styles.saveBtn, (saving || scanning) && styles.saveBtnDisabled]}
         onPress={handleSave}

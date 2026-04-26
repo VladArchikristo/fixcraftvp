@@ -108,7 +108,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           state: state.trim().toUpperCase() || null,
         };
         const { broker } = await createBrokerWithReview(brokerData, reviewData);
-        Alert.alert('Done!', `Broker "${broker.name}" added with reviewом.`, [
+        Alert.alert('Done!', `Broker "${broker.name}" added with your review.`, [
           {
             text: 'View',
             onPress: () => {
@@ -233,7 +233,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 
         {/* Review section */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Ваш review</Text>
+          <Text style={styles.cardTitle}>Your Review</Text>
 
           <SectionLabel text="Rating" required />
           <StarInput value={rating} onChange={setRating} />

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform
+  ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Modal,
+  SafeAreaView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { calculateRoute } from '../services/api';
+import { checkLimit, incrementCalcs, upgradeToPremium, FREE_CALCULATIONS_LIMIT } from '../services/subscription';
 
 // US states list for fuel purchase picker
 const US_STATES = [
@@ -16,9 +18,9 @@ const US_STATES = [
 ];
 
 const TRUCK_TYPES = [
-  { label: '2-Axle', value: '2-axle', icon: '🚗' },
+  { label: '2-Axle', value: '2-axle', icon: '🛻' },
   { label: '3-Axle', value: '3-axle', icon: '🚛' },
-  { label: '5-Axle', value: '5-axle', icon: '🚜' },
+  { label: '5-Axle', value: '5-axle', icon: '🚛' },
 ];
 
 const CITY_SUGGESTIONS = [
@@ -48,6 +50,9 @@ export default function HomeScreen({ navigation }) {
   // Fuel purchases by state (for precise IFTA)
   const [fuelPurchases, setFuelPurchases] = useState([]); // [{state, gallons}]
   const [showStatePicker, setShowStatePicker] = useState(null); // index of row with open picker
+  // Subscription
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [calcsRemaining, setCalcsRemaining] = useState(FREE_CALCULATIONS_LIMIT);
 
   const fromSuggestions = CITY_SUGGESTIONS.filter(c =>
     from.length > 1 && c.toLowerCase().includes(from.toLowerCase())
@@ -87,6 +92,10 @@ export default function HomeScreen({ navigation }) {
     setFuelPurchases(prev => prev.map((p, i) => i === index ? { ...p, gallons } : p));
   };
 
+  useEffect(() => {
+    checkLimit().then((res) => setCalcsRemaining(res.remaining));
+  }, []);
+
   const handleCalculate = async () => {
     if (!from.trim() || !to.trim()) {
       Alert.alert('Enter Route', 'Enter origin and destination city');
@@ -99,8 +108,16 @@ export default function HomeScreen({ navigation }) {
         return;
       }
     }
+    // Check subscription limit
+    const limitStatus = await checkLimit();
+    if (!limitStatus.allowed) {
+      setShowPaywall(true);
+      return;
+    }
     setLoading(true);
     try {
+      await incrementCalcs();
+      setCalcsRemaining(prev => Math.max(0, prev - 1));
       const response = await calculateRoute(from.trim(), to.trim(), truckType);
       const fuelData = showFuel ? {
         mpg: parseFloat(mpg) || 6.5,
@@ -125,8 +142,9 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
+    <SafeAreaView style={styles.container}>
     <KeyboardAvoidingView
-      style={styles.container}
+      style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
@@ -351,7 +369,36 @@ export default function HomeScreen({ navigation }) {
 
         <Text style={styles.hint}>80+ US cities • IFTA 2026 • Toll data 2026</Text>
       </ScrollView>
+
+      {/* Premium Paywall Modal */}
+      <Modal visible={showPaywall} transparent animationType="fade">
+        <View style={styles.paywallOverlay}>
+          <View style={styles.paywallCard}>
+            <Text style={styles.paywallIcon}>🔒</Text>
+            <Text style={styles.paywallTitle}>Daily Limit Reached</Text>
+            <Text style={styles.paywallText}>
+              You've used all {FREE_CALCULATIONS_LIMIT} free calculations today.{'\n'}
+              Upgrade to Premium for unlimited route calculations.
+            </Text>
+            <TouchableOpacity
+              style={styles.paywallBtn}
+              onPress={async () => {
+                await upgradeToPremium();
+                setShowPaywall(false);
+                setCalcsRemaining(Infinity);
+                Alert.alert('Premium Activated', 'You now have unlimited calculations!');
+              }}
+            >
+              <Text style={styles.paywallBtnText}>Upgrade to Premium</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.paywallClose} onPress={() => setShowPaywall(false)}>
+              <Text style={styles.paywallCloseText}>Maybe later</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -359,7 +406,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0d0d1a' },
   scroll: { padding: 20, paddingBottom: 40 },
   header: { alignItems: 'center', marginBottom: 28, marginTop: 10 },
-  logo: { fontSize: 26, fontWeight: '800', color: '#fff', letterSpacing: 0.5 },
+  logo: { fontSize: 26, fontWeight: '800', color: '#fff', letterSpacing: 0.5, fontFamily: Platform.select({ ios: '-apple-system', android: 'Roboto' }) },
   subtitle: { fontSize: 13, color: '#666', marginTop: 4 },
   card: {
     backgroundColor: '#161629',
@@ -385,14 +432,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2a2a4a',
   },
-  truckRow: { flexDirection: 'row', gap: 10 },
+  truckRow: { flexDirection: 'row', gap: 8, flexWrap: 'nowrap' },
   truckBtn: {
-    flex: 1, alignItems: 'center', padding: 12, borderRadius: 10,
-    backgroundColor: '#0d0d1a', borderWidth: 1, borderColor: '#2a2a4a',
+    flex: 1, alignItems: 'center', paddingVertical: 10, paddingHorizontal: 6, borderRadius: 10,
+    backgroundColor: '#0d0d1a', borderWidth: 1, borderColor: '#2a2a4a', minWidth: 0,
   },
   truckBtnActive: { borderColor: '#4fc3f7', backgroundColor: '#0d1f2d' },
   truckIcon: { fontSize: 22, marginBottom: 4 },
-  truckLabel: { color: '#666', fontSize: 12, fontWeight: '600' },
+  truckLabel: { color: '#666', fontSize: 11, fontWeight: '600', textAlign: 'center' },
   truckLabelActive: { color: '#4fc3f7' },
   // Fuel toggle
   fuelToggle: {
@@ -542,4 +589,23 @@ const styles = StyleSheet.create({
   },
   clearBtnText: { color: '#888', fontSize: 13 },
   hint: { textAlign: 'center', color: '#444', fontSize: 12, marginTop: 16 },
+  // Paywall
+  paywallOverlay: {
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center', alignItems: 'center', padding: 24,
+  },
+  paywallCard: {
+    backgroundColor: '#161629', borderRadius: 20, padding: 28,
+    alignItems: 'center', borderWidth: 2, borderColor: '#4fc3f7', width: '100%', maxWidth: 340,
+  },
+  paywallIcon: { fontSize: 48, marginBottom: 12 },
+  paywallTitle: { color: '#fff', fontSize: 20, fontWeight: '800', marginBottom: 12, textAlign: 'center' },
+  paywallText: { color: '#888', fontSize: 14, textAlign: 'center', lineHeight: 22, marginBottom: 24 },
+  paywallBtn: {
+    backgroundColor: '#4fc3f7', borderRadius: 14, paddingVertical: 16,
+    paddingHorizontal: 32, width: '100%', alignItems: 'center', marginBottom: 12,
+  },
+  paywallBtnText: { color: '#0d0d1a', fontSize: 16, fontWeight: '800' },
+  paywallClose: { padding: 8 },
+  paywallCloseText: { color: '#666', fontSize: 14 },
 });

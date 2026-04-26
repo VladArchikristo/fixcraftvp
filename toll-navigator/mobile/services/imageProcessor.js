@@ -1,13 +1,13 @@
 import * as ImageManipulator from 'expo-image-manipulator';
 
-// A4 пропорции: 210x297mm → соотношение 1:1.414
+// A4 proportions: 210x297mm -> ratio 1:1.414
 const A4_RATIO = 297 / 210;
 
 /**
- * Обработка фото для документа:
- * - Ресайз под A4 пропорции (макс ширина 1240px = 210mm при 150dpi)
- * - Повышение контраста через уровень компрессии (JPEG quality)
- * Возвращает { uri, width, height }
+ * Process photo for document:
+ * - Resize to A4 proportions (max width 1240px = 210mm at 150dpi)
+ * - Enhance contrast via compression level (JPEG quality)
+ * Returns { uri, width, height }
  */
 export async function processDocumentImage(uri, options = {}) {
   const {
@@ -36,7 +36,7 @@ export async function processDocumentImage(uri, options = {}) {
 }
 
 /**
- * Быстрый ресайз без обрезки (для превью)
+ * Quick resize without cropping (for thumbnails)
  */
 export async function makeThumbnail(uri, size = 200) {
   const result = await ImageManipulator.manipulateAsync(

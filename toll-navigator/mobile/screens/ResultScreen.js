@@ -54,7 +54,7 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
       purchasedInState = purchasedByState[b.state] || 0;
       iftaTax = (consumedGallons - purchasedInState) * iftaRate;
     } else {
-      // Упрощённая — только потреблённые gallons
+      // Simplified — consumed gallons only
       iftaTax = consumedGallons * iftaRate;
     }
 
@@ -66,7 +66,7 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
       fuelCost: fuelCost.toFixed(2),
       iftaRate: iftaRate.toFixed(3),
       iftaTax: iftaTax.toFixed(2),
-      iftaNetPositive: iftaTax >= 0, // true = доплата, false = возврат
+      iftaNetPositive: iftaTax >= 0,
     };
   });
 
@@ -81,16 +81,15 @@ function calcFuelData(distanceMiles, mpg, fuelPrice, breakdown, fuelPurchases) {
   };
 }
 
-// Авто-сохранение routeа на сервер с индикатором статуса
-// onStatus: (status: 'saving'|'saved'|'failed') => void
+// Auto-save trip to server with status indicator
 async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchases, onStatus }) {
   try {
     const token = await getToken();
-    if (!token) return; // не авторизsан — не сохраняем
+    if (!token) return;
 
     onStatus?.('saving');
 
-    // Строим state_miles из breakdown
+    // Build state_miles from breakdown
     const stateMiles = {};
     if (result.breakdown) {
       result.breakdown.forEach(b => {
@@ -105,7 +104,7 @@ async function autoSaveTrip({ result, from, to, truckType, fuelData, fuelPurchas
     const totalGallons = result.distance_miles ? result.distance_miles / mpg : 0;
     const fuelCost = totalGallons * fuelPrice;
 
-    // Нормализуем fuel_purchases
+    // Normalize fuel_purchases
     const normalizedPurchases = (fuelPurchases || []).map(p => ({
       state: p.state,
       gallons: p.gallons,
@@ -142,13 +141,13 @@ export default function ResultScreen({ route, navigation }) {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showIftaDetail, setShowIftaDetail] = useState(false);
-  // Статус авто-сохранения: null | 'saving' | 'saved' | 'failed'
+  // Auto-save status: null | 'saving' | 'saved' | 'failed'
   const [saveStatus, setSaveStatus] = useState(null);
 
   useEffect(() => {
     getToken().then((token) => {
       setIsLoggedIn(!!token);
-      // Авто-сохранение routeа при открытии экрана результата
+      // Auto-save trip when result screen opens
       if (token) {
         autoSaveTrip({
           result, from, to, truckType, fuelData, fuelPurchases,
@@ -223,12 +222,12 @@ export default function ResultScreen({ route, navigation }) {
       <View style={styles.routeCard}>
         <View style={styles.routeRow}>
           <View style={styles.cityBlock}>
-            <Text style={styles.cityLabel}>ОТКУДА</Text>
+            <Text style={styles.cityLabel}>FROM</Text>
             <Text style={styles.cityName}>{from}</Text>
           </View>
           <Ionicons name="arrow-forward" size={24} color="#4fc3f7" />
           <View style={styles.cityBlock}>
-            <Text style={styles.cityLabel}>КУДА</Text>
+            <Text style={styles.cityLabel}>TO</Text>
             <Text style={styles.cityName}>{to}</Text>
           </View>
         </View>
@@ -238,9 +237,9 @@ export default function ResultScreen({ route, navigation }) {
       {/* GRAND TOTAL (if fuel included) */}
       {fuel && grandTotal && (
         <View style={styles.grandTotalCard}>
-          <Text style={styles.grandTotalLabel}>💰 TOTAL РЕЙС</Text>
-          <Text style={styles.grandTotalAmount}>${grandTotal}</Text>
-          <Text style={styles.grandTotalSub}>толлы + топливо + IFTA • {result.distance_miles} mi</Text>
+          <Text style={styles.grandTotalLabel}>💰 TRIP TOTAL</Text>
+          <Text style={styles.grandTotalAmount} numberOfLines={1} adjustsFontSizeToFit>${grandTotal}</Text>
+          <Text style={styles.grandTotalSub}>tolls + fuel + IFTA • {result.distance_miles} mi</Text>
           {/* Breakdown row */}
           <View style={styles.grandBreakRow}>
             <View style={styles.grandBreakItem}>
@@ -264,41 +263,40 @@ export default function ResultScreen({ route, navigation }) {
       {/* Toll Cost (always shown) */}
       {!fuel && (
         <View style={styles.totalCard}>
-          <Text style={styles.totalLabel}>Total платных дорог</Text>
-          <Text style={styles.totalAmount}>${totalFormatted}</Text>
-          <Text style={styles.totalSub}>по данным 2026</Text>
+          <Text style={styles.totalLabel}>Total Toll Cost</Text>
+          <Text style={styles.totalAmount} numberOfLines={1} adjustsFontSizeToFit>${totalFormatted}</Text>
+          <Text style={styles.totalSub}>based on 2026 toll data</Text>
         </View>
       )}
 
       {/* Fuel Summary Card */}
       {fuel && (
         <View style={styles.fuelSummaryCard}>
-          <Text style={styles.fuelSummaryTitle}>⛽ Fuel — детали</Text>
+          <Text style={styles.fuelSummaryTitle}>⛽ Fuel Details</Text>
           <View style={styles.fuelSummaryRow}>
-            <Text style={styles.fuelSummaryKey}>Расход топлива:</Text>
-            <Text style={styles.fuelSummaryVal}>{fuel.totalGallons} галлонs</Text>
+            <Text style={styles.fuelSummaryKey}>Fuel consumed:</Text>
+            <Text style={styles.fuelSummaryVal}>{fuel.totalGallons} gallons</Text>
           </View>
           <View style={styles.fuelSummaryRow}>
-            <Text style={styles.fuelSummaryKey}>Цена дизеля:</Text>
-            <Text style={styles.fuelSummaryVal}>${fuelData.fuelPrice}/галлон</Text>
+            <Text style={styles.fuelSummaryKey}>Diesel price:</Text>
+            <Text style={styles.fuelSummaryVal}>${fuelData.fuelPrice}/gal</Text>
           </View>
           <View style={styles.fuelSummaryRow}>
             <Text style={styles.fuelSummaryKey}>Fuel Economy (MPG):</Text>
             <Text style={styles.fuelSummaryVal}>{fuelData.mpg} MPG</Text>
           </View>
           <View style={[styles.fuelSummaryRow, styles.fuelSummaryTotal]}>
-            <Text style={styles.fuelSummaryTotalKey}>Cost топлива:</Text>
+            <Text style={styles.fuelSummaryTotalKey}>Fuel cost:</Text>
             <Text style={styles.fuelSummaryTotalVal}>${fuel.totalFuelCost}</Text>
           </View>
         </View>
       )}
 
-      {/* Индикатор авто-сохранения */}
       {saveStatus === 'saving' && (
-        <Text style={styles.autoSaveStatus}>💾 Сохраняем поездку...</Text>
+        <Text style={styles.autoSaveStatus}>💾 Saving trip...</Text>
       )}
       {saveStatus === 'saved' && (
-        <Text style={[styles.autoSaveStatus, styles.autoSaveOk]}>✓ Поездка сохранена</Text>
+        <Text style={[styles.autoSaveStatus, styles.autoSaveOk]}>✓ Trip saved</Text>
       )}
       {saveStatus === 'failed' && (
         <Text style={[styles.autoSaveStatus, styles.autoSaveFail]}>✗ Failed to save</Text>
@@ -323,7 +321,7 @@ export default function ResultScreen({ route, navigation }) {
           onPress={() => navigation.navigate('Map', { from, to, total: result.total })}
         >
           <Ionicons name="map-outline" size={18} color="#4fc3f7" />
-          <Text style={styles.actionBtnText}>Карта 🗺️</Text>
+          <Text style={styles.actionBtnText}>Map 🗺️</Text>
         </TouchableOpacity>
       </View>
 
@@ -334,7 +332,7 @@ export default function ResultScreen({ route, navigation }) {
             style={styles.iftaHeader}
             onPress={() => setShowIftaDetail(!showIftaDetail)}
           >
-            <Text style={styles.sectionTitle}>🏛️ IFTA — разбивка по stateам</Text>
+            <Text style={styles.sectionTitle}>🏛️ IFTA — State Breakdown</Text>
             <View style={styles.iftaBadge}>
               <Text style={styles.iftaBadgeText}>
                 {fuel.hasRealPurchases ? 'NET: ' : 'TOTAL: '}${fuel.totalIftaTax}
@@ -356,7 +354,7 @@ export default function ResultScreen({ route, navigation }) {
                     <Text style={[styles.iftaCol, { flex: 0.9 }]}>Miles</Text>
                     <Text style={[styles.iftaCol, { flex: 0.9 }]}>Used</Text>
                     <Text style={[styles.iftaCol, { flex: 0.9 }]}>Purchased</Text>
-                    <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Нетто</Text>
+                    <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Net</Text>
                   </View>
                   {fuel.stateBreakdown.map((s, i) => (
                     <View key={i} style={styles.iftaRow}>
@@ -377,8 +375,8 @@ export default function ResultScreen({ route, navigation }) {
                   ))}
                   <View style={styles.iftaNote}>
                     <Text style={styles.iftaNoteText}>
-                      Нетто = (потреблённые − купленные) × ставка stateа.
-                      {'\n'}+ красный → доплата stateу  |  − зелёный → возврат от stateа.
+                      Net = (consumed - purchased) x state rate.
+                      {'\n'}+ red = tax owed to state  |  - green = refund from state.
                     </Text>
                   </View>
                 </>
@@ -387,9 +385,9 @@ export default function ResultScreen({ route, navigation }) {
                   <View style={styles.iftaTableHeader}>
                     <Text style={[styles.iftaCol, { flex: 0.8 }]}>State</Text>
                     <Text style={[styles.iftaCol, { flex: 1 }]}>Miles</Text>
-                    <Text style={[styles.iftaCol, { flex: 1 }]}>Галлоны</Text>
-                    <Text style={[styles.iftaCol, { flex: 1 }]}>Ставка</Text>
-                    <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Налог</Text>
+                    <Text style={[styles.iftaCol, { flex: 1 }]}>Gallons</Text>
+                    <Text style={[styles.iftaCol, { flex: 1 }]}>Rate</Text>
+                    <Text style={[styles.iftaCol, { flex: 1, textAlign: 'right' }]}>Tax</Text>
                   </View>
                   {fuel.stateBreakdown.map((s, i) => (
                     <View key={i} style={styles.iftaRow}>
@@ -402,8 +400,8 @@ export default function ResultScreen({ route, navigation }) {
                   ))}
                   <View style={styles.iftaNote}>
                     <Text style={styles.iftaNoteText}>
-                      * Упрощённый расчёт — заправки по stateам не указаны.
-                      Добавь данные о заправках для точного IFTA.
+                      * Simplified calculation — no fuel purchases entered by state.
+                      Add fuel purchase data for precise IFTA reporting.
                     </Text>
                   </View>
                 </>
@@ -413,7 +411,7 @@ export default function ResultScreen({ route, navigation }) {
 
           {!showIftaDetail && (
             <Text style={styles.iftaExpandHint}>
-              Нажми чтобы увидеть разбивку по {fuel.stateBreakdown.length} stateам
+              Tap to see breakdown by {fuel.stateBreakdown.length} states
             </Text>
           )}
         </View>
@@ -422,12 +420,12 @@ export default function ResultScreen({ route, navigation }) {
       {/* Toll Breakdown by state */}
       {result.breakdown && result.breakdown.length > 0 && (
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>🛣️ Tolls — разбивка по stateам</Text>
+          <Text style={styles.sectionTitle}>🛣️ Tolls — State Breakdown</Text>
           {result.breakdown.map((b, i) => (
             <View key={i} style={styles.breakdownRow}>
               <View>
                 <Text style={styles.stateCode}>{b.state}</Text>
-                <Text style={styles.stateMiles}>{b.miles_in_state} mi • {b.roads} дороги</Text>
+                <Text style={styles.stateMiles}>{b.miles_in_state} mi • {b.roads} roads</Text>
               </View>
               <Text style={styles.stateCost}>
                 ${((result.total / result.distance_miles) * b.miles_in_state).toFixed(2)}
@@ -440,7 +438,7 @@ export default function ResultScreen({ route, navigation }) {
       {/* Recommendations */}
       {recommendations.length > 0 && (
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>🎯 Рекомендации</Text>
+          <Text style={styles.sectionTitle}>🎯 Recommendations</Text>
           {recommendations.map((r, i) => (
             <View key={i} style={styles.recRow}>
               <Text style={styles.recIcon}>{r.icon}</Text>
@@ -452,17 +450,17 @@ export default function ResultScreen({ route, navigation }) {
 
       {/* Tips */}
       <View style={styles.card}>
-        <Text style={styles.sectionTitle}>💡 Сsеты</Text>
-        <Text style={styles.tipText}>• E-ZPass экономит до 30% на большинстве платных дорог северо-востока</Text>
-        <Text style={styles.tipText}>• IFTA отчёт сдаётся раз в квартал — экономь на бухгалтере с этими данными</Text>
-        <Text style={styles.tipText}>• Route рассчитан для {truckLabel.toLowerCase()}</Text>
-        {fuel && <Text style={styles.tipText}>• Refuel in MO, MS, OK — ставка IFTA от $0.17/галлон</Text>}
+        <Text style={styles.sectionTitle}>💡 Tips</Text>
+        <Text style={styles.tipText}>• E-ZPass saves up to 30% on most Northeast toll roads</Text>
+        <Text style={styles.tipText}>• IFTA reports are due quarterly — use this data to simplify filing</Text>
+        <Text style={styles.tipText}>• Route calculated for {truckLabel.toLowerCase()}</Text>
+        {fuel && <Text style={styles.tipText}>• Refuel in MO, MS, OK — IFTA rate from $0.17/gal</Text>}
       </View>
 
       {/* Back button */}
       <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={18} color="#4fc3f7" />
-        <Text style={styles.backBtnText}>Нsый расчёт</Text>
+        <Text style={styles.backBtnText}>New calculation</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -482,7 +480,7 @@ const styles = StyleSheet.create({
   routeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
   cityBlock: { flex: 1 },
   cityLabel: { color: '#555', fontSize: 10, fontWeight: '700', letterSpacing: 1, marginBottom: 4 },
-  cityName: { color: '#fff', fontSize: 15, fontWeight: '700' },
+  cityName: { color: '#fff', fontSize: 15, fontWeight: '700', flexShrink: 1 },
   truckInfo: { color: '#888', fontSize: 13, textAlign: 'center' },
 
   // Grand Total Card
@@ -496,7 +494,7 @@ const styles = StyleSheet.create({
     borderColor: '#81c784',
   },
   grandTotalLabel: { color: '#81c784', fontSize: 12, fontWeight: '800', letterSpacing: 2, marginBottom: 8 },
-  grandTotalAmount: { color: '#fff', fontSize: 56, fontWeight: '900', letterSpacing: -2 },
+  grandTotalAmount: { color: '#fff', fontSize: 48, fontWeight: '900', letterSpacing: -2 },
   grandTotalSub: { color: '#555', fontSize: 12, marginTop: 4, marginBottom: 16 },
   grandBreakRow: {
     flexDirection: 'row',
@@ -522,7 +520,7 @@ const styles = StyleSheet.create({
     borderColor: '#4fc3f7',
   },
   totalLabel: { color: '#4fc3f7', fontSize: 13, fontWeight: '600', marginBottom: 8 },
-  totalAmount: { color: '#fff', fontSize: 52, fontWeight: '900', letterSpacing: -1 },
+  totalAmount: { color: '#fff', fontSize: 44, fontWeight: '900', letterSpacing: -1 },
   totalSub: { color: '#555', fontSize: 12, marginTop: 4 },
 
   // Fuel summary
@@ -579,8 +577,8 @@ const styles = StyleSheet.create({
   iftaState: { color: '#fff', fontSize: 14, fontWeight: '700' },
   iftaData: { color: '#666', fontSize: 13 },
   iftaCost: { color: '#81c784', fontSize: 13, fontWeight: '700' },
-  iftaTaxDue: { color: '#ef9a9a', fontSize: 13, fontWeight: '700' },    // доплата = красный
-  iftaTaxRefund: { color: '#81c784', fontSize: 13, fontWeight: '700' }, // возврат = зелёный
+  iftaTaxDue: { color: '#ef9a9a', fontSize: 13, fontWeight: '700' },
+  iftaTaxRefund: { color: '#81c784', fontSize: 13, fontWeight: '700' },
   iftaNote: { marginTop: 12, padding: 10, backgroundColor: '#0d1a0d', borderRadius: 8 },
   iftaNoteText: { color: '#555', fontSize: 11, lineHeight: 16 },
 

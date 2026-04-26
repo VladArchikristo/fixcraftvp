@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, ActivityIndicator
 } from 'react-native';
@@ -48,14 +48,37 @@ const CITY_COORDS = {
 function getCityCoords(cityStr) {
   const key = cityStr.toLowerCase().trim();
   if (CITY_COORDS[key]) return CITY_COORDS[key];
-  // Try partial match
   const found = Object.keys(CITY_COORDS).find((k) => k.includes(key) || key.includes(k.split(',')[0]));
   return found ? CITY_COORDS[found] : null;
 }
 
-function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total) {
+async function fetchOSRMRoute(fromCoords, toCoords) {
+  const url = `https://router.project-osrm.org/route/v1/driving/${fromCoords[1]},${fromCoords[0]};${toCoords[1]},${toCoords[0]}?overview=full&geometries=geojson`;
+  try {
+    const res = await fetch(url, { timeout: 10000 });
+    const data = await res.json();
+    if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
+      // GeoJSON coordinates are [lng, lat], convert to [lat, lng] for Leaflet
+      return data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+    }
+  } catch (e) {
+    console.warn('[MapScreen] OSRM fetch failed:', e.message);
+  }
+  return null;
+}
+
+function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total, routeCoords) {
   const centerLat = (fromCoords[0] + toCoords[0]) / 2;
   const centerLng = (fromCoords[1] + toCoords[1]) / 2;
+
+  // If we have OSRM route coords, use them; otherwise fallback to straight line
+  const useFallback = !routeCoords || routeCoords.length === 0;
+  const latlngsJSON = useFallback
+    ? JSON.stringify([[fromCoords[0], fromCoords[1]], [toCoords[0], toCoords[1]]])
+    : JSON.stringify(routeCoords);
+  const lineStyle = useFallback
+    ? `{ color: '#4fc3f7', weight: 3, opacity: 0.8, dashArray: '8, 6' }`
+    : `{ color: '#4fc3f7', weight: 4, opacity: 0.9 }`;
 
   return `<!DOCTYPE html>
 <html>
@@ -87,7 +110,7 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total) {
 </head>
 <body>
   <div id="map"></div>
-  <div class="cost-badge">💰 $${total.toFixed(2)}</div>
+  <div class="cost-badge">\u{1F4B0} $${total.toFixed(2)}</div>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     var map = L.map('map', {
@@ -97,11 +120,10 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total) {
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap',
+      attribution: '\u00a9 OpenStreetMap',
       maxZoom: 18,
     }).addTo(map);
 
-    // Custom icons
     var fromIcon = L.divIcon({
       html: '<div style="background:#4fc3f7;border:3px solid #fff;border-radius:50%;width:18px;height:18px;box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>',
       iconSize: [18, 18],
@@ -117,24 +139,15 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total) {
 
     var fromMarker = L.marker([${fromCoords[0]}, ${fromCoords[1]}], { icon: fromIcon })
       .addTo(map)
-      .bindPopup('<b style="color:#4fc3f7">📍 ${fromLabel.replace(/'/g, "\\'")}</b><br>From')
+      .bindPopup('<b style="color:#4fc3f7">\u{1F4CD} ${fromLabel.replace(/'/g, "\\'")}</b><br>From')
       .openPopup();
 
     var toMarker = L.marker([${toCoords[0]}, ${toCoords[1]}], { icon: toIcon })
       .addTo(map)
-      .bindPopup('<b style="color:#81c784">🏁 ${toLabel.replace(/'/g, "\\'")}</b><br>To');
+      .bindPopup('<b style="color:#81c784">\u{1F3C1} ${toLabel.replace(/'/g, "\\'")}</b><br>To');
 
-    // Draw route line
-    var latlngs = [
-      [${fromCoords[0]}, ${fromCoords[1]}],
-      [${toCoords[0]}, ${toCoords[1]}],
-    ];
-    var polyline = L.polyline(latlngs, {
-      color: '#4fc3f7',
-      weight: 3,
-      opacity: 0.8,
-      dashArray: '8, 6',
-    }).addTo(map);
+    var latlngs = ${latlngsJSON};
+    var polyline = L.polyline(latlngs, ${lineStyle}).addTo(map);
 
     map.fitBounds(polyline.getBounds(), { padding: [40, 40] });
   </script>
@@ -145,13 +158,24 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total) {
 export default function MapScreen({ route, navigation }) {
   const { from, to, total } = route.params;
   const [loading, setLoading] = useState(true);
+  const [routeCoords, setRouteCoords] = useState(null);
+  const [fetchingRoute, setFetchingRoute] = useState(false);
 
   const fromCoords = getCityCoords(from);
   const toCoords = getCityCoords(to);
   const hasCoords = fromCoords && toCoords;
 
-  const html = hasCoords
-    ? buildLeafletHTML(fromCoords, toCoords, from, to, total ?? 0)
+  useEffect(() => {
+    if (!hasCoords) return;
+    setFetchingRoute(true);
+    fetchOSRMRoute(fromCoords, toCoords).then((coords) => {
+      setRouteCoords(coords);
+      setFetchingRoute(false);
+    });
+  }, []);
+
+  const html = hasCoords && !fetchingRoute
+    ? buildLeafletHTML(fromCoords, toCoords, from, to, total ?? 0, routeCoords)
     : null;
 
   return (
@@ -166,7 +190,7 @@ export default function MapScreen({ route, navigation }) {
             {from} → {to}
           </Text>
           {total != null && (
-            <Text style={styles.headerCost}>Сборы: ${total.toFixed(2)}</Text>
+            <Text style={styles.headerCost}>Tolls: ${total.toFixed(2)}</Text>
           )}
         </View>
       </View>
@@ -174,15 +198,20 @@ export default function MapScreen({ route, navigation }) {
       {!hasCoords ? (
         <View style={styles.noCoords}>
           <Text style={styles.noCoordsIcon}>🗺️</Text>
-          <Text style={styles.noCoordsText}>Координаты для этого routeа не найдены</Text>
-          <Text style={styles.noCoordsHint}>Убедись, что введены города из списка подсказок</Text>
+          <Text style={styles.noCoordsText}>Route coordinates not found</Text>
+          <Text style={styles.noCoordsHint}>Make sure cities are selected from suggestions</Text>
+        </View>
+      ) : fetchingRoute ? (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#4fc3f7" />
+          <Text style={styles.loadingText}>Building driving route...</Text>
         </View>
       ) : (
         <>
           {loading && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color="#4fc3f7" />
-              <Text style={styles.loadingText}>Загрузка карты...</Text>
+              <Text style={styles.loadingText}>Loading map...</Text>
             </View>
           )}
           <WebView
