@@ -21,6 +21,7 @@ import os
 import re
 import subprocess
 import logging
+import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -203,17 +204,31 @@ def run_parallel_delegates(delegates: list[tuple[str, str]]) -> dict[int, str]:
         return {}
 
     results = {}
+    parallel_timeout = SUBAGENT_TIMEOUT + 30  # жёсткий лимит на всю параллельную группу
     with ThreadPoolExecutor(max_workers=min(len(delegates), 5)) as pool:
         future_to_idx = {
             pool.submit(run_subagent, task, atype): i
             for i, (atype, task) in enumerate(delegates)
         }
-        for future in as_completed(future_to_idx):
-            idx = future_to_idx[future]
-            try:
-                results[idx] = future.result()
-            except Exception as e:
-                results[idx] = f"[Ошибка суб-агента: {e}]"
+        try:
+            for future in as_completed(future_to_idx, timeout=parallel_timeout):
+                idx = future_to_idx[future]
+                try:
+                    results[idx] = future.result()
+                except Exception as e:
+                    results[idx] = f"[Ошибка суб-агента: {e}]"
+        except concurrent.futures.TimeoutError:
+            log.error("Parallel subagents timed out after %d sec — collecting partial results", parallel_timeout)
+            for future, idx in future_to_idx.items():
+                if idx not in results:
+                    if future.done():
+                        try:
+                            results[idx] = future.result()
+                        except Exception as e:
+                            results[idx] = f"[Ошибка суб-агента: {e}]"
+                    else:
+                        future.cancel()
+                        results[idx] = f"[Суб-агент — таймаут {parallel_timeout}с]"
 
     return results
 

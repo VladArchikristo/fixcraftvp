@@ -213,6 +213,7 @@ Python, JS/TS, Bash, SQL — senior. Архитектура, Telegram-боты, 
 
 START_TIME = datetime.now()
 _claude_executor = ThreadPoolExecutor(max_workers=1)
+_executor_lock = threading.Lock()  # защита от race condition при пересоздании executor
 _processing = False
 _processing_started: float = 0.0  # monotonic time когда началась обработка
 _processing_lock = asyncio.Lock()
@@ -377,18 +378,26 @@ def history_prompt(user_id: int | None = None) -> str:
             parts.append(mem)
     # Level 1: последние сообщения из SQLite shared memory
     if user_id is not None:
-        msgs = sm_get_history(user_id, "kostya", limit=20)
-        if msgs:
-            parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
-            total_chars = 0
-            for msg in msgs:
-                role = "Влад" if msg["role"] == "user" else "Костя"
-                line = f"{role}: {msg['content'][:1000]}"
-                total_chars += len(line)
-                if total_chars > 8000:
-                    break
-                parts.append(line)
-            return "\n".join(parts)
+        try:
+            msgs = sm_get_history(user_id, "kostya", limit=20)
+            if msgs:
+                parts.append("\n=== ПОСЛЕДНИЙ ДИАЛОГ ===")
+                total_chars = 0
+                for msg in msgs:
+                    try:
+                        role = "Влад" if msg.get("role") == "user" else "Костя"
+                        content = msg.get("content") or msg.get("text") or ""
+                        line = f"{role}: {content[:1000]}"
+                        total_chars += len(line)
+                        if total_chars > 8000:
+                            break
+                        parts.append(line)
+                    except Exception as e:
+                        log.warning("History message parse error: %s", e)
+                        continue
+                return "\n".join(parts)
+        except Exception as e:
+            log.error("Failed to load shared memory history: %s", e)
     # Fallback на in-memory deque
     if not user_history:
         return "\n".join(parts) if parts else ""
@@ -585,10 +594,10 @@ async def ask_claude(user_text: str, image_path: str = None, user_id: int | None
         label = "Photo" if is_photo else "Claude"
         log.error("%s hard timeout (%d sec) — killing proc and resetting executor", label, timeout)
         _kill_current_proc()
-        # КРИТИЧНО: старый executor-поток может быть заблокирован навсегда.
-        # Создаём НОВЫЙ executor, чтобы следующий запрос не встал в очередь к мёртвому потоку.
-        old_executor = _claude_executor
-        _claude_executor = ThreadPoolExecutor(max_workers=1)
+        # Создаём НОВЫЙ executor под локом — защита от race condition при параллельных запросах
+        with _executor_lock:
+            old_executor = _claude_executor
+            _claude_executor = ThreadPoolExecutor(max_workers=1)
         try:
             old_executor.shutdown(wait=False)
         except Exception:
@@ -596,6 +605,14 @@ async def ask_claude(user_text: str, image_path: str = None, user_id: int | None
         if is_photo:
             return False, "Таймаут обработки фото. Попробуй ещё раз или опиши текстом."
         return False, "Таймаут. Попробуй ещё раз или разбей задачу на части."
+    except asyncio.CancelledError:
+        log.error("ask_claude cancelled")
+        _kill_current_proc()
+        return False, "Запрос был отменён."
+    except Exception as e:
+        log.error("ask_claude unexpected error: %s", e, exc_info=True)
+        _kill_current_proc()
+        return False, "Внутренняя ошибка. Попробуй ещё раз."
 
 
 # ---------------------------------------------------------------------------
@@ -837,7 +854,11 @@ async def _process_request(
         user_history.append({"role": "user", "text": f"{log_prefix}{user_text}"})
         save_message(uid, "kostya", "user", f"{log_prefix}{user_text[:5000]}")
 
-        ok, answer = await ask_claude(user_text, image_path=image_path, user_id=uid)
+        result = await ask_claude(user_text, image_path=image_path, user_id=uid)
+        if not isinstance(result, tuple) or len(result) != 2:
+            log.error("ask_claude returned invalid result type: %s", type(result))
+            raise ValueError(f"Invalid ask_claude result: {result!r}")
+        ok, answer = result
 
         if _ticker_task:
             _ticker_task.cancel()
@@ -854,8 +875,8 @@ async def _process_request(
             save_message(uid, "kostya", "assistant", answer[:5000])
             try:
                 extract_facts_from_exchange(uid, "kostya", user_text, answer)
-            except Exception:
-                pass
+            except Exception as e:
+                log.warning("Fact extraction failed (non-blocking): %s", e)
             _log_conversation("assistant", answer)
             for chunk in _split_message(answer):
                 try:
@@ -968,11 +989,15 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file.download_to_drive(str(tmp_path)),
             timeout=PHOTO_DOWNLOAD_TIMEOUT,
         )
-        file_content = tmp_path.read_text(encoding="utf-8", errors="replace")
         try:
-            tmp_path.unlink(missing_ok=True)
-        except Exception:
-            pass
+            file_content = tmp_path.read_text(encoding="utf-8", errors="replace")
+            if len(file_content) > 40000:
+                file_content = file_content[:40000] + "\n... (файл обрезан до 40000 символов)"
+        finally:
+            try:
+                tmp_path.unlink(missing_ok=True)
+            except Exception:
+                pass
     except asyncio.TimeoutError:
         try:
             await thinking_msg.delete()

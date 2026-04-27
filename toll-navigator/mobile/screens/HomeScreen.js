@@ -19,7 +19,7 @@ const US_STATES = [
 
 const TRUCK_TYPES = [
   { label: '2-Axle', value: '2-axle', icon: '🛻' },
-  { label: '3-Axle', value: '3-axle', icon: '🚛' },
+  { label: '3-Axle', value: '3-axle', icon: '🚚' },
   { label: '5-Axle', value: '5-axle', icon: '🚛' },
 ];
 

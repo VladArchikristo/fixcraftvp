@@ -52,6 +52,28 @@ function getCityCoords(cityStr) {
   return found ? CITY_COORDS[found] : null;
 }
 
+async function geocodeAddress(address) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'HaulWallet/1.0' } });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    }
+  } catch (e) {
+    console.warn('[MapScreen] Geocode failed:', e.message);
+  }
+  return null;
+}
+
+async function resolveCoords(input) {
+  // First try hardcoded cities (fast + no network)
+  const cached = getCityCoords(input);
+  if (cached) return cached;
+  // Fallback to OpenStreetMap geocoding
+  return await geocodeAddress(input);
+}
+
 async function fetchOSRMRoute(fromCoords, toCoords) {
   const url = `https://router.project-osrm.org/route/v1/driving/${fromCoords[1]},${fromCoords[0]};${toCoords[1]},${toCoords[0]}?overview=full&geometries=geojson`;
   try {
@@ -160,19 +182,35 @@ export default function MapScreen({ route, navigation }) {
   const [loading, setLoading] = useState(true);
   const [routeCoords, setRouteCoords] = useState(null);
   const [fetchingRoute, setFetchingRoute] = useState(false);
-
-  const fromCoords = getCityCoords(from);
-  const toCoords = getCityCoords(to);
-  const hasCoords = fromCoords && toCoords;
+  const [fromCoords, setFromCoords] = useState(null);
+  const [toCoords, setToCoords] = useState(null);
+  const [geoError, setGeoError] = useState(null);
 
   useEffect(() => {
-    if (!hasCoords) return;
-    setFetchingRoute(true);
-    fetchOSRMRoute(fromCoords, toCoords).then((coords) => {
-      setRouteCoords(coords);
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setGeoError(null);
+      const [fc, tc] = await Promise.all([resolveCoords(from), resolveCoords(to)]);
+      if (cancelled) return;
+      if (!fc || !tc) {
+        setGeoError(!fc && !tc ? 'Could not find both addresses' : !fc ? `Could not find origin: "${from}"` : `Could not find destination: "${to}"`);
+        setLoading(false);
+        return;
+      }
+      setFromCoords(fc);
+      setToCoords(tc);
+      setFetchingRoute(true);
+      const route = await fetchOSRMRoute(fc, tc);
+      if (cancelled) return;
+      setRouteCoords(route);
       setFetchingRoute(false);
-    });
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
   }, []);
+
+  const hasCoords = fromCoords && toCoords;
 
   const html = hasCoords && !fetchingRoute
     ? buildLeafletHTML(fromCoords, toCoords, from, to, total ?? 0, routeCoords)
@@ -195,16 +233,18 @@ export default function MapScreen({ route, navigation }) {
         </View>
       </View>
 
-      {!hasCoords ? (
+      {geoError ? (
         <View style={styles.noCoords}>
           <Text style={styles.noCoordsIcon}>🗺️</Text>
-          <Text style={styles.noCoordsText}>Route coordinates not found</Text>
-          <Text style={styles.noCoordsHint}>Make sure cities are selected from suggestions</Text>
+          <Text style={styles.noCoordsText}>{geoError}</Text>
+          <Text style={styles.noCoordsHint}>Try using format: "14228 Plantation Park Blvd, Charlotte, NC"</Text>
         </View>
-      ) : fetchingRoute ? (
+      ) : loading || fetchingRoute ? (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator size="large" color="#4fc3f7" />
-          <Text style={styles.loadingText}>Building driving route...</Text>
+          <Text style={styles.loadingText}>
+            {fetchingRoute ? 'Building driving route...' : 'Looking up addresses...'}
+          </Text>
         </View>
       ) : (
         <>

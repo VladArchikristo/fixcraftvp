@@ -29,6 +29,7 @@
     },
     "android": {
       "targetSdkVersion": 35,
+      "versionCode": 13,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F172A"

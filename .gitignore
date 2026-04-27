@@ -45,3 +45,4 @@ philip-bot/credentials.json
 # Cron secrets
 cron-secrets.conf
 *.conf
+.vercel

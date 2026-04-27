@@ -15,7 +15,7 @@ from googleapiclient.http import MediaFileUpload
 # Configuration
 PACKAGE_NAME = "com.haulwallet.app"
 SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), "service-account.json")
-AAB_PATH = os.path.expanduser("~/Папка тест/fixcraftvp/toll-navigator/builds/haulwallet-v6.aab")
+AAB_PATH = os.path.expanduser("~/Папка тест/fixcraftvp/toll-navigator/builds/haulwallet-v9.aab")
 
 SCOPES = ["https://www.googleapis.com/auth/androidpublisher"]
 

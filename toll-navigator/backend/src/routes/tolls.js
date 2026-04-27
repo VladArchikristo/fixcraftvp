@@ -1,7 +1,7 @@
 const express = require('express');
 const { verifyToken } = require('../middleware/auth');
 const { calculateTollCost, getTollsByState, getAvailableStates } = require('../services/tollCalculator');
-const { getRealRoute, getStatesAlongRoute, calculateStateMilesFromWaypoints, getStateBounds } = require('../services/geoService');
+const { getRealRoute, geocodeCity, getStatesAlongRoute, calculateStateMilesFromWaypoints, getStateBounds } = require('../services/geoService');
 const db = require('../db');
 const cache = require('../services/cache');
 
@@ -928,11 +928,13 @@ async function handleRoute(params, headers, res, db, cache) {
     const cached = cache.get(cacheKey);
     if (cached) return res.json({ ...cached, cached: true });
 
-    const fromState = parseCity(from);
-    const toState = parseCity(to);
+    // Try geocoding first (supports full addresses like "14228 Plantation Park Blvd, Charlotte, NC")
+    const [fromGeo, toGeo] = await Promise.all([geocodeCity(from), geocodeCity(to)]);
+    let fromState = fromGeo?.state || parseCity(from);
+    let toState = toGeo?.state || parseCity(to);
 
-    if (!fromState) return res.status(400).json({ error: `Unknown city: "${from}". Use format "Dallas,TX"` });
-    if (!toState) return res.status(400).json({ error: `Unknown city: "${to}". Use format "Houston,TX"` });
+    if (!fromState) return res.status(400).json({ error: `Could not locate origin: "${from}". Try adding state, e.g. "${from}, NC"` });
+    if (!toState) return res.status(400).json({ error: `Could not locate destination: "${to}". Try adding state, e.g. "${to}, IL"` });
 
     // ── ТОЧНЫЙ РАСЧЁТ через OSRM (OpenStreetMap) ─────────────────────────────
     let distanceMiles;

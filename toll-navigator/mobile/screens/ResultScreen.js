@@ -427,9 +427,7 @@ export default function ResultScreen({ route, navigation }) {
                 <Text style={styles.stateCode}>{b.state}</Text>
                 <Text style={styles.stateMiles}>{b.miles_in_state} mi • {b.roads} roads</Text>
               </View>
-              <Text style={styles.stateCost}>
-                ${((result.total / result.distance_miles) * b.miles_in_state).toFixed(2)}
-              </Text>
+              <Text style={styles.stateCost}>${b.cost.toFixed(2)}</Text>
             </View>
           ))}
         </View>

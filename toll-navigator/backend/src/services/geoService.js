@@ -63,7 +63,9 @@ async function geocodeCity(cityQuery) {
       lat: parseFloat(r.lat),
       lon: parseFloat(r.lon),
       display_name: r.display_name,
-      state: r.address?.state_code?.toUpperCase() || null,
+      state: r.address?.state_code?.toUpperCase() ||
+             r.address?.['ISO3166-2-lvl4']?.replace('US-', '').toUpperCase() ||
+             null,
     };
     geocodeCache.set(cacheKey, { data, ts: Date.now() });
     return data;
