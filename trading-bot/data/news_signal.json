@@ -1,38 +1,39 @@
 {
-  "timestamp": "2026-04-27T13:55:22.840504+00:00",
-  "sentiment": "neutral",
-  "score": 0.14,
+  "timestamp": "2026-04-28T13:00:29.922123+00:00",
+  "sentiment": "slightly_bearish",
+  "score": -0.34,
   "fear_greed": {
-    "value": 47,
-    "label": "Neutral",
-    "trend": "rising"
+    "value": 33,
+    "label": "Fear",
+    "trend": "falling"
   },
   "key_events": [
-    "From SWIFT to onchain: South Korea’s biggest digital bank taps Ripple for high-speed global transfers",
-    "Kbank teams with Ripple on overseas blockchain remittance trial",
-    "MiCA-licensed Banking Circle joins bank stablecoin settlement race in Europe",
-    "Signal in the age of infinite noise",
-    "Michael Saylor’s Strategy buys 3,273 bitcoin as it inches closer to its 1 million target"
+    "Three Bank of Japan members call for a rate hike; yen rises while bitcoin falls",
+    "Crypto lobby backs formal removal of ‘reputation risk’ from bank examinations",
+    "Bulls want bitcoin back above $80,000. Macro says not so fast.",
+    "Crypto traders turn cautious as bitcoin loses steam below $80,000",
+    "A digital shekel is here: Israel approves its first regulated stablecoin"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
-    "UNI",
+    "SOL",
+    "XRP",
     "OP"
   ],
   "trending_coins": [
-    "QFI",
+    "ZKJ",
     "PENGU",
     "PRL",
-    "LUNC",
-    "RAVE",
+    "PI",
     "CHIP",
-    "SOL"
+    "SOL",
+    "LUNC"
   ],
-  "risk_level": "LOW",
-  "vasily_action": "NORMAL — стандартное управление рисками",
+  "risk_level": "HIGH",
+  "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.6,
-  "cached_at": 1777298122.840699
+  "fetch_time_sec": 2.62,
+  "cached_at": 1777381229.9222999
 }

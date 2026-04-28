@@ -390,5 +390,78 @@ def build_memory_prompt(user_id: int, bot_name: str) -> str:
     return "\n".join(parts) if parts else ""
 
 
+# ===================== SYMPHONY: TASK QUEUE =====================
+
+def init_tasks():
+    """Создаёт таблицу tasks если не существует."""
+    conn = _get_conn()
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            github_id   INTEGER UNIQUE,
+            title       TEXT NOT NULL,
+            body        TEXT,
+            label       TEXT,
+            status      TEXT DEFAULT 'pending',
+            blocked_by  TEXT,
+            result      TEXT,
+            created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status, label);
+    """)
+    conn.commit()
+    conn.close()
+
+
+def add_task(github_id: int, title: str, body: str, label: str, blocked_by=None):
+    """Добавляет задачу в очередь (если не существует)."""
+    import json
+    conn = _get_conn()
+    conn.execute(
+        """INSERT OR IGNORE INTO tasks (github_id, title, body, label, blocked_by)
+           VALUES (?, ?, ?, ?, ?)""",
+        (github_id, title, body, label, json.dumps(blocked_by) if blocked_by else None)
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_pending_tasks(label: str = None) -> list:
+    """Возвращает незаблокированные pending задачи."""
+    conn = _get_conn()
+    if label:
+        rows = conn.execute(
+            "SELECT * FROM tasks WHERE status='pending' AND label=? ORDER BY created_at ASC",
+            (label,)
+        ).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT * FROM tasks WHERE status='pending' ORDER BY created_at ASC"
+        ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def update_task_status(github_id: int, status: str, result: str = None):
+    """Обновляет статус задачи."""
+    conn = _get_conn()
+    conn.execute(
+        "UPDATE tasks SET status=?, result=?, updated_at=CURRENT_TIMESTAMP WHERE github_id=?",
+        (status, result, github_id)
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_running_tasks_count() -> int:
+    """Количество задач в статусе running."""
+    conn = _get_conn()
+    row = conn.execute("SELECT COUNT(*) as cnt FROM tasks WHERE status='running'").fetchone()
+    conn.close()
+    return row["cnt"] if row else 0
+
+
 # Автоматически инициализируем БД при импорте
 init_db()
+init_tasks()
