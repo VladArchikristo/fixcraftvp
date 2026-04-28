@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-28T13:00:29.922123+00:00",
+  "timestamp": "2026-04-28T13:55:22.433058+00:00",
   "sentiment": "slightly_bearish",
   "score": -0.34,
   "fear_greed": {
@@ -9,31 +9,32 @@
   },
   "key_events": [
     "Three Bank of Japan members call for a rate hike; yen rises while bitcoin falls",
-    "Crypto lobby backs formal removal of ‘reputation risk’ from bank examinations",
+    "CoinDesk 20 performance update: Stellar (XLM) drops 1.7% as index moves lower",
+    "CFTC's AI will review U.S. crypto registration applications, chairman tells CoinDesk",
     "Bulls want bitcoin back above $80,000. Macro says not so fast.",
-    "Crypto traders turn cautious as bitcoin loses steam below $80,000",
-    "A digital shekel is here: Israel approves its first regulated stablecoin"
+    "Crypto traders turn cautious as bitcoin loses steam below $80,000"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
     "XRP",
-    "OP"
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
     "ZKJ",
-    "PENGU",
-    "PRL",
     "PI",
-    "CHIP",
+    "ORCA",
     "SOL",
-    "LUNC"
+    "PRL",
+    "PENGU",
+    "ETH"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.62,
-  "cached_at": 1777381229.9222999
+  "fetch_time_sec": 3.11,
+  "cached_at": 1777384522.433308
 }
