@@ -464,6 +464,16 @@ async def call_claude(prompt: str) -> str:
 
     def _run_subprocess() -> str:
         global active_claude_proc
+        # Убиваем предыдущий процесс если есть
+        with _proc_lock:
+            if active_claude_proc and active_claude_proc.poll() is None:
+                log.warning("Killing previous claude PID %d", active_claude_proc.pid)
+                active_claude_proc.terminate()
+                try:
+                    active_claude_proc.wait(timeout=3)
+                except subprocess.TimeoutExpired:
+                    active_claude_proc.kill()
+                active_claude_proc = None
         env = _get_claude_env()
         proc = subprocess.Popen(
             cmd,

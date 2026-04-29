@@ -6,6 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 const PAGE_LIMIT = 20;
 
@@ -58,7 +59,7 @@ function TripCard({ trip, onPress }) {
           <Text style={styles.cityLabel}>FROM</Text>
           <Text style={styles.cityName} numberOfLines={1}>{trip.from_city}</Text>
         </View>
-        <Ionicons name="arrow-forward" size={16} color="#4fc3f7" style={styles.arrow} />
+        <Ionicons name="arrow-forward" size={16} color={COLORS.primary} style={styles.arrow} />
         <View style={[styles.cityBlock, { alignItems: 'flex-end' }]}>
           <Text style={styles.cityLabel}>TO</Text>
           <Text style={styles.cityName} numberOfLines={1}>{trip.to_city}</Text>
@@ -68,16 +69,16 @@ function TripCard({ trip, onPress }) {
       {/* Metadata */}
       <View style={styles.metaRow}>
         <View style={styles.metaItem}>
-          <Ionicons name="calendar-outline" size={13} color="#555" />
+          <Ionicons name="calendar-outline" size={13} color={COLORS.textMuted} />
           <Text style={styles.metaText}>{formatDate(trip.created_at)}</Text>
         </View>
         <View style={styles.metaItem}>
-          <Ionicons name="navigate-outline" size={13} color="#555" />
+          <Ionicons name="navigate-outline" size={13} color={COLORS.textMuted} />
           <Text style={styles.metaText}>{(trip.total_miles || 0).toFixed(0)} mi</Text>
         </View>
         {stateCount > 0 && (
           <View style={styles.metaItem}>
-            <Ionicons name="map-outline" size={13} color="#555" />
+            <Ionicons name="map-outline" size={13} color={COLORS.textMuted} />
             <Text style={styles.metaText}>{stateCount} state{stateCount > 1 ? 's' : ''}</Text>
           </View>
         )}
@@ -197,7 +198,7 @@ export default function TripHistoryScreen({ navigation }) {
     if (!loadingMore) return null;
     return (
       <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color="#4fc3f7" />
+        <ActivityIndicator size="small" color={COLORS.primary} />
       </View>
     );
   };
@@ -205,7 +206,7 @@ export default function TripHistoryScreen({ navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#4fc3f7" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <Text style={styles.loadingText}>Loading history...</Text>
       </View>
     );
@@ -214,7 +215,7 @@ export default function TripHistoryScreen({ navigation }) {
   if (error && trips.length === 0) {
     return (
       <View style={styles.center}>
-        <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
+        <Ionicons name="alert-circle-outline" size={48} color={COLORS.error} />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={() => loadTrips({ pageNum: 1 })}>
           <Text style={styles.retryText}>Retry</Text>
@@ -232,18 +233,18 @@ export default function TripHistoryScreen({ navigation }) {
 
       {/* Search bar */}
       <View style={styles.searchRow}>
-        <Ionicons name="search-outline" size={16} color="#555" style={styles.searchIcon} />
+        <Ionicons name="search-outline" size={16} color={COLORS.textMuted} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search by state or route..."
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={searchText}
           onChangeText={handleSearchChange}
           returnKeyType="search"
         />
         {searchText.length > 0 && (
           <TouchableOpacity onPress={() => handleSearchChange('')}>
-            <Ionicons name="close-circle" size={16} color="#555" />
+            <Ionicons name="close-circle" size={16} color={COLORS.textMuted} />
           </TouchableOpacity>
         )}
       </View>
@@ -288,8 +289,8 @@ export default function TripHistoryScreen({ navigation }) {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => loadTrips({ pageNum: 1, refresh: true })}
-          tintColor="#4fc3f7"
-          colors={['#4fc3f7']}
+          tintColor={COLORS.primary}
+          colors={[COLORS.primary]}
         />
       }
       ListHeaderComponent={ListHeader}
@@ -303,88 +304,88 @@ export default function TripHistoryScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
-  listContent: { padding: 16, paddingBottom: 40 },
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  listContent: { padding: SPACING.md, paddingBottom: 40 },
 
   center: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 32,
   },
-  loadingText: { color: '#555', fontSize: 14, marginTop: 12 },
-  errorText: { color: '#ef9a9a', fontSize: 14, textAlign: 'center', marginTop: 12 },
+  loadingText: { color: COLORS.textMuted, fontSize: 14, marginTop: 12 },
+  errorText: { color: COLORS.error, fontSize: 14, textAlign: 'center', marginTop: 12 },
   retryBtn: {
     marginTop: 20,
-    paddingHorizontal: 24,
+    paddingHorizontal: SPACING.lg,
     paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
-  retryText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  retryText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   header: { marginBottom: 12 },
-  headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800' },
-  headerSub: { color: '#555', fontSize: 13, marginTop: 4 },
+  headerTitle: { color: COLORS.textPrimary, fontSize: 22, fontWeight: '800' },
+  headerSub: { color: COLORS.textMuted, fontSize: 13, marginTop: SPACING.xs },
 
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     paddingHorizontal: 12,
     marginBottom: 10,
-    gap: 8,
+    gap: SPACING.sm,
   },
   searchIcon: { marginRight: 2 },
   searchInput: {
     flex: 1,
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 14,
     paddingVertical: 11,
   },
 
   filterRow: {
     flexDirection: 'row',
-    gap: 8,
-    marginBottom: 16,
+    gap: SPACING.sm,
+    marginBottom: SPACING.md,
   },
   filterBtn: {
     flex: 1,
-    paddingVertical: 8,
-    borderRadius: 8,
+    paddingVertical: SPACING.sm,
+    borderRadius: RADIUS.sm,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#161629',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bgCard,
   },
-  filterBtnActive: { backgroundColor: '#0a1f2e', borderColor: '#4fc3f7' },
-  filterBtnText: { color: '#555', fontSize: 12, fontWeight: '600' },
-  filterBtnTextActive: { color: '#4fc3f7' },
+  filterBtnActive: { backgroundColor: COLORS.primaryLight, borderColor: COLORS.primary },
+  filterBtnText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '600' },
+  filterBtnTextActive: { color: COLORS.primary },
 
   // Empty state
   emptyState: {
     alignItems: 'center',
     paddingVertical: 48,
-    paddingHorizontal: 24,
+    paddingHorizontal: SPACING.lg,
   },
   emptyIcon: { fontSize: 48, marginBottom: 12 },
-  emptyTitle: { color: '#555', fontSize: 18, fontWeight: '700', marginBottom: 8 },
-  emptySubtitle: { color: '#333', fontSize: 13, textAlign: 'center', lineHeight: 20 },
+  emptyTitle: { color: COLORS.textMuted, fontSize: 18, fontWeight: '700', marginBottom: SPACING.sm },
+  emptySubtitle: { color: COLORS.textMuted, fontSize: 13, textAlign: 'center', lineHeight: 20 },
 
-  footerLoader: { paddingVertical: 16, alignItems: 'center' },
+  footerLoader: { paddingVertical: SPACING.md, alignItems: 'center' },
 
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
 
   routeRow: {
@@ -393,46 +394,46 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   cityBlock: { flex: 1 },
-  arrow: { marginHorizontal: 8 },
-  cityLabel: { color: '#444', fontSize: 10, fontWeight: '700', letterSpacing: 1, marginBottom: 2 },
-  cityName: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  arrow: { marginHorizontal: SPACING.sm },
+  cityLabel: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', letterSpacing: 1, marginBottom: 2 },
+  cityName: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700' },
 
   metaRow: {
     flexDirection: 'row',
     gap: 14,
     marginBottom: 12,
   },
-  metaItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  metaText: { color: '#555', fontSize: 12 },
+  metaItem: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs },
+  metaText: { color: COLORS.textMuted, fontSize: 12 },
 
   costsRow: {
     flexDirection: 'row',
     gap: 10,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#1e1e3a',
+    borderTopColor: COLORS.bgCardAlt,
   },
   costItem: { flex: 1, alignItems: 'center' },
-  costLabel: { color: '#555', fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: 3 },
-  costValue: { color: '#aaa', fontSize: 13, fontWeight: '700' },
+  costLabel: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: 3 },
+  costValue: { color: COLORS.textSecondary, fontSize: 13, fontWeight: '700' },
   costTotal: {
     borderLeftWidth: 1,
-    borderLeftColor: '#1e1e3a',
+    borderLeftColor: COLORS.bgCardAlt,
     paddingLeft: 10,
   },
-  costTotalLabel: { color: '#888', fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: 3 },
-  costTotalValue: { color: '#4fc3f7', fontSize: 15, fontWeight: '800' },
+  costTotalLabel: { color: COLORS.textSecondary, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: 3 },
+  costTotalValue: { color: COLORS.primary, fontSize: 15, fontWeight: '800' },
 
   quarterBadge: {
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: '#0a1520',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 6,
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderWidth: 1,
-    borderColor: '#1e3a50',
+    borderColor: COLORS.border,
   },
-  quarterText: { color: '#4fc3f7', fontSize: 10, fontWeight: '700' },
+  quarterText: { color: COLORS.primary, fontSize: 10, fontWeight: '700' },
 });

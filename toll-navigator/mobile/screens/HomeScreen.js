@@ -7,6 +7,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { calculateRoute } from '../services/api';
 import { checkLimit, incrementCalcs, upgradeToPremium, FREE_CALCULATIONS_LIMIT } from '../services/subscription';
+import { COLORS, SPACING, RADIUS, SHADOW } from '../theme';
 
 // US states list for fuel purchase picker
 const US_STATES = [
@@ -93,7 +94,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   useEffect(() => {
-    checkLimit().then((res) => setCalcsRemaining(res.remaining));
+    checkLimit().then((res) => setCalcsRemaining(res.remaining)).catch(() => {});
   }, []);
 
   const handleCalculate = async () => {
@@ -150,19 +151,36 @@ export default function HomeScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.logo}>🛣️ HaulWallet</Text>
+          <View style={styles.logoBadge}>
+            <Ionicons name="navigate" size={22} color={COLORS.textInverse} />
+          </View>
+          <Text style={styles.logo}>HaulWallet</Text>
           <Text style={styles.subtitle}>Total route cost for trucks</Text>
+          <View style={styles.statsRow}>
+            <View style={styles.statChip}>
+              <Ionicons name="map-outline" size={12} color={COLORS.primary} />
+              <Text style={styles.statChipText}>80+ cities</Text>
+            </View>
+            <View style={styles.statChip}>
+              <Ionicons name="receipt-outline" size={12} color={COLORS.primary} />
+              <Text style={styles.statChipText}>IFTA 2026</Text>
+            </View>
+            <View style={styles.statChip}>
+              <Ionicons name="shield-checkmark-outline" size={12} color={COLORS.primary} />
+              <Text style={styles.statChipText}>Toll data 2026</Text>
+            </View>
+          </View>
         </View>
 
         {/* From */}
         <View style={styles.card}>
           <Text style={styles.label}>📍 From</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="location-outline" size={20} color="#4fc3f7" style={styles.inputIcon} />
+            <Ionicons name="location-outline" size={20} color={COLORS.primary} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Dallas, TX"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={from}
               onChangeText={setFrom}
               onFocus={() => setFromFocus(true)}
@@ -178,18 +196,18 @@ export default function HomeScreen({ navigation }) {
 
         {/* Swap button */}
         <TouchableOpacity style={styles.swapBtn} onPress={() => { const tmp = from; setFrom(to); setTo(tmp); }}>
-          <Ionicons name="swap-vertical" size={22} color="#4fc3f7" />
+          <Ionicons name="swap-vertical" size={22} color={COLORS.primary} />
         </TouchableOpacity>
 
         {/* To */}
         <View style={styles.card}>
           <Text style={styles.label}>🏁 To</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="flag-outline" size={20} color="#81c784" style={styles.inputIcon} />
+            <Ionicons name="flag-outline" size={20} color={COLORS.success} style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Houston, TX"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={to}
               onChangeText={setTo}
               onFocus={() => setToFocus(true)}
@@ -239,7 +257,7 @@ export default function HomeScreen({ navigation }) {
           <Ionicons
             name={showFuel ? 'chevron-up' : 'chevron-down'}
             size={18}
-            color={showFuel ? '#4fc3f7' : '#555'}
+            color={showFuel ? COLORS.primary : COLORS.textMuted}
           />
         </TouchableOpacity>
 
@@ -255,7 +273,7 @@ export default function HomeScreen({ navigation }) {
                   onChangeText={setMpg}
                   keyboardType="decimal-pad"
                   placeholder="6.5"
-                  placeholderTextColor="#555"
+                  placeholderTextColor={COLORS.textMuted}
                 />
                 <Text style={styles.fuelHint}>Standard truck: 5.5–7 MPG</Text>
               </View>
@@ -267,7 +285,7 @@ export default function HomeScreen({ navigation }) {
                   onChangeText={setFuelPrice}
                   keyboardType="decimal-pad"
                   placeholder="3.80"
-                  placeholderTextColor="#555"
+                  placeholderTextColor={COLORS.textMuted}
                 />
                 <Text style={styles.fuelHint}>Diesel currently ~$3.80</Text>
               </View>
@@ -325,7 +343,7 @@ export default function HomeScreen({ navigation }) {
                     onChangeText={val => updatePurchaseGallons(index, val)}
                     keyboardType="decimal-pad"
                     placeholder="gallons"
-                    placeholderTextColor="#444"
+                    placeholderTextColor={COLORS.textMuted}
                   />
 
                   {/* Delete row */}
@@ -352,7 +370,7 @@ export default function HomeScreen({ navigation }) {
           disabled={loading}
         >
           {loading
-            ? <ActivityIndicator color="#fff" />
+            ? <ActivityIndicator color={COLORS.textInverse} />
             : <Text style={styles.calcBtnText}>
                 {showFuel ? '⛽ Calculate full cost →' : 'Calculate route →'}
               </Text>
@@ -362,12 +380,26 @@ export default function HomeScreen({ navigation }) {
         {/* Clear button */}
         {(from || to) && (
           <TouchableOpacity style={styles.clearBtn} onPress={handleClear}>
-            <Ionicons name="close-circle-outline" size={16} color="#888" />
+            <Ionicons name="close-circle-outline" size={16} color={COLORS.textSecondary} />
             <Text style={styles.clearBtnText}>Clear form</Text>
           </TouchableOpacity>
         )}
 
-        <Text style={styles.hint}>80+ US cities • IFTA 2026 • Toll data 2026</Text>
+        {/* Quick nav */}
+        <View style={styles.quickNav}>
+          <TouchableOpacity style={styles.quickNavBtn} onPress={() => navigation.navigate('History')}>
+            <Ionicons name="time-outline" size={18} color={COLORS.primary} />
+            <Text style={styles.quickNavText}>History</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.quickNavBtn} onPress={() => navigation.navigate('ExpenseDashboard')}>
+            <Ionicons name="wallet-outline" size={18} color={COLORS.primary} />
+            <Text style={styles.quickNavText}>Expenses</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.quickNavBtn} onPress={() => navigation.navigate('IFTADashboard')}>
+            <Ionicons name="document-text-outline" size={18} color={COLORS.primary} />
+            <Text style={styles.quickNavText}>IFTA</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
 
       {/* Premium Paywall Modal */}
@@ -385,7 +417,7 @@ export default function HomeScreen({ navigation }) {
               onPress={async () => {
                 await upgradeToPremium();
                 setShowPaywall(false);
-                setCalcsRemaining(Infinity);
+                setCalcsRemaining(9999);
                 Alert.alert('Premium Activated', 'You now have unlimited calculations!');
               }}
             >
@@ -403,96 +435,110 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { padding: 20, paddingBottom: 40 },
   header: { alignItems: 'center', marginBottom: 28, marginTop: 10 },
-  logo: { fontSize: 26, fontWeight: '800', color: '#fff', letterSpacing: 0.5, fontFamily: Platform.select({ ios: '-apple-system', android: 'Roboto' }) },
-  subtitle: { fontSize: 13, color: '#666', marginTop: 4 },
+  logoBadge: {
+    width: 44, height: 44, borderRadius: 14,
+    backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center',
+    marginBottom: SPACING.sm,
+    ...SHADOW.md,
+  },
+  logo: { fontSize: 26, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: 0.5, fontFamily: Platform.select({ ios: '-apple-system', android: 'Roboto' }) },
+  subtitle: { fontSize: 13, color: COLORS.textMuted, marginTop: SPACING.xs },
+  statsRow: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.md },
+  statChip: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    backgroundColor: COLORS.primaryLight, borderRadius: RADIUS.full,
+    paddingHorizontal: 10, paddingVertical: 5,
+  },
+  statChipText: { fontSize: 11, fontWeight: '600', color: COLORS.primary },
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
+    ...SHADOW.sm,
   },
-  label: { color: '#888', fontSize: 12, marginBottom: 10, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5 },
+  label: { color: COLORS.textSecondary, fontSize: 12, marginBottom: 10, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5 },
   inputRow: { flexDirection: 'row', alignItems: 'center' },
   inputIcon: { marginRight: 10 },
-  input: { flex: 1, color: '#fff', fontSize: 16, paddingVertical: 4 },
-  suggestion: { paddingVertical: 8, borderTopWidth: 1, borderTopColor: '#1e1e3a' },
-  suggestionText: { color: '#4fc3f7', fontSize: 14 },
+  input: { flex: 1, color: COLORS.textPrimary, fontSize: 16, paddingVertical: SPACING.xs },
+  suggestion: { paddingVertical: SPACING.sm, borderTopWidth: 1, borderTopColor: COLORS.bgCardAlt },
+  suggestionText: { color: COLORS.primary, fontSize: 14 },
   swapBtn: {
     alignSelf: 'center',
     marginVertical: -4,
     zIndex: 10,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: COLORS.bgCardAlt,
     borderRadius: 20,
-    padding: 8,
+    padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
+    borderColor: COLORS.border,
   },
-  truckRow: { flexDirection: 'row', gap: 8, flexWrap: 'nowrap' },
+  truckRow: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'nowrap' },
   truckBtn: {
     flex: 1, alignItems: 'center', paddingVertical: 10, paddingHorizontal: 6, borderRadius: 10,
-    backgroundColor: '#0d0d1a', borderWidth: 1, borderColor: '#2a2a4a', minWidth: 0,
+    backgroundColor: COLORS.bg, borderWidth: 1, borderColor: COLORS.border, minWidth: 0,
   },
-  truckBtnActive: { borderColor: '#4fc3f7', backgroundColor: '#0d1f2d' },
-  truckIcon: { fontSize: 22, marginBottom: 4 },
-  truckLabel: { color: '#666', fontSize: 11, fontWeight: '600', textAlign: 'center' },
-  truckLabelActive: { color: '#4fc3f7' },
+  truckBtnActive: { borderColor: COLORS.primary, backgroundColor: COLORS.primaryLight },
+  truckIcon: { fontSize: 22, marginBottom: SPACING.xs },
+  truckLabel: { color: COLORS.textMuted, fontSize: 11, fontWeight: '600', textAlign: 'center' },
+  truckLabelActive: { color: COLORS.primary },
   // Fuel toggle
   fuelToggle: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   fuelToggleActive: {
-    borderColor: '#4fc3f7',
-    backgroundColor: '#0d1f2d',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryLight,
   },
   fuelToggleIcon: { fontSize: 20 },
   fuelToggleText: { flex: 1 },
-  fuelToggleTitle: { color: '#aaa', fontSize: 14, fontWeight: '700' },
-  fuelToggleTitleActive: { color: '#4fc3f7' },
-  fuelToggleSub: { color: '#555', fontSize: 11, marginTop: 2 },
+  fuelToggleTitle: { color: COLORS.textSecondary, fontSize: 14, fontWeight: '700' },
+  fuelToggleTitleActive: { color: COLORS.primary },
+  fuelToggleSub: { color: COLORS.textMuted, fontSize: 11, marginTop: 2 },
   // Fuel card
   fuelCard: {
-    backgroundColor: '#0a1a28',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
   fuelRow: { flexDirection: 'row', gap: 12, marginBottom: 12 },
   fuelField: { flex: 1 },
-  fuelLabel: { color: '#888', fontSize: 11, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
+  fuelLabel: { color: COLORS.textSecondary, fontSize: 11, fontWeight: '700', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 },
   fuelInput: {
-    backgroundColor: '#0d0d1a',
-    color: '#fff',
+    backgroundColor: COLORS.bg,
+    color: COLORS.textPrimary,
     fontSize: 22,
     fontWeight: '800',
     borderRadius: 10,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#2a3a4a',
+    borderColor: COLORS.border,
     textAlign: 'center',
   },
-  fuelHint: { color: '#444', fontSize: 10, marginTop: 4, textAlign: 'center' },
-  fuelNote: { color: '#4fc3f7', fontSize: 12, textAlign: 'center', fontWeight: '600' },
+  fuelHint: { color: COLORS.tabInactive, fontSize: 10, marginTop: SPACING.xs, textAlign: 'center' },
+  fuelNote: { color: COLORS.primary, fontSize: 12, textAlign: 'center', fontWeight: '600' },
   // Fuel purchases section
   purchasesSection: {
-    marginTop: 8,
+    marginTop: SPACING.sm,
     marginBottom: 12,
     borderTopWidth: 1,
-    borderTopColor: '#1a2e3a',
+    borderTopColor: COLORS.border,
     paddingTop: 12,
   },
   purchasesHeader: {
@@ -501,46 +547,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  purchasesTitle: { color: '#aaa', fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
-  purchasesSub: { color: '#555', fontSize: 10, marginTop: 2 },
+  purchasesTitle: { color: COLORS.textSecondary, fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+  purchasesSub: { color: COLORS.textMuted, fontSize: 10, marginTop: 2 },
   addPurchaseBtn: {
-    backgroundColor: '#0d1f2d',
+    backgroundColor: COLORS.primaryLight,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
-    borderRadius: 8,
+    borderColor: COLORS.primary,
+    borderRadius: RADIUS.sm,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
-  addPurchaseBtnText: { color: '#4fc3f7', fontSize: 12, fontWeight: '700' },
+  addPurchaseBtnText: { color: COLORS.primary, fontSize: 12, fontWeight: '700' },
   purchaseRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
+    gap: SPACING.sm,
+    marginBottom: SPACING.sm,
   },
   stateSelector: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0d0d1a',
-    borderRadius: 8,
+    backgroundColor: COLORS.bg,
+    borderRadius: RADIUS.sm,
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: '#2a3a4a',
+    borderColor: COLORS.border,
     minWidth: 60,
     gap: 4,
   },
-  stateSelectorText: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  stateSelectorArrow: { color: '#4fc3f7', fontSize: 10 },
+  stateSelectorText: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700' },
+  stateSelectorArrow: { color: COLORS.primary, fontSize: 10 },
   statePickerContainer: {
     position: 'absolute',
     top: 40,
     left: 0,
     zIndex: 100,
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#2a3a4a',
+    borderColor: COLORS.border,
     width: 80,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -549,63 +595,73 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   statePickerScroll: { maxHeight: 200 },
-  stateOption: { paddingHorizontal: 12, paddingVertical: 8 },
-  stateOptionActive: { backgroundColor: '#0d1f2d' },
-  stateOptionText: { color: '#888', fontSize: 14 },
-  stateOptionTextActive: { color: '#4fc3f7', fontWeight: '700' },
+  stateOption: { paddingHorizontal: 12, paddingVertical: SPACING.sm },
+  stateOptionActive: { backgroundColor: COLORS.primaryLight },
+  stateOptionText: { color: COLORS.textSecondary, fontSize: 14 },
+  stateOptionTextActive: { color: COLORS.primary, fontWeight: '700' },
   gallonsInput: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
-    color: '#fff',
+    backgroundColor: COLORS.bg,
+    color: COLORS.textPrimary,
     fontSize: 15,
     fontWeight: '700',
-    borderRadius: 8,
+    borderRadius: RADIUS.sm,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#2a3a4a',
+    borderColor: COLORS.border,
     textAlign: 'center',
   },
   removePurchaseBtn: {
-    backgroundColor: '#1a0d0d',
-    borderRadius: 8,
+    backgroundColor: COLORS.errorLight,
+    borderRadius: RADIUS.sm,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#3a1a1a',
+    borderColor: COLORS.error + '33',
   },
-  removePurchaseBtnText: { color: '#ef9a9a', fontSize: 13, fontWeight: '700' },
+  removePurchaseBtnText: { color: COLORS.error, fontSize: 13, fontWeight: '700' },
   // Buttons
   calcBtn: {
-    backgroundColor: '#4fc3f7',
+    backgroundColor: COLORS.accent,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     alignItems: 'center',
     marginTop: 10,
+    ...SHADOW.accent,
   },
   calcBtnDisabled: { opacity: 0.6 },
-  calcBtnText: { color: '#0d0d1a', fontSize: 16, fontWeight: '800' },
+  calcBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800', letterSpacing: 0.3 },
   clearBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
     gap: 6, marginTop: 10, padding: 10,
   },
-  clearBtnText: { color: '#888', fontSize: 13 },
-  hint: { textAlign: 'center', color: '#444', fontSize: 12, marginTop: 16 },
+  clearBtnText: { color: COLORS.textSecondary, fontSize: 13 },
+  quickNav: {
+    flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.lg,
+  },
+  quickNavBtn: {
+    flex: 1, alignItems: 'center', paddingVertical: 14,
+    backgroundColor: COLORS.bgCard, borderRadius: RADIUS.md,
+    borderWidth: 1, borderColor: COLORS.bgCardAlt,
+    ...SHADOW.sm,
+  },
+  quickNavText: { fontSize: 11, fontWeight: '600', color: COLORS.textSecondary, marginTop: SPACING.xs },
   // Paywall
   paywallOverlay: {
     flex: 1, backgroundColor: 'rgba(0,0,0,0.8)',
-    justifyContent: 'center', alignItems: 'center', padding: 24,
+    justifyContent: 'center', alignItems: 'center', padding: SPACING.lg,
   },
   paywallCard: {
-    backgroundColor: '#161629', borderRadius: 20, padding: 28,
-    alignItems: 'center', borderWidth: 2, borderColor: '#4fc3f7', width: '100%', maxWidth: 340,
+    backgroundColor: COLORS.bgCard, borderRadius: 20, padding: 28,
+    alignItems: 'center', borderWidth: 2, borderColor: COLORS.primary, width: '100%', maxWidth: 340,
   },
   paywallIcon: { fontSize: 48, marginBottom: 12 },
-  paywallTitle: { color: '#fff', fontSize: 20, fontWeight: '800', marginBottom: 12, textAlign: 'center' },
-  paywallText: { color: '#888', fontSize: 14, textAlign: 'center', lineHeight: 22, marginBottom: 24 },
+  paywallTitle: { color: COLORS.textPrimary, fontSize: 20, fontWeight: '800', marginBottom: 12, textAlign: 'center' },
+  paywallText: { color: COLORS.textSecondary, fontSize: 14, textAlign: 'center', lineHeight: 22, marginBottom: SPACING.lg },
   paywallBtn: {
-    backgroundColor: '#4fc3f7', borderRadius: 14, paddingVertical: 16,
-    paddingHorizontal: 32, width: '100%', alignItems: 'center', marginBottom: 12,
+    backgroundColor: COLORS.accent, borderRadius: 14, paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.xl, width: '100%', alignItems: 'center', marginBottom: 12,
   },
-  paywallBtnText: { color: '#0d0d1a', fontSize: 16, fontWeight: '800' },
-  paywallClose: { padding: 8 },
-  paywallCloseText: { color: '#666', fontSize: 14 },
+  paywallBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800' },
+  paywallClose: { padding: SPACING.sm },
+  paywallCloseText: { color: COLORS.textMuted, fontSize: 14 },
 });

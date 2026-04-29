@@ -10,6 +10,7 @@ import { register } from '../services/api';
 import { saveToken, saveUser } from '../services/auth';
 import { handleGoogleAuth, handleAppleAuth } from '../services/socialAuth';
 import { GOOGLE_CLIENT_ID, GOOGLE_IOS_CLIENT_ID } from '../config';
+import { COLORS, SPACING, RADIUS, SHADOW } from '../theme';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -79,7 +80,9 @@ export default function RegisterScreen({ navigation, onLogin }) {
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.logo}>🛣️</Text>
+          <View style={styles.logoBadge}>
+            <Ionicons name="navigate" size={28} color={COLORS.textInverse} />
+          </View>
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>HaulWallet for truckers</Text>
         </View>
@@ -91,7 +94,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
           disabled={socialLoading !== null}
         >
           {socialLoading === 'google' ? (
-            <ActivityIndicator color="#fff" size="small" />
+            <ActivityIndicator color={COLORS.textPrimary} size="small" />
           ) : (
             <>
               <View style={styles.googleIcon}>
@@ -109,10 +112,10 @@ export default function RegisterScreen({ navigation, onLogin }) {
             disabled={socialLoading !== null}
           >
             {socialLoading === 'apple' ? (
-              <ActivityIndicator color="#fff" size="small" />
+              <ActivityIndicator color={COLORS.textPrimary} size="small" />
             ) : (
               <>
-                <Ionicons name="logo-apple" size={20} color="#fff" style={styles.socialIcon} />
+                <Ionicons name="logo-apple" size={20} color={COLORS.textPrimary} style={styles.socialIcon} />
                 <Text style={styles.socialBtnText}>Continue with Apple</Text>
               </>
             )}
@@ -131,11 +134,11 @@ export default function RegisterScreen({ navigation, onLogin }) {
           {/* Name */}
           <Text style={styles.label}>Name</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="person-outline" size={20} color="#4fc3f7" style={styles.icon} />
+            <Ionicons name="person-outline" size={20} color={COLORS.primary} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="John Driver"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={name}
               onChangeText={setName}
             />
@@ -144,11 +147,11 @@ export default function RegisterScreen({ navigation, onLogin }) {
           {/* Email */}
           <Text style={[styles.label, { marginTop: 16 }]}>Email</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="mail-outline" size={20} color="#4fc3f7" style={styles.icon} />
+            <Ionicons name="mail-outline" size={20} color={COLORS.primary} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="driver@company.com"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -159,17 +162,17 @@ export default function RegisterScreen({ navigation, onLogin }) {
           {/* Password */}
           <Text style={[styles.label, { marginTop: 16 }]}>Password</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="lock-closed-outline" size={20} color="#4fc3f7" style={styles.icon} />
+            <Ionicons name="lock-closed-outline" size={20} color={COLORS.primary} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="At least 6 characters"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPass}
             />
             <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-              <Ionicons name={showPass ? 'eye-outline' : 'eye-off-outline'} size={20} color="#555" />
+              <Ionicons name={showPass ? 'eye-outline' : 'eye-off-outline'} size={20} color={COLORS.textMuted} />
             </TouchableOpacity>
           </View>
 
@@ -179,11 +182,11 @@ export default function RegisterScreen({ navigation, onLogin }) {
             styles.inputRow,
             password2.length > 0 && password !== password2 && styles.inputError
           ]}>
-            <Ionicons name="shield-checkmark-outline" size={20} color="#4fc3f7" style={styles.icon} />
+            <Ionicons name="shield-checkmark-outline" size={20} color={COLORS.primary} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Repeat password"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={password2}
               onChangeText={setPassword2}
               secureTextEntry={!showPass}
@@ -201,7 +204,7 @@ export default function RegisterScreen({ navigation, onLogin }) {
           disabled={loading}
         >
           {loading
-            ? <ActivityIndicator color="#000" />
+            ? <ActivityIndicator color={COLORS.textInverse} />
             : <Text style={styles.btnText}>Sign Up</Text>
           }
         </TouchableOpacity>
@@ -221,41 +224,46 @@ export default function RegisterScreen({ navigation, onLogin }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { flexGrow: 1, justifyContent: 'center', padding: 20 },
 
-  header: { alignItems: 'center', marginBottom: 32 },
-  logo: { fontSize: 48 },
-  title: { fontSize: 26, fontWeight: '800', color: '#fff', marginTop: 8 },
-  subtitle: { fontSize: 14, color: '#888', marginTop: 4 },
+  header: { alignItems: 'center', marginBottom: SPACING.xl },
+  logoBadge: {
+    width: 56, height: 56, borderRadius: 18,
+    backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center',
+    marginBottom: SPACING.sm,
+    ...SHADOW.lg,
+  },
+  title: { fontSize: 26, fontWeight: '800', color: COLORS.textPrimary, marginTop: SPACING.sm },
+  subtitle: { fontSize: 14, color: COLORS.textSecondary, marginTop: SPACING.xs },
 
   divider: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
-  dividerLine: { flex: 1, height: 1, backgroundColor: '#1e1e3a' },
-  dividerText: { color: '#555', fontSize: 13, marginHorizontal: 12 },
+  dividerLine: { flex: 1, height: 1, backgroundColor: COLORS.bgCardAlt },
+  dividerText: { color: COLORS.textMuted, fontSize: 13, marginHorizontal: 12 },
 
   socialBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     height: 52,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#3a3a5a',
-    backgroundColor: '#12122a',
+    borderColor: COLORS.borderLight,
+    backgroundColor: COLORS.bgCard,
     marginBottom: 12,
   },
   socialIcon: { marginRight: 10 },
-  socialBtnText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  socialBtnText: { color: COLORS.textPrimary, fontSize: 15, fontWeight: '600' },
 
   googleIcon: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.textPrimary,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -263,41 +271,43 @@ const styles = StyleSheet.create({
   googleG: { color: '#4285F4', fontSize: 13, fontWeight: '800' },
 
   card: {
-    backgroundColor: '#12122a',
-    borderRadius: 16,
+    backgroundColor: COLORS.bgCard,
+    borderRadius: RADIUS.lg,
     padding: 20,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     marginBottom: 20,
+    ...SHADOW.sm,
   },
-  label: { color: '#aaa', fontSize: 13, fontWeight: '600', marginBottom: 8 },
+  label: { color: COLORS.textSecondary, fontSize: 13, fontWeight: '600', marginBottom: SPACING.sm },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.bgInput,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     paddingHorizontal: 12,
     height: 48,
   },
-  inputError: { borderColor: '#f44336' },
-  icon: { marginRight: 8 },
-  input: { flex: 1, color: '#fff', fontSize: 15 },
-  errorText: { color: '#f44336', fontSize: 12, marginTop: 4 },
+  inputError: { borderColor: COLORS.error },
+  icon: { marginRight: SPACING.sm },
+  input: { flex: 1, color: COLORS.textPrimary, fontSize: 15 },
+  errorText: { color: COLORS.error, fontSize: 12, marginTop: SPACING.xs },
 
   btn: {
-    backgroundColor: '#4fc3f7',
-    borderRadius: 12,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.md,
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
+    ...SHADOW.md,
   },
   btnDisabled: { opacity: 0.6 },
-  btnText: { color: '#000', fontSize: 16, fontWeight: '800' },
+  btnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800' },
 
-  link: { alignItems: 'center', paddingVertical: 8 },
-  linkText: { color: '#666', fontSize: 14 },
-  linkAccent: { color: '#4fc3f7', fontWeight: '700' },
+  link: { alignItems: 'center', paddingVertical: SPACING.sm },
+  linkText: { color: COLORS.textMuted, fontSize: 14 },
+  linkAccent: { color: COLORS.primary, fontWeight: '700' },
 });

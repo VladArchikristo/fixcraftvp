@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixCraft VP — Pricing Report Charlotte, NC — April 2026</title>
+  <style>
+    /* ===== BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
+      color: #1a1a2e;
+      background: #f4f7fb;
+      line-height: 1.5;
+    }
+
+    /* ===== LAYOUT ===== */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 4px 32px rgba(26,86,219,.10);
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+      color: #fff;
+      padding: 36px 48px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .header-left h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .header-left .tagline {
+      font-size: 13px;
+      opacity: .85;
+      margin-top: 6px;
+    }
+
+    .header-badge {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .header-badge .badge-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: .75;
+    }
+
+    .header-badge .badge-value {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* ===== INTRO STRIP ===== */
+    .intro-strip {
+      background: #eef3ff;
+      border-left: 4px solid #1a56db;
+      padding: 14px 48px;
+      font-size: 12.5px;
+      color: #374151;
+    }
+
+    /* ===== SECTION HEADINGS ===== */
+    .section {
+      padding: 28px 48px 8px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a56db;
+      margin-bottom: 14px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #e5edff;
+    }
+
+    .section-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: #1a56db;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    /* ===== TABLES ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 6px;
+    }
+
+    thead tr {
+      background: #1a56db;
+      color: #fff;
+    }
+
+    thead th {
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    thead th:not(:first-child) {
+      text-align: right;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f0f5ff;
+    }
+
+    tbody tr:hover {
+      background: #dbeafe;
+    }
+
+    tbody td {
+      padding: 8px 14px;
+      font-size: 12.5px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    tbody td:not(:first-child) {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .price-market {
+      color: #6b7280;
+    }
+
+    .price-ours {
+      color: #1a56db;
+      font-weight: 600;
+    }
+
+    /* ===== WHY SECTION ===== */
+    .why-section {
+      padding: 28px 48px;
+      background: #fff;
+    }
+
+    .why-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a56db;
+      margin-bottom: 16px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #e5edff;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .why-card {
+      background: #eef3ff;
+      border-radius: 10px;
+      padding: 16px;
+      border-top: 3px solid #1a56db;
+    }
+
+    .why-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a56db;
+      margin-bottom: 6px;
+    }
+
+    .why-card p {
+      font-size: 11.5px;
+      color: #4b5563;
+      line-height: 1.55;
+    }
+
+    /* ===== NOTES STRIP ===== */
+    .notes {
+      margin: 0 48px 24px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 11.5px;
+      color: #78350f;
+    }
+
+    .notes strong { color: #92400e; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #1a56db;
+      color: #fff;
+      padding: 18px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    footer .footer-left { opacity: .9; }
+    footer .footer-right { opacity: .75; font-size: 11px; }
+
+    footer a {
+      color: #a5f3fc;
+      text-decoration: none;
+    }
+
+    /* ===== PRINT STYLES ===== */
+    @media print {
+      body { background: #fff; font-size: 11pt; }
+      .page { box-shadow: none; max-width: 100%; }
+
+      .header { padding: 20px 28px 16px; }
+      .header-left h1 { font-size: 20pt; }
+      .intro-strip, .section, .why-section, .notes { padding-left: 28px; padding-right: 28px; }
+
+      .why-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+      tbody tr:hover { background: transparent; }
+
+      table { page-break-inside: avoid; }
+
+      .section { page-break-inside: avoid; }
+
+      footer { padding: 12px 28px; }
+
+      /* Force background colors for printing */
+      thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #1a56db !important; }
+      tbody tr:nth-child(even) { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #f0f5ff !important; }
+      .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .why-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <div class="header-left">
+      <h1>FixCraft VP<br>Handyman Services</h1>
+      <div class="tagline">Charlotte, NC &nbsp;·&nbsp; Service Pricing Report</div>
+    </div>
+    <div class="header-badge">
+      <div class="badge-title">Report Date</div>
+      <div class="badge-value">April 2026</div>
+    </div>
+    <div class="header-badge">
+      <div class="badge-title">Market</div>
+      <div class="badge-value">Charlotte, NC</div>
+    </div>
+    <div class="header-badge">
+      <div class="badge-title">Pricing Tier</div>
+      <div class="badge-value">Premium +15–20%</div>
+    </div>
+  </div>
+
+  <!-- ===== INTRO STRIP ===== -->
+  <div class="intro-strip">
+    This report compares current market-average rates for handyman services in the Charlotte, NC metro area against
+    FixCraft VP's published pricing. Our rates are positioned <strong>15–20% above market average</strong>, reflecting
+    licensed professionals, insured work, quality materials, and a written satisfaction guarantee.
+  </div>
+
+  <!-- ===== 1. PAINTING ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">🖌</div>
+      Painting / Малярные работы
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Interior walls (per room)</td>
+          <td class="price-market">$350 – $600</td>
+          <td class="price-ours">$420 – $720</td>
+        </tr>
+        <tr>
+          <td>Exterior painting (per sq ft)</td>
+          <td class="price-market">$1.50 – $3.50</td>
+          <td class="price-ours">$1.80 – $4.20</td>
+        </tr>
+        <tr>
+          <td>Cabinet painting</td>
+          <td class="price-market">$600 – $1,200</td>
+          <td class="price-ours">$720 – $1,440</td>
+        </tr>
+        <tr>
+          <td>Trim / baseboard painting</td>
+          <td class="price-market">$200 – $500</td>
+          <td class="price-ours">$240 – $600</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 2. PLUMBING ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">🔧</div>
+      Plumbing / Сантехника
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Faucet replacement</td>
+          <td class="price-market">$150 – $350</td>
+          <td class="price-ours">$180 – $420</td>
+        </tr>
+        <tr>
+          <td>Toilet installation</td>
+          <td class="price-market">$200 – $400</td>
+          <td class="price-ours">$240 – $480</td>
+        </tr>
+        <tr>
+          <td>Drain cleaning</td>
+          <td class="price-market">$100 – $250</td>
+          <td class="price-ours">$120 – $300</td>
+        </tr>
+        <tr>
+          <td>Water heater installation</td>
+          <td class="price-market">$800 – $1,500</td>
+          <td class="price-ours">$960 – $1,800</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 3. ELECTRICAL ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">⚡</div>
+      Electrical / Электрика
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Outlet / switch replacement</td>
+          <td class="price-market">$75 – $150</td>
+          <td class="price-ours">$90 – $180</td>
+        </tr>
+        <tr>
+          <td>Light fixture installation</td>
+          <td class="price-market">$100 – $300</td>
+          <td class="price-ours">$120 – $360</td>
+        </tr>
+        <tr>
+          <td>Ceiling fan installation</td>
+          <td class="price-market">$150 – $350</td>
+          <td class="price-ours">$180 – $420</td>
+        </tr>
+        <tr>
+          <td>Panel inspection</td>
+          <td class="price-market">$150 – $300</td>
+          <td class="price-ours">$180 – $360</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 4. CARPENTRY ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">🪚</div>
+      Carpentry / Плотницкие работы
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Door installation</td>
+          <td class="price-market">$200 – $500</td>
+          <td class="price-ours">$240 – $600</td>
+        </tr>
+        <tr>
+          <td>Shelf installation</td>
+          <td class="price-market">$100 – $300</td>
+          <td class="price-ours">$120 – $360</td>
+        </tr>
+        <tr>
+          <td>Deck repair (per sq ft)</td>
+          <td class="price-market">$8 – $15</td>
+          <td class="price-ours">$10 – $18</td>
+        </tr>
+        <tr>
+          <td>Fence repair (per linear ft)</td>
+          <td class="price-market">$15 – $30</td>
+          <td class="price-ours">$18 – $36</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 5. INSTALLATION & ASSEMBLY ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">📦</div>
+      Installation &amp; Assembly / Установка и сборка
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Furniture assembly</td>
+          <td class="price-market">$75 – $200</td>
+          <td class="price-ours">$90 – $240</td>
+        </tr>
+        <tr>
+          <td>TV mounting</td>
+          <td class="price-market">$100 – $200</td>
+          <td class="price-ours">$120 – $240</td>
+        </tr>
+        <tr>
+          <td>Appliance installation</td>
+          <td class="price-market">$100 – $300</td>
+          <td class="price-ours">$120 – $360</td>
+        </tr>
+        <tr>
+          <td>Smart home devices</td>
+          <td class="price-market">$100 – $250</td>
+          <td class="price-ours">$120 – $300</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 6. WATERPROOFING ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">💧</div>
+      Waterproofing / Водонепроницаемость
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Caulking / sealing</td>
+          <td class="price-market">$150 – $400</td>
+          <td class="price-ours">$180 – $480</td>
+        </tr>
+        <tr>
+          <td>Basement waterproofing (basic)</td>
+          <td class="price-market">$500 – $2,000</td>
+          <td class="price-ours">$600 – $2,400</td>
+        </tr>
+        <tr>
+          <td>Window sealing</td>
+          <td class="price-market">$75 – $200</td>
+          <td class="price-ours">$90 – $240</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 7. GENERAL REPAIRS ===== -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">🔨</div>
+      General Repairs / Общие ремонтные работы
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Market Average</th>
+          <th>FixCraft VP Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Drywall repair (small)</td>
+          <td class="price-market">$150 – $400</td>
+          <td class="price-ours">$180 – $480</td>
+        </tr>
+        <tr>
+          <td>Tile repair</td>
+          <td class="price-market">$200 – $600</td>
+          <td class="price-ours">$240 – $720</td>
+        </tr>
+        <tr>
+          <td>Gutter cleaning</td>
+          <td class="price-market">$100 – $250</td>
+          <td class="price-ours">$120 – $300</td>
+        </tr>
+        <tr>
+          <td>Power washing</td>
+          <td class="price-market">$150 – $400</td>
+          <td class="price-ours">$180 – $480</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== WHY OUR PRICES ARE HIGHER ===== -->
+  <div class="why-section">
+    <div class="why-title">Why FixCraft VP Prices Are Higher — What You're Paying For</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <h4>Licensed &amp; Insured</h4>
+        <p>All work is performed by licensed professionals carrying full liability insurance and workers' compensation, protecting you from any unexpected costs.</p>
+      </div>
+      <div class="why-card">
+        <h4>Written Guarantee</h4>
+        <p>Every job comes with a written satisfaction guarantee. If something isn't right, we come back and fix it — no questions asked, no extra charge.</p>
+      </div>
+      <div class="why-card">
+        <h4>Quality Materials</h4>
+        <p>We use only professional-grade materials and tools. No corner-cutting or budget substitutes that fail prematurely and cost more in the long run.</p>
+      </div>
+      <div class="why-card">
+        <h4>Experienced Team</h4>
+        <p>Our craftsmen average 10+ years in the trade. Experience means faster, cleaner work — and fewer callbacks or surprises on your final invoice.</p>
+      </div>
+      <div class="why-card">
+        <h4>Transparent Pricing</h4>
+        <p>You see the full price before work begins. No hidden fees, no surprise add-ons. The estimate you sign is the price you pay.</p>
+      </div>
+      <div class="why-card">
+        <h4>Local &amp; Reliable</h4>
+        <p>Charlotte-based, serving the community since day one. On-time arrival, clean worksite, and a team that cares about neighborhood reputation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NOTES ===== -->
+  <div class="notes">
+    <strong>Notes:</strong>
+    Prices shown are estimates based on standard scope of work. Final pricing depends on project complexity, material choices, and site conditions.
+    Market averages sourced from HomeAdvisor, Angi, and local Charlotte contractor surveys (Q1 2026).
+    Minimum service call: $85. Travel outside Charlotte metro may incur an additional fee.
+    All prices in USD and do not include materials unless noted.
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-left">
+      <strong>FixCraft VP</strong> &nbsp;·&nbsp; Charlotte, NC &nbsp;·&nbsp;
+      <a href="https://fixcraftvp.com">fixcraftvp.com</a>
+    </div>
+    <div class="footer-right">
+      Pricing Report &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; Confidential — Internal Use
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

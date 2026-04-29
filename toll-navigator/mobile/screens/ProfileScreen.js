@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
+import { COLORS, SPACING, RADIUS, SHADOW } from '../theme';
 
 const TRUCK_TYPES = ['Semi-Truck', 'Box Truck', 'Flatbed', 'Tanker', 'Other'];
 
@@ -74,7 +75,7 @@ export default function ProfileScreen({ onLogout }) {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4fc3f7" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <Text style={styles.loadingText}>Loading profile...</Text>
       </View>
     );
@@ -92,7 +93,9 @@ export default function ProfileScreen({ onLogout }) {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Ionicons name="person-circle-outline" size={72} color="#4fc3f7" />
+          <View style={styles.avatarBadge}>
+            <Ionicons name="person" size={32} color={COLORS.textInverse} />
+          </View>
           <Text style={styles.headerTitle}>My Profile</Text>
           <Text style={styles.headerSub}>Driver and company details</Text>
         </View>
@@ -105,11 +108,11 @@ export default function ProfileScreen({ onLogout }) {
           <View style={styles.fieldGroup}>
             <Text style={styles.label}>Driver Name</Text>
             <View style={styles.inputRow}>
-              <Ionicons name="person-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
+              <Ionicons name="person-outline" size={18} color={COLORS.primary} style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="John Smith"
-                placeholderTextColor="#555"
+                placeholderTextColor={COLORS.textMuted}
                 value={name}
                 onChangeText={setName}
                 autoCapitalize="words"
@@ -121,11 +124,11 @@ export default function ProfileScreen({ onLogout }) {
           <View style={styles.fieldGroup}>
             <Text style={styles.label}>Company</Text>
             <View style={styles.inputRow}>
-              <Ionicons name="business-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
+              <Ionicons name="business-outline" size={18} color={COLORS.primary} style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="ABC Trucking LLC"
-                placeholderTextColor="#555"
+                placeholderTextColor={COLORS.textMuted}
                 value={company}
                 onChangeText={setCompany}
                 autoCapitalize="words"
@@ -137,11 +140,11 @@ export default function ProfileScreen({ onLogout }) {
           <View style={styles.fieldGroup}>
             <Text style={styles.label}>USDOT Number</Text>
             <View style={styles.inputRow}>
-              <Ionicons name="shield-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
+              <Ionicons name="shield-outline" size={18} color={COLORS.primary} style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
                 placeholder="1234567"
-                placeholderTextColor="#555"
+                placeholderTextColor={COLORS.textMuted}
                 value={usdot}
                 onChangeText={setUsdot}
                 keyboardType="number-pad"
@@ -159,12 +162,12 @@ export default function ProfileScreen({ onLogout }) {
               style={styles.pickerBtn}
               onPress={() => setShowTruckPicker(!showTruckPicker)}
             >
-              <Ionicons name="truck-outline" size={18} color="#4fc3f7" style={styles.inputIcon} />
+              <Ionicons name="truck-outline" size={18} color={COLORS.primary} style={styles.inputIcon} />
               <Text style={styles.pickerBtnText}>{truckType}</Text>
               <Ionicons
                 name={showTruckPicker ? 'chevron-up' : 'chevron-down'}
                 size={18}
-                color="#888"
+                color={COLORS.textSecondary}
               />
             </TouchableOpacity>
 
@@ -191,7 +194,7 @@ export default function ProfileScreen({ onLogout }) {
                       {type}
                     </Text>
                     {truckType === type && (
-                      <Ionicons name="checkmark" size={16} color="#4fc3f7" />
+                      <Ionicons name="checkmark" size={16} color={COLORS.primary} />
                     )}
                   </TouchableOpacity>
                 ))}
@@ -207,10 +210,10 @@ export default function ProfileScreen({ onLogout }) {
           disabled={saving}
         >
           {saving ? (
-            <ActivityIndicator color="#0d0d1a" size="small" />
+            <ActivityIndicator color={COLORS.textInverse} size="small" />
           ) : (
             <>
-              <Ionicons name="checkmark-circle-outline" size={20} color="#0d0d1a" />
+              <Ionicons name="checkmark-circle-outline" size={20} color={COLORS.textInverse} />
               <Text style={styles.saveBtnText}>Save Profile</Text>
             </>
           )}
@@ -218,7 +221,7 @@ export default function ProfileScreen({ onLogout }) {
 
         {/* Logout */}
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={20} color="#f44336" />
+          <Ionicons name="log-out-outline" size={20} color={COLORS.error} />
           <Text style={styles.logoutText}>Sign Out</Text>
         </TouchableOpacity>
 
@@ -229,66 +232,72 @@ export default function ProfileScreen({ onLogout }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { padding: 20, paddingBottom: 40 },
 
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 16,
+    gap: SPACING.md,
   },
-  loadingText: { color: '#888', fontSize: 14 },
+  loadingText: { color: COLORS.textSecondary, fontSize: 14 },
 
   header: {
     alignItems: 'center',
     marginBottom: 28,
     marginTop: 10,
   },
-  headerTitle: { fontSize: 22, fontWeight: '800', color: '#fff', marginTop: 12 },
-  headerSub: { fontSize: 13, color: '#666', marginTop: 4 },
+  avatarBadge: {
+    width: 64, height: 64, borderRadius: 20,
+    backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center',
+    ...SHADOW.lg,
+  },
+  headerTitle: { fontSize: 22, fontWeight: '800', color: COLORS.textPrimary, marginTop: 12 },
+  headerSub: { fontSize: 13, color: COLORS.textMuted, marginTop: SPACING.xs },
 
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
+    ...SHADOW.sm,
   },
   cardTitle: {
-    color: '#444',
+    color: COLORS.tabInactive,
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 1.2,
     textTransform: 'uppercase',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
 
-  fieldGroup: { marginBottom: 16 },
+  fieldGroup: { marginBottom: SPACING.md },
   label: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 12,
     fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
+    borderColor: COLORS.border,
   },
   inputIcon: { marginRight: 10 },
   input: {
     flex: 1,
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 15,
     fontWeight: '500',
   },
@@ -297,39 +306,39 @@ const styles = StyleSheet.create({
   pickerBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
+    borderColor: COLORS.border,
   },
   pickerBtnText: {
     flex: 1,
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 15,
     fontWeight: '500',
   },
   dropdownContainer: {
-    marginTop: 4,
-    backgroundColor: '#1a1a2e',
+    marginTop: SPACING.xs,
+    backgroundColor: COLORS.bgCardAlt,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
+    borderColor: COLORS.border,
     overflow: 'hidden',
   },
   dropdownOption: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.md,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#1e1e3a',
+    borderBottomColor: COLORS.bgCardAlt,
   },
-  dropdownOptionActive: { backgroundColor: '#0d1f2d' },
-  dropdownOptionText: { color: '#aaa', fontSize: 14 },
-  dropdownOptionTextActive: { color: '#4fc3f7', fontWeight: '700' },
+  dropdownOptionActive: { backgroundColor: COLORS.primaryLight },
+  dropdownOptionText: { color: COLORS.textSecondary, fontSize: 14 },
+  dropdownOptionTextActive: { color: COLORS.primary, fontWeight: '700' },
 
   // Buttons
   saveBtn: {
@@ -337,27 +346,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: '#4fc3f7',
+    backgroundColor: COLORS.accent,
     borderRadius: 14,
-    paddingVertical: 16,
+    paddingVertical: SPACING.md,
     marginBottom: 12,
+    ...SHADOW.accent,
   },
   saveBtnDisabled: { opacity: 0.6 },
-  saveBtnText: { color: '#0d0d1a', fontSize: 16, fontWeight: '800' },
+  saveBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800' },
 
   logoutBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: '#1a0a0a',
+    backgroundColor: COLORS.errorLight,
     borderRadius: 14,
     paddingVertical: 14,
     borderWidth: 1,
-    borderColor: '#3a1111',
+    borderColor: COLORS.error + '33',
     marginBottom: 20,
   },
-  logoutText: { color: '#f44336', fontSize: 15, fontWeight: '700' },
+  logoutText: { color: COLORS.error, fontSize: 15, fontWeight: '700' },
 
-  hint: { textAlign: 'center', color: '#333', fontSize: 12 },
+  hint: { textAlign: 'center', color: COLORS.border, fontSize: 12 },
 });

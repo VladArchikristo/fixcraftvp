@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
@@ -69,7 +70,7 @@ export default function TripDetailScreen({ route, navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#4fc3f7" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <Text style={styles.loadingText}>Loading trip...</Text>
       </View>
     );
@@ -78,7 +79,7 @@ export default function TripDetailScreen({ route, navigation }) {
   if (error || !trip) {
     return (
       <View style={styles.center}>
-        <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
+        <Ionicons name="alert-circle-outline" size={48} color={COLORS.error} />
         <Text style={styles.errorText}>{error || 'Trip not found'}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={loadTrip}>
           <Text style={styles.retryText}>Retry</Text>
@@ -101,7 +102,7 @@ export default function TripDetailScreen({ route, navigation }) {
             <Text style={styles.cityLabel}>FROM</Text>
             <Text style={styles.cityName}>{trip.from_city}</Text>
           </View>
-          <Ionicons name="arrow-forward" size={20} color="#4fc3f7" style={styles.arrow} />
+          <Ionicons name="arrow-forward" size={20} color={COLORS.primary} style={styles.arrow} />
           <View style={[styles.cityBlock, { alignItems: 'flex-end' }]}>
             <Text style={styles.cityLabel}>TO</Text>
             <Text style={styles.cityName}>{trip.to_city}</Text>
@@ -110,15 +111,15 @@ export default function TripDetailScreen({ route, navigation }) {
 
         <View style={styles.routeMeta}>
           <View style={styles.metaItem}>
-            <Ionicons name="calendar-outline" size={14} color="#555" />
+            <Ionicons name="calendar-outline" size={14} color={COLORS.textMuted} />
             <Text style={styles.metaText}>{formatDate(trip.created_at)}</Text>
           </View>
           <View style={styles.metaItem}>
-            <Ionicons name="navigate-outline" size={14} color="#555" />
+            <Ionicons name="navigate-outline" size={14} color={COLORS.textMuted} />
             <Text style={styles.metaText}>{(trip.total_miles || 0).toFixed(1)} mi</Text>
           </View>
           <View style={styles.metaItem}>
-            <Ionicons name="speedometer-outline" size={14} color="#555" />
+            <Ionicons name="speedometer-outline" size={14} color={COLORS.textMuted} />
             <Text style={styles.metaText}>{trip.mpg || 6.5} MPG</Text>
           </View>
         </View>
@@ -196,8 +197,8 @@ export default function TripDetailScreen({ route, navigation }) {
         disabled={deleting}
       >
         {deleting
-          ? <ActivityIndicator size="small" color="#fff" />
-          : <Ionicons name="trash-outline" size={18} color="#fff" />
+          ? <ActivityIndicator size="small" color={COLORS.textInverse} />
+          : <Ionicons name="trash-outline" size={18} color={COLORS.textInverse} />
         }
         <Text style={styles.deleteBtnText}>{deleting ? 'Deleting...' : 'Delete Trip'}</Text>
       </TouchableOpacity>
@@ -206,69 +207,69 @@ export default function TripDetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
-  scroll: { padding: 16, paddingBottom: 40 },
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  scroll: { padding: SPACING.md, paddingBottom: 40 },
 
   center: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 32,
+    padding: SPACING.xl,
   },
-  loadingText: { color: '#555', fontSize: 14, marginTop: 12 },
-  errorText: { color: '#ef9a9a', fontSize: 14, textAlign: 'center', marginTop: 12 },
+  loadingText: { color: COLORS.textMuted, fontSize: 14, marginTop: 12 },
+  errorText: { color: COLORS.error, fontSize: 14, textAlign: 'center', marginTop: 12 },
   retryBtn: {
     marginTop: 20,
-    paddingHorizontal: 24,
+    paddingHorizontal: SPACING.lg,
     paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
-  retryText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  retryText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   // Route card
   routeCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   routeRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   cityBlock: { flex: 1 },
   arrow: { marginHorizontal: 10 },
-  cityLabel: { color: '#444', fontSize: 10, fontWeight: '700', letterSpacing: 1, marginBottom: 2 },
-  cityName: { color: '#fff', fontSize: 16, fontWeight: '800' },
-  routeMeta: { flexDirection: 'row', gap: 16, flexWrap: 'wrap' },
+  cityLabel: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', letterSpacing: 1, marginBottom: 2 },
+  cityName: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '800' },
+  routeMeta: { flexDirection: 'row', gap: SPACING.md, flexWrap: 'wrap' },
   metaItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  metaText: { color: '#555', fontSize: 13 },
+  metaText: { color: COLORS.textMuted, fontSize: 13 },
   quarterBadge: {
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: '#0a1520',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 6,
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderWidth: 1,
-    borderColor: '#1e3a50',
+    borderColor: COLORS.border,
   },
-  quarterText: { color: '#4fc3f7', fontSize: 10, fontWeight: '700' },
+  quarterText: { color: COLORS.primary, fontSize: 10, fontWeight: '700' },
 
   // Section cards
   sectionCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   sectionTitle: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -279,15 +280,15 @@ const styles = StyleSheet.create({
   // Costs
   costsRow: { flexDirection: 'row', gap: 10 },
   costItem: { flex: 1, alignItems: 'center' },
-  costLabel: { color: '#555', fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: 4 },
-  costValue: { color: '#aaa', fontSize: 14, fontWeight: '700' },
+  costLabel: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: SPACING.xs },
+  costValue: { color: COLORS.textSecondary, fontSize: 14, fontWeight: '700' },
   costTotalItem: {
     borderLeftWidth: 1,
-    borderLeftColor: '#1e1e3a',
+    borderLeftColor: COLORS.bgCardAlt,
     paddingLeft: 10,
   },
-  costTotalLabel: { color: '#888', fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: 4 },
-  costTotalValue: { color: '#4fc3f7', fontSize: 17, fontWeight: '800' },
+  costTotalLabel: { color: COLORS.textSecondary, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', marginBottom: SPACING.xs },
+  costTotalValue: { color: COLORS.primary, fontSize: 17, fontWeight: '800' },
 
   // State rows
   stateRow: {
@@ -296,32 +297,32 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     gap: 10,
   },
-  stateCode: { color: '#fff', fontSize: 14, fontWeight: '700', width: 32 },
+  stateCode: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700', width: 32 },
   stateBarWrap: {
     flex: 1,
     height: 6,
-    backgroundColor: '#1e1e3a',
+    backgroundColor: COLORS.bgCardAlt,
     borderRadius: 3,
     overflow: 'hidden',
   },
-  stateBar: { height: '100%', backgroundColor: '#4fc3f7', borderRadius: 3 },
-  stateMiles: { color: '#555', fontSize: 12, width: 60, textAlign: 'right' },
+  stateBar: { height: '100%', backgroundColor: COLORS.primary, borderRadius: 3 },
+  stateMiles: { color: COLORS.textMuted, fontSize: 12, width: 60, textAlign: 'right' },
 
   // Fuel rows
   fuelRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2a',
+    borderBottomColor: COLORS.border,
   },
   fuelLeft: { flex: 1 },
-  fuelState: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  fuelStation: { color: '#555', fontSize: 12, marginTop: 2 },
+  fuelState: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700' },
+  fuelStation: { color: COLORS.textMuted, fontSize: 12, marginTop: 2 },
   fuelRight: { alignItems: 'flex-end' },
-  fuelGallons: { color: '#81c784', fontSize: 13, fontWeight: '700' },
-  fuelPrice: { color: '#555', fontSize: 11, marginTop: 2 },
+  fuelGallons: { color: COLORS.success, fontSize: 13, fontWeight: '700' },
+  fuelPrice: { color: COLORS.textMuted, fontSize: 11, marginTop: 2 },
 
   // Delete button
   deleteBtn: {
@@ -329,11 +330,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: '#c62828',
-    paddingVertical: 16,
+    backgroundColor: COLORS.error,
+    paddingVertical: SPACING.md,
     borderRadius: 14,
-    marginTop: 8,
+    marginTop: SPACING.sm,
   },
-  deleteBtnDisabled: { backgroundColor: '#5a1515', opacity: 0.7 },
-  deleteBtnText: { color: '#fff', fontSize: 15, fontWeight: '800' },
+  deleteBtnDisabled: { backgroundColor: COLORS.error, opacity: 0.5 },
+  deleteBtnText: { color: COLORS.textInverse, fontSize: 15, fontWeight: '800' },
 });

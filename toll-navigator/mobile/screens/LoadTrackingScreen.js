@@ -7,14 +7,15 @@ import {
   StyleSheet,
   Alert,
   Share,
-  Clipboard,
   ScrollView,
   ActivityIndicator,
   Platform,
 } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 import { loadTrackingService } from '../services/loadTrackingService';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 export default function LoadTrackingScreen() {
   const [destination, setDestination] = useState('');
@@ -34,6 +35,8 @@ export default function LoadTrackingScreen() {
         setDestination(session.destination || '');
         setIsActive(true);
       }
+    }).catch(() => {
+      // Session restore failed — start fresh
     });
   }, []);
 
@@ -113,11 +116,15 @@ export default function LoadTrackingScreen() {
   };
 
   // ── Copy link ──────────────────────────────────────────
-  const handleCopy = useCallback(() => {
+  const handleCopy = useCallback(async () => {
     if (!trackingUrl) return;
-    Clipboard.setString(trackingUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await Clipboard.setStringAsync(trackingUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      Alert.alert('Error', 'Could not copy to clipboard.');
+    }
   }, [trackingUrl]);
 
   // ── Share link ─────────────────────────────────────────
@@ -155,7 +162,7 @@ export default function LoadTrackingScreen() {
 
       {/* Header */}
       <View style={styles.headerRow}>
-        <Ionicons name="location" size={28} color="#4fc3f7" />
+        <Ionicons name="location" size={28} color={COLORS.primary} />
         <Text style={styles.headerTitle}>Load Tracking</Text>
       </View>
       <Text style={styles.headerSub}>
@@ -171,7 +178,7 @@ export default function LoadTrackingScreen() {
             value={destination}
             onChangeText={setDestination}
             placeholder="e.g. Dallas, TX"
-            placeholderTextColor="#555"
+            placeholderTextColor={COLORS.textMuted}
             editable={!isLoading}
           />
           <TouchableOpacity
@@ -180,9 +187,9 @@ export default function LoadTrackingScreen() {
             disabled={isLoading}
           >
             {isLoading
-              ? <ActivityIndicator color="#fff" />
+              ? <ActivityIndicator color={COLORS.textInverse} />
               : <>
-                  <Ionicons name="radio" size={18} color="#fff" style={{ marginRight: 8 }} />
+                  <Ionicons name="radio" size={18} color={COLORS.textInverse} style={{ marginRight: 8 }} />
                   <Text style={styles.btnText}>Start Load Tracking</Text>
                 </>
             }
@@ -214,12 +221,12 @@ export default function LoadTrackingScreen() {
 
             <View style={styles.actionRow}>
               <TouchableOpacity style={[styles.btn, styles.btnOutline, styles.flex1]} onPress={handleCopy}>
-                <Ionicons name={copied ? 'checkmark' : 'copy-outline'} size={16} color="#4fc3f7" style={{ marginRight: 6 }} />
+                <Ionicons name={copied ? 'checkmark' : 'copy-outline'} size={16} color={COLORS.primary} style={{ marginRight: 6 }} />
                 <Text style={styles.btnOutlineText}>{copied ? 'Copied!' : 'Copy Link'}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={[styles.btn, styles.btnOutline, styles.flex1]} onPress={handleShare}>
-                <Ionicons name="share-social-outline" size={16} color="#4fc3f7" style={{ marginRight: 6 }} />
+                <Ionicons name="share-social-outline" size={16} color={COLORS.primary} style={{ marginRight: 6 }} />
                 <Text style={styles.btnOutlineText}>Share</Text>
               </TouchableOpacity>
             </View>
@@ -227,7 +234,7 @@ export default function LoadTrackingScreen() {
 
           {/* Ping current position */}
           <TouchableOpacity style={[styles.btn, styles.btnSecondary]} onPress={handlePingLocation}>
-            <Ionicons name="locate" size={16} color="#4fc3f7" style={{ marginRight: 8 }} />
+            <Ionicons name="locate" size={16} color={COLORS.primary} style={{ marginRight: 8 }} />
             <Text style={styles.btnSecondaryText}>Update My Position Now</Text>
           </TouchableOpacity>
 
@@ -238,9 +245,9 @@ export default function LoadTrackingScreen() {
             disabled={isLoading}
           >
             {isLoading
-              ? <ActivityIndicator color="#fff" />
+              ? <ActivityIndicator color={COLORS.textInverse} />
               : <>
-                  <Ionicons name="checkmark-circle" size={18} color="#fff" style={{ marginRight: 8 }} />
+                  <Ionicons name="checkmark-circle" size={18} color={COLORS.textInverse} style={{ marginRight: 8 }} />
                   <Text style={styles.btnText}>Mark as Delivered</Text>
                 </>
             }
@@ -250,7 +257,7 @@ export default function LoadTrackingScreen() {
 
       {/* Info note */}
       <View style={styles.note}>
-        <Ionicons name="shield-checkmark-outline" size={14} color="#555" style={{ marginRight: 6 }} />
+        <Ionicons name="shield-checkmark-outline" size={14} color={COLORS.textMuted} style={{ marginRight: 6 }} />
         <Text style={styles.noteText}>
           Brokers see location only — no IFTA data, no history.
           Link expires when you mark delivery.
@@ -265,7 +272,7 @@ export default function LoadTrackingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
   },
   content: {
     padding: 20,
@@ -282,57 +289,57 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#fff',
+    color: COLORS.textPrimary,
   },
   headerSub: {
     fontSize: 13,
-    color: '#888',
-    marginBottom: 24,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.lg,
     lineHeight: 19,
   },
 
   card: {
-    backgroundColor: '#131326',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
+    backgroundColor: COLORS.bgCard,
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   label: {
     fontSize: 11,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
-    color: '#666',
-    marginBottom: 8,
+    color: COLORS.textMuted,
+    marginBottom: SPACING.sm,
   },
   infoValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fff',
+    color: COLORS.textPrimary,
   },
 
   input: {
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
-    borderRadius: 8,
-    color: '#fff',
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
+    color: COLORS.textPrimary,
     fontSize: 15,
     padding: 12,
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
 
   urlBox: {
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
-    borderRadius: 8,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
     padding: 12,
     marginBottom: 14,
   },
   urlText: {
-    color: '#4fc3f7',
+    color: COLORS.primary,
     fontSize: 13,
     fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
@@ -352,38 +359,38 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   btnPrimary: {
-    backgroundColor: '#4fc3f7',
+    backgroundColor: COLORS.accent,
     marginBottom: 0,
   },
   btnSecondary: {
-    backgroundColor: '#131326',
+    backgroundColor: COLORS.bgCard,
     borderWidth: 1,
-    borderColor: '#4fc3f755',
+    borderColor: COLORS.primary + '55',
   },
   btnOutline: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#4fc3f755',
+    borderColor: COLORS.primary + '55',
     marginBottom: 0,
   },
   btnDanger: {
-    backgroundColor: '#c62828',
+    backgroundColor: COLORS.error,
   },
   btnDisabled: {
     opacity: 0.5,
   },
   btnText: {
-    color: '#fff',
+    color: COLORS.textInverse,
     fontWeight: '700',
     fontSize: 15,
   },
   btnOutlineText: {
-    color: '#4fc3f7',
+    color: COLORS.primary,
     fontWeight: '600',
     fontSize: 14,
   },
   btnSecondaryText: {
-    color: '#4fc3f7',
+    color: COLORS.primary,
     fontWeight: '600',
     fontSize: 14,
   },
@@ -392,24 +399,24 @@ const styles = StyleSheet.create({
   statusPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(76,175,80,0.12)',
+    backgroundColor: COLORS.successLight,
     borderWidth: 1,
-    borderColor: '#66bb6a44',
+    borderColor: COLORS.success + '44',
     borderRadius: 20,
     paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
     alignSelf: 'flex-start',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#66bb6a',
-    marginRight: 8,
+    backgroundColor: COLORS.success,
+    marginRight: SPACING.sm,
   },
   statusText: {
-    color: '#66bb6a',
+    color: COLORS.success,
     fontSize: 13,
     fontWeight: '600',
   },
@@ -417,11 +424,11 @@ const styles = StyleSheet.create({
   note: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginTop: 8,
-    paddingHorizontal: 4,
+    marginTop: SPACING.sm,
+    paddingHorizontal: SPACING.xs,
   },
   noteText: {
-    color: '#555',
+    color: COLORS.textMuted,
     fontSize: 12,
     flex: 1,
     lineHeight: 17,

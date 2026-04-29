@@ -7,6 +7,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { getBrokers } from '../services/brokers';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 const PAGE_LIMIT = 20;
 
@@ -26,9 +27,9 @@ const RATING_FILTERS = [
 ];
 
 function getRatingColor(rating) {
-  if (rating >= 4) return '#81c784';
-  if (rating >= 3) return '#ffb74d';
-  return '#ef9a9a';
+  if (rating >= 4) return COLORS.success;
+  if (rating >= 3) return COLORS.warning;
+  return COLORS.error;
 }
 
 function StarRating({ rating, size = 12 }) {
@@ -40,7 +41,7 @@ function StarRating({ rating, size = 12 }) {
         key={i}
         name={i <= full ? 'star' : 'star-outline'}
         size={size}
-        color={i <= full ? '#ffb74d' : '#333'}
+        color={i <= full ? COLORS.warning : COLORS.textMuted}
       />
     );
   }
@@ -71,18 +72,18 @@ function BrokerCard({ broker, onPress }) {
       <View style={styles.cardMeta}>
         {broker.state ? (
           <View style={styles.metaItem}>
-            <Ionicons name="location-outline" size={13} color="#555" />
+            <Ionicons name="location-outline" size={13} color={COLORS.textMuted} />
             <Text style={styles.metaText}>{broker.state}</Text>
           </View>
         ) : null}
         {broker.city ? (
           <View style={styles.metaItem}>
-            <Ionicons name="business-outline" size={13} color="#555" />
+            <Ionicons name="business-outline" size={13} color={COLORS.textMuted} />
             <Text style={styles.metaText} numberOfLines={1}>{broker.city}</Text>
           </View>
         ) : null}
         <View style={styles.metaItem}>
-          <Ionicons name="chatbubble-outline" size={13} color="#555" />
+          <Ionicons name="chatbubble-outline" size={13} color={COLORS.textMuted} />
           <Text style={styles.metaText}>
             {broker.review_count || 0} review{getReviewWord(broker.review_count || 0)}
           </Text>
@@ -95,7 +96,7 @@ function BrokerCard({ broker, onPress }) {
         </View>
       )}
 
-      <Ionicons name="chevron-forward" size={16} color="#333" style={styles.chevron} />
+      <Ionicons name="chevron-forward" size={16} color={COLORS.textMuted} style={styles.chevron} />
     </TouchableOpacity>
   );
 }
@@ -204,7 +205,7 @@ export default function BrokerListScreen({ navigation }) {
     if (!loadingMore) return null;
     return (
       <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color="#4fc3f7" />
+        <ActivityIndicator size="small" color={COLORS.primary} />
       </View>
     );
   };
@@ -212,7 +213,7 @@ export default function BrokerListScreen({ navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#4fc3f7" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <Text style={styles.loadingText}>Loading brokers...</Text>
       </View>
     );
@@ -221,7 +222,7 @@ export default function BrokerListScreen({ navigation }) {
   if (error && brokers.length === 0) {
     return (
       <View style={styles.center}>
-        <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
+        <Ionicons name="alert-circle-outline" size={48} color={COLORS.error} />
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={() => loadBrokers({ pageNum: 1 })}>
           <Text style={styles.retryText}>Retry</Text>
@@ -239,18 +240,18 @@ export default function BrokerListScreen({ navigation }) {
 
       {/* Search */}
       <View style={styles.searchRow}>
-        <Ionicons name="search-outline" size={16} color="#555" style={styles.searchIcon} />
+        <Ionicons name="search-outline" size={16} color={COLORS.textMuted} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search by name or MC#..."
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={searchText}
           onChangeText={handleSearchChange}
           returnKeyType="search"
         />
         {searchText.length > 0 && (
           <TouchableOpacity onPress={() => handleSearchChange('')}>
-            <Ionicons name="close-circle" size={16} color="#555" />
+            <Ionicons name="close-circle" size={16} color={COLORS.textMuted} />
           </TouchableOpacity>
         )}
       </View>
@@ -303,7 +304,7 @@ export default function BrokerListScreen({ navigation }) {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#0d0d1a' }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <FlatList
         style={styles.container}
         contentContainerStyle={styles.listContent}
@@ -314,8 +315,8 @@ export default function BrokerListScreen({ navigation }) {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => loadBrokers({ pageNum: 1, refresh: true })}
-            tintColor="#4fc3f7"
-            colors={['#4fc3f7']}
+            tintColor={COLORS.primary}
+            colors={[COLORS.accent]}
           />
         }
         ListHeaderComponent={ListHeader}
@@ -328,7 +329,7 @@ export default function BrokerListScreen({ navigation }) {
 
       {/* FAB — add broker */}
       <TouchableOpacity style={styles.fab} onPress={handleAddBroker} activeOpacity={0.85}>
-        <Ionicons name="add" size={28} color="#fff" />
+        <Ionicons name="add" size={28} color={COLORS.textInverse} />
       </TouchableOpacity>
     </View>
   );
@@ -339,39 +340,39 @@ function getBrokerWord(count) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   listContent: { padding: 16, paddingBottom: 100 },
 
   center: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 32,
   },
-  loadingText: { color: '#555', fontSize: 14, marginTop: 12 },
-  errorText: { color: '#ef9a9a', fontSize: 14, textAlign: 'center', marginTop: 12 },
+  loadingText: { color: COLORS.textMuted, fontSize: 14, marginTop: 12 },
+  errorText: { color: COLORS.error, fontSize: 14, textAlign: 'center', marginTop: 12 },
   retryBtn: {
     marginTop: 20,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
-  retryText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  retryText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   header: { marginBottom: 12 },
-  headerTitle: { color: '#fff', fontSize: 22, fontWeight: '800' },
-  headerSub: { color: '#555', fontSize: 13, marginTop: 4 },
+  headerTitle: { color: COLORS.textPrimary, fontSize: 22, fontWeight: '800' },
+  headerSub: { color: COLORS.textMuted, fontSize: 13, marginTop: 4 },
 
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     paddingHorizontal: 12,
     marginBottom: 10,
     gap: 8,
@@ -379,7 +380,7 @@ const styles = StyleSheet.create({
   searchIcon: { marginRight: 2 },
   searchInput: {
     flex: 1,
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 14,
     paddingVertical: 11,
   },
@@ -390,13 +391,13 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#161629',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bgCard,
     marginRight: 6,
   },
-  stateChipActive: { backgroundColor: '#0a1f2e', borderColor: '#4fc3f7' },
-  stateChipText: { color: '#555', fontSize: 12, fontWeight: '600' },
-  stateChipTextActive: { color: '#4fc3f7' },
+  stateChipActive: { backgroundColor: COLORS.primaryLight, borderColor: COLORS.primary },
+  stateChipText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '600' },
+  stateChipTextActive: { color: COLORS.primary },
 
   filterRow: {
     flexDirection: 'row',
@@ -409,12 +410,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#161629',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bgCard,
   },
-  filterBtnActive: { backgroundColor: '#0a1f2e', borderColor: '#4fc3f7' },
-  filterBtnText: { color: '#555', fontSize: 12, fontWeight: '600' },
-  filterBtnTextActive: { color: '#4fc3f7' },
+  filterBtnActive: { backgroundColor: COLORS.primaryLight, borderColor: COLORS.primary },
+  filterBtnText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '600' },
+  filterBtnTextActive: { color: COLORS.primary },
 
   emptyState: {
     alignItems: 'center',
@@ -422,28 +423,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   emptyIcon: { fontSize: 48, marginBottom: 12 },
-  emptyTitle: { color: '#555', fontSize: 18, fontWeight: '700', marginBottom: 8 },
-  emptySubtitle: { color: '#333', fontSize: 13, textAlign: 'center', lineHeight: 20, marginBottom: 20 },
+  emptyTitle: { color: COLORS.textMuted, fontSize: 18, fontWeight: '700', marginBottom: 8 },
+  emptySubtitle: { color: COLORS.textMuted, fontSize: 13, textAlign: 'center', lineHeight: 20, marginBottom: 20 },
   emptyBtn: {
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: '#0a1f2e',
+    backgroundColor: COLORS.primaryLight,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
-  emptyBtnText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  emptyBtnText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   footerLoader: { paddingVertical: 16, alignItems: 'center' },
 
   // Broker card
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -451,8 +452,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cardTitleBlock: { flex: 1, marginRight: 8 },
-  brokerName: { color: '#fff', fontSize: 16, fontWeight: '800', marginBottom: 3 },
-  mcNumber: { color: '#555', fontSize: 12 },
+  brokerName: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '800', marginBottom: 3 },
+  mcNumber: { color: COLORS.textMuted, fontSize: 12 },
   ratingBadge: {
     borderRadius: 8,
     borderWidth: 1,
@@ -471,7 +472,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   metaItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  metaText: { color: '#555', fontSize: 12 },
+  metaText: { color: COLORS.textMuted, fontSize: 12 },
 
   cardFooter: { marginTop: 4 },
   starsRow: { flexDirection: 'row', gap: 2 },
@@ -486,10 +487,10 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#1565c0',
+    backgroundColor: COLORS.accent,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#4fc3f7',
+    shadowColor: COLORS.accent,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,

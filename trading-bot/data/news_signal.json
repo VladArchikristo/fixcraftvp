@@ -1,40 +1,41 @@
 {
-  "timestamp": "2026-04-28T13:55:22.433058+00:00",
+  "timestamp": "2026-04-29T01:55:21.945876+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.34,
+  "score": -0.48,
   "fear_greed": {
-    "value": 33,
+    "value": 26,
     "label": "Fear",
     "trend": "falling"
   },
   "key_events": [
-    "Three Bank of Japan members call for a rate hike; yen rises while bitcoin falls",
-    "CoinDesk 20 performance update: Stellar (XLM) drops 1.7% as index moves lower",
-    "CFTC's AI will review U.S. crypto registration applications, chairman tells CoinDesk",
-    "Bulls want bitcoin back above $80,000. Macro says not so fast.",
-    "Crypto traders turn cautious as bitcoin loses steam below $80,000"
+    "Microsoft says legacy banks are hitting a breaking point as AI takes over the heavy lifting",
+    "A crypto coalition releases technical proposal to save Aave users from a massive token exploit",
+    "Judge rejects new trial for former FTX CEO Sam Bankman-Fried",
+    "Robinhood stock falls 8% after big earnings miss due to weak crypto trading revenue",
+    "Paul Tudor Jones calls bitcoin the 'best inflation hedge,' warns of overvalued stocks"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "XRP",
+    "DOT",
+    "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "ZKJ",
-    "PI",
-    "ORCA",
+    "PROS",
+    "PUMP",
+    "LUNC",
+    "HYPE",
+    "BIO",
     "SOL",
-    "PRL",
-    "PENGU",
-    "ETH"
+    "PI"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 3.11,
-  "cached_at": 1777384522.433308
+  "fetch_time_sec": 2.65,
+  "cached_at": 1777427721.9461188
 }

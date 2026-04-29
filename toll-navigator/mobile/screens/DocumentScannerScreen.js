@@ -19,6 +19,7 @@ import {
   generateDocumentId,
 } from '../services/documentHistory';
 import { extractTextFromBase64, isMlKitAvailable, OCR_SOURCE } from '../services/ocrService';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 const DOC_TYPES = [
   { value: 'BOL',   label: 'BOL',      icon: '📦', desc: 'Bill of Lading' },
@@ -291,7 +292,7 @@ export default function DocumentScannerScreen({ navigation }) {
             style={[styles.captureBtn, styles.captureBtnCamera]}
             onPress={handleCamera}
           >
-            <Ionicons name="camera" size={24} color="#0d0d1a" />
+            <Ionicons name="camera" size={24} color={COLORS.textInverse} />
             <Text style={styles.captureBtnText}>Camera</Text>
           </TouchableOpacity>
 
@@ -299,8 +300,8 @@ export default function DocumentScannerScreen({ navigation }) {
             style={[styles.captureBtn, styles.captureBtnGallery]}
             onPress={handleGallery}
           >
-            <Ionicons name="images" size={24} color="#4fc3f7" />
-            <Text style={[styles.captureBtnText, { color: '#4fc3f7' }]}>Gallery</Text>
+            <Ionicons name="images" size={24} color={COLORS.primary} />
+            <Text style={[styles.captureBtnText, { color: COLORS.primary }]}>Gallery</Text>
           </TouchableOpacity>
         </View>
 
@@ -341,14 +342,14 @@ export default function DocumentScannerScreen({ navigation }) {
                     )}
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.thumbDelete} onPress={() => removePage(page.id)}>
-                    <Ionicons name="close-circle" size={20} color="#ef9a9a" />
+                    <Ionicons name="close-circle" size={20} color={COLORS.error} />
                   </TouchableOpacity>
                 </View>
               ))}
 
               {/* Add more */}
               <TouchableOpacity style={styles.addMoreBtn} onPress={handleCamera}>
-                <Ionicons name="add-circle-outline" size={32} color="#4fc3f7" />
+                <Ionicons name="add-circle-outline" size={32} color={COLORS.primary} />
                 <Text style={styles.addMoreText}>Add</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -358,7 +359,7 @@ export default function DocumentScannerScreen({ navigation }) {
         {/* PDF ready */}
         {pdfUri && (
           <View style={styles.pdfReadyBanner}>
-            <Ionicons name="checkmark-circle" size={20} color="#81c784" />
+            <Ionicons name="checkmark-circle" size={20} color={COLORS.success} />
             <Text style={styles.pdfReadyText}>
               PDF ready — {pages.length} page{pages.length !== 1 ? 's' : ''}
             </Text>
@@ -373,9 +374,9 @@ export default function DocumentScannerScreen({ navigation }) {
           disabled={generating || pages.length === 0}
         >
           {generating
-            ? <ActivityIndicator color="#0d0d1a" />
+            ? <ActivityIndicator color={COLORS.textInverse} />
             : <>
-                <Ionicons name="document-text" size={20} color="#0d0d1a" />
+                <Ionicons name="document-text" size={20} color={COLORS.textInverse} />
                 <Text style={styles.actionBtnTextDark}>Create PDF</Text>
               </>
           }
@@ -386,8 +387,8 @@ export default function DocumentScannerScreen({ navigation }) {
           onPress={handleShare}
           disabled={!pdfUri}
         >
-          <Ionicons name="share-outline" size={20} color={pdfUri ? '#4fc3f7' : '#555'} />
-          <Text style={[styles.actionBtnText, !pdfUri && { color: '#555' }]}>
+          <Ionicons name="share-outline" size={20} color={pdfUri ? COLORS.primary : COLORS.textMuted} />
+          <Text style={[styles.actionBtnText, !pdfUri && { color: COLORS.textMuted }]}>
             Share PDF
           </Text>
         </TouchableOpacity>
@@ -412,11 +413,11 @@ export default function DocumentScannerScreen({ navigation }) {
           disabled={ocrLoading || pages.length === 0}
         >
           {ocrLoading
-            ? <ActivityIndicator color="#a5d6a7" />
+            ? <ActivityIndicator color={COLORS.success} />
             : <>
-                <Ionicons name="text-outline" size={20} color={pages.length > 0 ? '#a5d6a7' : '#555'} />
+                <Ionicons name="text-outline" size={20} color={pages.length > 0 ? COLORS.success : COLORS.textMuted} />
                 <Text style={[styles.actionBtnText,
-                  { color: pages.length > 0 ? '#a5d6a7' : '#555' }]}>
+                  { color: pages.length > 0 ? COLORS.success : COLORS.textMuted }]}>
                   Extract Text {isMlKitAvailable() ? '(Offline OCR)' : '(OCR)'}
                 </Text>
               </>
@@ -428,7 +429,7 @@ export default function DocumentScannerScreen({ navigation }) {
           style={styles.historyLink}
           onPress={() => navigation.navigate('DocumentHistory')}
         >
-          <Ionicons name="time-outline" size={16} color="#888" />
+          <Ionicons name="time-outline" size={16} color={COLORS.textSecondary} />
           <Text style={styles.historyLinkText}>View scan history</Text>
         </TouchableOpacity>
 
@@ -449,25 +450,25 @@ export default function DocumentScannerScreen({ navigation }) {
               <View style={styles.ocrBadgeRow}>
                 {ocrSource === OCR_SOURCE.ML_KIT && (
                   <View style={[styles.ocrSourceBadge, styles.ocrSourceBadgeOffline]}>
-                    <Ionicons name="phone-portrait-outline" size={10} color="#81c784" />
-                    <Text style={[styles.ocrSourceText, { color: '#81c784' }]}>On-device · Offline</Text>
+                    <Ionicons name="phone-portrait-outline" size={10} color={COLORS.success} />
+                    <Text style={[styles.ocrSourceText, { color: COLORS.success }]}>On-device · Offline</Text>
                   </View>
                 )}
                 {ocrSource === OCR_SOURCE.API && (
                   <View style={[styles.ocrSourceBadge, styles.ocrSourceBadgeApi]}>
-                    <Ionicons name="cloud-outline" size={10} color="#4fc3f7" />
-                    <Text style={[styles.ocrSourceText, { color: '#4fc3f7' }]}>Cloud API</Text>
+                    <Ionicons name="cloud-outline" size={10} color={COLORS.info} />
+                    <Text style={[styles.ocrSourceText, { color: COLORS.info }]}>Cloud API</Text>
                   </View>
                 )}
                 {ocrMock && (
-                  <View style={[styles.ocrSourceBadge, { borderColor: '#ffb74d' }]}>
-                    <Text style={[styles.ocrSourceText, { color: '#ffb74d' }]}>⚠️ Demo</Text>
+                  <View style={[styles.ocrSourceBadge, { borderColor: COLORS.warning }]}>
+                    <Text style={[styles.ocrSourceText, { color: COLORS.warning }]}>⚠️ Demo</Text>
                   </View>
                 )}
               </View>
             </View>
             <TouchableOpacity onPress={() => setOcrModalVisible(false)}>
-              <Ionicons name="close" size={28} color="#fff" />
+              <Ionicons name="close" size={28} color={COLORS.textInverse} />
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.ocrScroll} contentContainerStyle={styles.ocrScrollContent}>
@@ -475,7 +476,7 @@ export default function DocumentScannerScreen({ navigation }) {
           </ScrollView>
           <View style={styles.ocrActions}>
             <TouchableOpacity style={styles.ocrShareBtn} onPress={handleShareOcrText}>
-              <Ionicons name="share-outline" size={18} color="#0d0d1a" />
+              <Ionicons name="share-outline" size={18} color={COLORS.textInverse} />
               <Text style={styles.ocrShareBtnText}>Share Text</Text>
             </TouchableOpacity>
           </View>
@@ -492,7 +493,7 @@ export default function DocumentScannerScreen({ navigation }) {
                 ? `  ·  ${pages[previewIndex].filter}` : ''}
             </Text>
             <TouchableOpacity onPress={() => setPreviewVisible(false)}>
-              <Ionicons name="close" size={28} color="#fff" />
+              <Ionicons name="close" size={28} color={COLORS.textInverse} />
             </TouchableOpacity>
           </View>
           {pages[previewIndex] && (
@@ -508,14 +509,14 @@ export default function DocumentScannerScreen({ navigation }) {
               onPress={() => setPreviewIndex(i => Math.max(0, i - 1))}
               disabled={previewIndex === 0}
             >
-              <Ionicons name="chevron-back" size={24} color={previewIndex === 0 ? '#444' : '#4fc3f7'} />
+              <Ionicons name="chevron-back" size={24} color={previewIndex === 0 ? COLORS.textMuted : COLORS.primary} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.navBtn, previewIndex === pages.length - 1 && styles.navBtnDisabled]}
               onPress={() => setPreviewIndex(i => Math.min(pages.length - 1, i + 1))}
               disabled={previewIndex === pages.length - 1}
             >
-              <Ionicons name="chevron-forward" size={24} color={previewIndex === pages.length - 1 ? '#444' : '#4fc3f7'} />
+              <Ionicons name="chevron-forward" size={24} color={previewIndex === pages.length - 1 ? COLORS.textMuted : COLORS.primary} />
             </TouchableOpacity>
           </View>
         </View>
@@ -525,72 +526,72 @@ export default function DocumentScannerScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { padding: 20, paddingBottom: 40 },
 
-  header: { alignItems: 'center', marginBottom: 24, marginTop: 10 },
-  title:    { fontSize: 24, fontWeight: '800', color: '#fff' },
-  subtitle: { fontSize: 13, color: '#666', marginTop: 4 },
+  header: { alignItems: 'center', marginBottom: SPACING.lg, marginTop: 10 },
+  title:    { fontSize: 24, fontWeight: '800', color: COLORS.textPrimary },
+  subtitle: { fontSize: 13, color: COLORS.textMuted, marginTop: SPACING.xs },
 
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   sectionLabel: {
-    color: '#666', fontSize: 11, fontWeight: '700',
+    color: COLORS.textMuted, fontSize: 11, fontWeight: '700',
     textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12,
   },
 
-  docTypeRow: { flexDirection: 'row', gap: 8 },
+  docTypeRow: { flexDirection: 'row', gap: SPACING.sm },
   docTypeBtn: {
     flex: 1, alignItems: 'center', paddingVertical: 10,
-    borderRadius: 10, backgroundColor: '#0d0d1a',
-    borderWidth: 1, borderColor: '#2a2a4a',
+    borderRadius: 10, backgroundColor: COLORS.bg,
+    borderWidth: 1, borderColor: COLORS.border,
   },
-  docTypeBtnActive: { borderColor: '#4fc3f7', backgroundColor: '#0d1f2d' },
+  docTypeBtnActive: { borderColor: COLORS.primary, backgroundColor: COLORS.primaryLight },
   docTypeIcon:  { fontSize: 18, marginBottom: 3 },
-  docTypeLabel: { color: '#666', fontSize: 11, fontWeight: '700' },
-  docTypeLabelActive: { color: '#4fc3f7' },
+  docTypeLabel: { color: COLORS.textMuted, fontSize: 11, fontWeight: '700' },
+  docTypeLabelActive: { color: COLORS.primary },
 
   captureRow: { flexDirection: 'row', gap: 12, marginBottom: 10 },
   captureBtn: {
     flex: 1, flexDirection: 'row', alignItems: 'center',
-    justifyContent: 'center', gap: 8, paddingVertical: 14, borderRadius: 14,
+    justifyContent: 'center', gap: SPACING.sm, paddingVertical: 14, borderRadius: RADIUS.lg,
   },
-  captureBtnCamera:  { backgroundColor: '#4fc3f7' },
-  captureBtnGallery: { backgroundColor: '#161629', borderWidth: 1, borderColor: '#4fc3f7' },
-  captureBtnText:    { fontSize: 16, fontWeight: '700', color: '#0d0d1a' },
+  captureBtnCamera:  { backgroundColor: COLORS.primary },
+  captureBtnGallery: { backgroundColor: COLORS.bgCard, borderWidth: 1, borderColor: COLORS.primary },
+  captureBtnText:    { fontSize: 16, fontWeight: '700', color: COLORS.textInverse },
 
   featureHint: {
-    backgroundColor: '#0d1a2a',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 10,
     padding: 10,
     marginBottom: 14,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1a3a5a',
+    borderColor: COLORS.border,
   },
-  featureHintText: { color: '#4fc3f7', fontSize: 12, fontWeight: '600' },
+  featureHintText: { color: COLORS.primary, fontSize: 12, fontWeight: '600' },
 
   pagesHeader: {
     flexDirection: 'row', justifyContent: 'space-between',
     alignItems: 'center', marginBottom: 12,
   },
-  clearAllText: { color: '#ef9a9a', fontSize: 12, fontWeight: '700' },
+  clearAllText: { color: COLORS.error, fontSize: 12, fontWeight: '700' },
   pagesScroll:  { flexDirection: 'row' },
 
   pageThumb: { marginRight: 10, position: 'relative' },
-  thumbImage: { width: 80, height: 110, borderRadius: 8, backgroundColor: '#2a2a4a' },
+  thumbImage: { width: 80, height: 110, borderRadius: RADIUS.sm, backgroundColor: COLORS.border },
   thumbOverlay: {
     position: 'absolute', bottom: 4, left: 4,
     backgroundColor: 'rgba(0,0,0,0.6)', borderRadius: 4,
     paddingHorizontal: 5, paddingVertical: 2,
   },
-  thumbNum: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  thumbNum: { color: COLORS.textPrimary, fontSize: 11, fontWeight: '700' },
   filterBadge: {
     position: 'absolute', top: 4, right: 4,
     backgroundColor: 'rgba(0,0,0,0.65)', borderRadius: 4,
@@ -600,77 +601,77 @@ const styles = StyleSheet.create({
   thumbDelete: { position: 'absolute', top: -6, right: -6 },
 
   addMoreBtn: {
-    width: 80, height: 110, borderRadius: 8,
-    borderWidth: 2, borderColor: '#2a2a4a', borderStyle: 'dashed',
+    width: 80, height: 110, borderRadius: RADIUS.sm,
+    borderWidth: 2, borderColor: COLORS.border, borderStyle: 'dashed',
     alignItems: 'center', justifyContent: 'center',
   },
-  addMoreText: { color: '#4fc3f7', fontSize: 11, marginTop: 4 },
+  addMoreText: { color: COLORS.primary, fontSize: 11, marginTop: 4 },
 
   pdfReadyBanner: {
-    flexDirection: 'row', alignItems: 'center', gap: 8,
-    backgroundColor: '#0d1f18', borderRadius: 10, padding: 12,
-    marginBottom: 14, borderWidth: 1, borderColor: '#81c784',
+    flexDirection: 'row', alignItems: 'center', gap: SPACING.sm,
+    backgroundColor: COLORS.successLight, borderRadius: 10, padding: 12,
+    marginBottom: 14, borderWidth: 1, borderColor: COLORS.success,
   },
-  pdfReadyText: { color: '#81c784', fontSize: 14, fontWeight: '600' },
+  pdfReadyText: { color: COLORS.success, fontSize: 14, fontWeight: '600' },
 
   actionBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    gap: 8, paddingVertical: 14, borderRadius: 14, marginBottom: 12,
+    gap: SPACING.sm, paddingVertical: 14, borderRadius: RADIUS.lg, marginBottom: 12,
   },
-  actionBtnPrimary: { backgroundColor: '#4fc3f7' },
-  actionBtnShare:   { backgroundColor: '#161629', borderWidth: 1, borderColor: '#4fc3f7' },
-  actionBtnOcr:     { backgroundColor: '#161629', borderWidth: 1, borderColor: '#a5d6a7' },
+  actionBtnPrimary: { backgroundColor: COLORS.accent },
+  actionBtnShare:   { backgroundColor: COLORS.bgCard, borderWidth: 1, borderColor: COLORS.primary },
+  actionBtnOcr:     { backgroundColor: COLORS.bgCard, borderWidth: 1, borderColor: COLORS.success },
   actionBtnDisabled: { opacity: 0.4 },
-  actionBtnText:     { color: '#4fc3f7', fontSize: 16, fontWeight: '700' },
-  actionBtnTextDark: { color: '#0d0d1a', fontSize: 16, fontWeight: '700' },
+  actionBtnText:     { color: COLORS.primary, fontSize: 16, fontWeight: '700' },
+  actionBtnTextDark: { color: COLORS.textInverse, fontSize: 16, fontWeight: '700' },
 
-  ocrMockBadge: { color: '#ffb74d', fontSize: 11, marginTop: 2 },
+  ocrMockBadge: { color: COLORS.warning, fontSize: 11, marginTop: 2 },
   ocrBadgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 4 },
   ocrSourceBadge: {
     flexDirection: 'row', alignItems: 'center', gap: 4,
     borderWidth: 1, borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2,
   },
-  ocrSourceBadgeOffline: { borderColor: '#81c784', backgroundColor: 'rgba(129,199,132,0.1)' },
-  ocrSourceBadgeApi:     { borderColor: '#4fc3f7', backgroundColor: 'rgba(79,195,247,0.1)' },
+  ocrSourceBadgeOffline: { borderColor: COLORS.success, backgroundColor: COLORS.successLight },
+  ocrSourceBadgeApi:     { borderColor: COLORS.info, backgroundColor: COLORS.primaryLight },
   ocrSourceText: { fontSize: 10, fontWeight: '600' },
   ocrScroll:    { flex: 1 },
   ocrScrollContent: { padding: 20 },
   ocrText: {
-    color: '#e0e0e0', fontSize: 14, lineHeight: 22,
+    color: COLORS.textPrimary, fontSize: 14, lineHeight: 22,
     fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   },
   ocrActions: {
-    padding: 16,
-    paddingBottom: Platform.OS === 'ios' ? 34 : 16,
-    borderTopWidth: 1, borderTopColor: '#222',
+    padding: SPACING.md,
+    paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.md,
+    borderTopWidth: 1, borderTopColor: COLORS.border,
   },
   ocrShareBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    gap: 8, backgroundColor: '#a5d6a7', borderRadius: 12, paddingVertical: 14,
+    gap: SPACING.sm, backgroundColor: COLORS.accent, borderRadius: RADIUS.md, paddingVertical: 14,
   },
-  ocrShareBtnText: { color: '#0d0d1a', fontSize: 16, fontWeight: '700' },
+  ocrShareBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '700' },
 
   historyLink: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
     gap: 6, paddingVertical: 10, marginBottom: 10,
   },
-  historyLinkText: { color: '#888', fontSize: 13 },
-  hint: { textAlign: 'center', color: '#444', fontSize: 12, lineHeight: 18 },
+  historyLinkText: { color: COLORS.textSecondary, fontSize: 13 },
+  hint: { textAlign: 'center', color: COLORS.textMuted, fontSize: 12, lineHeight: 18 },
 
-  modalContainer: { flex: 1, backgroundColor: '#000' },
+  modalContainer: { flex: 1, backgroundColor: COLORS.bg },
   modalHeader: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    padding: 16, paddingTop: Platform.OS === 'ios' ? 50 : 20,
+    padding: SPACING.md, paddingTop: Platform.OS === 'ios' ? 50 : 20,
   },
-  modalTitle: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  modalTitle: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '700' },
   modalImage: { flex: 1, width: '100%' },
   modalNav: {
     flexDirection: 'row', justifyContent: 'space-between',
-    padding: 16, paddingBottom: Platform.OS === 'ios' ? 34 : 16,
+    padding: SPACING.md, paddingBottom: Platform.OS === 'ios' ? 34 : SPACING.md,
   },
   navBtn: {
-    backgroundColor: '#1a1a2e', borderRadius: 30, padding: 12,
-    borderWidth: 1, borderColor: '#2a2a4a',
+    backgroundColor: COLORS.bgInput, borderRadius: 30, padding: 12,
+    borderWidth: 1, borderColor: COLORS.border,
   },
-  navBtnDisabled: { borderColor: '#1a1a2e' },
+  navBtnDisabled: { borderColor: COLORS.bgInput },
 });

@@ -14,13 +14,14 @@ import {
   clearDocumentHistory,
   formatDocumentDate,
 } from '../services/documentHistory';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 const TYPE_ICONS = { BOL: '📦', POD: '✅', RATE: '📄', OTHER: '📋' };
 const TYPE_COLORS = {
-  BOL: '#4fc3f7',
-  POD: '#81c784',
-  RATE: '#ffb74d',
-  OTHER: '#ce93d8',
+  BOL: COLORS.primary,
+  POD: COLORS.success,
+  RATE: COLORS.warning,
+  OTHER: '#9C27B0',
 };
 
 export default function DocumentHistoryScreen({ navigation }) {
@@ -126,7 +127,7 @@ export default function DocumentHistoryScreen({ navigation }) {
   };
 
   const renderItem = ({ item }) => {
-    const color = TYPE_COLORS[item.type] || '#4fc3f7';
+    const color = TYPE_COLORS[item.type] || COLORS.primary;
     const icon = TYPE_ICONS[item.type] || '📋';
 
     return (
@@ -146,13 +147,13 @@ export default function DocumentHistoryScreen({ navigation }) {
             style={styles.docActionBtn}
             onPress={() => handleShare(item)}
           >
-            <Ionicons name="share-outline" size={20} color="#4fc3f7" />
+            <Ionicons name="share-outline" size={20} color={COLORS.primary} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.docActionBtn, styles.docActionBtnDelete]}
             onPress={() => handleDelete(item)}
           >
-            <Ionicons name="trash-outline" size={18} color="#ef9a9a" />
+            <Ionicons name="trash-outline" size={18} color={COLORS.error} />
           </TouchableOpacity>
         </View>
       </View>
@@ -164,7 +165,7 @@ export default function DocumentHistoryScreen({ navigation }) {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={22} color="#4fc3f7" />
+          <Ionicons name="arrow-back" size={22} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.title}>Scan History</Text>
         {history.length > 0 && (
@@ -176,7 +177,7 @@ export default function DocumentHistoryScreen({ navigation }) {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#4fc3f7" />
+          <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       ) : history.length === 0 ? (
         <View style={styles.empty}>
@@ -189,7 +190,7 @@ export default function DocumentHistoryScreen({ navigation }) {
             style={styles.scanNowBtn}
             onPress={() => navigation.goBack()}
           >
-            <Ionicons name="camera" size={18} color="#0d0d1a" />
+            <Ionicons name="camera" size={18} color={COLORS.textInverse} />
             <Text style={styles.scanNowText}>Scan Document</Text>
           </TouchableOpacity>
         </View>
@@ -210,7 +211,7 @@ export default function DocumentHistoryScreen({ navigation }) {
           style={styles.fab}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="camera" size={24} color="#0d0d1a" />
+          <Ionicons name="camera" size={24} color={COLORS.textInverse} />
         </TouchableOpacity>
       )}
     </View>
@@ -218,40 +219,40 @@ export default function DocumentHistoryScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.md,
     paddingTop: 54,
-    paddingBottom: 16,
+    paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#1e1e3a',
+    borderBottomColor: COLORS.bgCardAlt,
   },
-  backBtn: { padding: 4, marginRight: 12 },
-  title: { flex: 1, color: '#fff', fontSize: 20, fontWeight: '800' },
-  clearAllBtn: { color: '#ef9a9a', fontSize: 13, fontWeight: '700' },
+  backBtn: { padding: SPACING.xs, marginRight: 12 },
+  title: { flex: 1, color: COLORS.textPrimary, fontSize: 20, fontWeight: '800' },
+  clearAllBtn: { color: COLORS.error, fontSize: 13, fontWeight: '700' },
 
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
-  emptyIcon: { fontSize: 56, marginBottom: 16 },
-  emptyTitle: { color: '#fff', fontSize: 20, fontWeight: '800', marginBottom: 8 },
-  emptySubtitle: { color: '#666', fontSize: 14, textAlign: 'center', marginBottom: 28, lineHeight: 20 },
+  emptyIcon: { fontSize: 56, marginBottom: SPACING.md },
+  emptyTitle: { color: COLORS.textPrimary, fontSize: 20, fontWeight: '800', marginBottom: SPACING.sm },
+  emptySubtitle: { color: COLORS.textMuted, fontSize: 14, textAlign: 'center', marginBottom: 28, lineHeight: 20 },
   scanNowBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor: '#4fc3f7',
-    borderRadius: 12,
-    paddingHorizontal: 24,
+    gap: SPACING.sm,
+    backgroundColor: COLORS.accent,
+    borderRadius: RADIUS.md,
+    paddingHorizontal: SPACING.lg,
     paddingVertical: 12,
   },
-  scanNowText: { color: '#0d0d1a', fontSize: 15, fontWeight: '800' },
+  scanNowText: { color: COLORS.textInverse, fontSize: 15, fontWeight: '800' },
 
-  list: { padding: 16 },
-  separator: { height: 1, backgroundColor: '#1e1e3a', marginVertical: 2 },
+  list: { padding: SPACING.md },
+  separator: { height: 1, backgroundColor: COLORS.bgCardAlt, marginVertical: 2 },
 
   docCard: {
     flexDirection: 'row',
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 8,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
     minWidth: 70,
   },
@@ -273,30 +274,30 @@ const styles = StyleSheet.create({
   docTypeTagLabel: { fontSize: 12, fontWeight: '800' },
 
   docInfo: { flex: 1 },
-  docDate: { color: '#ccc', fontSize: 13, fontWeight: '600', marginBottom: 3 },
-  docPages: { color: '#666', fontSize: 12 },
+  docDate: { color: COLORS.textSecondary, fontSize: 13, fontWeight: '600', marginBottom: 3 },
+  docPages: { color: COLORS.textMuted, fontSize: 12 },
 
   docActions: { flexDirection: 'row', gap: 6 },
   docActionBtn: {
-    backgroundColor: '#161629',
-    borderRadius: 8,
-    padding: 8,
+    backgroundColor: COLORS.bgCard,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.sm,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
+    borderColor: COLORS.border,
   },
-  docActionBtnDelete: { borderColor: '#3a1a1a', backgroundColor: '#1a0d0d' },
+  docActionBtnDelete: { borderColor: COLORS.error, backgroundColor: COLORS.errorLight },
 
   fab: {
     position: 'absolute',
     bottom: 30,
     right: 24,
-    backgroundColor: '#4fc3f7',
-    borderRadius: 30,
+    backgroundColor: COLORS.accent,
+    borderRadius: RADIUS.full,
     width: 56,
     height: 56,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#4fc3f7',
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 8,

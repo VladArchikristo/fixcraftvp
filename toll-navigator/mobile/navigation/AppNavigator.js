@@ -8,7 +8,6 @@ import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import ResultScreen from '../screens/ResultScreen';
 import MapScreen from '../screens/MapScreen';
-import HistoryScreen from '../screens/HistoryScreen';
 import TripHistoryScreen from '../screens/TripHistoryScreen';
 import TripDetailScreen from '../screens/TripDetailScreen';
 import FuelPurchaseScreen from '../screens/FuelPurchaseScreen';
@@ -27,15 +26,16 @@ import ExpenseDashboardScreen from '../screens/ExpenseDashboardScreen';
 import AddExpenseScreen from '../screens/AddExpenseScreen';
 import AddLoadScreen from '../screens/AddLoadScreen';
 import { getToken, logout } from '../services/auth';
+import { COLORS } from '../theme';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const stackScreenOptions = {
-  headerStyle: { backgroundColor: '#0d0d1a', elevation: 0, shadowOpacity: 0 },
-  headerTintColor: '#4fc3f7',
-  headerTitleStyle: { color: '#fff', fontWeight: '700' },
-  cardStyle: { backgroundColor: '#0d0d1a' },
+  headerStyle: { backgroundColor: COLORS.bg, elevation: 0, shadowOpacity: 0, borderBottomWidth: 1, borderBottomColor: COLORS.borderLight },
+  headerTintColor: COLORS.primary,
+  headerTitleStyle: { color: COLORS.textPrimary, fontWeight: '700' },
+  cardStyle: { backgroundColor: COLORS.bg },
 };
 
 // Auth stack
@@ -165,14 +165,14 @@ function MainTabs({ onLogout }) {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#0d0d1a',
-          borderTopColor: '#1e1e3a',
+          backgroundColor: COLORS.bg,
+          borderTopColor: COLORS.borderLight,
           borderTopWidth: 1,
           height: 60,
           paddingBottom: 8,
         },
-        tabBarActiveTintColor: '#4fc3f7',
-        tabBarInactiveTintColor: '#444',
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.tabInactive,
         tabBarIcon: ({ focused, color, size }) => {
           const icons = {
             Calc:      focused ? 'calculator'     : 'calculator-outline',
@@ -217,7 +217,7 @@ export default function AppNavigator() {
     return (
       <View style={styles.splash}>
         <Text style={styles.splashLogo}>🛣️</Text>
-        <ActivityIndicator size="large" color="#4fc3f7" style={{ marginTop: 24 }} />
+        <ActivityIndicator size="large" color={COLORS.primary} style={{ marginTop: 24 }} />
       </View>
     );
   }
@@ -235,7 +235,7 @@ export default function AppNavigator() {
 const styles = StyleSheet.create({
   splash: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     justifyContent: 'center',
     alignItems: 'center',
   },

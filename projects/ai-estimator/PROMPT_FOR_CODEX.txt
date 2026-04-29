@@ -1,0 +1,128 @@
+Build a complete Telegram bot for a handyman business called FixCraft VP in Charlotte, NC. The bot turns job-site photos into detailed cost estimates using AI.
+
+WORKING DIRECTORY: Create a new folder ~/fixcraft-estimator-bot/ and build everything there.
+
+## FILES TO CREATE
+
+### 1. requirements.txt
+python-telegram-bot==20.7
+openai>=1.0.0
+reportlab>=4.0.0
+python-dotenv>=1.0.0
+pillow>=10.0.0
+aiofiles>=23.0.0
+
+### 2. .env (template)
+TELEGRAM_BOT_TOKEN=
+OPENAI_API_KEY=
+ADMIN_CHAT_ID=
+
+### 3. config.py
+PRICING_CONFIG = {
+    "labor_rate_standard": 95.0,
+    "labor_rate_emergency": 130.0,
+    "material_markup": 1.30,
+    "overhead_percent": 0.15,
+    "profit_margin": 0.20,
+    "minimum_service_call": 175.0,
+}
+COMPANY_INFO = {
+    "name": "FixCraft VP",
+    "phone": "(704) XXX-XXXX",
+    "email": "fixcraftvp@gmail.com",
+    "address": "Charlotte, NC 28277",
+    "website": "fixcraftvp.com",
+}
+
+### 4. database.py
+SQLite database with tables:
+- estimates (id, chat_id, photo_path, description, ai_analysis JSON, line_items JSON, total_amount, status, created_at)
+- pricing_config (id, labor_rate_standard, labor_rate_emergency, material_markup, overhead_percent, profit_margin, minimum_service_call, updated_at)
+
+Include functions: save_estimate(), get_estimates_by_chat(), get_all_estimates(), update_pricing_config(), get_pricing_config()
+
+### 5. ai_analyzer.py
+Function analyze_photo(photo_path: str, description: str) -> dict:
+- Read image file as base64
+- Call OpenAI GPT-4o with vision capabilities
+- System prompt: "You are an expert handyman estimator with 20+ years experience in Charlotte, NC. Analyze the photo and return STRICT JSON with: job_type, title, description, materials list (item, qty, unit, unit_cost, notes), labor_breakdown (task, hours), total_labor_hours, difficulty, hidden_issues, permit_required, notes."
+- Parse JSON response and return dict
+- Handle errors gracefully
+
+### 6. pricing.py
+Function calculate_estimate(ai_analysis: dict, pricing_config: dict, is_emergency: bool = False) -> dict:
+- Calculate materials subtotal and with markup
+- Calculate labor subtotal (hours * rate)
+- Add overhead (15% on subtotal)
+- Add profit margin (20% on subtotal)
+- Apply minimum service call if total < minimum
+- Return complete breakdown dict
+
+### 7. pdf_generator.py
+Function generate_pdf(estimate_data: dict, output_path: str):
+- Use ReportLab
+- Create professional branded PDF with FixCraft VP header
+- Include job description, materials table, labor table, overhead, profit, total
+- Add terms and disclaimer
+- Add footer with contact info
+- Save to output_path
+
+### 8. bot.py (MAIN FILE)
+Build async Telegram bot with python-telegram-bot v20:
+
+Commands:
+- /start - Welcome message explaining how to use
+- /help - Instructions
+- /history - Show last 10 estimates for this chat
+- /stats - Show total estimates and revenue (admin only)
+- /settings - Show current pricing config (admin only)
+- /setprice - Update pricing values (admin only)
+
+Photo handler:
+- When photo received, download it
+- Send "🔍 Analyzing photo..." message
+- Call ai_analyzer.analyze_photo()
+- Call pricing.calculate_estimate()
+- Format and send estimate message
+- Call pdf_generator.generate_pdf()
+- Send PDF as document
+- Save to database
+- Send confirmation
+
+Admin checks: Compare chat_id to ADMIN_CHAT_ID from env.
+
+Error handling: Wrap everything in try/except. If AI fails, send friendly error message.
+
+Rate limiting: Track requests per chat_id, max 10 per hour.
+
+Photo cleanup: Delete downloaded photos after 24 hours.
+
+## ESTIMATE MESSAGE FORMAT
+FixCraft VP — Estimate
+
+Job: {title}
+Location: Charlotte, NC
+
+MATERIALS:
+{materials list}
+   Subtotal: ${materials_subtotal}
+   Markup (30%): ${markup}
+
+LABOR ({hours} hrs @ ${rate}/hr):
+{labor breakdown}
+   Subtotal: ${labor_subtotal}
+
+Overhead (15%): ${overhead}
+Profit (20%): ${profit}
+
+TOTAL: ${total}
+
+Valid for 30 days. 50% deposit to schedule.
+Final price subject to on-site inspection.
+
+## IMPORTANT
+- Use asyncio throughout (python-telegram-bot v20 is async)
+- All functions must be fully implemented, no stubs
+- Bot must start with: python bot.py
+- Include startup message: "Bot started. Listening for photos..."
+- Create the assets/ directory

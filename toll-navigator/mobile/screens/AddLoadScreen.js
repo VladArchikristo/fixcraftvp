@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { addLoad } from '../services/expenseService';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -105,7 +106,7 @@ export default function AddLoadScreen({ navigation }) {
         {/* Header */}
         <View style={styles.headerRow}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={22} color="#4fc3f7" />
+            <Ionicons name="chevron-back" size={22} color={COLORS.primary} />
           </TouchableOpacity>
           <Text style={styles.title}>Add Load</Text>
         </View>
@@ -120,9 +121,9 @@ export default function AddLoadScreen({ navigation }) {
             value={grossRate}
             onChangeText={setGrossRate}
             placeholder="0.00"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.textMuted}
             keyboardType="decimal-pad"
-            selectionColor="#4fc3f7"
+            selectionColor={COLORS.primary}
           />
 
           <Text style={styles.fieldLabel}>Fuel Surcharge ($)</Text>
@@ -131,9 +132,9 @@ export default function AddLoadScreen({ navigation }) {
             value={fuelSurcharge}
             onChangeText={setFuelSurcharge}
             placeholder="0.00"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.textMuted}
             keyboardType="decimal-pad"
-            selectionColor="#4fc3f7"
+            selectionColor={COLORS.primary}
           />
 
           <Text style={styles.fieldLabel}>Detention Pay ($)</Text>
@@ -142,9 +143,9 @@ export default function AddLoadScreen({ navigation }) {
             value={detention}
             onChangeText={setDetention}
             placeholder="0.00"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.textMuted}
             keyboardType="decimal-pad"
-            selectionColor="#4fc3f7"
+            selectionColor={COLORS.primary}
           />
         </View>
 
@@ -158,8 +159,8 @@ export default function AddLoadScreen({ navigation }) {
             <Switch
               value={factoringEnabled}
               onValueChange={setFactoringEnabled}
-              trackColor={{ false: '#1e1e3a', true: '#1565c0' }}
-              thumbColor={factoringEnabled ? '#4fc3f7' : '#444'}
+              trackColor={{ false: COLORS.border, true: COLORS.info }}
+              thumbColor={factoringEnabled ? COLORS.primary : COLORS.textMuted}
             />
           </View>
 
@@ -171,9 +172,9 @@ export default function AddLoadScreen({ navigation }) {
                 value={factoringPct}
                 onChangeText={setFactoringPct}
                 placeholder="3"
-                placeholderTextColor="#333"
+                placeholderTextColor={COLORS.textMuted}
                 keyboardType="decimal-pad"
-                selectionColor="#4fc3f7"
+                selectionColor={COLORS.primary}
               />
               {totalGross > 0 && (
                 <View style={styles.factoringFeeRow}>
@@ -195,9 +196,9 @@ export default function AddLoadScreen({ navigation }) {
             value={miles}
             onChangeText={setMiles}
             placeholder="0"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.textMuted}
             keyboardType="number-pad"
-            selectionColor="#4fc3f7"
+            selectionColor={COLORS.primary}
           />
 
           <Text style={styles.fieldLabel}>Origin</Text>
@@ -206,8 +207,8 @@ export default function AddLoadScreen({ navigation }) {
             value={origin}
             onChangeText={setOrigin}
             placeholder="e.g. Charlotte, NC"
-            placeholderTextColor="#333"
-            selectionColor="#4fc3f7"
+            placeholderTextColor={COLORS.textMuted}
+            selectionColor={COLORS.primary}
           />
 
           <Text style={styles.fieldLabel}>Destination</Text>
@@ -216,8 +217,8 @@ export default function AddLoadScreen({ navigation }) {
             value={destination}
             onChangeText={setDestination}
             placeholder="e.g. Atlanta, GA"
-            placeholderTextColor="#333"
-            selectionColor="#4fc3f7"
+            placeholderTextColor={COLORS.textMuted}
+            selectionColor={COLORS.primary}
           />
 
           <Text style={styles.fieldLabel}>Broker Name</Text>
@@ -226,8 +227,8 @@ export default function AddLoadScreen({ navigation }) {
             value={broker}
             onChangeText={setBroker}
             placeholder="e.g. Coyote Logistics"
-            placeholderTextColor="#333"
-            selectionColor="#4fc3f7"
+            placeholderTextColor={COLORS.textMuted}
+            selectionColor={COLORS.primary}
           />
 
           <Text style={styles.fieldLabel}>Date</Text>
@@ -236,8 +237,8 @@ export default function AddLoadScreen({ navigation }) {
             value={date}
             onChangeText={setDate}
             placeholder="YYYY-MM-DD"
-            placeholderTextColor="#333"
-            selectionColor="#4fc3f7"
+            placeholderTextColor={COLORS.textMuted}
+            selectionColor={COLORS.primary}
           />
         </View>
 
@@ -292,9 +293,9 @@ export default function AddLoadScreen({ navigation }) {
           disabled={saving}
         >
           {saving ? (
-            <ActivityIndicator color="#fff" size="small" />
+            <ActivityIndicator color={COLORS.textInverse} size="small" />
           ) : (
-            <Ionicons name="checkmark-circle" size={20} color="#fff" />
+            <Ionicons name="checkmark-circle" size={20} color={COLORS.textInverse} />
           )}
           <Text style={styles.saveBtnText}>{saving ? 'Saving…' : 'Save Load'}</Text>
         </TouchableOpacity>
@@ -307,26 +308,26 @@ export default function AddLoadScreen({ navigation }) {
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  wrapper:   { flex: 1, backgroundColor: '#0d0d1a' },
+  wrapper:   { flex: 1, backgroundColor: COLORS.bg },
   container: { flex: 1 },
-  scroll:    { padding: 16, paddingBottom: 60 },
+  scroll:    { padding: SPACING.md, paddingBottom: 60 },
 
   // Header
   headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20, gap: 8 },
   backBtn:   { padding: 4 },
-  title:     { color: '#fff', fontSize: 22, fontWeight: '800' },
+  title:     { color: COLORS.textPrimary, fontSize: 22, fontWeight: '800' },
 
   // Section card
   sectionCard: {
-    backgroundColor: '#161629',
-    borderRadius: 14,
-    padding: 16,
+    backgroundColor: COLORS.bgCard,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.borderLight,
   },
   sectionTitle: {
-    color: '#888',
+    color: COLORS.textMuted,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
 
   // Fields
   fieldLabel: {
-    color: '#888',
+    color: COLORS.textMuted,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -344,15 +345,15 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bgInput,
     borderWidth: 1,
-    borderColor: '#2a2a4a',
-    borderRadius: 10,
+    borderColor: COLORS.border,
+    borderRadius: RADIUS.sm,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 16,
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
 
   // Factoring
@@ -362,33 +363,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 14,
   },
-  factoringHint: { color: '#555', fontSize: 12, marginTop: 2 },
+  factoringHint: { color: COLORS.textMuted, fontSize: 12, marginTop: 2 },
   factoringFeeRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#1a0a0a',
-    borderRadius: 8,
+    backgroundColor: COLORS.errorLight,
+    borderRadius: RADIUS.sm,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 4,
     borderWidth: 1,
-    borderColor: '#3a1515',
+    borderColor: COLORS.error,
   },
-  factoringFeeLabel: { color: '#888', fontSize: 13 },
-  factoringFeeValue: { color: '#ef9a9a', fontSize: 14, fontWeight: '700' },
+  factoringFeeLabel: { color: COLORS.textSecondary, fontSize: 13 },
+  factoringFeeValue: { color: COLORS.error, fontSize: 14, fontWeight: '700' },
 
   // Net card
   netCard: {
-    backgroundColor: '#0a1f2e',
-    borderRadius: 14,
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: RADIUS.lg,
     padding: 18,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#1565c0',
+    borderColor: COLORS.primary,
   },
   netCardTitle: {
-    color: '#4fc3f7',
+    color: COLORS.primary,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -396,15 +397,15 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   netRow:     { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 5 },
-  netLabel:   { color: '#888', fontSize: 13 },
-  netValue:   { color: '#ccc', fontSize: 13, fontWeight: '600' },
-  netDivider: { height: 1, backgroundColor: '#1e3a50', marginVertical: 10 },
-  netPayLabel: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  netLabel:   { color: COLORS.textSecondary, fontSize: 13 },
+  netValue:   { color: COLORS.textPrimary, fontSize: 13, fontWeight: '600' },
+  netDivider: { height: 1, backgroundColor: COLORS.border, marginVertical: 10 },
+  netPayLabel: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '800' },
   netPayValue: { fontSize: 24, fontWeight: '900' },
 
-  colorGreen: { color: '#66bb6a' },
-  colorRed:   { color: '#ef9a9a' },
-  colorBlue:  { color: '#4fc3f7' },
+  colorGreen: { color: COLORS.success },
+  colorRed:   { color: COLORS.error },
+  colorBlue:  { color: COLORS.info },
 
   // Save button
   saveBtn: {
@@ -412,10 +413,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#1565c0',
-    paddingVertical: 16,
-    borderRadius: 12,
+    backgroundColor: COLORS.accent,
+    paddingVertical: SPACING.md,
+    borderRadius: RADIUS.md,
   },
-  saveBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  saveBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '700' },
   btnDisabled: { opacity: 0.5 },
 });

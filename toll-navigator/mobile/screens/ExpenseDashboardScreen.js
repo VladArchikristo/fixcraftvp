@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { getProfitAndLoss, getExpensesByPeriod } from '../services/expenseService';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 // ── Period label → service period key ────────────────────────────────────────
 const PERIOD_KEY = {
@@ -154,7 +155,7 @@ export default function ExpenseDashboardScreen({ navigation }) {
           <Text style={styles.pnlTitle}>Profit & Loss · {period}</Text>
 
           {loading ? (
-            <ActivityIndicator color="#4fc3f7" style={{ marginVertical: 20 }} />
+            <ActivityIndicator color={COLORS.primary} style={{ marginVertical: 20 }} />
           ) : (
             <>
               <View style={styles.pnlRow}>
@@ -186,7 +187,7 @@ export default function ExpenseDashboardScreen({ navigation }) {
               {/* Per-mile row */}
               <View style={styles.perMileRow}>
                 <View style={styles.perMileItem}>
-                  <Ionicons name="navigate" size={13} color="#4fc3f7" />
+                  <Ionicons name="navigate" size={13} color={COLORS.primary} />
                   <Text style={styles.perMileText}>{(pnl.milesDriven || 0).toLocaleString()} mi</Text>
                 </View>
                 <View style={styles.perMileDivider} />
@@ -217,14 +218,14 @@ export default function ExpenseDashboardScreen({ navigation }) {
             style={[styles.quickBtn, styles.quickBtnPrimary]}
             onPress={() => navigation.navigate('AddLoad')}
           >
-            <Ionicons name="add-circle-outline" size={18} color="#fff" />
+            <Ionicons name="add-circle-outline" size={18} color={COLORS.textInverse} />
             <Text style={styles.quickBtnTextPrimary}>Add Load</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.quickBtn, styles.quickBtnSecondary]}
             onPress={() => navigation.navigate('AddExpense')}
           >
-            <Ionicons name="receipt-outline" size={18} color="#4fc3f7" />
+            <Ionicons name="receipt-outline" size={18} color={COLORS.primary} />
             <Text style={styles.quickBtnTextSecondary}>Add Expense</Text>
           </TouchableOpacity>
         </View>
@@ -238,7 +239,7 @@ export default function ExpenseDashboardScreen({ navigation }) {
         <View style={styles.listCard}>
           {recentExpenses.length === 0 ? (
             <View style={styles.emptyInner}>
-              <Ionicons name="receipt-outline" size={36} color="#333" />
+              <Ionicons name="receipt-outline" size={36} color={COLORS.border} />
               <Text style={styles.emptyText}>No expenses yet</Text>
             </View>
           ) : (
@@ -259,7 +260,7 @@ export default function ExpenseDashboardScreen({ navigation }) {
         onPress={() => navigation.navigate('AddExpense')}
         activeOpacity={0.85}
       >
-        <Ionicons name="add" size={28} color="#fff" />
+        <Ionicons name="add" size={28} color={COLORS.textInverse} />
       </TouchableOpacity>
     </View>
   );
@@ -268,38 +269,38 @@ export default function ExpenseDashboardScreen({ navigation }) {
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  wrapper:    { flex: 1, backgroundColor: '#0d0d1a' },
+  wrapper:    { flex: 1, backgroundColor: COLORS.bg },
   container:  { flex: 1 },
-  scroll:     { padding: 16, paddingBottom: 100 },
+  scroll:     { padding: SPACING.md, paddingBottom: 100 },
 
-  title: { color: '#fff', fontSize: 22, fontWeight: '800', marginBottom: 16 },
+  title: { color: COLORS.textPrimary, fontSize: 22, fontWeight: '800', marginBottom: SPACING.md },
 
   // Period
-  periodRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
+  periodRow: { flexDirection: 'row', gap: SPACING.sm, marginBottom: SPACING.md },
   periodBtn: {
     flex: 1,
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#161629',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bgCard,
   },
-  periodBtnActive: { backgroundColor: '#0a1f2e', borderColor: '#4fc3f7' },
-  periodBtnText: { color: '#555', fontSize: 13, fontWeight: '700' },
-  periodBtnTextActive: { color: '#4fc3f7' },
+  periodBtnActive: { backgroundColor: COLORS.primaryLight, borderColor: COLORS.primary },
+  periodBtnText: { color: COLORS.textMuted, fontSize: 13, fontWeight: '700' },
+  periodBtnTextActive: { color: COLORS.primary },
 
   // P&L Card
   pnlCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     padding: 18,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   pnlTitle: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -312,14 +313,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 5,
   },
-  pnlLabel:    { color: '#aaa', fontSize: 14 },
+  pnlLabel:    { color: COLORS.textSecondary, fontSize: 14 },
   pnlValue:    { fontSize: 14, fontWeight: '700' },
-  pnlDivider:  { height: 1, backgroundColor: '#2a2a4a', marginVertical: 10 },
-  pnlNetLabel: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  pnlDivider:  { height: 1, backgroundColor: COLORS.border, marginVertical: 10 },
+  pnlNetLabel: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '800' },
   pnlNetValue: { fontSize: 22, fontWeight: '900' },
 
-  colorGreen: { color: '#66bb6a' },
-  colorRed:   { color: '#ef9a9a' },
+  colorGreen: { color: COLORS.success },
+  colorRed:   { color: COLORS.error },
 
   // Per-mile
   perMileRow: {
@@ -328,12 +329,12 @@ const styles = StyleSheet.create({
     marginTop: 14,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#1e1e3a',
+    borderTopColor: COLORS.bgCardAlt,
   },
   perMileItem:    { flex: 1, alignItems: 'center' },
-  perMileDivider: { width: 1, height: 28, backgroundColor: '#1e1e3a' },
-  perMileLabel:   { color: '#555', fontSize: 9, fontWeight: '700', textTransform: 'uppercase', marginBottom: 2 },
-  perMileText:    { color: '#ccc', fontSize: 12, fontWeight: '700' },
+  perMileDivider: { width: 1, height: 28, backgroundColor: COLORS.bgCardAlt },
+  perMileLabel:   { color: COLORS.textMuted, fontSize: 9, fontWeight: '700', textTransform: 'uppercase', marginBottom: 2 },
+  perMileText:    { color: COLORS.textSecondary, fontSize: 12, fontWeight: '700' },
 
   // Quick actions
   quickRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },
@@ -344,12 +345,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 7,
     paddingVertical: 13,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
   },
-  quickBtnPrimary:       { backgroundColor: '#1565c0' },
-  quickBtnSecondary:     { backgroundColor: '#0a1520', borderWidth: 1, borderColor: '#4fc3f7' },
-  quickBtnTextPrimary:   { color: '#fff',    fontSize: 14, fontWeight: '700' },
-  quickBtnTextSecondary: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  quickBtnPrimary:       { backgroundColor: COLORS.accent },
+  quickBtnSecondary:     { backgroundColor: COLORS.primaryLight, borderWidth: 1, borderColor: COLORS.primary },
+  quickBtnTextPrimary:   { color: COLORS.textInverse, fontSize: 14, fontWeight: '700' },
+  quickBtnTextSecondary: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   // Section header
   sectionHeader: {
@@ -358,17 +359,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  sectionTitle: { color: '#888', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
-  sectionCount: { color: '#444', fontSize: 11 },
+  sectionTitle: { color: COLORS.textSecondary, fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+  sectionCount: { color: COLORS.textMuted, fontSize: 11 },
 
   // List card
   listCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     overflow: 'hidden',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
   expenseRow: {
     flexDirection: 'row',
@@ -385,27 +386,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   expenseInfo:   { flex: 1 },
-  expenseVendor: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  expenseCat:    { color: '#555', fontSize: 12, marginTop: 2 },
-  expenseAmount: { color: '#ef9a9a', fontSize: 14, fontWeight: '700' },
-  rowDivider:    { height: 1, backgroundColor: '#1a1a2a', marginLeft: 62 },
+  expenseVendor: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '600' },
+  expenseCat:    { color: COLORS.textMuted, fontSize: 12, marginTop: 2 },
+  expenseAmount: { color: COLORS.error, fontSize: 14, fontWeight: '700' },
+  rowDivider:    { height: 1, backgroundColor: COLORS.borderLight, marginLeft: 62 },
 
   emptyInner: { alignItems: 'center', paddingVertical: 32 },
-  emptyText:  { color: '#555', fontSize: 14, fontWeight: '600', marginTop: 10 },
+  emptyText:  { color: COLORS.textMuted, fontSize: 14, fontWeight: '600', marginTop: 10 },
 
   // FAB
   fab: {
     position: 'absolute',
-    bottom: 24,
+    bottom: SPACING.lg,
     right: 20,
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#1565c0',
+    backgroundColor: COLORS.accent,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 8,
-    shadowColor: '#4fc3f7',
+    shadowColor: COLORS.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 8,

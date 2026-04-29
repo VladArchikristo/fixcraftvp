@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { detectEdges } from '../services/api';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 const { width: SCREEN_W } = Dimensions.get('window');
 
@@ -247,14 +248,14 @@ export default function ImageEditScreen({ route, navigation }) {
       <SafeAreaView style={styles.topSafe}>
         <View style={styles.topBar}>
           <TouchableOpacity style={styles.topBtnCancel} onPress={() => navigation.goBack()}>
-            <Ionicons name="close" size={22} color="#fff" />
+            <Ionicons name="close" size={22} color={COLORS.textInverse} />
             <Text style={styles.topBtnCancelText}>Cancel</Text>
           </TouchableOpacity>
           <View style={styles.topTitleArea}>
             <Text style={styles.topTitle}>Edit Document</Text>
             {autoDetecting && (
               <View style={styles.autoDetectBadge}>
-                <ActivityIndicator size={10} color="#4fc3f7" style={{ marginRight: 4 }} />
+                <ActivityIndicator size={10} color={COLORS.primary} style={{ marginRight: 4 }} />
                 <Text style={styles.autoDetectText}>Auto-detecting…</Text>
               </View>
             )}
@@ -270,9 +271,9 @@ export default function ImageEditScreen({ route, navigation }) {
             disabled={processing || autoDetecting}
           >
             {processing
-              ? <ActivityIndicator size="small" color="#0d0d1a" />
+              ? <ActivityIndicator size="small" color={COLORS.textInverse} />
               : <>
-                  <Ionicons name="checkmark" size={20} color="#0d0d1a" />
+                  <Ionicons name="checkmark" size={20} color={COLORS.textInverse} />
                   <Text style={styles.topBtnUseText}>Use</Text>
                 </>
             }
@@ -331,7 +332,7 @@ export default function ImageEditScreen({ route, navigation }) {
         {/* Rotating spinner */}
         {rotating && (
           <View style={styles.spinOverlay}>
-            <ActivityIndicator size="large" color="#4fc3f7" />
+            <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
         )}
       </View>
@@ -356,7 +357,7 @@ export default function ImageEditScreen({ route, navigation }) {
       <SafeAreaView style={styles.bottomSafe}>
         <View style={styles.bottomBar}>
           <TouchableOpacity style={styles.rotBtn} onPress={() => rotate('left')} disabled={rotating}>
-            <Ionicons name="refresh" size={22} color="#4fc3f7" style={{ transform: [{ scaleX: -1 }] }} />
+            <Ionicons name="refresh" size={22} color={COLORS.primary} style={{ transform: [{ scaleX: -1 }] }} />
             <Text style={styles.rotBtnText}>Rotate ←</Text>
           </TouchableOpacity>
 
@@ -366,7 +367,7 @@ export default function ImageEditScreen({ route, navigation }) {
           </View>
 
           <TouchableOpacity style={styles.rotBtn} onPress={() => rotate('right')} disabled={rotating}>
-            <Ionicons name="refresh" size={22} color="#4fc3f7" />
+            <Ionicons name="refresh" size={22} color={COLORS.primary} />
             <Text style={styles.rotBtnText}>Rotate →</Text>
           </TouchableOpacity>
         </View>
@@ -379,36 +380,36 @@ const CORNER_W = 3;
 const CORNER_L = 22;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
 
-  topSafe: { backgroundColor: '#111' },
+  topSafe: { backgroundColor: COLORS.bgCard },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.md,
     paddingVertical: 10,
-    backgroundColor: '#111',
+    backgroundColor: COLORS.bgCard,
   },
-  topBtnCancel: { flexDirection: 'row', alignItems: 'center', gap: 4, padding: 6 },
-  topBtnCancelText: { color: '#ccc', fontSize: 14 },
+  topBtnCancel: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, padding: 6 },
+  topBtnCancelText: { color: COLORS.textSecondary, fontSize: 14 },
   topTitleArea: { alignItems: 'center' },
-  topTitle: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  topTitle: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '700' },
   autoDetectBadge: {
     flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#0d1f2d', borderRadius: 6,
+    backgroundColor: COLORS.primaryLight, borderRadius: RADIUS.sm,
     paddingHorizontal: 6, paddingVertical: 2, marginTop: 3,
-    borderWidth: 1, borderColor: '#1a3a5a',
+    borderWidth: 1, borderColor: COLORS.border,
   },
-  autoDetectText: { color: '#4fc3f7', fontSize: 10, fontWeight: '600' },
+  autoDetectText: { color: COLORS.primary, fontSize: 10, fontWeight: '600' },
   topBtnUse: {
-    flexDirection: 'row', alignItems: 'center', gap: 4,
-    backgroundColor: '#4fc3f7', borderRadius: 8,
+    flexDirection: 'row', alignItems: 'center', gap: SPACING.xs,
+    backgroundColor: COLORS.accent, borderRadius: RADIUS.sm,
     paddingHorizontal: 14, paddingVertical: 7,
   },
-  topBtnUseText: { color: '#0d0d1a', fontSize: 14, fontWeight: '700' },
+  topBtnUseText: { color: COLORS.textInverse, fontSize: 14, fontWeight: '700' },
 
-  imageArea: { flex: 1, backgroundColor: '#000' },
+  imageArea: { flex: 1, backgroundColor: COLORS.bgCardAlt },
 
   mask: { position: 'absolute', backgroundColor: 'rgba(0,0,0,0.56)' },
 
@@ -438,51 +439,51 @@ const styles = StyleSheet.create({
   },
   cornerVis: { position: 'absolute', width: CORNER_L, height: CORNER_L },
   cornerTL: { top: 0, left: 0,
-    borderTopWidth: CORNER_W, borderLeftWidth: CORNER_W, borderColor: '#4fc3f7', borderRadius: 2 },
+    borderTopWidth: CORNER_W, borderLeftWidth: CORNER_W, borderColor: COLORS.primary, borderRadius: 2 },
   cornerTR: { top: 0, right: 0,
-    borderTopWidth: CORNER_W, borderRightWidth: CORNER_W, borderColor: '#4fc3f7', borderRadius: 2 },
+    borderTopWidth: CORNER_W, borderRightWidth: CORNER_W, borderColor: COLORS.primary, borderRadius: 2 },
   cornerBL: { bottom: 0, left: 0,
-    borderBottomWidth: CORNER_W, borderLeftWidth: CORNER_W, borderColor: '#4fc3f7', borderRadius: 2 },
+    borderBottomWidth: CORNER_W, borderLeftWidth: CORNER_W, borderColor: COLORS.primary, borderRadius: 2 },
   cornerBR: { bottom: 0, right: 0,
-    borderBottomWidth: CORNER_W, borderRightWidth: CORNER_W, borderColor: '#4fc3f7', borderRadius: 2 },
+    borderBottomWidth: CORNER_W, borderRightWidth: CORNER_W, borderColor: COLORS.primary, borderRadius: 2 },
 
   spinOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   filterBar: {
     flexDirection: 'row',
-    backgroundColor: '#111',
+    backgroundColor: COLORS.bgCard,
     paddingVertical: 10,
     borderTopWidth: 1,
-    borderTopColor: '#222',
+    borderTopColor: COLORS.border,
   },
   filterBtn: {
     flex: 1, alignItems: 'center', paddingVertical: 6,
     borderBottomWidth: 2.5, borderBottomColor: 'transparent',
   },
-  filterBtnActive: { borderBottomColor: '#4fc3f7' },
+  filterBtnActive: { borderBottomColor: COLORS.primary },
   filterIcon: { fontSize: 20, marginBottom: 3 },
-  filterLabel: { color: '#555', fontSize: 11, fontWeight: '600' },
-  filterLabelActive: { color: '#4fc3f7' },
+  filterLabel: { color: COLORS.textMuted, fontSize: 11, fontWeight: '600' },
+  filterLabelActive: { color: COLORS.primary },
 
-  bottomSafe: { backgroundColor: '#111' },
+  bottomSafe: { backgroundColor: COLORS.bgCard },
   bottomBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 24,
+    paddingHorizontal: SPACING.lg,
     paddingVertical: 12,
-    backgroundColor: '#111',
+    backgroundColor: COLORS.bgCard,
     borderTopWidth: 1,
-    borderTopColor: '#222',
+    borderTopColor: COLORS.border,
   },
-  rotBtn: { alignItems: 'center', gap: 4, minWidth: 70 },
-  rotBtnText: { color: '#4fc3f7', fontSize: 11 },
+  rotBtn: { alignItems: 'center', gap: SPACING.xs, minWidth: 70 },
+  rotBtnText: { color: COLORS.primary, fontSize: 11 },
   filterLabel2: { alignItems: 'center', flex: 1 },
-  filterLabel2Text: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  filterLabel2Sub: { color: '#555', fontSize: 10, marginTop: 2 },
+  filterLabel2Text: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700' },
+  filterLabel2Sub: { color: COLORS.textMuted, fontSize: 10, marginTop: 2 },
 });

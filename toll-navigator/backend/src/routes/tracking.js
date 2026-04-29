@@ -16,7 +16,7 @@ router.post('/start', verifyToken, (req, res) => {
     return res.status(400).json({ error: 'destination is required' });
   }
 
-  const session = LoadTracking.create(req.user.id, destination.trim());
+  const session = LoadTracking.create(req.userId, destination.trim());
   const trackingUrl = `${BASE_URL}/track/${session.token}`;
 
   return res.status(201).json({
@@ -40,11 +40,18 @@ router.post('/update', (req, res) => {
 
   const latNum = parseFloat(lat);
   const lngNum = parseFloat(lng);
-  if (isNaN(latNum) || isNaN(lngNum)) {
-    return res.status(400).json({ error: 'lat and lng must be numbers' });
+  if (isNaN(latNum) || isNaN(lngNum) || !isFinite(latNum) || !isFinite(lngNum)) {
+    return res.status(400).json({ error: 'lat and lng must be valid numbers' });
+  }
+  if (latNum < -90 || latNum > 90 || lngNum < -180 || lngNum > 180) {
+    return res.status(400).json({ error: 'lat must be -90..90, lng must be -180..180' });
   }
 
-  const session = LoadTracking.updatePosition(token, latNum, lngNum, speed != null ? parseFloat(speed) : null);
+  const speedNum = speed != null ? parseFloat(speed) : null;
+  if (speedNum !== null && (!isFinite(speedNum) || speedNum < 0 || speedNum > 200)) {
+    return res.status(400).json({ error: 'speed must be a valid number between 0 and 200 mph' });
+  }
+  const session = LoadTracking.updatePosition(token, latNum, lngNum, speedNum);
   if (!session) {
     return res.status(404).json({ error: 'Tracking session not found or already stopped' });
   }
@@ -61,7 +68,7 @@ router.post('/stop', verifyToken, (req, res) => {
 
   const session = LoadTracking.get(token);
   if (!session) return res.status(404).json({ error: 'Session not found' });
-  if (session.driverId !== req.user.id) {
+  if (session.driverId !== req.userId) {
     return res.status(403).json({ error: 'Not your tracking session' });
   }
 

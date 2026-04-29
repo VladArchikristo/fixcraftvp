@@ -10,6 +10,7 @@ import { login } from '../services/api';
 import { saveToken, saveUser } from '../services/auth';
 import { handleGoogleAuth, handleAppleAuth } from '../services/socialAuth';
 import { GOOGLE_CLIENT_ID, GOOGLE_IOS_CLIENT_ID } from '../config';
+import { COLORS, SPACING, RADIUS, SHADOW } from '../theme';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -64,7 +65,9 @@ export default function LoginScreen({ navigation, onLogin }) {
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         {/* Logo */}
         <View style={styles.header}>
-          <Text style={styles.logo}>🛣️</Text>
+          <View style={styles.logoBadge}>
+            <Ionicons name="navigate" size={28} color={COLORS.textInverse} />
+          </View>
           <Text style={styles.title}>HaulWallet</Text>
           <Text style={styles.subtitle}>Sign in to your account</Text>
         </View>
@@ -73,11 +76,11 @@ export default function LoginScreen({ navigation, onLogin }) {
         <View style={styles.card}>
           <Text style={styles.label}>Email</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="mail-outline" size={20} color="#4fc3f7" style={styles.icon} />
+            <Ionicons name="mail-outline" size={20} color={COLORS.primary} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="driver@company.com"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
@@ -87,11 +90,11 @@ export default function LoginScreen({ navigation, onLogin }) {
 
           <Text style={[styles.label, { marginTop: 16 }]}>Password</Text>
           <View style={styles.inputRow}>
-            <Ionicons name="lock-closed-outline" size={20} color="#4fc3f7" style={styles.icon} />
+            <Ionicons name="lock-closed-outline" size={20} color={COLORS.primary} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="At least 6 characters"
-              placeholderTextColor="#555"
+              placeholderTextColor={COLORS.textMuted}
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPass}
@@ -100,7 +103,7 @@ export default function LoginScreen({ navigation, onLogin }) {
               <Ionicons
                 name={showPass ? 'eye-outline' : 'eye-off-outline'}
                 size={20}
-                color="#555"
+                color={COLORS.textMuted}
               />
             </TouchableOpacity>
           </View>
@@ -113,7 +116,7 @@ export default function LoginScreen({ navigation, onLogin }) {
           disabled={loading}
         >
           {loading
-            ? <ActivityIndicator color="#000" />
+            ? <ActivityIndicator color={COLORS.textInverse} />
             : <Text style={styles.btnText}>Sign In</Text>
           }
         </TouchableOpacity>
@@ -132,7 +135,7 @@ export default function LoginScreen({ navigation, onLogin }) {
           disabled={socialLoading !== null}
         >
           {socialLoading === 'google' ? (
-            <ActivityIndicator color="#fff" size="small" />
+            <ActivityIndicator color={COLORS.textPrimary} size="small" />
           ) : (
             <>
               <View style={styles.googleIcon}>
@@ -151,10 +154,10 @@ export default function LoginScreen({ navigation, onLogin }) {
             disabled={socialLoading !== null}
           >
             {socialLoading === 'apple' ? (
-              <ActivityIndicator color="#fff" size="small" />
+              <ActivityIndicator color={COLORS.textPrimary} size="small" />
             ) : (
               <>
-                <Ionicons name="logo-apple" size={20} color="#fff" style={styles.socialIcon} />
+                <Ionicons name="logo-apple" size={20} color={COLORS.textPrimary} style={styles.socialIcon} />
                 <Text style={styles.socialBtnText}>Continue with Apple</Text>
               </>
             )}
@@ -176,81 +179,88 @@ export default function LoginScreen({ navigation, onLogin }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { flexGrow: 1, justifyContent: 'center', padding: 20 },
 
   header: { alignItems: 'center', marginBottom: 36 },
-  logo: { fontSize: 56 },
-  title: { fontSize: 28, fontWeight: '800', color: '#fff', marginTop: 8 },
-  subtitle: { fontSize: 14, color: '#888', marginTop: 4 },
+  logoBadge: {
+    width: 56, height: 56, borderRadius: 18,
+    backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center',
+    marginBottom: SPACING.sm,
+    ...SHADOW.lg,
+  },
+  title: { fontSize: 28, fontWeight: '800', color: COLORS.textPrimary, marginTop: SPACING.sm },
+  subtitle: { fontSize: 14, color: COLORS.textSecondary, marginTop: SPACING.xs },
 
   card: {
-    backgroundColor: '#12122a',
-    borderRadius: 16,
+    backgroundColor: COLORS.bgCard,
+    borderRadius: RADIUS.lg,
     padding: 20,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     marginBottom: 20,
+    ...SHADOW.sm,
   },
-  label: { color: '#aaa', fontSize: 13, fontWeight: '600', marginBottom: 8 },
+  label: { color: COLORS.textSecondary, fontSize: 13, fontWeight: '600', marginBottom: SPACING.sm },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0a0a1a',
+    backgroundColor: COLORS.bgInput,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     paddingHorizontal: 12,
     height: 48,
   },
-  icon: { marginRight: 8 },
-  input: { flex: 1, color: '#fff', fontSize: 15 },
+  icon: { marginRight: SPACING.sm },
+  input: { flex: 1, color: COLORS.textPrimary, fontSize: 15 },
 
   btn: {
-    backgroundColor: '#4fc3f7',
-    borderRadius: 12,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.md,
     height: 52,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
+    ...SHADOW.md,
   },
   btnDisabled: { opacity: 0.6 },
-  btnText: { color: '#000', fontSize: 16, fontWeight: '800' },
+  btnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800' },
 
   divider: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
-  dividerLine: { flex: 1, height: 1, backgroundColor: '#1e1e3a' },
-  dividerText: { color: '#555', fontSize: 13, marginHorizontal: 12 },
+  dividerLine: { flex: 1, height: 1, backgroundColor: COLORS.bgCardAlt },
+  dividerText: { color: COLORS.textMuted, fontSize: 13, marginHorizontal: 12 },
 
   socialBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     height: 52,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#3a3a5a',
-    backgroundColor: '#12122a',
+    borderColor: COLORS.borderLight,
+    backgroundColor: COLORS.bgCard,
     marginBottom: 12,
   },
   socialIcon: { marginRight: 10 },
-  socialBtnText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  socialBtnText: { color: COLORS.textPrimary, fontSize: 15, fontWeight: '600' },
 
   googleIcon: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.textPrimary,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
   },
   googleG: { color: '#4285F4', fontSize: 13, fontWeight: '800' },
 
-  link: { alignItems: 'center', paddingVertical: 8, marginTop: 4 },
-  linkText: { color: '#666', fontSize: 14 },
-  linkAccent: { color: '#4fc3f7', fontWeight: '700' },
+  link: { alignItems: 'center', paddingVertical: SPACING.sm, marginTop: SPACING.xs },
+  linkText: { color: COLORS.textMuted, fontSize: 14 },
+  linkAccent: { color: COLORS.primary, fontWeight: '700' },
 });

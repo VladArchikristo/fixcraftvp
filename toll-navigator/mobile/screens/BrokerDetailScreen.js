@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getBrokerDetail, deleteBrokerReview } from '../services/brokers';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 const ISSUE_TYPE_MAP = {
   late_payment:  { label: 'Late Payment', emoji: '🕐', color: '#ffb74d' },
@@ -22,9 +23,9 @@ function formatDate(dateStr) {
 }
 
 function getRatingColor(rating) {
-  if (rating >= 4) return '#81c784';
-  if (rating >= 3) return '#ffb74d';
-  return '#ef9a9a';
+  if (rating >= 4) return COLORS.success;
+  if (rating >= 3) return COLORS.warning;
+  return COLORS.error;
 }
 
 function StarRating({ rating, size = 16 }) {
@@ -37,7 +38,7 @@ function StarRating({ rating, size = 16 }) {
         key={i}
         name={filled ? 'star' : half ? 'star-half' : 'star-outline'}
         size={size}
-        color={filled || half ? '#ffb74d' : '#333'}
+        color={filled || half ? COLORS.warning : COLORS.textMuted}
       />
     );
   }
@@ -69,7 +70,7 @@ function ReviewCard({ review, onDelete }) {
           </Text>
           {onDelete && (
             <TouchableOpacity onPress={onDelete} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-              <Ionicons name="trash-outline" size={15} color="#555" />
+              <Ionicons name="trash-outline" size={15} color={COLORS.textMuted} />
             </TouchableOpacity>
           )}
         </View>
@@ -195,7 +196,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#4fc3f7" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <Text style={styles.loadingText}>Loading broker...</Text>
       </View>
     );
@@ -204,7 +205,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
   if (error || !broker) {
     return (
       <View style={styles.center}>
-        <Ionicons name="alert-circle-outline" size={48} color="#ef9a9a" />
+        <Ionicons name="alert-circle-outline" size={48} color={COLORS.error} />
         <Text style={styles.errorText}>{error || 'Broker not found'}</Text>
         <TouchableOpacity style={styles.retryBtn} onPress={loadBroker}>
           <Text style={styles.retryText}>Retry</Text>
@@ -218,7 +219,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
   const reviews = broker.reviews || [];
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#0d0d1a' }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.scroll}>
 
         {/* Broker header */}
@@ -240,7 +241,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
             ) : null}
             {(broker.city || broker.state) ? (
               <View style={styles.infoRow}>
-                <Ionicons name="location-outline" size={14} color="#555" />
+                <Ionicons name="location-outline" size={14} color={COLORS.textMuted} />
                 <Text style={styles.infoValue}>
                   {[broker.city, broker.state].filter(Boolean).join(', ')}
                 </Text>
@@ -251,13 +252,13 @@ export default function BrokerDetailScreen({ route, navigation }) {
           <View style={styles.contactRow}>
             {broker.phone ? (
               <TouchableOpacity style={styles.contactBtn} onPress={() => handlePhone(broker.phone)}>
-                <Ionicons name="call-outline" size={15} color="#4fc3f7" />
+                <Ionicons name="call-outline" size={15} color={COLORS.primary} />
                 <Text style={styles.contactBtnText}>{broker.phone}</Text>
               </TouchableOpacity>
             ) : null}
             {broker.email ? (
               <TouchableOpacity style={styles.contactBtn} onPress={() => handleEmail(broker.email)}>
-                <Ionicons name="mail-outline" size={15} color="#4fc3f7" />
+                <Ionicons name="mail-outline" size={15} color={COLORS.primary} />
                 <Text style={styles.contactBtnText}>{broker.email}</Text>
               </TouchableOpacity>
             ) : null}
@@ -327,7 +328,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
             disabled={loadingMoreReviews}
           >
             {loadingMoreReviews ? (
-              <ActivityIndicator size="small" color="#4fc3f7" />
+              <ActivityIndicator size="small" color={COLORS.primary} />
             ) : (
               <Text style={styles.loadMoreBtnText}>Load more reviews</Text>
             )}
@@ -340,7 +341,7 @@ export default function BrokerDetailScreen({ route, navigation }) {
       {/* Write Review button */}
       <View style={styles.bottomBar}>
         <TouchableOpacity style={styles.reviewBtn} onPress={handleAddReview}>
-          <Ionicons name="create-outline" size={18} color="#fff" />
+          <Ionicons name="create-outline" size={18} color={COLORS.textInverse} />
           <Text style={styles.reviewBtnText}>Write Review</Text>
         </TouchableOpacity>
       </View>
@@ -353,42 +354,42 @@ function getReviewWord(count) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { padding: 16, paddingBottom: 40 },
 
   center: {
     flex: 1,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 32,
   },
-  loadingText: { color: '#555', fontSize: 14, marginTop: 12 },
-  errorText: { color: '#ef9a9a', fontSize: 14, textAlign: 'center', marginTop: 12 },
+  loadingText: { color: COLORS.textMuted, fontSize: 14, marginTop: 12 },
+  errorText: { color: COLORS.error, fontSize: 14, textAlign: 'center', marginTop: 12 },
   retryBtn: {
     marginTop: 20,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
-  retryText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  retryText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   // Broker card
   brokerCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
-  brokerName: { color: '#fff', fontSize: 22, fontWeight: '800', marginBottom: 14 },
+  brokerName: { color: COLORS.textPrimary, fontSize: 22, fontWeight: '800', marginBottom: 14 },
   infoGrid: { gap: 8, marginBottom: 14 },
   infoRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  infoLabel: { color: '#555', fontSize: 12, fontWeight: '700', width: 40 },
-  infoValue: { color: '#bbb', fontSize: 14 },
+  infoLabel: { color: COLORS.textMuted, fontSize: 12, fontWeight: '700', width: 40 },
+  infoValue: { color: COLORS.textSecondary, fontSize: 14 },
   contactRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap' },
   contactBtn: {
     flexDirection: 'row',
@@ -396,21 +397,21 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: '#0a1520',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#1e3a50',
+    borderColor: COLORS.border,
   },
-  contactBtnText: { color: '#4fc3f7', fontSize: 13 },
+  contactBtnText: { color: COLORS.primary, fontSize: 13 },
 
   // Rating card
   ratingCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   ratingMain: {
     flexDirection: 'row',
@@ -421,20 +422,20 @@ const styles = StyleSheet.create({
   ratingBig: { fontSize: 52, fontWeight: '900', lineHeight: 60 },
   ratingRight: { flex: 1 },
   starsRow: { flexDirection: 'row', gap: 3, marginBottom: 6 },
-  ratingReviewCount: { color: '#555', fontSize: 13 },
+  ratingReviewCount: { color: COLORS.textMuted, fontSize: 13 },
 
   ratingDistribution: { gap: 6 },
   distRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  distLabel: { color: '#555', fontSize: 12, width: 32 },
+  distLabel: { color: COLORS.textMuted, fontSize: 12, width: 32 },
   distBarWrap: {
     flex: 1,
     height: 6,
-    backgroundColor: '#1e1e3a',
+    backgroundColor: COLORS.bgCardAlt,
     borderRadius: 3,
     overflow: 'hidden',
   },
   distBar: { height: '100%', borderRadius: 3 },
-  distCount: { color: '#555', fontSize: 12, width: 20, textAlign: 'right' },
+  distCount: { color: COLORS.textMuted, fontSize: 12, width: 20, textAlign: 'right' },
 
   // Section
   sectionHeader: {
@@ -445,17 +446,17 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   sectionTitle: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   sectionCount: {
-    color: '#4fc3f7',
+    color: COLORS.primary,
     fontSize: 11,
     fontWeight: '700',
-    backgroundColor: '#0a1520',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 10,
     paddingHorizontal: 7,
     paddingVertical: 2,
@@ -465,22 +466,22 @@ const styles = StyleSheet.create({
   noReviews: {
     alignItems: 'center',
     paddingVertical: 32,
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
-  noReviewsText: { color: '#555', fontSize: 16, fontWeight: '700', marginBottom: 6 },
-  noReviewsSub: { color: '#333', fontSize: 13 },
+  noReviewsText: { color: COLORS.textMuted, fontSize: 16, fontWeight: '700', marginBottom: 6 },
+  noReviewsSub: { color: COLORS.textMuted, fontSize: 13 },
 
   // Review cards
   reviewCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 12,
     padding: 14,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   reviewHeader: {
     flexDirection: 'row',
@@ -499,10 +500,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
   },
-  issueBadgeText: { color: '#ccc', fontSize: 12, fontWeight: '600' },
+  issueBadgeText: { color: COLORS.textSecondary, fontSize: 12, fontWeight: '600' },
 
   reviewComment: {
-    color: '#bbb',
+    color: COLORS.textSecondary,
     fontSize: 14,
     lineHeight: 20,
     marginBottom: 10,
@@ -512,8 +513,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  reviewDate: { color: '#444', fontSize: 11 },
-  reviewAnon: { color: '#444', fontSize: 11, fontStyle: 'italic' },
+  reviewDate: { color: COLORS.textMuted, fontSize: 11 },
+  reviewAnon: { color: COLORS.textMuted, fontSize: 11, fontStyle: 'italic' },
 
   loadMoreBtn: {
     alignItems: 'center',
@@ -522,27 +523,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e3a50',
-    backgroundColor: '#0a1520',
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.primaryLight,
   },
-  loadMoreBtnText: { color: '#4fc3f7', fontSize: 14, fontWeight: '600' },
+  loadMoreBtnText: { color: COLORS.primary, fontSize: 14, fontWeight: '600' },
 
   // Bottom bar
   bottomBar: {
     padding: 16,
     paddingBottom: 24,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderTopWidth: 1,
-    borderTopColor: '#1e1e3a',
+    borderTopColor: COLORS.borderLight,
   },
   reviewBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: '#1565c0',
+    backgroundColor: COLORS.accent,
     paddingVertical: 16,
     borderRadius: 14,
   },
-  reviewBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  reviewBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800' },
 });

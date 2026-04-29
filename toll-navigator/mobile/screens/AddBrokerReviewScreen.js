@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { addBrokerReview, createBrokerWithReview } from '../services/brokers';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 const ISSUE_TYPES = [
   { value: 'late_payment',  label: 'Late Payment', emoji: '🕐' },
@@ -28,7 +29,7 @@ function StarInput({ value, onChange }) {
           <Ionicons
             name={star <= value ? 'star' : 'star-outline'}
             size={38}
-            color={star <= value ? '#ffb74d' : '#333'}
+            color={star <= value ? COLORS.warning : COLORS.textMuted}
           />
         </TouchableOpacity>
       ))}
@@ -136,7 +137,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: '#0d0d1a' }}
+      style={{ flex: 1, backgroundColor: COLORS.bg }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       keyboardVerticalOffset={88}
     >
@@ -154,7 +155,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
             <TextInput
               style={styles.input}
               placeholder="e.g. Best Freight LLC"
-              placeholderTextColor="#444"
+              placeholderTextColor={COLORS.textMuted}
               value={brokerNameField}
               onChangeText={setBrokerNameField}
               autoCapitalize="words"
@@ -166,7 +167,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
                 <TextInput
                   style={styles.input}
                   placeholder="123456"
-                  placeholderTextColor="#444"
+                  placeholderTextColor={COLORS.textMuted}
                   value={mcNumber}
                   onChangeText={setMcNumber}
                   keyboardType="numeric"
@@ -177,7 +178,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
                 <TextInput
                   style={styles.input}
                   placeholder="654321"
-                  placeholderTextColor="#444"
+                  placeholderTextColor={COLORS.textMuted}
                   value={dotNumber}
                   onChangeText={setDotNumber}
                   keyboardType="numeric"
@@ -189,7 +190,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
             <TextInput
               style={styles.input}
               placeholder="+1 (555) 000-0000"
-              placeholderTextColor="#444"
+              placeholderTextColor={COLORS.textMuted}
               value={phone}
               onChangeText={setPhone}
               keyboardType="phone-pad"
@@ -201,7 +202,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
                 <TextInput
                   style={styles.input}
                   placeholder="Chicago"
-                  placeholderTextColor="#444"
+                  placeholderTextColor={COLORS.textMuted}
                   value={city}
                   onChangeText={setCity}
                   autoCapitalize="words"
@@ -212,7 +213,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
                 <TextInput
                   style={styles.input}
                   placeholder="IL"
-                  placeholderTextColor="#444"
+                  placeholderTextColor={COLORS.textMuted}
                   value={state}
                   onChangeText={(t) => setState(t.toUpperCase().slice(0, 2))}
                   autoCapitalize="characters"
@@ -226,7 +227,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
         {/* If editing existing — show name */}
         {!isNewBroker && brokerName && (
           <View style={styles.brokerNameBadge}>
-            <Ionicons name="business-outline" size={16} color="#4fc3f7" />
+            <Ionicons name="business-outline" size={16} color={COLORS.primary} />
             <Text style={styles.brokerNameBadgeText}>{brokerName}</Text>
           </View>
         )}
@@ -273,7 +274,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           <TextInput
             style={styles.textArea}
             placeholder="Describe the situation in detail..."
-            placeholderTextColor="#444"
+            placeholderTextColor={COLORS.textMuted}
             value={comment}
             onChangeText={(t) => setComment(t.slice(0, MAX_COMMENT))}
             multiline
@@ -292,7 +293,7 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           {/* Anonymous */}
           <View style={styles.toggleRow}>
             <View style={styles.toggleLeft}>
-              <Ionicons name="eye-off-outline" size={18} color="#555" />
+              <Ionicons name="eye-off-outline" size={18} color={COLORS.textMuted} />
               <View>
                 <Text style={styles.toggleLabel}>Anonymous</Text>
                 <Text style={styles.toggleSub}>Your name will not be shown</Text>
@@ -301,8 +302,8 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
             <Switch
               value={isAnonymous}
               onValueChange={setIsAnonymous}
-              trackColor={{ false: '#1e1e3a', true: '#1565c0' }}
-              thumbColor={isAnonymous ? '#4fc3f7' : '#555'}
+              trackColor={{ false: COLORS.bgCardAlt, true: COLORS.accent }}
+              thumbColor={isAnonymous ? COLORS.primary : COLORS.textMuted}
             />
           </View>
         </View>
@@ -314,9 +315,9 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
           disabled={submitting}
         >
           {submitting ? (
-            <ActivityIndicator size="small" color="#fff" />
+            <ActivityIndicator size="small" color={COLORS.textInverse} />
           ) : (
-            <Ionicons name="send-outline" size={18} color="#fff" />
+            <Ionicons name="send-outline" size={18} color={COLORS.textInverse} />
           )}
           <Text style={styles.submitBtnText}>
             {submitting ? 'Publishing...' : 'Publish Review'}
@@ -330,50 +331,50 @@ export default function AddBrokerReviewScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
-  scroll: { padding: 16, paddingBottom: 40 },
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  scroll: { padding: SPACING.md, paddingBottom: 40 },
 
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
-    marginBottom: 16,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   cardTitle: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 11,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
 
   brokerNameBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor: '#0a1520',
+    gap: SPACING.sm,
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    marginBottom: 16,
+    marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: '#1e3a50',
+    borderColor: COLORS.border,
   },
-  brokerNameBadgeText: { color: '#4fc3f7', fontSize: 15, fontWeight: '700' },
+  brokerNameBadgeText: { color: COLORS.primary, fontSize: 15, fontWeight: '700' },
 
-  sectionLabelRow: { flexDirection: 'row', marginBottom: 8, marginTop: 4 },
-  sectionLabel: { color: '#777', fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3 },
-  sectionRequired: { color: '#ef9a9a', fontSize: 12, fontWeight: '700' },
+  sectionLabelRow: { flexDirection: 'row', marginBottom: SPACING.sm, marginTop: SPACING.xs },
+  sectionLabel: { color: COLORS.textMuted, fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3 },
+  sectionRequired: { color: COLORS.error, fontSize: 12, fontWeight: '700' },
 
   input: {
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    color: '#fff',
+    borderColor: COLORS.bgCardAlt,
+    color: COLORS.textPrimary,
     fontSize: 15,
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -387,62 +388,62 @@ const styles = StyleSheet.create({
 
   divider: {
     height: 1,
-    backgroundColor: '#1e1e3a',
+    backgroundColor: COLORS.bgCardAlt,
     marginVertical: 14,
   },
 
   starInputRow: {
     flexDirection: 'row',
-    gap: 8,
-    marginBottom: 8,
-    paddingVertical: 4,
+    gap: SPACING.sm,
+    marginBottom: SPACING.sm,
+    paddingVertical: SPACING.xs,
   },
   ratingLabel: {
-    color: '#ffb74d',
+    color: COLORS.warning,
     fontSize: 13,
     fontWeight: '700',
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
 
   issueGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 4,
+    gap: SPACING.sm,
+    marginBottom: SPACING.xs,
   },
   issueBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#0d0d1a',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bg,
   },
   issueBtnActive: {
-    borderColor: '#4fc3f7',
-    backgroundColor: '#0a1520',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryLight,
   },
   issueBtnEmoji: { fontSize: 14 },
-  issueBtnText: { color: '#555', fontSize: 12, fontWeight: '600' },
-  issueBtnTextActive: { color: '#4fc3f7' },
+  issueBtnText: { color: COLORS.textMuted, fontSize: 12, fontWeight: '600' },
+  issueBtnTextActive: { color: COLORS.primary },
 
   textArea: {
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    color: '#fff',
+    borderColor: COLORS.bgCardAlt,
+    color: COLORS.textPrimary,
     fontSize: 15,
     paddingHorizontal: 14,
     paddingVertical: 12,
     minHeight: 110,
     marginBottom: 6,
   },
-  charCount: { color: '#444', fontSize: 11, textAlign: 'right' },
-  charCountWarn: { color: '#ef9a9a' },
+  charCount: { color: COLORS.textMuted, fontSize: 11, textAlign: 'right' },
+  charCountWarn: { color: COLORS.error },
 
   toggleRow: {
     flexDirection: 'row',
@@ -451,19 +452,19 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   toggleLeft: { flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 },
-  toggleLabel: { color: '#bbb', fontSize: 14, fontWeight: '600' },
-  toggleSub: { color: '#444', fontSize: 11, marginTop: 2 },
+  toggleLabel: { color: COLORS.textSecondary, fontSize: 14, fontWeight: '600' },
+  toggleSub: { color: COLORS.textMuted, fontSize: 11, marginTop: 2 },
 
   submitBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: '#1565c0',
+    backgroundColor: COLORS.accent,
     paddingVertical: 18,
     borderRadius: 14,
-    marginTop: 4,
+    marginTop: SPACING.xs,
   },
-  submitBtnDisabled: { backgroundColor: '#0d2a50', opacity: 0.7 },
-  submitBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
+  submitBtnDisabled: { backgroundColor: COLORS.bgCardAlt, opacity: 0.7 },
+  submitBtnText: { color: COLORS.textInverse, fontSize: 16, fontWeight: '800' },
 });

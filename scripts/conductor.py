@@ -176,7 +176,7 @@ def run_bot_script(script_path: str, task: str) -> str:
         ["/bin/bash", script_path, task],
         capture_output=True,
         text=True,
-        timeout=600,
+        timeout=3600,
         env=env,
         cwd=PROJECT_ROOT
     )
@@ -208,7 +208,7 @@ def run_claude_direct(task: str, github_id: int) -> str:
          "--permission-mode", "bypassPermissions"],
         capture_output=True,
         text=True,
-        timeout=600,
+        timeout=3600,
         env=env,
         cwd=PROJECT_ROOT
     )

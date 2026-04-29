@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 // City coordinates lookup (top US cities)
 const CITY_COORDS = {
@@ -76,8 +77,11 @@ async function resolveCoords(input) {
 
 async function fetchOSRMRoute(fromCoords, toCoords) {
   const url = `https://router.project-osrm.org/route/v1/driving/${fromCoords[1]},${fromCoords[0]};${toCoords[1]},${toCoords[0]}?overview=full&geometries=geojson`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
   try {
-    const res = await fetch(url, { timeout: 10000 });
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
     const data = await res.json();
     if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
       // GeoJSON coordinates are [lng, lat], convert to [lat, lng] for Leaflet
@@ -99,8 +103,8 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total, route
     ? JSON.stringify([[fromCoords[0], fromCoords[1]], [toCoords[0], toCoords[1]]])
     : JSON.stringify(routeCoords);
   const lineStyle = useFallback
-    ? `{ color: '#4fc3f7', weight: 3, opacity: 0.8, dashArray: '8, 6' }`
-    : `{ color: '#4fc3f7', weight: 4, opacity: 0.9 }`;
+    ? `{ color: '#1B3A5C', weight: 3, opacity: 0.8, dashArray: '8, 6' }`
+    : `{ color: '#1B3A5C', weight: 4, opacity: 0.9 }`;
 
   return `<!DOCTYPE html>
 <html>
@@ -110,16 +114,16 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total, route
   <title>Route Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body { margin: 0; padding: 0; background: #0d0d1a; }
+    body { margin: 0; padding: 0; background: #FFFFFF; }
     #map { height: 100vh; width: 100vw; }
     .cost-badge {
       position: absolute;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(13,13,26,0.92);
-      color: #4fc3f7;
-      border: 2px solid #4fc3f7;
+      background: rgba(255,255,255,0.95);
+      color: #1B3A5C;
+      border: 2px solid #FF8C00;
       border-radius: 12px;
       padding: 10px 20px;
       font-family: -apple-system, sans-serif;
@@ -127,6 +131,7 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total, route
       font-weight: 800;
       z-index: 1000;
       white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
   </style>
 </head>
@@ -147,13 +152,13 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total, route
     }).addTo(map);
 
     var fromIcon = L.divIcon({
-      html: '<div style="background:#4fc3f7;border:3px solid #fff;border-radius:50%;width:18px;height:18px;box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>',
+      html: '<div style="background:#1B3A5C;border:3px solid #fff;border-radius:50%;width:18px;height:18px;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>',
       iconSize: [18, 18],
       iconAnchor: [9, 9],
       className: '',
     });
     var toIcon = L.divIcon({
-      html: '<div style="background:#81c784;border:3px solid #fff;border-radius:50%;width:18px;height:18px;box-shadow:0 2px 8px rgba(0,0,0,0.5)"></div>',
+      html: '<div style="background:#2E7D32;border:3px solid #fff;border-radius:50%;width:18px;height:18px;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>',
       iconSize: [18, 18],
       iconAnchor: [9, 9],
       className: '',
@@ -161,12 +166,12 @@ function buildLeafletHTML(fromCoords, toCoords, fromLabel, toLabel, total, route
 
     var fromMarker = L.marker([${fromCoords[0]}, ${fromCoords[1]}], { icon: fromIcon })
       .addTo(map)
-      .bindPopup('<b style="color:#4fc3f7">\u{1F4CD} ${fromLabel.replace(/'/g, "\\'")}</b><br>From')
+      .bindPopup('<b style="color:#1B3A5C">\u{1F4CD} ${fromLabel.replace(/'/g, "\\'")}</b><br>From')
       .openPopup();
 
     var toMarker = L.marker([${toCoords[0]}, ${toCoords[1]}], { icon: toIcon })
       .addTo(map)
-      .bindPopup('<b style="color:#81c784">\u{1F3C1} ${toLabel.replace(/'/g, "\\'")}</b><br>To');
+      .bindPopup('<b style="color:#2E7D32">\u{1F3C1} ${toLabel.replace(/'/g, "\\'")}</b><br>To');
 
     var latlngs = ${latlngsJSON};
     var polyline = L.polyline(latlngs, ${lineStyle}).addTo(map);
@@ -201,9 +206,9 @@ export default function MapScreen({ route, navigation }) {
       setFromCoords(fc);
       setToCoords(tc);
       setFetchingRoute(true);
-      const route = await fetchOSRMRoute(fc, tc);
+      const osrmRoute = await fetchOSRMRoute(fc, tc);
       if (cancelled) return;
-      setRouteCoords(route);
+      setRouteCoords(osrmRoute);
       setFetchingRoute(false);
       setLoading(false);
     })();
@@ -221,7 +226,7 @@ export default function MapScreen({ route, navigation }) {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={22} color="#4fc3f7" />
+          <Ionicons name="arrow-back" size={22} color={COLORS.primary} />
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <Text style={styles.headerRoute} numberOfLines={1}>
@@ -241,19 +246,13 @@ export default function MapScreen({ route, navigation }) {
         </View>
       ) : loading || fetchingRoute ? (
         <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#4fc3f7" />
+          <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={styles.loadingText}>
             {fetchingRoute ? 'Building driving route...' : 'Looking up addresses...'}
           </Text>
         </View>
       ) : (
         <>
-          {loading && (
-            <View style={styles.loadingOverlay}>
-              <ActivityIndicator size="large" color="#4fc3f7" />
-              <Text style={styles.loadingText}>Loading map...</Text>
-            </View>
-          )}
           <WebView
             source={{ html }}
             style={styles.webview}
@@ -270,20 +269,20 @@ export default function MapScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.md,
     paddingVertical: 12,
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     borderBottomWidth: 1,
-    borderBottomColor: '#1e1e3a',
+    borderBottomColor: COLORS.bgCardAlt,
   },
-  backBtn: { padding: 4, marginRight: 12 },
+  backBtn: { padding: SPACING.xs, marginRight: 12 },
   headerInfo: { flex: 1 },
-  headerRoute: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  headerCost: { color: '#4fc3f7', fontSize: 12, marginTop: 2 },
+  headerRoute: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700' },
+  headerCost: { color: COLORS.primary, fontSize: 12, marginTop: 2 },
   webview: { flex: 1 },
   loadingOverlay: {
     position: 'absolute',
@@ -293,17 +292,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0d0d1a',
+    backgroundColor: COLORS.bg,
     zIndex: 10,
   },
-  loadingText: { color: '#4fc3f7', marginTop: 12, fontSize: 14 },
+  loadingText: { color: COLORS.primary, marginTop: 12, fontSize: 14 },
   noCoords: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 40,
   },
-  noCoordsIcon: { fontSize: 60, marginBottom: 16 },
-  noCoordsText: { color: '#fff', fontSize: 16, fontWeight: '700', textAlign: 'center', marginBottom: 8 },
-  noCoordsHint: { color: '#666', fontSize: 13, textAlign: 'center' },
+  noCoordsIcon: { fontSize: 60, marginBottom: SPACING.md },
+  noCoordsText: { color: COLORS.textPrimary, fontSize: 16, fontWeight: '700', textAlign: 'center', marginBottom: SPACING.sm },
+  noCoordsHint: { color: COLORS.textMuted, fontSize: 13, textAlign: 'center' },
 });

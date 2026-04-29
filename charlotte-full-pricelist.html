@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FixCraftVP — Прайс-лист Charlotte, NC</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    font-size: 13px;
+  }
+
+  .cover {
+    background: linear-gradient(135deg, #1a56db 0%, #0f3fa0 60%, #0a2d7a 100%);
+    color: white;
+    padding: 60px 50px;
+    min-height: 200px;
+    page-break-after: always;
+  }
+
+  .cover-logo {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+
+  .cover-title {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .cover-subtitle {
+    font-size: 16px;
+    opacity: 0.8;
+    margin-bottom: 30px;
+  }
+
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+  }
+
+  .cover-meta {
+    margin-top: 30px;
+    opacity: 0.6;
+    font-size: 12px;
+  }
+
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 40px;
+  }
+
+  .section {
+    margin-bottom: 30px;
+    page-break-inside: avoid;
+  }
+
+  .section-header {
+    background: linear-gradient(90deg, #1a56db 0%, #2563eb 100%);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px 8px 0 0;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-header .emoji {
+    font-size: 18px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  th {
+    background: #f1f5f9;
+    padding: 8px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.5px;
+  }
+
+  th:last-child { text-align: right; }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: #f8fafc; }
+
+  .service-name {
+    font-weight: 500;
+    color: #1e293b;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  .price-range {
+    text-align: right;
+    font-weight: 700;
+    color: #1a56db;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .price-market {
+    text-align: right;
+    color: #94a3b8;
+    text-decoration: line-through;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .badge-premium {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+  .page-break { page-break-before: always; }
+
+  .summary-box {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #1a56db;
+  }
+
+  .summary-box h3 {
+    color: #1a56db;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a56db;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+    font-size: 11px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 20px;
+  }
+
+  @media print {
+    body { background: white; }
+    .content { padding: 20px 30px; }
+    .cover { padding: 40px 35px; }
+    tr:hover td { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ОБЛОЖКА -->
+<div class="cover">
+  <div class="cover-logo">FixCraftVP Handyman Services</div>
+  <div class="cover-title">Полный прайс-лист<br>всех услуг</div>
+  <div class="cover-subtitle">Charlotte, NC — Апрель 2026</div>
+  <div>
+    <span class="cover-badge">🏆 Premium Quality</span>
+    <span class="cover-badge">📍 Charlotte Metro Area</span>
+    <span class="cover-badge">✅ 80+ услуг</span>
+    <span class="cover-badge">💰 +15% выше рынка</span>
+  </div>
+  <div class="cover-meta">
+    Зоны обслуживания: Charlotte · Ballantyne · Matthews · Mint Hill · Huntersville · Concord<br>
+    Часы: Пн–Пт 8:00–18:00 · Сб 9:00–16:00 · fixcraftvp.com
+  </div>
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="content">
+
+  <!-- Статистика -->
+  <div class="summary-grid">
+    <div class="stat-card">
+      <div class="stat-number">80+</div>
+      <div class="stat-label">Видов услуг</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Категорий</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">+15%</div>
+      <div class="stat-label">Выше рынка</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Районов Charlotte</div>
+    </div>
+  </div>
+
+  <!-- О ценообразовании -->
+  <div class="summary-box">
+    <h3>📊 О ценообразовании</h3>
+    <p>Цены FixCraftVP установлены на <strong>15–20% выше среднерыночного уровня Charlotte, NC</strong>. Это обосновано: гарантия на все работы, опытные мастера, пунктуальность, полная страховка. Все цены указаны в USD и включают только стоимость работы (labor). Материалы оговариваются дополнительно.</p>
+  </div>
+
+  <!-- 1. ПОКРАСКА -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🎨</span> ПОКРАСКА / PAINTING
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Покраска стен (комната 12×12 фут)</div></td>
+        <td class="price-market">$150–$250</td>
+        <td class="price-range">$175–$290</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска потолка</div></td>
+        <td class="price-market">$100–$185</td>
+        <td class="price-range">$115–$210</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска внешняя / фасад (1 стена)</div></td>
+        <td class="price-market">$260–$520</td>
+        <td class="price-range">$300–$600</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска кабинетов / шкафов</div></td>
+        <td class="price-market">$350–$780</td>
+        <td class="price-range">$400–$900</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска забора (за 50 фут)</div></td>
+        <td class="price-market">$130–$260</td>
+        <td class="price-range">$150–$300</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска гаражных ворот</div></td>
+        <td class="price-market">$105–$220</td>
+        <td class="price-range">$120–$250</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска лестницы / перил</div></td>
+        <td class="price-market">$87–$175</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Текстурирование стен / потолка</div></td>
+        <td class="price-market">$130–$305</td>
+        <td class="price-range">$150–$350</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Грунтовка стен перед покраской</div></td>
+        <td class="price-market">$70–$130</td>
+        <td class="price-range">$80–$150</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска палубы / террасы (200 кв.фут)</div></td>
+        <td class="price-market">$175–$390</td>
+        <td class="price-range">$200–$450</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 2. ЭЛЕКТРИКА -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🔌</span> ЭЛЕКТРИКА / ELECTRICAL
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Замена розетки / выключателя</div></td>
+        <td class="price-market">$74–$122</td>
+        <td class="price-range">$85–$140</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка светильника</div></td>
+        <td class="price-market">$78–$152</td>
+        <td class="price-range">$90–$175</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка потолочного вентилятора</div></td>
+        <td class="price-market">$109–$200</td>
+        <td class="price-range">$125–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка диммера</div></td>
+        <td class="price-market">$70–$130</td>
+        <td class="price-range">$80–$150</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена автомата в щитке</div></td>
+        <td class="price-market">$104–$191</td>
+        <td class="price-range">$120–$220</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка GFCI розетки (ванна / кухня)</div></td>
+        <td class="price-market">$78–$139</td>
+        <td class="price-range">$90–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Монтаж наружного освещения</div></td>
+        <td class="price-market">$104–$174</td>
+        <td class="price-range">$120–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Прокладка кабеля (за 10 фут)</div></td>
+        <td class="price-market">$70–$130</td>
+        <td class="price-range">$80–$150</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка детектора дыма / CO</div></td>
+        <td class="price-market">$52–$87</td>
+        <td class="price-range">$60–$100</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка умного выключателя / диммера</div></td>
+        <td class="price-market">$87–$157</td>
+        <td class="price-range">$100–$180</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 3. САНТЕХНИКА -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🚿</span> САНТЕХНИКА / PLUMBING
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Замена смесителя (кухня / ванна)</div></td>
+        <td class="price-market">$100–$200</td>
+        <td class="price-range">$115–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Устранение течи под раковиной</div></td>
+        <td class="price-market">$74–$152</td>
+        <td class="price-range">$85–$175</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена туалета (унитаза)</div></td>
+        <td class="price-market">$174–$348</td>
+        <td class="price-range">$200–$400</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена сифона</div></td>
+        <td class="price-market">$65–$122</td>
+        <td class="price-range">$75–$140</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Прочистка засора</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена водонагревателя (только work)</div></td>
+        <td class="price-market">$174–$391</td>
+        <td class="price-range">$200–$450</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка фильтра воды под раковину</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена душевой лейки</div></td>
+        <td class="price-market">$52–$104</td>
+        <td class="price-range">$60–$120</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Силиконизация ванны / душа / раковины</div></td>
+        <td class="price-market">$78–$152</td>
+        <td class="price-range">$90–$175</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт арматуры в баке унитаза</div></td>
+        <td class="price-market">$70–$130</td>
+        <td class="price-range">$80–$150</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка посудомоечной машины (подключение)</div></td>
+        <td class="price-market">$130–$243</td>
+        <td class="price-range">$150–$280</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- 4. ГИПСОКАРТОН -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🧱</span> ГИПСОКАРТОН И СТЕНЫ / DRYWALL
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Ремонт гипсокартона (дыра до 6")</div></td>
+        <td class="price-market">$100–$200</td>
+        <td class="price-range">$115–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт гипсокартона (большая площадь, кв.фут)</div></td>
+        <td class="price-market">$8–$16</td>
+        <td class="price-range">$9–$18</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Шпаклёвка и выравнивание стены</div></td>
+        <td class="price-market">$87–$217</td>
+        <td class="price-range">$100–$250</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка гипсокартона (за лист)</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Текстура «апельсиновая корка» (100 кв.фут)</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт трещин в стенах / потолке</div></td>
+        <td class="price-market">$70–$157</td>
+        <td class="price-range">$80–$180</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 5. ДВЕРИ И ОКНА -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🚪</span> ДВЕРИ И ОКНА / DOORS & WINDOWS
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Навеска двери interior</div></td>
+        <td class="price-market">$152–$252</td>
+        <td class="price-range">$175–$290</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Навеска двери exterior</div></td>
+        <td class="price-market">$174–$348</td>
+        <td class="price-range">$200–$400</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена дверной ручки / замка</div></td>
+        <td class="price-market">$61–$122</td>
+        <td class="price-range">$70–$140</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка дедболта</div></td>
+        <td class="price-market">$78–$139</td>
+        <td class="price-range">$90–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Регулировка / подгонка двери (скрипит)</div></td>
+        <td class="price-market">$52–$113</td>
+        <td class="price-range">$60–$130</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка дверного доводчика</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка mosquito / screen door</div></td>
+        <td class="price-market">$104–$200</td>
+        <td class="price-range">$120–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена уплотнителей окна / двери</div></td>
+        <td class="price-market">$61–$122</td>
+        <td class="price-range">$70–$140</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка оконных решёток</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт жалюзи / роллет</div></td>
+        <td class="price-market">$52–$104</td>
+        <td class="price-range">$60–$120</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка карниза для штор</div></td>
+        <td class="price-market">$48–$100</td>
+        <td class="price-range">$55–$115</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена стекла в окне</div></td>
+        <td class="price-market">$130–$304</td>
+        <td class="price-range">$150–$350</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 6. ПЛОТНИЦКИЕ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🪵</span> ПЛОТНИЦКИЕ И СТОЛЯРНЫЕ / CARPENTRY
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Установка полок (за полку)</div></td>
+        <td class="price-market">$52–$100</td>
+        <td class="price-range">$60–$115</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Сборка мебели простая</div></td>
+        <td class="price-market">$74–$152</td>
+        <td class="price-range">$85–$175</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Сборка мебели сложная (кухня / шкаф)</div></td>
+        <td class="price-market">$152–$348</td>
+        <td class="price-range">$175–$400</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка шкафа / тумбы к стене</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт кухонных шкафчиков</div></td>
+        <td class="price-market">$70–$157</td>
+        <td class="price-range">$80–$180</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена фасадов шкафов</div></td>
+        <td class="price-market">$104–$243</td>
+        <td class="price-range">$120–$280</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка карниза / молдинга (10 фут)</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка плинтусов — baseboard (10 фут)</div></td>
+        <td class="price-market">$61–$122</td>
+        <td class="price-range">$70–$140</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Строительство декоративной полки / ниши</div></td>
+        <td class="price-market">$174–$435</td>
+        <td class="price-range">$200–$500</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Монтаж деревянной перегородки</div></td>
+        <td class="price-market">$348–$783</td>
+        <td class="price-range">$400–$900</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт деревянной лестницы</div></td>
+        <td class="price-market">$130–$304</td>
+        <td class="price-range">$150–$350</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- 7. ПОЛ И ПОТОЛОК -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🏠</span> ПОЛ И ПОТОЛОК / FLOORING & CEILING
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Укладка плитки (за кв.фут)</div></td>
+        <td class="price-market">$8–$16</td>
+        <td class="price-range">$9–$18</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Укладка ламината / vinyl plank (кв.фут)</div></td>
+        <td class="price-market">$3.5–$8</td>
+        <td class="price-range">$4–$9</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена участка напольного покрытия</div></td>
+        <td class="price-market">$100–$300</td>
+        <td class="price-range">$115–$345</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Устранение скрипа пола</div></td>
+        <td class="price-market">$74–$152</td>
+        <td class="price-range">$85–$175</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка порогов / переходников</div></td>
+        <td class="price-market">$52–$104</td>
+        <td class="price-range">$60–$120</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Шлифовка деревянного пола (за комнату)</div></td>
+        <td class="price-market">$261–$522</td>
+        <td class="price-range">$300–$600</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Укладка ковролина (за комнату)</div></td>
+        <td class="price-market">$174–$391</td>
+        <td class="price-range">$200–$450</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт / замена потолочной плитки</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 8. МОНТАЖ И УСТАНОВКА -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">📺</span> МОНТАЖ И УСТАНОВКА / INSTALLATION
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Монтаж TV на стену</div></td>
+        <td class="price-market">$100–$200</td>
+        <td class="price-range">$115–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">TV + кронштейн + скрытая проводка</div></td>
+        <td class="price-market">$152–$278</td>
+        <td class="price-range">$175–$320</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка проектора</div></td>
+        <td class="price-market">$104–$217</td>
+        <td class="price-range">$120–$250</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Сборка и установка барбекю-гриля</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка стиральной / сушильной машины</div></td>
+        <td class="price-market">$104–$200</td>
+        <td class="price-range">$120–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка холодильника со льдом (вода)</div></td>
+        <td class="price-market">$87–$157</td>
+        <td class="price-range">$100–$180</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка микроволновки над плитой</div></td>
+        <td class="price-market">$104–$191</td>
+        <td class="price-range">$120–$220</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка вытяжки</div></td>
+        <td class="price-market">$130–$243</td>
+        <td class="price-range">$150–$280</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка кондиционера (window unit)</div></td>
+        <td class="price-market">$104–$174</td>
+        <td class="price-range">$120–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка умного термостата</div></td>
+        <td class="price-market">$87–$157</td>
+        <td class="price-range">$100–$180</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка видеозвонка / домофона</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка камер безопасности (за камеру)</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка полки в гараже</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- 9. НАРУЖНЫЕ РАБОТЫ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🏗️</span> НАРУЖНЫЕ РАБОТЫ / EXTERIOR
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Pressure washing (1000 кв.фут)</div></td>
+        <td class="price-market">$130–$261</td>
+        <td class="price-range">$150–$300</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Pressure washing подъездной дорожки</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Мелкий ремонт кровли (за пятно)</div></td>
+        <td class="price-market">$152–$348</td>
+        <td class="price-range">$175–$400</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена водосточного желоба (за 10 фут)</div></td>
+        <td class="price-market">$100–$200</td>
+        <td class="price-range">$115–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Прочистка водостоков (gutters)</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт палубы / terrasse (кв.фут)</div></td>
+        <td class="price-market">$9–$17</td>
+        <td class="price-range">$10–$20</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Покраска / обработка палубы</div></td>
+        <td class="price-market">$261–$522</td>
+        <td class="price-range">$300–$600</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт забора (за секцию)</div></td>
+        <td class="price-market">$87–$217</td>
+        <td class="price-range">$100–$250</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка почтового ящика</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт дорожки / патио (кв.фут)</div></td>
+        <td class="price-market">$9–$17</td>
+        <td class="price-range">$10–$20</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Посев / укладка газона (100 кв.фут)</div></td>
+        <td class="price-market">$87–$217</td>
+        <td class="price-range">$100–$250</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Мульчирование клумб (10 кв.фут)</div></td>
+        <td class="price-market">$43–$104</td>
+        <td class="price-range">$50–$120</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 10. МЕЛКИЙ РЕМОНТ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="emoji">🔧</span> МЕЛКИЙ РЕМОНТ И ПРОЧЕЕ / MISC REPAIRS
+    </div>
+    <table>
+      <tr><th>Услуга</th><th>Рынок Charlotte</th><th>Наша цена</th></tr>
+      <tr>
+        <td><div class="service-name">Герметизация окна / двери (draft seal)</div></td>
+        <td class="price-market">$61–$122</td>
+        <td class="price-range">$70–$140</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Диагностика утечки воды</div></td>
+        <td class="price-market">$74–$126</td>
+        <td class="price-range">$85–$145</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт гаражной двери (настройка, смазка)</div></td>
+        <td class="price-market">$87–$174</td>
+        <td class="price-range">$100–$200</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Замена петель шкафов</div></td>
+        <td class="price-market">$43–$87</td>
+        <td class="price-range">$50–$100</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка поручней / grab bars в ванной</div></td>
+        <td class="price-market">$104–$200</td>
+        <td class="price-range">$120–$230</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Установка детских защитных барьеров</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Ремонт / замена почтового ящика</div></td>
+        <td class="price-market">$52–$113</td>
+        <td class="price-range">$60–$130</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Чистка вентиляции сушилки (dryer vent)</div></td>
+        <td class="price-market">$87–$157</td>
+        <td class="price-range">$100–$180</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Дезинсекция / уплотнение щелей</div></td>
+        <td class="price-market">$70–$139</td>
+        <td class="price-range">$80–$160</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Генеральная уборка после ремонта</div></td>
+        <td class="price-market">$200–$400</td>
+        <td class="price-range">$230–$460</td>
+      </tr>
+      <tr>
+        <td><div class="service-name">Вывоз строительного мусора (pickup truck)</div></td>
+        <td class="price-market">$130–$261</td>
+        <td class="price-range">$150–$300</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Условия и примечания -->
+  <div class="summary-box" style="border-left-color: #059669; margin-top: 20px;">
+    <h3 style="color: #059669;">📋 Условия и примечания</h3>
+    <p style="margin-bottom: 8px;">• <strong>Все цены — только стоимость работ (labor).</strong> Материалы оговариваются отдельно и выставляются по закупочной цене +10%.</p>
+    <p style="margin-bottom: 8px;">• <strong>Минимальный выезд:</strong> $75 (включается в стоимость работ при заказе от $150).</p>
+    <p style="margin-bottom: 8px;">• <strong>Гарантия:</strong> 90 дней на все выполненные работы. Если что-то пошло не так — переделаем бесплатно.</p>
+    <p style="margin-bottom: 8px;">• <strong>Оплата:</strong> Cash, Zelle, Venmo, Card (+3% processing fee).</p>
+    <p>• <strong>Скидки:</strong> 10% при заказе от $500, 15% при заказе от $1,000, постоянным клиентам — обсуждается.</p>
+  </div>
+
+  <div class="footer">
+    FixCraftVP Handyman Services · Charlotte, NC · fixcraftvp.com · Апрель 2026<br>
+    Все цены актуальны на момент публикации. Финальная стоимость определяется после осмотра объекта.
+  </div>
+
+</div>
+</body>
+</html>

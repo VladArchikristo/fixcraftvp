@@ -17,6 +17,7 @@ import {
 } from '../services/backgroundLocationService';
 import { getTodayMiles, getCurrentState } from '../services/iftaMileageTracker';
 import { getStateName } from '../services/stateDetectionService';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const QUARTERS = [1, 2, 3, 4];
@@ -236,8 +237,8 @@ export default function IFTADashboardScreen() {
         {/* Status row */}
         <View style={styles.trackingRow}>
           <View style={styles.trackingStatusLeft}>
-            <View style={[styles.trackingDot, { backgroundColor: tracking ? '#66bb6a' : '#ef5350' }]} />
-            <Text style={[styles.trackingStatusText, { color: tracking ? '#66bb6a' : '#ef5350' }]}>
+            <View style={[styles.trackingDot, { backgroundColor: tracking ? COLORS.success : COLORS.error }]} />
+            <Text style={[styles.trackingStatusText, { color: tracking ? COLORS.success : COLORS.error }]}>
               {tracking ? 'Tracking Active' : 'Tracking Stopped'}
             </Text>
           </View>
@@ -252,12 +253,12 @@ export default function IFTADashboardScreen() {
             disabled={trackingLoading}
           >
             {trackingLoading ? (
-              <ActivityIndicator size="small" color="#fff" />
+              <ActivityIndicator size="small" color={COLORS.textInverse} />
             ) : (
               <Ionicons
                 name={tracking ? 'stop-circle-outline' : 'navigate-outline'}
                 size={16}
-                color="#fff"
+                color={COLORS.textInverse}
               />
             )}
             <Text style={styles.trackingBtnText}>
@@ -296,11 +297,11 @@ export default function IFTADashboardScreen() {
         {/* Year */}
         <View style={styles.yearRow}>
           <TouchableOpacity onPress={() => handleYearChange(-1)} style={styles.yearBtn}>
-            <Ionicons name="chevron-back" size={18} color="#4fc3f7" />
+            <Ionicons name="chevron-back" size={18} color={COLORS.primary} />
           </TouchableOpacity>
           <Text style={styles.yearText}>{year}</Text>
           <TouchableOpacity onPress={() => handleYearChange(1)} style={styles.yearBtn}>
-            <Ionicons name="chevron-forward" size={18} color="#4fc3f7" />
+            <Ionicons name="chevron-forward" size={18} color={COLORS.primary} />
           </TouchableOpacity>
         </View>
 
@@ -323,7 +324,7 @@ export default function IFTADashboardScreen() {
       {/* Loading */}
       {loading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4fc3f7" />
+          <ActivityIndicator size="large" color={COLORS.accent} />
           <Text style={styles.loadingText}>Calculating IFTA...</Text>
         </View>
       )}
@@ -364,7 +365,7 @@ export default function IFTADashboardScreen() {
                   <Text style={[styles.tdState, { flex: 0.7 }]}>{s.state}</Text>
                   <Text style={[styles.tdCell, { flex: 1 }]}>{s.total_miles}</Text>
                   <Text style={[styles.tdCell, { flex: 1 }]}>{s.consumed_gallons}</Text>
-                  <Text style={[styles.tdCell, { flex: 1, color: '#81c784' }]}>
+                  <Text style={[styles.tdCell, { flex: 1, color: COLORS.success }]}>
                     {s.purchased_gallons > 0 ? s.purchased_gallons : '—'}
                   </Text>
                   <Text style={[
@@ -393,7 +394,7 @@ export default function IFTADashboardScreen() {
             </View>
           ) : (
             <View style={styles.emptyCard}>
-              <Ionicons name="document-text-outline" size={40} color="#333" />
+              <Ionicons name="document-text-outline" size={40} color={COLORS.textMuted} />
               <Text style={styles.emptyText}>No data for Q{quarter} {year}</Text>
               <Text style={styles.emptySub}>Calculate a route or add fuel purchases</Text>
             </View>
@@ -402,11 +403,11 @@ export default function IFTADashboardScreen() {
           {/* Legend */}
           <View style={styles.legend}>
             <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: '#ef9a9a' }]} />
+              <View style={[styles.legendDot, { backgroundColor: COLORS.error }]} />
               <Text style={styles.legendText}>Red — amount due to state</Text>
             </View>
             <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: '#81c784' }]} />
+              <View style={[styles.legendDot, { backgroundColor: COLORS.success }]} />
               <Text style={styles.legendText}>Green — refund from state</Text>
             </View>
           </View>
@@ -420,8 +421,8 @@ export default function IFTADashboardScreen() {
                 disabled={exportingPdf || exporting}
               >
                 {exportingPdf
-                  ? <ActivityIndicator size="small" color="#fff" />
-                  : <Ionicons name="document-text-outline" size={18} color="#fff" />
+                  ? <ActivityIndicator size="small" color={COLORS.textInverse} />
+                  : <Ionicons name="document-text-outline" size={18} color={COLORS.textInverse} />
                 }
                 <Text style={styles.exportBtnTextPdf}>
                   {exportingPdf ? 'PDF...' : 'PDF Report'}
@@ -434,8 +435,8 @@ export default function IFTADashboardScreen() {
                 disabled={exporting || exportingPdf}
               >
                 {exporting
-                  ? <ActivityIndicator size="small" color="#4fc3f7" />
-                  : <Ionicons name="download-outline" size={18} color="#4fc3f7" />
+                  ? <ActivityIndicator size="small" color={COLORS.primary} />
+                  : <Ionicons name="download-outline" size={18} color={COLORS.primary} />
                 }
                 <Text style={styles.exportBtnText}>
                   {exporting ? 'CSV...' : 'Export CSV'}
@@ -449,7 +450,7 @@ export default function IFTADashboardScreen() {
       {/* No data after loading */}
       {!loading && !data && (
         <View style={styles.emptyCard}>
-          <Ionicons name="analytics-outline" size={48} color="#333" />
+          <Ionicons name="analytics-outline" size={48} color={COLORS.textMuted} />
           <Text style={styles.emptyText}>No data</Text>
           <TouchableOpacity style={styles.retryBtn} onPress={() => loadIFTA()}>
             <Text style={styles.retryText}>Retry</Text>
@@ -461,28 +462,28 @@ export default function IFTADashboardScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
-  scroll: { padding: 16, paddingBottom: 40 },
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  scroll: { padding: SPACING.md, paddingBottom: 40 },
 
-  title: { color: '#fff', fontSize: 22, fontWeight: '800', marginBottom: 16 },
+  title: { color: COLORS.textPrimary, fontSize: 22, fontWeight: '800', marginBottom: SPACING.md },
 
   // Selector
-  selectorSection: { marginBottom: 16 },
+  selectorSection: { marginBottom: SPACING.md },
   yearRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
-    gap: 16,
+    gap: SPACING.md,
   },
   yearBtn: {
-    padding: 8,
-    borderRadius: 8,
+    padding: SPACING.sm,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#1e3a50',
-    backgroundColor: '#0a1520',
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.primaryLight,
   },
-  yearText: { color: '#fff', fontSize: 20, fontWeight: '800', minWidth: 60, textAlign: 'center' },
+  yearText: { color: COLORS.textPrimary, fontSize: 20, fontWeight: '800', minWidth: 60, textAlign: 'center' },
   quarterRow: { flexDirection: 'row', gap: 10 },
   quarterBtn: {
     flex: 1,
@@ -490,145 +491,145 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#161629',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bgCard,
   },
-  quarterBtnActive: { backgroundColor: '#0a1f2e', borderColor: '#4fc3f7' },
-  quarterBtnText: { color: '#555', fontSize: 14, fontWeight: '700' },
-  quarterBtnTextActive: { color: '#4fc3f7' },
+  quarterBtnActive: { backgroundColor: COLORS.primaryLight, borderColor: COLORS.primary },
+  quarterBtnText: { color: COLORS.textMuted, fontSize: 14, fontWeight: '700' },
+  quarterBtnTextActive: { color: COLORS.primary },
 
   // Loading
   loadingContainer: { alignItems: 'center', paddingVertical: 40 },
-  loadingText: { color: '#555', fontSize: 14, marginTop: 12 },
+  loadingText: { color: COLORS.textMuted, fontSize: 14, marginTop: 12 },
 
   // Total card
   totalCard: {
     borderRadius: 14,
-    padding: 24,
+    padding: SPACING.lg,
     alignItems: 'center',
     marginBottom: 14,
     borderWidth: 2,
   },
-  totalCardDue: { backgroundColor: '#1a0a0a', borderColor: '#ef9a9a' },
-  totalCardRefund: { backgroundColor: '#0a1a0a', borderColor: '#81c784' },
-  totalCardLabel: { fontSize: 11, fontWeight: '800', letterSpacing: 2, marginBottom: 8 },
+  totalCardDue: { backgroundColor: COLORS.errorLight, borderColor: COLORS.error },
+  totalCardRefund: { backgroundColor: COLORS.successLight, borderColor: COLORS.success },
+  totalCardLabel: { fontSize: 11, fontWeight: '800', letterSpacing: 2, marginBottom: SPACING.sm },
   totalCardAmount: { fontSize: 52, fontWeight: '900', letterSpacing: -1 },
-  totalCardSub: { color: '#555', fontSize: 12, marginTop: 8, textAlign: 'center' },
-  dueText: { color: '#ef9a9a' },
-  refundText: { color: '#81c784' },
+  totalCardSub: { color: COLORS.textMuted, fontSize: 12, marginTop: SPACING.sm, textAlign: 'center' },
+  dueText: { color: COLORS.error },
+  refundText: { color: COLORS.success },
 
   // Table
   tableCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
-  tableTitle: { color: '#888', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 },
+  tableTitle: { color: COLORS.textSecondary, fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 },
   tableHeader: {
     flexDirection: 'row',
-    paddingBottom: 8,
+    paddingBottom: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#2a2a4a',
-    marginBottom: 4,
+    borderBottomColor: COLORS.border,
+    marginBottom: SPACING.xs,
   },
-  thCell: { color: '#444', fontSize: 10, fontWeight: '700', textTransform: 'uppercase' },
+  thCell: { color: COLORS.textMuted, fontSize: 10, fontWeight: '700', textTransform: 'uppercase' },
   tableRow: {
     flexDirection: 'row',
     paddingVertical: 9,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a2a',
+    borderBottomColor: COLORS.borderLight,
     alignItems: 'center',
   },
-  tdState: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  tdCell: { color: '#666', fontSize: 12 },
+  tdState: { color: COLORS.textPrimary, fontSize: 14, fontWeight: '700' },
+  tdCell: { color: COLORS.textMuted, fontSize: 12 },
   tdNet: { fontSize: 12, fontWeight: '700' },
   tableTotalRow: {
     flexDirection: 'row',
     paddingTop: 10,
-    marginTop: 4,
+    marginTop: SPACING.xs,
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#2a2a4a',
+    borderTopColor: COLORS.border,
   },
-  tableTotalLabel: { color: '#888', fontSize: 11, fontWeight: '700' },
+  tableTotalLabel: { color: COLORS.textSecondary, fontSize: 11, fontWeight: '700' },
   tableTotalAmount: { fontSize: 14, fontWeight: '900' },
 
   // Empty
   emptyCard: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
     padding: 32,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     marginBottom: 14,
   },
-  emptyText: { color: '#555', fontSize: 15, fontWeight: '700', marginTop: 12 },
-  emptySub: { color: '#333', fontSize: 12, marginTop: 6, textAlign: 'center' },
+  emptyText: { color: COLORS.textMuted, fontSize: 15, fontWeight: '700', marginTop: 12 },
+  emptySub: { color: COLORS.textMuted, fontSize: 12, marginTop: 6, textAlign: 'center' },
   retryBtn: {
-    marginTop: 16,
+    marginTop: SPACING.md,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: RADIUS.sm,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
+    borderColor: COLORS.primary,
   },
-  retryText: { color: '#4fc3f7', fontSize: 13, fontWeight: '700' },
+  retryText: { color: COLORS.primary, fontSize: 13, fontWeight: '700' },
 
   // Legend
   legend: {
-    gap: 8,
-    marginBottom: 16,
-    paddingHorizontal: 4,
+    gap: SPACING.sm,
+    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.xs,
   },
-  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   legendDot: { width: 10, height: 10, borderRadius: 5 },
-  legendText: { color: '#555', fontSize: 12 },
+  legendText: { color: COLORS.textMuted, fontSize: 12 },
 
   // Export
   exportRow: {
     flexDirection: 'row',
     gap: 10,
-    marginBottom: 4,
+    marginBottom: SPACING.xs,
   },
   exportBtn: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: SPACING.sm,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
   },
   exportBtnPdf: {
-    backgroundColor: '#1565c0',
+    backgroundColor: COLORS.accent,
   },
   exportBtnCsv: {
     borderWidth: 1,
-    borderColor: '#4fc3f7',
-    backgroundColor: '#0a1520',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryLight,
   },
   exportBtnDisabled: { opacity: 0.5 },
-  exportBtnText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
-  exportBtnTextPdf: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  exportBtnText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
+  exportBtnTextPdf: { color: COLORS.textInverse, fontSize: 14, fontWeight: '700' },
 
   // GPS Tracking Card
   trackingCard: {
     borderRadius: 14,
-    padding: 16,
-    marginBottom: 16,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
     borderWidth: 1,
   },
   trackingCardActive: {
-    backgroundColor: '#071a0f',
-    borderColor: '#2e7d32',
+    backgroundColor: COLORS.successLight,
+    borderColor: COLORS.success,
   },
   trackingCardIdle: {
-    backgroundColor: '#161629',
-    borderColor: '#1e1e3a',
+    backgroundColor: COLORS.bgCard,
+    borderColor: COLORS.bgCardAlt,
   },
   trackingRow: {
     flexDirection: 'row',
@@ -639,7 +640,7 @@ const styles = StyleSheet.create({
   trackingStatusLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: SPACING.sm,
   },
   trackingDot: {
     width: 10,
@@ -654,18 +655,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
     paddingHorizontal: 14,
     borderRadius: 10,
   },
   trackingBtnStart: {
-    backgroundColor: '#1565c0',
+    backgroundColor: COLORS.accent,
   },
   trackingBtnStop: {
-    backgroundColor: '#b71c1c',
+    backgroundColor: COLORS.error,
   },
   trackingBtnText: {
-    color: '#fff',
+    color: COLORS.textInverse,
     fontSize: 13,
     fontWeight: '700',
   },
@@ -679,11 +680,11 @@ const styles = StyleSheet.create({
   trackingStatDivider: {
     width: 1,
     height: 32,
-    backgroundColor: '#1e1e3a',
-    marginHorizontal: 16,
+    backgroundColor: COLORS.bgCardAlt,
+    marginHorizontal: SPACING.md,
   },
   trackingStatLabel: {
-    color: '#555',
+    color: COLORS.textMuted,
     fontSize: 10,
     fontWeight: '700',
     textTransform: 'uppercase',
@@ -691,12 +692,12 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   trackingStatValue: {
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 14,
     fontWeight: '700',
   },
   trackingNotice: {
-    color: '#333',
+    color: COLORS.textMuted,
     fontSize: 10,
     marginTop: 12,
     textAlign: 'center',

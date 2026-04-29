@@ -6,6 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
+import { COLORS, SPACING, RADIUS } from '../theme';
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
@@ -125,11 +126,11 @@ export default function FuelPurchaseScreen({ navigation }) {
 
       <View style={styles.photoRow}>
         <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage(true)} disabled={scanning}>
-          <Ionicons name="camera" size={22} color="#4fc3f7" />
+          <Ionicons name="camera" size={22} color={COLORS.primary} />
           <Text style={styles.photoBtnText}>Camera</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.photoBtn} onPress={() => pickImage(false)} disabled={scanning}>
-          <Ionicons name="images" size={22} color="#4fc3f7" />
+          <Ionicons name="images" size={22} color={COLORS.primary} />
           <Text style={styles.photoBtnText}>Gallery</Text>
         </TouchableOpacity>
       </View>
@@ -144,7 +145,7 @@ export default function FuelPurchaseScreen({ navigation }) {
       {/* Spinner OCR */}
       {scanning && (
         <View style={styles.scanningRow}>
-          <ActivityIndicator size="small" color="#4fc3f7" />
+          <ActivityIndicator size="small" color={COLORS.primary} />
           <Text style={styles.scanningText}>Scanning receipt...</Text>
         </View>
       )}
@@ -155,7 +156,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="TX"
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={state}
           onChangeText={(v) => setState(v.toUpperCase().slice(0, 2))}
           maxLength={2}
@@ -166,7 +167,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="85.4"
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={gallons}
           onChangeText={setGallons}
           keyboardType="decimal-pad"
@@ -176,7 +177,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="3.89"
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={pricePerGallon}
           onChangeText={setPricePerGallon}
           keyboardType="decimal-pad"
@@ -186,7 +187,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="2026-04-14"
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={date}
           onChangeText={setDate}
         />
@@ -195,7 +196,7 @@ export default function FuelPurchaseScreen({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Pilot Travel Center"
-          placeholderTextColor="#444"
+          placeholderTextColor={COLORS.textMuted}
           value={stationName}
           onChangeText={setStationName}
         />
@@ -208,8 +209,8 @@ export default function FuelPurchaseScreen({ navigation }) {
         disabled={saving || scanning}
       >
         {saving
-          ? <ActivityIndicator size="small" color="#fff" />
-          : <Ionicons name="checkmark-circle" size={20} color="#fff" />
+          ? <ActivityIndicator size="small" color={COLORS.textInverse} />
+          : <Ionicons name="checkmark-circle" size={20} color={COLORS.textInverse} />
         }
         <Text style={styles.saveBtnText}>{saving ? 'Saving...' : 'Save Fuel Purchase'}</Text>
       </TouchableOpacity>
@@ -218,11 +219,11 @@ export default function FuelPurchaseScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   scroll: { padding: 20, paddingBottom: 40 },
 
   title: {
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 22,
     fontWeight: '800',
     marginBottom: 20,
@@ -231,29 +232,29 @@ const styles = StyleSheet.create({
   photoRow: {
     flexDirection: 'row',
     gap: 12,
-    marginBottom: 16,
+    marginBottom: SPACING.md,
   },
   photoBtn: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: SPACING.sm,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: '#4fc3f7',
-    backgroundColor: '#0a1f2e',
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryLight,
   },
-  photoBtnText: { color: '#4fc3f7', fontSize: 14, fontWeight: '700' },
+  photoBtnText: { color: COLORS.primary, fontSize: 14, fontWeight: '700' },
 
   previewContainer: {
-    borderRadius: 12,
+    borderRadius: RADIUS.md,
     overflow: 'hidden',
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
-    backgroundColor: '#161629',
+    borderColor: COLORS.bgCardAlt,
+    backgroundColor: COLORS.bgCard,
   },
   previewImage: { width: '100%', height: 200 },
 
@@ -263,17 +264,17 @@ const styles = StyleSheet.create({
     gap: 10,
     marginBottom: 14,
     padding: 12,
-    backgroundColor: '#0a1520',
+    backgroundColor: COLORS.primaryLight,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#1e3a50',
+    borderColor: COLORS.border,
   },
-  scanningText: { color: '#4fc3f7', fontSize: 13, fontWeight: '600' },
+  scanningText: { color: COLORS.primary, fontSize: 13, fontWeight: '600' },
 
-  form: { gap: 4, marginBottom: 20 },
+  form: { gap: SPACING.xs, marginBottom: 20 },
 
   label: {
-    color: '#888',
+    color: COLORS.textSecondary,
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -282,11 +283,11 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   input: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
     borderRadius: 10,
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontSize: 15,
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -297,10 +298,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    backgroundColor: '#4fc3f7',
+    backgroundColor: COLORS.accent,
     paddingVertical: 16,
-    borderRadius: 14,
+    borderRadius: RADIUS.lg,
   },
-  saveBtnDisabled: { backgroundColor: '#2a5a70', opacity: 0.7 },
-  saveBtnText: { color: '#fff', fontSize: 15, fontWeight: '800' },
+  saveBtnDisabled: { backgroundColor: COLORS.bgCardAlt, opacity: 0.7 },
+  saveBtnText: { color: COLORS.textInverse, fontSize: 15, fontWeight: '800' },
 });

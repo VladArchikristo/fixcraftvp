@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
 import { getToken } from '../services/auth';
+import { COLORS, FONTS, SPACING, RADIUS, SHARED } from '../theme';
 
 export default function HistoryScreen({ navigation }) {
   const [routes, setRoutes] = useState([]);
@@ -51,7 +52,7 @@ export default function HistoryScreen({ navigation }) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#4fc3f7" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
@@ -59,7 +60,7 @@ export default function HistoryScreen({ navigation }) {
   if (noAuth) {
     return (
       <View style={styles.center}>
-        <Ionicons name="lock-closed-outline" size={48} color="#333" />
+        <Ionicons name="lock-closed-outline" size={48} color={COLORS.textMuted} />
         <Text style={styles.emptyTitle}>History unavailable</Text>
         <Text style={styles.emptyText}>Sign in to save routes</Text>
         <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Calc')}>
@@ -72,7 +73,7 @@ export default function HistoryScreen({ navigation }) {
   if (routes.length === 0) {
     return (
       <View style={styles.center}>
-        <Ionicons name="time-outline" size={48} color="#333" />
+        <Ionicons name="time-outline" size={48} color={COLORS.textMuted} />
         <Text style={styles.emptyTitle}>History is empty</Text>
         <Text style={styles.emptyText}>Calculated routes will appear here</Text>
         <TouchableOpacity style={styles.actionBtn} onPress={() => navigation.navigate('Calc')}>
@@ -92,14 +93,14 @@ export default function HistoryScreen({ navigation }) {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => { setRefreshing(true); loadHistory(); }}
-            tintColor="#4fc3f7"
+            tintColor={COLORS.primary}
           />
         }
         renderItem={({ item }) => (
           <View style={styles.card}>
             <View style={styles.routeRow}>
               <Text style={styles.city} numberOfLines={1}>{item.from_city || item.origin}</Text>
-              <Ionicons name="arrow-forward" size={16} color="#4fc3f7" style={styles.arrow} />
+              <Ionicons name="arrow-forward" size={16} color={COLORS.primary} style={styles.arrow} />
               <Text style={styles.city} numberOfLines={1}>{item.to_city || item.destination}</Text>
             </View>
             <View style={styles.bottomRow}>
@@ -115,29 +116,29 @@ export default function HistoryScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0d0d1a' },
-  center: { flex: 1, backgroundColor: '#0d0d1a', alignItems: 'center', justifyContent: 'center', padding: 40 },
-  list: { padding: 16 },
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  center: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', justifyContent: 'center', padding: 40 },
+  list: { padding: SPACING.md },
   card: {
-    backgroundColor: '#161629',
+    backgroundColor: COLORS.bgCard,
     borderRadius: 14,
-    padding: 16,
+    padding: SPACING.md,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#1e1e3a',
+    borderColor: COLORS.bgCardAlt,
   },
   routeRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  arrow: { marginHorizontal: 8 },
-  city: { flex: 1, color: '#fff', fontSize: 15, fontWeight: '700' },
+  arrow: { marginHorizontal: SPACING.sm },
+  city: { flex: 1, color: COLORS.textPrimary, fontSize: 15, fontWeight: '700' },
   bottomRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  date: { color: '#555', fontSize: 12 },
-  cost: { color: '#4fc3f7', fontSize: 20, fontWeight: '900' },
-  meta: { color: '#444', fontSize: 12, marginTop: 4 },
-  emptyTitle: { color: '#fff', fontSize: 18, fontWeight: '700', marginTop: 16, marginBottom: 8 },
-  emptyText: { color: '#555', fontSize: 14, textAlign: 'center', lineHeight: 20 },
+  date: { color: COLORS.textMuted, fontSize: 12 },
+  cost: { color: COLORS.primary, fontSize: 20, fontWeight: '900' },
+  meta: { color: COLORS.textMuted, fontSize: 12, marginTop: SPACING.xs },
+  emptyTitle: { color: COLORS.textPrimary, fontSize: 18, fontWeight: '700', marginTop: SPACING.md, marginBottom: SPACING.sm },
+  emptyText: { color: COLORS.textMuted, fontSize: 14, textAlign: 'center', lineHeight: 20 },
   actionBtn: {
-    marginTop: 24, backgroundColor: '#4fc3f7', borderRadius: 12,
-    paddingHorizontal: 24, paddingVertical: 12,
+    marginTop: SPACING.lg, backgroundColor: COLORS.accent, borderRadius: RADIUS.md,
+    paddingHorizontal: SPACING.lg, paddingVertical: 12,
   },
-  actionBtnText: { color: '#0d0d1a', fontWeight: '800', fontSize: 15 },
+  actionBtnText: { color: COLORS.textInverse, fontWeight: '800', fontSize: 15 },
 });
