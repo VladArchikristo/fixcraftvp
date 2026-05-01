@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <!-- Background gradient: deep blue to dark navy -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A1628;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#0D2147;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#112255;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Road glow gradient under silhouette -->
+    <radialGradient id="roadGlow" cx="30%" cy="90%" r="50%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:0.25" />
+      <stop offset="100%" style="stop-color:#F5A623;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Phone screen glow -->
+    <radialGradient id="phoneGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#1E90FF;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#1E90FF;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Yellow highlight gradient -->
+    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700" />
+      <stop offset="100%" style="stop-color:#FFA500" />
+    </linearGradient>
+
+    <!-- Phone screen gradient -->
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A3A6E" />
+      <stop offset="100%" style="stop-color:#0D1F3C" />
+    </linearGradient>
+
+    <!-- Arrow gradient -->
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700" />
+      <stop offset="100%" style="stop-color:#FF8C00" />
+    </linearGradient>
+
+    <!-- Drop shadow filter -->
+    <filter id="textShadow" x="-5%" y="-5%" width="110%" height="130%">
+      <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.7"/>
+    </filter>
+
+    <!-- Glow filter for phone -->
+    <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ===== BACKGROUND ===== -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+
+  <!-- Road glow atmosphere -->
+  <ellipse cx="300" cy="680" rx="500" ry="200" fill="url(#roadGlow)"/>
+
+  <!-- Subtle highway lines (bottom center) -->
+  <rect x="580" y="600" width="12" height="80" rx="4" fill="#F5A623" opacity="0.3"/>
+  <rect x="634" y="600" width="12" height="80" rx="4" fill="#F5A623" opacity="0.3"/>
+  <rect x="688" y="600" width="12" height="80" rx="4" fill="#F5A623" opacity="0.3"/>
+
+  <!-- Stars/dots in background -->
+  <circle cx="100" cy="80" r="2" fill="#FFFFFF" opacity="0.4"/>
+  <circle cx="200" cy="50" r="1.5" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="350" cy="100" r="2" fill="#FFFFFF" opacity="0.4"/>
+  <circle cx="900" cy="60" r="1.5" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="1100" cy="90" r="2" fill="#FFFFFF" opacity="0.4"/>
+  <circle cx="1200" cy="40" r="1.5" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="50" cy="200" r="1.5" fill="#FFFFFF" opacity="0.2"/>
+  <circle cx="1230" cy="180" r="2" fill="#FFFFFF" opacity="0.2"/>
+
+  <!-- ===== TRUCK SILHOUETTE (LEFT SIDE) ===== -->
+  <!-- Cab body -->
+  <rect x="60" y="380" width="280" height="200" rx="12" fill="#0A0F1E"/>
+  <!-- Cab roof curve -->
+  <ellipse cx="200" cy="382" rx="140" ry="30" fill="#0A0F1E"/>
+  <!-- Cab top windshield area -->
+  <rect x="90" y="300" width="220" height="120" rx="16" fill="#0D1830"/>
+  <!-- Windshield glass (blue tint, lit from inside) -->
+  <rect x="105" y="312" width="190" height="95" rx="10" fill="#1A3A5C" opacity="0.8"/>
+  <!-- Light glow through windshield -->
+  <rect x="105" y="312" width="190" height="95" rx="10" fill="#2255AA" opacity="0.3"/>
+
+  <!-- Driver silhouette in windshield -->
+  <!-- Head -->
+  <ellipse cx="190" cy="340" rx="22" ry="24" fill="#050A14"/>
+  <!-- Shoulders/body -->
+  <path d="M155 380 Q175 360 190 365 Q205 360 225 380 L225 408 L155 408 Z" fill="#050A14"/>
+  <!-- Cap brim -->
+  <path d="M168 320 Q190 310 212 320 L215 325 Q190 316 165 325 Z" fill="#050A14"/>
+
+  <!-- Side mirror left -->
+  <rect x="55" y="340" width="30" height="18" rx="4" fill="#0D1830"/>
+  <!-- Headlights glow -->
+  <ellipse cx="100" cy="560" rx="35" ry="20" fill="#FFE066" opacity="0.6"/>
+  <ellipse cx="300" cy="560" rx="35" ry="20" fill="#FFE066" opacity="0.6"/>
+  <!-- Headlight beams -->
+  <polygon points="65,560 30,720 140,720 135,560" fill="#FFE066" opacity="0.06"/>
+  <polygon points="265,560 240,720 360,720 335,560" fill="#FFE066" opacity="0.06"/>
+
+  <!-- Grille -->
+  <rect x="80" y="510" width="240" height="60" rx="6" fill="#080D1A"/>
+  <rect x="90" y="520" width="220" height="8" rx="2" fill="#1A2840"/>
+  <rect x="90" y="535" width="220" height="8" rx="2" fill="#1A2840"/>
+  <rect x="90" y="550" width="220" height="8" rx="2" fill="#1A2840"/>
+
+  <!-- Bumper -->
+  <rect x="60" y="568" width="280" height="28" rx="6" fill="#111C30"/>
+
+  <!-- Wheels -->
+  <circle cx="130" cy="640" r="50" fill="#050A14"/>
+  <circle cx="130" cy="640" r="38" fill="#0D1428"/>
+  <circle cx="130" cy="640" r="20" fill="#050A14"/>
+  <circle cx="130" cy="640" r="10" fill="#1A2840"/>
+
+  <circle cx="280" cy="640" r="50" fill="#050A14"/>
+  <circle cx="280" cy="640" r="38" fill="#0D1428"/>
+  <circle cx="280" cy="640" r="20" fill="#050A14"/>
+  <circle cx="280" cy="640" r="10" fill="#1A2840"/>
+
+  <!-- ===== PHONE (RIGHT SIDE) ===== -->
+  <!-- Phone glow halo -->
+  <ellipse cx="950" cy="360" rx="200" ry="280" fill="#1E90FF" opacity="0.12"/>
+
+  <!-- Phone body -->
+  <rect x="820" y="100" width="260" height="500" rx="28" fill="#1C1C2E"/>
+  <!-- Phone border/frame highlight -->
+  <rect x="820" y="100" width="260" height="500" rx="28" fill="none" stroke="#2A4080" stroke-width="3"/>
+
+  <!-- Phone screen -->
+  <rect x="832" y="118" width="236" height="464" rx="20" fill="url(#screenGrad)"/>
+
+  <!-- App UI: Header bar -->
+  <rect x="832" y="118" width="236" height="52" rx="20" fill="#0F2A5C"/>
+  <rect x="832" y="148" width="236" height="22" fill="#0F2A5C"/>
+  <!-- App name in header -->
+  <text x="950" y="152" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" fill="#FFFFFF" text-anchor="middle">HaulWallet</text>
+  <!-- Wallet icon placeholder -->
+  <rect x="843" y="128" width="28" height="28" rx="6" fill="#1E90FF" opacity="0.7"/>
+  <text x="857" y="147" font-family="Arial" font-size="16" fill="#FFFFFF" text-anchor="middle">$</text>
+
+  <!-- App UI: Earnings summary card -->
+  <rect x="845" y="182" width="210" height="80" rx="12" fill="#112255"/>
+  <text x="950" y="205" font-family="Arial, sans-serif" font-size="11" fill="#7BA7D4" text-anchor="middle">THIS WEEK</text>
+  <text x="950" y="238" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="#00D68F" text-anchor="middle">$4,820</text>
+  <text x="950" y="256" font-family="Arial, sans-serif" font-size="10" fill="#00D68F" text-anchor="middle">+12% vs last week</text>
+
+  <!-- App UI: Bar chart -->
+  <rect x="845" y="274" width="210" height="100" rx="12" fill="#0D1E45"/>
+  <text x="862" y="294" font-family="Arial, sans-serif" font-size="10" fill="#7BA7D4">Earnings by Day</text>
+  <!-- Bars -->
+  <rect x="862" y="330" width="18" height="30" rx="3" fill="#1E90FF" opacity="0.6"/>
+  <rect x="888" y="315" width="18" height="45" rx="3" fill="#1E90FF" opacity="0.7"/>
+  <rect x="914" y="305" width="18" height="55" rx="3" fill="#1E90FF"/>
+  <rect x="940" y="320" width="18" height="40" rx="3" fill="#1E90FF" opacity="0.7"/>
+  <rect x="966" y="295" width="18" height="65" rx="3" fill="#00D68F"/>
+  <rect x="992" y="310" width="18" height="50" rx="3" fill="#1E90FF" opacity="0.6"/>
+  <rect x="1018" y="325" width="18" height="35" rx="3" fill="#1E90FF" opacity="0.5"/>
+  <!-- Day labels -->
+  <text x="871" y="374" font-family="Arial" font-size="8" fill="#7BA7D4" text-anchor="middle">M</text>
+  <text x="897" y="374" font-family="Arial" font-size="8" fill="#7BA7D4" text-anchor="middle">T</text>
+  <text x="923" y="374" font-family="Arial" font-size="8" fill="#7BA7D4" text-anchor="middle">W</text>
+  <text x="949" y="374" font-family="Arial" font-size="8" fill="#7BA7D4" text-anchor="middle">T</text>
+  <text x="975" y="374" font-family="Arial" font-size="8" fill="#00D68F" text-anchor="middle" font-weight="bold">F</text>
+  <text x="1001" y="374" font-family="Arial" font-size="8" fill="#7BA7D4" text-anchor="middle">S</text>
+  <text x="1027" y="374" font-family="Arial" font-size="8" fill="#7BA7D4" text-anchor="middle">S</text>
+
+  <!-- App UI: Recent loads list -->
+  <rect x="845" y="386" width="210" height="110" rx="12" fill="#0D1E45"/>
+  <text x="862" y="406" font-family="Arial, sans-serif" font-size="10" fill="#7BA7D4">Recent Loads</text>
+  <!-- Load item 1 -->
+  <rect x="856" y="414" width="188" height="24" rx="6" fill="#112A5E"/>
+  <text x="866" y="431" font-family="Arial" font-size="9" fill="#FFFFFF">Chicago → Dallas</text>
+  <text x="1034" y="431" font-family="Arial Black" font-size="9" fill="#00D68F" text-anchor="end">$980</text>
+  <!-- Load item 2 -->
+  <rect x="856" y="442" width="188" height="24" rx="6" fill="#112A5E"/>
+  <text x="866" y="459" font-family="Arial" font-size="9" fill="#FFFFFF">Dallas → Memphis</text>
+  <text x="1034" y="459" font-family="Arial Black" font-size="9" fill="#00D68F" text-anchor="end">$750</text>
+  <!-- Load item 3 -->
+  <rect x="856" y="470" width="188" height="24" rx="6" fill="#112A5E"/>
+  <text x="866" y="487" font-family="Arial" font-size="9" fill="#FFFFFF">Memphis → Atlanta</text>
+  <text x="1034" y="487" font-family="Arial Black" font-size="9" fill="#00D68F" text-anchor="end">$1,100</text>
+
+  <!-- App UI: Bottom nav bar -->
+  <rect x="832" y="510" width="236" height="72" rx="0" fill="#0A1628"/>
+  <rect x="832" y="554" width="236" height="28" rx="0" fill="#0A1628"/>
+  <rect x="832" y="554" width="236" height="28" rx="20" fill="#0A1628"/>
+  <!-- Nav icons (simplified) -->
+  <circle cx="885" cy="534" r="10" fill="#1E90FF" opacity="0.8"/>
+  <circle cx="950" cy="534" r="10" fill="#2A4080" opacity="0.5"/>
+  <circle cx="1015" cy="534" r="10" fill="#2A4080" opacity="0.5"/>
+
+  <!-- Phone home button / gesture bar -->
+  <rect x="910" y="572" width="80" height="5" rx="3" fill="#2A4080"/>
+
+  <!-- ===== ARROW pointing at phone ===== -->
+  <!-- Arrow body -->
+  <path d="M 660 360 Q 720 340 760 355" stroke="url(#arrowGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Arrow head -->
+  <polygon points="760,340 790,358 756,374" fill="url(#arrowGrad)"/>
+  <!-- Arrow inner highlight -->
+  <path d="M 660 360 Q 720 340 754 355" stroke="#FFE566" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Small star bursts near arrow -->
+  <text x="680" y="310" font-family="Arial" font-size="22" fill="#FFD700" opacity="0.8" text-anchor="middle">★</text>
+  <text x="730" y="290" font-family="Arial" font-size="14" fill="#FFD700" opacity="0.6" text-anchor="middle">★</text>
+
+  <!-- ===== MAIN HEADLINE TEXT ===== -->
+  <!-- Shadow layer -->
+  <text x="643" y="228" font-family="Arial Black, Impact, sans-serif" font-size="82" font-weight="900"
+        fill="#000000" opacity="0.5" text-anchor="middle" letter-spacing="2">EVERY TRUCKER</text>
+  <text x="643" y="320" font-family="Arial Black, Impact, sans-serif" font-size="82" font-weight="900"
+        fill="#000000" opacity="0.5" text-anchor="middle" letter-spacing="2">NEEDS THIS</text>
+
+  <!-- Main text -->
+  <text x="640" y="224" font-family="Arial Black, Impact, sans-serif" font-size="82" font-weight="900"
+        fill="#FFD700" text-anchor="middle" letter-spacing="2" filter="url(#textShadow)">EVERY TRUCKER</text>
+  <text x="640" y="316" font-family="Arial Black, Impact, sans-serif" font-size="82" font-weight="900"
+        fill="#FFFFFF" text-anchor="middle" letter-spacing="2" filter="url(#textShadow)">NEEDS THIS</text>
+
+  <!-- ===== APP NAME BADGE ===== -->
+  <!-- Badge background -->
+  <rect x="490" y="645" width="300" height="56" rx="10" fill="#1E90FF"/>
+  <rect x="490" y="645" width="300" height="56" rx="10" fill="none" stroke="#FFD700" stroke-width="2.5"/>
+  <!-- App name -->
+  <text x="640" y="681" font-family="Arial Black, sans-serif" font-size="28" font-weight="900"
+        fill="#FFFFFF" text-anchor="middle" letter-spacing="3">HaulWallet App</text>
+
+  <!-- ===== TOP BADGE: FREE label ===== -->
+  <rect x="1140" y="50" width="110" height="48" rx="24" fill="#00C853"/>
+  <text x="1195" y="81" font-family="Arial Black, sans-serif" font-size="22" font-weight="900"
+        fill="#FFFFFF" text-anchor="middle">FREE</text>
+
+  <!-- ===== GOOGLE PLAY BADGE ===== -->
+  <rect x="30" y="652" width="190" height="46" rx="10" fill="#111C30"/>
+  <rect x="30" y="652" width="190" height="46" rx="10" fill="none" stroke="#3A5A8F" stroke-width="1.5"/>
+  <text x="80" y="668" font-family="Arial, sans-serif" font-size="9" fill="#AAAAAA">GET IT ON</text>
+  <text x="80" y="688" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="#FFFFFF">Google Play</text>
+  <!-- Play triangle icon -->
+  <polygon points="42,658 42,694 62,676" fill="#00C853"/>
+
+  <!-- ===== BOTTOM ACCENT LINE ===== -->
+  <rect x="0" y="715" width="1280" height="5" fill="url(#yellowGrad)" opacity="0.7"/>
+
+  <!-- ===== SUBTLE VIGNETTE ===== -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+    <stop offset="0%" style="stop-color:#000000;stop-opacity:0"/>
+    <stop offset="100%" style="stop-color:#000000;stop-opacity:0.45"/>
+  </radialGradient>
+  <rect width="1280" height="720" fill="url(#vignette)"/>
+
+</svg>

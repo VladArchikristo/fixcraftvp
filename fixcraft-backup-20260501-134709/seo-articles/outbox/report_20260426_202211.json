@@ -1,0 +1,17 @@
+[
+  {
+    "site": "Wham Bam You're A Handyman",
+    "status": "failed",
+    "error": "HTTP 403: error code: 1010"
+  },
+  {
+    "site": "House Whirl",
+    "status": "failed",
+    "error": "HTTP 403: error code: 1010"
+  },
+  {
+    "site": "Opple House",
+    "status": "draft",
+    "reason": "no api key or form submission"
+  }
+]

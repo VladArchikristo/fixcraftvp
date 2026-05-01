@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <!-- Background -->
+  <rect width="320" height="80" fill="transparent"/>
+
+  <!-- FC Monogram Box -->
+  <rect x="8" y="8" width="64" height="64" rx="8" fill="#1E40AF"/>
+
+  <!-- F letter -->
+  <text x="16" y="54" font-family="Arial Black, sans-serif" font-size="42" font-weight="900" fill="white">F</text>
+
+  <!-- C letter in orange -->
+  <text x="36" y="54" font-family="Arial Black, sans-serif" font-size="42" font-weight="900" fill="#F97316">C</text>
+
+  <!-- Small wrench inside box -->
+  <line x1="10" y1="66" x2="70" y2="66" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- FixCraft Text -->
+  <text x="88" y="34" font-family="Arial Black, sans-serif" font-size="26" font-weight="900" fill="#1E3A8A" letter-spacing="-0.5">FixCraft</text>
+
+  <!-- Divider -->
+  <rect x="88" y="42" width="60" height="2.5" fill="#F97316" rx="1"/>
+
+  <!-- Tagline -->
+  <text x="88" y="60" font-family="Arial, sans-serif" font-size="12" fill="#374151" letter-spacing="2" font-weight="700">HANDYMAN</text>
+  <text x="88" y="73" font-family="Arial, sans-serif" font-size="10" fill="#9CA3AF" letter-spacing="1.5">Charlotte, NC</text>
+</svg>

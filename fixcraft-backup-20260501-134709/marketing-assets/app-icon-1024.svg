@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background gradient for depth -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E3356;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D1B2A;stop-opacity:1" />
+    </linearGradient>
+    <!-- Road glow -->
+    <linearGradient id="roadGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:0" />
+      <stop offset="40%" style="stop-color:#F5A623;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#FFD166;stop-opacity:0.3" />
+    </linearGradient>
+    <!-- Truck body gradient -->
+    <linearGradient id="truckGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D0DCF0;stop-opacity:1" />
+    </linearGradient>
+    <!-- Speed lines blur -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="roadGlowFilter" x="-10%" y="-50%" width="120%" height="200%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <!-- Clip path for rounded corners (20%) -->
+    <clipPath id="roundedCorners">
+      <rect x="0" y="0" width="1024" height="1024" rx="204" ry="204"/>
+    </clipPath>
+  </defs>
+
+  <!-- Clipped group for rounded corners -->
+  <g clip-path="url(#roundedCorners)">
+
+    <!-- Background -->
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#bgGrad)"/>
+
+    <!-- Subtle grid / road texture overlay -->
+    <rect x="0" y="0" width="1024" height="1024" fill="none" opacity="0.04"
+          stroke="#FFFFFF" stroke-width="1">
+    </rect>
+
+    <!-- Background stars / dots (atmosphere) -->
+    <circle cx="120" cy="100" r="2" fill="#FFFFFF" opacity="0.3"/>
+    <circle cx="280" cy="60" r="1.5" fill="#FFFFFF" opacity="0.2"/>
+    <circle cx="450" cy="130" r="2.5" fill="#FFFFFF" opacity="0.15"/>
+    <circle cx="700" cy="80" r="1.5" fill="#FFFFFF" opacity="0.25"/>
+    <circle cx="860" cy="150" r="2" fill="#FFFFFF" opacity="0.2"/>
+    <circle cx="950" cy="50" r="1.5" fill="#FFFFFF" opacity="0.3"/>
+    <circle cx="160" cy="220" r="1.5" fill="#FFFFFF" opacity="0.15"/>
+    <circle cx="820" cy="250" r="2" fill="#FFFFFF" opacity="0.2"/>
+
+    <!-- Speed lines (motion blur effect) -->
+    <g opacity="0.15" filter="url(#glow)">
+      <line x1="60" y1="520" x2="280" y2="520" stroke="#F5A623" stroke-width="3"/>
+      <line x1="40" y1="490" x2="200" y2="490" stroke="#F5A623" stroke-width="2"/>
+      <line x1="80" y1="550" x2="250" y2="550" stroke="#F5A623" stroke-width="2"/>
+      <line x1="30" y1="465" x2="150" y2="465" stroke="#F5A623" stroke-width="1.5"/>
+      <line x1="90" y1="575" x2="220" y2="575" stroke="#F5A623" stroke-width="1.5"/>
+    </g>
+
+    <!-- Road surface (perspective) -->
+    <polygon points="50,780 974,780 820,620 204,620" fill="#0A1628" opacity="0.8"/>
+
+    <!-- Road glow aura -->
+    <ellipse cx="512" cy="720" rx="480" ry="40" fill="url(#roadGlow)" filter="url(#roadGlowFilter)" opacity="0.6"/>
+
+    <!-- Road center dashes -->
+    <g fill="#F5A623" opacity="0.85">
+      <rect x="478" y="630" width="48" height="12" rx="6"/>
+      <rect x="436" y="660" width="52" height="12" rx="6"/>
+      <rect x="390" y="692" width="56" height="13" rx="6"/>
+      <rect x="338" y="726" width="62" height="14" rx="6"/>
+    </g>
+
+    <!-- Road edge lines -->
+    <line x1="204" y1="620" x2="50" y2="780" stroke="#F5A623" stroke-width="3" opacity="0.6"/>
+    <line x1="820" y1="620" x2="974" y2="780" stroke="#F5A623" stroke-width="3" opacity="0.6"/>
+
+    <!-- ===== TRUCK SILHOUETTE ===== -->
+    <g transform="translate(512, 480)" filter="url(#glow)">
+
+      <!-- Truck cab shadow -->
+      <g transform="translate(4, 6)" opacity="0.25">
+        <rect x="-80" y="-120" width="200" height="130" rx="8" fill="#000000"/>
+        <rect x="-240" y="-70" width="165" height="80" rx="6" fill="#000000"/>
+      </g>
+
+      <!-- Trailer / cargo box -->
+      <rect x="-260" y="-90" width="175" height="100" rx="6" fill="url(#truckGrad)"/>
+      <!-- Trailer detail lines -->
+      <line x1="-225" y1="-90" x2="-225" y2="10" stroke="#B0C4DE" stroke-width="1.5" opacity="0.5"/>
+      <line x1="-190" y1="-90" x2="-190" y2="10" stroke="#B0C4DE" stroke-width="1.5" opacity="0.5"/>
+      <line x1="-155" y1="-90" x2="-155" y2="10" stroke="#B0C4DE" stroke-width="1.5" opacity="0.5"/>
+      <line x1="-120" y1="-90" x2="-120" y2="10" stroke="#B0C4DE" stroke-width="1.5" opacity="0.5"/>
+
+      <!-- Connector / fifth wheel area -->
+      <rect x="-90" y="-15" width="15" height="25" rx="3" fill="#C8D8EC"/>
+
+      <!-- Cab body -->
+      <rect x="-80" y="-130" width="205" height="140" rx="10" fill="url(#truckGrad)"/>
+
+      <!-- Cab roof extension / sleeper -->
+      <rect x="-80" y="-130" width="140" height="50" rx="8" fill="#E8F0F8"/>
+
+      <!-- Windshield -->
+      <rect x="20" y="-118" width="90" height="65" rx="5" fill="#1A2B4A" opacity="0.85"/>
+      <!-- Windshield glare -->
+      <line x1="28" y1="-110" x2="55" y2="-58" stroke="#FFFFFF" stroke-width="2" opacity="0.25"/>
+
+      <!-- Cab door window -->
+      <rect x="-65" y="-115" width="70" height="50" rx="4" fill="#1A2B4A" opacity="0.7"/>
+
+      <!-- Door handle -->
+      <rect x="-15" y="-80" width="18" height="5" rx="2.5" fill="#F5A623"/>
+
+      <!-- Exhaust stack -->
+      <rect x="-50" y="-185" width="10" height="60" rx="5" fill="#C8D8EC"/>
+      <!-- Exhaust puff -->
+      <circle cx="-45" cy="-195" r="8" fill="#FFFFFF" opacity="0.1"/>
+      <circle cx="-38" cy="-210" r="5" fill="#FFFFFF" opacity="0.07"/>
+
+      <!-- Headlights -->
+      <rect x="115" y="-80" width="16" height="24" rx="3" fill="#FFD166"/>
+      <rect x="115" y="-80" width="16" height="24" rx="3" fill="#F5A623" opacity="0.5"
+            filter="url(#glow)"/>
+      <!-- Headlight beam -->
+      <polygon points="131,-68 190,-50 190,-82" fill="#FFD166" opacity="0.12"/>
+
+      <!-- Grille -->
+      <rect x="108" y="-50" width="18" height="30" rx="2" fill="#B0C4DE"/>
+      <line x1="108" y1="-44" x2="126" y2="-44" stroke="#8AA0B8" stroke-width="1.5"/>
+      <line x1="108" y1="-37" x2="126" y2="-37" stroke="#8AA0B8" stroke-width="1.5"/>
+      <line x1="108" y1="-30" x2="126" y2="-30" stroke="#8AA0B8" stroke-width="1.5"/>
+      <line x1="108" y1="-23" x2="126" y2="-23" stroke="#8AA0B8" stroke-width="1.5"/>
+
+      <!-- Front bumper -->
+      <rect x="100" y="-22" width="30" height="12" rx="4" fill="#C8D8EC"/>
+
+      <!-- Cab steps -->
+      <rect x="100" y="0" width="28" height="7" rx="2" fill="#B0C4DE"/>
+      <rect x="100" y="8" width="24" height="6" rx="2" fill="#9EB0C4"/>
+
+      <!-- Under-frame -->
+      <rect x="-260" y="10" width="390" height="16" rx="4" fill="#8AA0B8"/>
+
+      <!-- Rear wheels (trailer) -->
+      <circle cx="-200" cy="36" r="32" fill="#1A2B4A"/>
+      <circle cx="-200" cy="36" r="28" fill="#2A3D58"/>
+      <circle cx="-200" cy="36" r="18" fill="#1A2B4A"/>
+      <circle cx="-200" cy="36" r="10" fill="#F5A623"/>
+      <circle cx="-200" cy="36" r="4" fill="#FFFFFF"/>
+      <!-- Wheel spokes -->
+      <line x1="-200" y1="18" x2="-200" y2="54" stroke="#F5A623" stroke-width="2.5"/>
+      <line x1="-182" y1="36" x2="-218" y2="36" stroke="#F5A623" stroke-width="2.5"/>
+      <line x1="-187" y1="23" x2="-213" y2="49" stroke="#F5A623" stroke-width="2"/>
+      <line x1="-187" y1="49" x2="-213" y2="23" stroke="#F5A623" stroke-width="2"/>
+
+      <!-- Rear wheels 2 -->
+      <circle cx="-140" cy="36" r="32" fill="#1A2B4A"/>
+      <circle cx="-140" cy="36" r="28" fill="#2A3D58"/>
+      <circle cx="-140" cy="36" r="18" fill="#1A2B4A"/>
+      <circle cx="-140" cy="36" r="10" fill="#F5A623"/>
+      <circle cx="-140" cy="36" r="4" fill="#FFFFFF"/>
+      <line x1="-140" y1="18" x2="-140" y2="54" stroke="#F5A623" stroke-width="2.5"/>
+      <line x1="-122" y1="36" x2="-158" y2="36" stroke="#F5A623" stroke-width="2.5"/>
+      <line x1="-127" y1="23" x2="-153" y2="49" stroke="#F5A623" stroke-width="2"/>
+      <line x1="-127" y1="49" x2="-153" y2="23" stroke="#F5A623" stroke-width="2"/>
+
+      <!-- Front wheels (cab) -->
+      <circle cx="80" cy="36" r="34" fill="#1A2B4A"/>
+      <circle cx="80" cy="36" r="30" fill="#2A3D58"/>
+      <circle cx="80" cy="36" r="20" fill="#1A2B4A"/>
+      <circle cx="80" cy="36" r="11" fill="#F5A623"/>
+      <circle cx="80" cy="36" r="5" fill="#FFFFFF"/>
+      <line x1="80" y1="16" x2="80" y2="56" stroke="#F5A623" stroke-width="2.5"/>
+      <line x1="60" y1="36" x2="100" y2="36" stroke="#F5A623" stroke-width="2.5"/>
+      <line x1="66" y1="22" x2="94" y2="50" stroke="#F5A623" stroke-width="2"/>
+      <line x1="66" y1="50" x2="94" y2="22" stroke="#F5A623" stroke-width="2"/>
+
+    </g>
+    <!-- ===== END TRUCK ===== -->
+
+    <!-- HW Badge — top-right corner -->
+    <g transform="translate(840, 84)">
+      <!-- Badge background -->
+      <rect x="0" y="0" width="120" height="60" rx="12" fill="#F5A623"/>
+      <!-- HW text -->
+      <text x="60" y="43" font-family="Arial Black, Arial" font-weight="900" font-size="32"
+            fill="#1A2B4A" text-anchor="middle" letter-spacing="-1">HW</text>
+    </g>
+
+    <!-- Bottom tagline / brand strip -->
+    <rect x="0" y="880" width="1024" height="144" fill="#0A1628" opacity="0.7"/>
+    <text x="512" y="945" font-family="Arial Black, Arial" font-weight="900" font-size="52"
+          fill="#FFFFFF" text-anchor="middle" letter-spacing="4">HaulWallet</text>
+    <text x="512" y="992" font-family="Arial, sans-serif" font-weight="400" font-size="24"
+          fill="#F5A623" text-anchor="middle" letter-spacing="2">TRACK · LOAD · EARN</text>
+
+  </g>
+</svg>

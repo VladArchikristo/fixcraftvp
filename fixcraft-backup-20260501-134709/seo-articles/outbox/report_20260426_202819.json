@@ -1,0 +1,15 @@
+[
+  {
+    "site": "Wham Bam You're A Handyman",
+    "status": "sent"
+  },
+  {
+    "site": "House Whirl",
+    "status": "sent"
+  },
+  {
+    "site": "Opple House",
+    "status": "draft",
+    "reason": "form submission"
+  }
+]

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <!-- Background circle -->
+  <circle cx="40" cy="40" r="38" fill="#1E40AF"/>
+  <circle cx="40" cy="40" r="35" fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+
+  <!-- FC Monogram -->
+  <text x="13" y="54" font-family="Arial Black, sans-serif" font-size="36" font-weight="900" fill="white">F</text>
+  <text x="38" y="54" font-family="Arial Black, sans-serif" font-size="36" font-weight="900" fill="#F97316">C</text>
+
+  <!-- Bottom accent -->
+  <rect x="20" y="60" width="40" height="3" fill="#F97316" rx="1.5"/>
+</svg>

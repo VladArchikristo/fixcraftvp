@@ -1,0 +1,17 @@
+[
+  {
+    "site": "Wham Bam You're A Handyman",
+    "status": "draft",
+    "reason": "no api key or form submission"
+  },
+  {
+    "site": "House Whirl",
+    "status": "draft",
+    "reason": "no api key or form submission"
+  },
+  {
+    "site": "Opple House",
+    "status": "draft",
+    "reason": "no api key or form submission"
+  }
+]

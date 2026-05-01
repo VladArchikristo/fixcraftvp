@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Костя — бот-программист архитектор.
-Claude Opus 4.6 | Читает фото | Знает всех ботов | Создаёт суббота.
-Singleton, LaunchAgent restarts, heartbeat, Claude CLI.
+GPT-5.5 | Читает фото | Знает всех ботов | Создаёт суббота.
+Singleton, LaunchAgent restarts, heartbeat, OpenAI SDK via proxy.
 """
 from __future__ import annotations
 
@@ -186,6 +186,9 @@ SYSTEM_PROMPT = f"""Ты — Костя, программист-архитект
 
 == СКИЛЛЫ ==
 Python, JS/TS, Bash, SQL — senior. Архитектура, Telegram-боты, CLI, рефакторинг, аудит, отладка. Читаешь скриншоты и фото кода.
+
+== МОДЕЛЬ ==
+Ты используешь GPT-5.5 через локальный прокси (localhost:10531). НЕ называй себя Claude — ты на GPT.
 
 == БОТЫ ЭКОСИСТЕМЫ ==
 {_build_bots_context()}
@@ -457,73 +460,32 @@ def _kill_current_proc():
 
 
 def _call_claude_once(full_prompt: str, extra_flags=None, timeout_override=None):
-    global _current_proc
+    """GPT-5.5 via openai-oauth proxy (localhost:10531)."""
+    from openai import OpenAI
     effective_timeout = timeout_override or CLAUDE_TIMEOUT
-    cmd = [
-        CLAUDE_PATH, "-p",
-        "--model", "claude-opus-4-6",
-        "--output-format", "text",
-        "--system-prompt", SYSTEM_PROMPT,
-        "--allowedTools", CLAUDE_TOOLS,
-        "--permission-mode", "bypassPermissions",
-        "--max-turns", "25",
-    ]
-    if extra_flags:
-        i = 0
-        while i < len(extra_flags):
-            flag = extra_flags[i]
-            if flag.startswith("--") and flag in cmd:
-                idx = cmd.index(flag)
-                if i + 1 < len(extra_flags) and not extra_flags[i + 1].startswith("--"):
-                    cmd[idx + 1] = extra_flags[i + 1]
-                    i += 2
-                else:
-                    i += 1
-            else:
-                cmd.append(extra_flags[i])
-                i += 1
-    proc = None
     try:
-        proc = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd=WORKING_DIR,
-            env=_get_claude_env(),
-            text=True,
-            start_new_session=True,
+        client = OpenAI(
+            base_url="http://127.0.0.1:10531/v1",
+            api_key="dummy",
+            timeout=effective_timeout,
         )
-        with _current_proc_lock:
-            _current_proc = proc
-        stdout, stderr = proc.communicate(input=full_prompt, timeout=effective_timeout)
-        if proc.returncode != 0:
-            log.error("Claude exited %d: %s", proc.returncode, stderr.strip())
+        response = client.chat.completions.create(
+            model="gpt-5.5",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": full_prompt},
+            ],
+            max_tokens=4096,
+        )
+        answer = response.choices[0].message.content
+        if not answer:
+            log.warning("Empty response from GPT-5.5")
             return False, ""
-        answer = stdout.strip()
+        answer = answer.strip()
         return (True, answer) if answer else (False, "")
-    except subprocess.TimeoutExpired:
-        if proc:
-            try:
-                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
-            except (ProcessLookupError, PermissionError):
-                try:
-                    proc.kill()
-                except (ProcessLookupError, PermissionError):
-                    pass
-            try:
-                proc.wait(timeout=5)
-            except (ChildProcessError, subprocess.TimeoutExpired):
-                pass
-        log.warning("Claude timed out after %d sec", effective_timeout)
-        return False, "TIMEOUT"
     except Exception as e:
-        log.error("Claude call error: %s", e)
+        log.error("GPT call error: %s", e, exc_info=True)
         return False, ""
-    finally:
-        with _current_proc_lock:
-            if _current_proc is proc:
-                _current_proc = None
 
 
 def _call_claude_sync(full_prompt: str, extra_flags=None):
@@ -682,7 +644,7 @@ async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Костя онлайн\n"
         f"PID: {os.getpid()} | Uptime: {hours}ч {minutes}м {seconds}с\n"
         f"История: {len(user_history)} сообщений\n"
-        f"Модель: claude-opus-4-6"
+        f"Модель: gpt-5.5"
     )
 
 
@@ -775,7 +737,7 @@ async def cmd_newbot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"   - Что нужно создать .env файл с токеном от @BotFather\n"
         f"   - Как запустить: launchctl load + kickstart\n\n"
         f"ВАЖНО: .env с токеном НЕ создавай — его даст Влад.\n"
-        f"Модель по умолчанию: claude-sonnet-4-6 (если роль требует Opus — используй claude-opus-4-6).\n"
+        f"Модель: gpt-5.5 via openai-oauth proxy\n"
         f"Структуру шаблона telegram_bot.py ты знаешь — используй её."
     )
 
