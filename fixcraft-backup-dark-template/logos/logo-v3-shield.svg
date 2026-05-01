@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" width="320" height="90">
+  <!-- Shield shape -->
+  <path d="M45 6 L74 18 L74 48 C74 64 60 76 45 82 C30 76 16 64 16 48 L16 18 Z" fill="#1E40AF"/>
+
+  <!-- Shield inner border -->
+  <path d="M45 13 L68 23 L68 48 C68 61 56 71 45 76 C34 71 22 61 22 48 L22 23 Z" fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+
+  <!-- Wrench icon inside shield -->
+  <g transform="translate(30, 25) scale(0.5)">
+    <path d="M22 3 C13 3 6 10 6 19 C6 23 7.5 26.5 10 29 L2 37 C1 38 1 40 2 41 C3 42 5 42 6 41 L14 33 C16.5 35 19.5 36 23 36 C32 36 39 29 39 20 C39 11 32 4 23 4 L20 7 L26 13 L26 18 L21 23 L16 23 L10 17 L16 11 L14 8 C12 9.5 10 12 9 15 C8 12 8.5 8 10 5 C14 3.5 18 3 22 3 Z" fill="white"/>
+  </g>
+
+  <!-- FC text inside shield -->
+  <text x="34" y="62" font-family="Arial Black, sans-serif" font-size="11" font-weight="900" fill="#F97316" text-anchor="middle">PRO</text>
+
+  <!-- FixCraft Text -->
+  <text x="95" y="36" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="#1E3A8A" letter-spacing="-1">Fix</text>
+  <text x="136" y="36" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="#F97316" letter-spacing="-1">Craft</text>
+
+  <!-- Stars decoration -->
+  <text x="95" y="52" font-family="Arial, sans-serif" font-size="10" fill="#F59E0B">★★★★★</text>
+
+  <!-- Tagline -->
+  <text x="95" y="66" font-family="Arial, sans-serif" font-size="10" fill="#6B7280" letter-spacing="2.5" font-weight="600">TRUSTED HANDYMAN</text>
+
+  <!-- Bottom accent line under name -->
+  <rect x="95" y="40" width="178" height="2" fill="#1E40AF" rx="1"/>
+</svg>

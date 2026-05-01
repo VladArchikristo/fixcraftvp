@@ -1,0 +1,522 @@
+[
+  {
+    "id": 1,
+    "name": "The Spruce",
+    "url": "https://www.thespruce.com/about-us-4774498",
+    "contact_email": "N/A",
+    "category": "Home Improvement, DIY, Garden",
+    "notes": "Major Dotdash Meredith publication. Multi-million monthly traffic. Has contributor program — pitch via About Us page. Very high DA (90+). Competitive but extremely valuable backlink."
+  },
+  {
+    "id": 2,
+    "name": "Design Milk",
+    "url": "https://design-milk.com/contributor-guidelines/",
+    "contact_email": "N/A",
+    "category": "Interior Design, Architecture",
+    "notes": "DA 71, DR 81. 24K-70K monthly traffic. Has contributor guidelines page. Focus on modern design, architecture, art, tech."
+  },
+  {
+    "id": 3,
+    "name": "Remodelaholic",
+    "url": "https://www.remodelaholic.com/submit-guest-post/",
+    "contact_email": "N/A",
+    "category": "DIY, Renovation, Home Improvement",
+    "notes": "Popular DIY/renovation blog. ~100K+ monthly traffic. Has guest post submission page. Focus on DIY tutorials, before/after projects, renovation tips."
+  },
+  {
+    "id": 4,
+    "name": "House Digest",
+    "url": "https://www.housedigest.com/contact/",
+    "contact_email": "N/A",
+    "category": "Interior Design, DIY, Home Improvement",
+    "notes": "DA 58, DR 74. ~70K monthly traffic. Static Media publication. Contact via their page to pitch articles."
+  },
+  {
+    "id": 5,
+    "name": "Re-Thinking The Future",
+    "url": "https://www.re-thinkingthefuture.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Architecture, Construction, Design",
+    "notes": "DA 52-54, DR 73-75. 98K monthly traffic. Has Write for Us page. Architecture and construction focus. Good for handyman/renovation content."
+  },
+  {
+    "id": 6,
+    "name": "Urban Splatter",
+    "url": "https://www.urbansplatter.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Architecture, Construction, Real Estate",
+    "notes": "DA 46-49, DR 58-64. 94K-214K monthly traffic. Has Write for Us page. Covers architecture, construction, real estate, lifestyle."
+  },
+  {
+    "id": 7,
+    "name": "Gardening Know How",
+    "url": "https://www.gardeningknowhow.com/about-us",
+    "contact_email": "N/A",
+    "category": "Landscaping, Gardening, Outdoor",
+    "notes": "DA 74. 16.4M monthly traffic! Huge gardening resource. Check About Us for contributor info. Great for outdoor/landscaping content."
+  },
+  {
+    "id": 8,
+    "name": "The Constructor",
+    "url": "https://theconstructor.org/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Engineering, Construction",
+    "notes": "DA 48. 134K monthly traffic. Has Write for Us page. Civil engineering and construction focus. Great for technical handyman/contractor content."
+  },
+  {
+    "id": 9,
+    "name": "Safeopedia",
+    "url": "https://www.safeopedia.com/write-for-us",
+    "contact_email": "N/A",
+    "category": "Construction Safety, Workplace Safety",
+    "notes": "DA 45. 117K monthly traffic. Has Write for Us page. Safety-focused — good for home safety, construction safety articles."
+  },
+  {
+    "id": 10,
+    "name": "Fine Homes and Living",
+    "url": "https://finehomesandliving.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Luxury Homes, Interior Design",
+    "notes": "DA 42-52, DR 63-65. Luxury home and interior design focus. Has Write for Us page."
+  },
+  {
+    "id": 11,
+    "name": "Decorator Advice",
+    "url": "https://decoratoradvice.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Interior Design, Lifestyle",
+    "notes": "DA 52, DR 63-74. 4.6K-9.5K monthly traffic. Interior design and lifestyle focus."
+  },
+  {
+    "id": 12,
+    "name": "Futurist Architecture",
+    "url": "https://www.futuristarchitecture.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Architecture, Design",
+    "notes": "DR 65. 26.3K monthly traffic. Architecture and design blog."
+  },
+  {
+    "id": 13,
+    "name": "Homify",
+    "url": "https://www.homify.com/write-for-us",
+    "contact_email": "N/A",
+    "category": "Architecture, Interiors, Home Design",
+    "notes": "DA 46, DR 71. Global platform for architecture and interiors. Very high authority."
+  },
+  {
+    "id": 14,
+    "name": "The Architects Diary",
+    "url": "https://thearchitectsdiary.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Architecture, Home Improvement",
+    "notes": "DA 41, DR 67. ~20K monthly traffic. Architecture and home improvement focus."
+  },
+  {
+    "id": 15,
+    "name": "Pretty Handy Girl",
+    "url": "https://www.prettyhandygirl.com/about/",
+    "contact_email": "N/A",
+    "category": "DIY, Women in Construction, Home Improvement",
+    "notes": "Popular DIY blog focused on women doing home improvement. Great audience match for handyman services."
+  },
+  {
+    "id": 16,
+    "name": "Architecture Lab",
+    "url": "https://www.architecturelab.net/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Architecture, Home Design",
+    "notes": "Architecture and home design blog. Has Write for Us page."
+  },
+  {
+    "id": 17,
+    "name": "Decoist",
+    "url": "https://www.decoist.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Interior Design, Home Decor",
+    "notes": "Interior design blog with Write for Us page. Good for home decor and design content."
+  },
+  {
+    "id": 18,
+    "name": "e-Architect",
+    "url": "https://www.e-architect.com/submit",
+    "contact_email": "N/A",
+    "category": "Architecture, Design, Construction",
+    "notes": "Global architecture news site. Accepts submissions about architecture, design, and construction."
+  },
+  {
+    "id": 19,
+    "name": "Kitchen and Bath Resources",
+    "url": "https://kitchenandbathresources.com/write-for-us/",
+    "contact_email": "info@kitchenandbathresources.com",
+    "category": "Kitchen, Bathroom, Renovation",
+    "notes": "800-1500 words, up to 2 backlinks, original unpublished content. Topics: kitchen/bath design, renovation tips, product reviews, DIY, eco-design."
+  },
+  {
+    "id": 20,
+    "name": "The Flooring Blog",
+    "url": "https://theflooringblog.com/guest-post-guidelines/",
+    "contact_email": "N/A",
+    "category": "Flooring",
+    "notes": "Min 800 words, H3 headings required, no affiliate links. Specialized flooring blog with real articles."
+  },
+  {
+    "id": 21,
+    "name": "Floor N Home",
+    "url": "https://floornhome.com/write-for-us/",
+    "contact_email": "bettysarah184@gmail.com",
+    "category": "Flooring, Interior",
+    "notes": "Min 500 words, dofollow links. Accepts renovation, decor, DIY, landscaping content."
+  },
+  {
+    "id": 22,
+    "name": "Arizona's Finest Roofing",
+    "url": "https://arizonasfinestroofing.com/write-for-us",
+    "contact_email": "office2@arizonasfinestroofing.com",
+    "category": "Roofing",
+    "notes": "Min 700 words, 1 author link, images min 400x400. Topics: roofing materials, maintenance, trends. No AI content."
+  },
+  {
+    "id": 23,
+    "name": "McElroy Metal",
+    "url": "https://info.mcelroymetal.com/guest-blogging-submission",
+    "contact_email": "N/A",
+    "category": "Metal Roofing, Construction",
+    "notes": "Major metal roofing manufacturer. Accepts expert content about roofing systems and sustainable construction."
+  },
+  {
+    "id": 24,
+    "name": "Home Tech Scoop",
+    "url": "https://hometechscoop.com/write-with-us/",
+    "contact_email": "taylor@hometechscoop.com",
+    "category": "Smart Home, Home Security, Appliances",
+    "notes": "500-1500 words, no affiliate links. Topics: home automation, security systems, smart devices."
+  },
+  {
+    "id": 25,
+    "name": "Security Forward",
+    "url": "https://www.securityforward.com/write-for-us/",
+    "contact_email": "info@securityforward.com",
+    "category": "Home Security, Cybersecurity",
+    "notes": "1000-1500 words, images/video welcome. Accepts tutorials, guides, product reviews on security."
+  },
+  {
+    "id": 26,
+    "name": "Home Automation Talks",
+    "url": "https://homeautomationtalks.com/write-for-us-home-automation/",
+    "contact_email": "content@homeautomationtalks.com",
+    "category": "Smart Home, IoT, Home Automation",
+    "notes": "Min 1000 words, 1-2 backlinks. 16 categories: automation, security, voice tech, smart thermostats, IoT."
+  },
+  {
+    "id": 27,
+    "name": "WonBolt",
+    "url": "https://wonbolt.com/write-for-us/",
+    "contact_email": "infowonbolt@gmail.com",
+    "category": "IoT, Smart Home, Technology",
+    "notes": "800-1500 words, 2 dofollow links in bio. Topics: smart devices, automation, AI, blockchain, industrial IoT."
+  },
+  {
+    "id": 28,
+    "name": "IoTDunia",
+    "url": "https://iotdunia.com/submit-iot-articles/",
+    "contact_email": "info@iotdunia.com",
+    "category": "IoT, Smart Home, DIY Electronics",
+    "notes": "1000-2000 words optimal, 1 contextual link, 5-10 business days publishing time. Topics: Arduino, Raspberry Pi, smart home."
+  },
+  {
+    "id": 29,
+    "name": "Online Tool Reviews",
+    "url": "https://www.onlinetoolreviews.com/about/write-for-us",
+    "contact_email": "editor@onlinetoolreviews.com",
+    "category": "Tools, DIY, Woodworking",
+    "notes": "Min 1500 words, 1 image per 250 words, max 1 hyperlink. Accepts how-to, tool reviews with pros/cons, woodworking."
+  },
+  {
+    "id": 30,
+    "name": "Toolrage",
+    "url": "https://www.toolrage.com/guest-post-guidelines/",
+    "contact_email": "N/A",
+    "category": "Tools, Auto, Power Tools",
+    "notes": "Min 1000 words, unique content only. Focus on auto and mechanical tools, power tools."
+  },
+  {
+    "id": 31,
+    "name": "Best Tool Review",
+    "url": "https://besttoolreview.net/write-for-us/",
+    "contact_email": "besttoolsreviews@gmail.com",
+    "category": "Power Tools, Woodworking",
+    "notes": "Welcomes experts on tools, woodworking, DIY. Oriented toward home masters and professionals."
+  },
+  {
+    "id": 32,
+    "name": "Sabrina's Organizing",
+    "url": "https://sabrinasorganizing.com/guest-post-guidelines/",
+    "contact_email": "inquiry@sabrinasorganizing.com",
+    "category": "Home Organization, DIY, Lifestyle",
+    "notes": "1500-3000 words, exclusive content only, nofollow links. Promotion via social media and newsletter. Themed days: Sunday (organizing), Friday (DIY)."
+  },
+  {
+    "id": 33,
+    "name": "Shine Your Light Blog",
+    "url": "https://shineyourlightblog.com/guest-post/",
+    "contact_email": "info@shineyourlightblog.com",
+    "category": "Home Decor, DIY, Painting",
+    "notes": "800-3000 words, 2-3 images with rights, 2-3 self-links + 2 topical links. Content becomes site property after publishing."
+  },
+  {
+    "id": 34,
+    "name": "The Global Hues",
+    "url": "https://theglobalhues.com/write-for-us-home-improvement-home-renovation-home-decor-remodeling-guest-posts/",
+    "contact_email": "info@theglobalhues.com",
+    "category": "Home Improvement, Renovation, Decor",
+    "notes": "900-1500 words, 1 contextual link, Google Doc or Word only. Review time 3-7 days. Covers kitchen, bathroom, budgeting, materials."
+  },
+  {
+    "id": 35,
+    "name": "Home Improvement Help Center",
+    "url": "https://www.homeimprovementhelpcenter.com/submit-home-improvement-guest-blog-post/",
+    "contact_email": "homeimprovementhelpcenter@gmail.com",
+    "category": "Home Improvement, Renovation",
+    "notes": "Min 550 words, 1 JPEG image, author bio. Accepts kitchen, bathroom, decor, safety topics."
+  },
+  {
+    "id": 36,
+    "name": "Finderify",
+    "url": "https://finderify.com/write-for-us/",
+    "contact_email": "hello@finderify.com",
+    "category": "Home Renovation, Contractors",
+    "notes": "Manual review, response within 5 business days. Priority for geo-targeted content (city, region). Focus on hidden renovation costs, homeowner tips."
+  },
+  {
+    "id": 37,
+    "name": "Lovely Home Accents",
+    "url": "https://www.lovelyhomeaccents.com/write-for-us/",
+    "contact_email": "lovelyhomeaccent@gmail.com",
+    "category": "Home Decor, Interior, Bathroom",
+    "notes": "Min 500 words, 100% unique, images 1000x665 px, author bio 150-250 words. Accepts DIY, landscaping, plumbing."
+  },
+  {
+    "id": 38,
+    "name": "Estimate Florida Consulting",
+    "url": "https://estimatorflorida.com/write-for-us-home-renovation-guest-post/",
+    "contact_email": "seo@estimatorflorida.com",
+    "category": "Renovation, Construction Cost Estimation",
+    "notes": "Min 1200 words, headings and lists required, 1 dofollow + 2 internal links. Specializes in renovation cost estimation."
+  },
+  {
+    "id": 39,
+    "name": "House Whirl",
+    "url": "https://housewhirl.com/write-for-us/",
+    "contact_email": "info@housewhirl.com",
+    "category": "Home Improvement, Smart Home, Eco",
+    "notes": "Min 1000 words, up to 2 dofollow links, author bio 50-100 words, response 3-5 business days."
+  },
+  {
+    "id": 40,
+    "name": "Beautiful House Tips",
+    "url": "https://beautifulhousetips.com/write-for-us/",
+    "contact_email": "info@beautifulhousetips.com",
+    "category": "Interior Design, DIY, Painting",
+    "notes": "Accepts interior design tips, DIY repairs, painting, sustainable materials. Oriented toward practical homeowner advice."
+  },
+  {
+    "id": 41,
+    "name": "Kooihaus Magazine",
+    "url": "https://kooihaus.com/write-for-us-submit-guest-post/",
+    "contact_email": "N/A",
+    "category": "Home Decor, Interior, Lifestyle",
+    "notes": "Min 700 words, original well-written content. Niche magazine on home decor and interior."
+  },
+  {
+    "id": 42,
+    "name": "DALTX Real Estate",
+    "url": "https://daltxrealestate.com/guest-post/",
+    "contact_email": "info@daltxrealestate.com",
+    "category": "Real Estate, Home Staging, Renovation",
+    "notes": "500-1200 words, no AI content, max 3 dofollow links, bio ~250 words, response within 3 days. Dallas TX focus — good regional match."
+  },
+  {
+    "id": 43,
+    "name": "Propaura",
+    "url": "https://propaura.com/write-for-us/",
+    "contact_email": "info@propaura.com",
+    "category": "Real Estate, Staging, Construction, Finance",
+    "notes": "Min 600 words (2000+ for featured), .doc format, response up to 24 hours. Accepts staging, real estate, home decor."
+  },
+  {
+    "id": 44,
+    "name": "All Around Moving",
+    "url": "https://www.allaroundmoving.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Moving, Real Estate, DIY, Interior",
+    "notes": "Claims 1.5M+ monthly visitors. Accepts moving, real estate tips, decor, featured blogger. Great for handyman + moving combo content."
+  },
+  {
+    "id": 45,
+    "name": "KS Realty Agent",
+    "url": "https://ksrealtyagent.com/home-improvement-write-for-us/",
+    "contact_email": "N/A",
+    "category": "Real Estate, Home Improvement, Home Warranty",
+    "notes": "Accepts homeownership content including warranty and insurance tips. Oriented toward home buyers and owners."
+  },
+  {
+    "id": 46,
+    "name": "Green and Prosperous",
+    "url": "https://www.greenandprosperous.com/guest-posting-guidelines",
+    "contact_email": "kellyp@greenandprosperous.com",
+    "category": "Sustainable Home, Green Building, Eco",
+    "notes": "1000-2000 words, no AI content, up to 2 body links + 1 bio link. Paid tiers: Community $25, Editorial $95, Sponsored $150+. Topics: eco renovation, clean energy, off-grid living."
+  },
+  {
+    "id": 47,
+    "name": "Tiny Life House",
+    "url": "https://tinylifehouse.com/write-for-us/",
+    "contact_email": "tinylifehouseus@gmail.com",
+    "category": "Tiny House, Minimalism, Small Space",
+    "notes": "700-1400 words, max 2 non-commercial links, response within 20 hours. Topics: design, DIY, zoning, financing, minimalism, off-grid."
+  },
+  {
+    "id": 48,
+    "name": "HeartWork Organizing",
+    "url": "https://heartworkorg.com/guestpost/",
+    "contact_email": "darla@heartworkorg.com",
+    "category": "Home Organization, Staging, Decor",
+    "notes": "300-550 words, original photos only (no stock), author bio max 100 words. Site retains rights to published version."
+  },
+  {
+    "id": 49,
+    "name": "Tornado Dave",
+    "url": "https://www.tornadodave.com/write-for-us-moving/",
+    "contact_email": "contact@tornadodave.com",
+    "category": "Moving, Multi-niche",
+    "notes": "Min 300 words, 3 dofollow links, 1 stock image. Multi-niche platform — low entry barrier."
+  },
+  {
+    "id": 50,
+    "name": "Home Zines",
+    "url": "https://homezines.com/submit/",
+    "contact_email": "N/A",
+    "category": "Home Improvement, DIY",
+    "notes": "Home improvement and DIY blog with submit page. Good for general home improvement content."
+  },
+  {
+    "id": 51,
+    "name": "Roofing Cost Calculator",
+    "url": "https://roofingcostcalculator.co.uk/write-for-us/",
+    "contact_email": "info@roofingcostcalculator.co.uk",
+    "category": "Roofing (UK-oriented)",
+    "notes": "Min 1000 words, 1 dofollow link in author bio, no AI content, H2/H3 structure. Topics: residential/commercial roofing, repairs, materials."
+  },
+  {
+    "id": 52,
+    "name": "HP Roofing",
+    "url": "https://hproofing.ie/write-for-us",
+    "contact_email": "info@hproofing.ie",
+    "category": "Roofing (Ireland)",
+    "notes": "Min 1000 words, max 1 hyperlink, images with usage rights. Focus: roofing techniques, materials, trends."
+  },
+  {
+    "id": 53,
+    "name": "Mothers Always Right",
+    "url": "https://mothersalwaysright.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Family DIY, Construction, Lifestyle",
+    "notes": "DA 44. 66.2K monthly traffic. Has Write for Us page. Family and DIY focus — great for family-friendly handyman content."
+  },
+  {
+    "id": 54,
+    "name": "Build Review",
+    "url": "https://build-review.com/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Construction, Architecture",
+    "notes": "DA 37, DR 73-74. Construction and architecture focus."
+  },
+  {
+    "id": 55,
+    "name": "Old House to New Home",
+    "url": "https://www.oldhousetonewhome.net/contribute/",
+    "contact_email": "N/A",
+    "category": "Home Restoration, Renovation",
+    "notes": "Blog focused on old home restoration and renovation. Perfect niche match for handyman services."
+  },
+  {
+    "id": 56,
+    "name": "Love Chic Living",
+    "url": "https://lovechicliving.co.uk/write-for-us/",
+    "contact_email": "N/A",
+    "category": "Interior Design (UK)",
+    "notes": "UK interior design blog with Write for Us page. Lifestyle and home decor focus."
+  },
+  {
+    "id": 57,
+    "name": "Real Homes",
+    "url": "https://www.realhomes.com/about-us",
+    "contact_email": "N/A",
+    "category": "Home Renovation, Interior Design",
+    "notes": "Major UK/US home renovation publication (Future PLC). Very high DA. Contact editorial team via About Us page for contributor opportunities."
+  },
+  {
+    "id": 58,
+    "name": "Homes & Gardens",
+    "url": "https://www.homesandgardens.com/about-us",
+    "contact_email": "N/A",
+    "category": "Home, Garden, Interior Design",
+    "notes": "Major publication (Future PLC). Very high DA. Accepts expert contributor content — contact editorial team."
+  },
+  {
+    "id": 59,
+    "name": "Apartment Therapy",
+    "url": "https://www.apartmenttherapy.com/contact",
+    "contact_email": "N/A",
+    "category": "Home Decor, Small Space, DIY",
+    "notes": "Major lifestyle publication. DA 80+. Has freelance contributor opportunities — check contact page. Very competitive but high-value backlink."
+  },
+  {
+    "id": 60,
+    "name": "Bob Vila",
+    "url": "https://www.bobvila.com/contact",
+    "contact_email": "N/A",
+    "category": "Home Improvement, DIY, Renovation",
+    "notes": "Iconic home improvement brand. DA 80+. Has freelance contributor program. Pitch via contact page. Extremely high authority."
+  },
+  {
+    "id": 61,
+    "name": "Family Handyman",
+    "url": "https://www.familyhandyman.com/contact-us/",
+    "contact_email": "N/A",
+    "category": "DIY, Home Repair, Handyman",
+    "notes": "TMB publication. DA 80+. The #1 handyman brand. Accepts expert contributor pitches. Perfect niche match for FixCraft."
+  },
+  {
+    "id": 62,
+    "name": "Today's Homeowner",
+    "url": "https://todayshomeowner.com/about-us/",
+    "contact_email": "N/A",
+    "category": "Home Improvement, Renovation",
+    "notes": "Danny Lipford's brand. High DA. Has editorial contributor opportunities. Great authority in home improvement space."
+  },
+  {
+    "id": 63,
+    "name": "This Old House",
+    "url": "https://www.thisoldhouse.com/about-us",
+    "contact_email": "N/A",
+    "category": "Home Renovation, Restoration",
+    "notes": "Iconic home renovation brand. DA 85+. Has expert contributor program. Extremely competitive but dream-tier backlink."
+  },
+  {
+    "id": 64,
+    "name": "Charlotte Agenda / Axios Charlotte",
+    "url": "https://www.axios.com/local/charlotte",
+    "contact_email": "charlotte@axios.com",
+    "category": "Local Charlotte NC News",
+    "notes": "Local Charlotte publication (formerly Charlotte Agenda). Accepts local business stories and expert commentary. Perfect for Charlotte handyman visibility."
+  },
+  {
+    "id": 65,
+    "name": "Charlotte Magazine",
+    "url": "https://www.charlottemagazine.com/contact/",
+    "contact_email": "N/A",
+    "category": "Local Charlotte NC Lifestyle",
+    "notes": "Charlotte's premier lifestyle magazine. Accepts contributor pitches for local business and lifestyle content. High local authority."
+  }
+]

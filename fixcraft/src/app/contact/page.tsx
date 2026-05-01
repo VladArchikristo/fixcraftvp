@@ -34,7 +34,6 @@ export default function ContactPage() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    // TODO: connect to backend/email service
     setSubmitted(true);
   }
 
@@ -42,14 +41,20 @@ export default function ContactPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen flex items-center justify-center px-4">
+        <main className="min-h-screen flex items-center justify-center px-4 bg-[#FAF7F2]">
           <div className="text-center max-w-md">
-            <div className="text-6xl mb-6">✅</div>
-            <h1 className="text-3xl font-bold mb-4">We Got It!</h1>
-            <p className="text-gray-400 text-lg">
-              Thanks, {form.name}! We&apos;ll call you back within 1 hour to confirm your booking.
+            <div className="w-16 h-16 rounded-full bg-[#A67C52]/10 flex items-center justify-center mx-auto mb-8">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-[#A67C52]">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-semibold text-[#2C1B0F] mb-4">
+              Thank You, {form.name}
+            </h1>
+            <p className="text-[#6B6560] text-lg font-[family-name:var(--font-cormorant)] leading-relaxed">
+              We received your request. We&apos;ll call you back within 1 hour to confirm your booking.
             </p>
-            <p className="text-amber-400 font-semibold mt-6">(786) 566-0753</p>
+            <p className="text-[#A67C52] font-semibold mt-8 text-lg">(786) 566-0753</p>
           </div>
         </main>
       </>
@@ -60,16 +65,21 @@ export default function ContactPage() {
     <>
       <Navbar />
 
-      <main className="pt-28 pb-24 px-4 max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4">Book a Service</h1>
-          <p className="text-gray-400 text-lg">We&apos;ll call you back within 1 hour to confirm.</p>
+      <main className="pt-32 pb-28 px-4 max-w-2xl mx-auto bg-[#FAF7F2] min-h-screen">
+        <div className="text-center mb-16">
+          <p className="text-[#A67C52] text-sm uppercase tracking-[0.25em] mb-4 font-[family-name:var(--font-cormorant)]">Booking</p>
+          <h1 className="font-[family-name:var(--font-playfair)] text-4xl md:text-5xl font-semibold text-[#2C1B0F] mb-4">
+            Book a Service
+          </h1>
+          <p className="text-[#6B6560] text-lg font-[family-name:var(--font-cormorant)]">
+            We&apos;ll call you back within 1 hour to confirm.
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gray-900 rounded-2xl p-8 border border-white/10 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-white border border-[#D4C4A8]/30 p-10 shadow-sm space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
                 Name *
               </label>
               <input
@@ -77,12 +87,12 @@ export default function ContactPage() {
                 required
                 value={form.name}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50 transition-colors"
+                className="w-full bg-[#FAF7F2] border border-[#D4C4A8]/40 px-4 py-3 text-[#1A1918] placeholder-[#A8A098] focus:outline-none focus:border-[#A67C52] transition-colors"
                 placeholder="Your name"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
                 Phone *
               </label>
               <input
@@ -91,14 +101,14 @@ export default function ContactPage() {
                 required
                 value={form.phone}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50 transition-colors"
+                className="w-full bg-[#FAF7F2] border border-[#D4C4A8]/40 px-4 py-3 text-[#1A1918] placeholder-[#A8A098] focus:outline-none focus:border-[#A67C52] transition-colors"
                 placeholder="(704) 000-0000"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
               Email
             </label>
             <input
@@ -106,13 +116,13 @@ export default function ContactPage() {
               type="email"
               value={form.email}
               onChange={handleChange}
-              className="w-full bg-gray-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50 transition-colors"
+              className="w-full bg-[#FAF7F2] border border-[#D4C4A8]/40 px-4 py-3 text-[#1A1918] placeholder-[#A8A098] focus:outline-none focus:border-[#A67C52] transition-colors"
               placeholder="your@email.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
               Service Needed *
             </label>
             <select
@@ -120,7 +130,7 @@ export default function ContactPage() {
               required
               value={form.service}
               onChange={handleChange}
-              className="w-full bg-gray-800 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400/50 transition-colors"
+              className="w-full bg-[#FAF7F2] border border-[#D4C4A8]/40 px-4 py-3 text-[#1A1918] focus:outline-none focus:border-[#A67C52] transition-colors appearance-none cursor-pointer"
             >
               <option value="">Select a service...</option>
               {services.map((s) => (
@@ -130,7 +140,7 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
               Preferred Date *
             </label>
             <input
@@ -140,22 +150,22 @@ export default function ContactPage() {
               value={form.date}
               onChange={handleChange}
               min={new Date().toISOString().split("T")[0]}
-              className="w-full bg-gray-800 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-400/50 transition-colors"
+              className="w-full bg-[#FAF7F2] border border-[#D4C4A8]/40 px-4 py-3 text-[#1A1918] focus:outline-none focus:border-[#A67C52] transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-3">
+            <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
               Preferred Time *
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {timeSlots.map((slot) => (
                 <label
                   key={slot}
-                  className={`flex items-center justify-center px-4 py-3 rounded-xl border cursor-pointer transition-colors text-sm font-medium ${
+                  className={`flex items-center justify-center px-4 py-3 border cursor-pointer transition-colors text-sm ${
                     form.time === slot
-                      ? "border-amber-400 bg-amber-400/10 text-amber-400"
-                      : "border-white/10 text-gray-400 hover:border-white/30"
+                      ? "border-[#2C1B0F] bg-[#2C1B0F] text-[#FAF7F2]"
+                      : "border-[#D4C4A8]/40 text-[#6B6560] hover:border-[#A67C52]"
                   }`}
                 >
                   <input
@@ -174,7 +184,7 @@ export default function ContactPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs font-medium uppercase tracking-[0.15em] text-[#6B6560] mb-3">
               Additional Details
             </label>
             <textarea
@@ -182,34 +192,36 @@ export default function ContactPage() {
               value={form.message}
               onChange={handleChange}
               rows={4}
-              className="w-full bg-gray-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400/50 transition-colors resize-none"
+              className="w-full bg-[#FAF7F2] border border-[#D4C4A8]/40 px-4 py-3 text-[#1A1918] placeholder-[#A8A098] focus:outline-none focus:border-[#A67C52] transition-colors resize-none"
               placeholder="Describe what you need — brand, model, number of items..."
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-amber-400 text-gray-950 py-4 rounded-xl text-lg font-bold hover:bg-amber-300 transition-all hover:scale-[1.02]"
+            className="w-full bg-[#2C1B0F] text-[#FAF7F2] py-4 text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#A67C52] transition-colors duration-300"
           >
             Request Booking
           </button>
 
-          <p className="text-center text-gray-500 text-sm">
+          <p className="text-center text-[#6B6560]/60 text-sm">
             Or call directly:{" "}
-            <a href="tel:7865660753" className="text-amber-400 hover:text-amber-300">
+            <a href="tel:7865660753" className="text-[#A67C52] hover:text-[#2C1B0F] transition-colors underline underline-offset-4">
               (786) 566-0753
             </a>
           </p>
         </form>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 text-center text-gray-500 text-sm">
-        <p>
-          © 2026 FixCraft VP — Charlotte, NC ·{" "}
-          <a href="tel:7865660753" className="hover:text-white transition-colors">
+      <footer className="bg-[#FAF7F2] border-t border-[#D4C4A8]/30 py-12 px-4">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[#6B6560] text-sm">
+            © 2026 FixCraft VP — Charlotte, NC
+          </p>
+          <a href="tel:7865660753" className="text-[#A67C52] font-medium hover:text-[#2C1B0F] transition-colors text-sm">
             (786) 566-0753
           </a>
-        </p>
+        </div>
       </footer>
     </>
   );

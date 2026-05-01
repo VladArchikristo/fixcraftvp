@@ -1,0 +1,379 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1200" viewBox="0 0 1920 1200">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B2A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0A1825;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A2E42;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#152438;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sidebarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#091422;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D1B2A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2B6CB0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3182CE;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F6C060;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mapGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A3A5C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D2233;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rightPanelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0E1F30;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#091828;stop-opacity:1" />
+    </linearGradient>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glowBlue">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#2B6CB0" flood-opacity="0.6"/>
+    </filter>
+    <pattern id="mapGrid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#1E3D5A" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="1200" fill="url(#bgGrad)"/>
+
+  <!-- Status Bar -->
+  <rect width="1920" height="44" fill="#091422"/>
+  <text x="100" y="29" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="500">9:41 AM — Friday, April 17, 2026</text>
+  <text x="1720" y="29" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" text-anchor="end">Signal ▪ WiFi ▪ 🔋 85%</text>
+
+  <!-- ===== LEFT SIDEBAR (80px) ===== -->
+  <rect x="0" y="44" width="80" height="1156" fill="url(#sidebarGrad)"/>
+  <rect x="78" y="44" width="2" height="1156" fill="#1A2E42"/>
+
+  <!-- Logo mark -->
+  <rect x="16" y="60" width="48" height="48" rx="12" fill="url(#accentGrad)" filter="url(#glowBlue)"/>
+  <path d="M22 96 L22 83 L38 83 L38 77 L50 77 L57 83 L62 83 L62 100 L22 100 Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="30" cy="101" r="4.5" fill="white"/>
+  <circle cx="54" cy="101" r="4.5" fill="white"/>
+  <path d="M38 83 L38 91 L57 91" stroke="white" stroke-width="1.5" fill="none"/>
+
+  <!-- Nav items with active state -->
+  <!-- Home (active) -->
+  <rect x="8" y="126" width="64" height="64" rx="12" fill="#1A3A5C"/>
+  <rect x="8" y="126" width="4" height="64" rx="2" fill="url(#accentGrad)"/>
+  <rect x="22" y="148" width="36" height="26" rx="4" fill="none" stroke="#4A9FE8" stroke-width="2"/>
+  <rect x="29" y="140" width="22" height="14" rx="3" fill="none" stroke="#4A9FE8" stroke-width="2"/>
+  <text x="40" y="204" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Home</text>
+
+  <!-- Loads -->
+  <rect x="8" y="200" width="64" height="64" rx="12" fill="transparent"/>
+  <rect x="22" y="218" width="36" height="28" rx="4" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <line x1="28" y1="228" x2="50" y2="228" stroke="#3A6A8A" stroke-width="1.5"/>
+  <line x1="28" y1="236" x2="44" y2="236" stroke="#3A6A8A" stroke-width="1.5"/>
+  <text x="40" y="276" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Loads</text>
+
+  <!-- Map -->
+  <rect x="8" y="274" width="64" height="64" rx="12" fill="transparent"/>
+  <path d="M28 296 Q40 283 52 296 Q40 322 28 296 Z" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <circle cx="40" cy="296" r="4" fill="#3A6A8A"/>
+  <text x="40" y="350" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Route</text>
+
+  <!-- Analytics -->
+  <rect x="8" y="348" width="64" height="64" rx="12" fill="transparent"/>
+  <rect x="24" y="386" width="8" height="16" rx="2" fill="#3A6A8A"/>
+  <rect x="36" y="378" width="8" height="24" rx="2" fill="#3A6A8A"/>
+  <rect x="48" y="370" width="8" height="32" rx="2" fill="#3A6A8A"/>
+  <text x="40" y="424" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Stats</text>
+
+  <!-- Documents -->
+  <rect x="8" y="422" width="64" height="64" rx="12" fill="transparent"/>
+  <rect x="24" y="438" width="32" height="38" rx="4" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <path d="M40 438 L40 452 L56 452" fill="none" stroke="#3A6A8A" stroke-width="1.5"/>
+  <text x="40" y="498" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Docs</text>
+
+  <!-- Fuel/Expenses -->
+  <rect x="8" y="496" width="64" height="64" rx="12" fill="transparent"/>
+  <path d="M22 548 L22 520 Q22 514 28 514 L52 514 Q58 514 58 520 L58 548 Z" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <rect x="28" y="522" width="12" height="10" rx="2" fill="#3A6A8A"/>
+  <text x="40" y="572" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Fuel</text>
+
+  <!-- Messages -->
+  <rect x="8" y="570" width="64" height="64" rx="12" fill="transparent"/>
+  <path d="M20 600 Q20 586 40 586 Q60 586 60 600 Q60 614 40 614 L30 620 L32 614 Q20 614 20 600 Z" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <circle cx="48" cy="574" r="9" fill="#EF4444"/>
+  <text x="48" y="578" fill="white" font-family="Arial" font-size="10" font-weight="700" text-anchor="middle">2</text>
+  <text x="40" y="646" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Chat</text>
+
+  <!-- Settings at bottom -->
+  <rect x="8" y="1072" width="64" height="64" rx="12" fill="transparent"/>
+  <circle cx="40" cy="1104" r="12" fill="none" stroke="#3A6A8A" stroke-width="2"/>
+  <circle cx="40" cy="1104" r="5" fill="#3A6A8A"/>
+  <text x="40" y="1148" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="10" text-anchor="middle">Settings</text>
+
+  <!-- Profile at very bottom -->
+  <circle cx="40" cy="1170" r="22" fill="#1A3352"/>
+  <text x="40" y="1176" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="700">AK</text>
+
+  <!-- ===== CENTER MAP PANEL (80 to 1360) ===== -->
+  <rect x="80" y="44" width="1280" height="1156" fill="url(#mapGrad)"/>
+  <rect x="80" y="44" width="1280" height="1156" fill="url(#mapGrid)"/>
+
+  <!-- Map road network — major highways -->
+  <path d="M100 1100 L250 950 L400 820 L600 680 L800 580 L1000 510 L1200 460 L1350 430" stroke="#1E4060" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M100 1100 L250 950 L400 820 L600 680 L800 580 L1000 510 L1200 460 L1350 430" stroke="#243F5A" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <!-- I-90 label -->
+  <rect x="700" y="568" width="60" height="24" rx="5" fill="#1E4060"/>
+  <text x="730" y="584" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">I-90</text>
+
+  <!-- Secondary highway vertical -->
+  <path d="M600 44 L600 300 L620 500 L640 700 L660 900 L680 1200" stroke="#1A3550" stroke-width="12" fill="none"/>
+  <path d="M950 100 L960 300 L970 500 L980 700 L990 1000 L995 1200" stroke="#1A3550" stroke-width="12" fill="none"/>
+  <path d="M1200 44 L1210 200 L1220 400 L1230 700 L1235 1000" stroke="#1A3550" stroke-width="8" fill="none"/>
+
+  <!-- Secondary roads -->
+  <path d="M100 700 L300 720 L500 710 L700 700 L900 680 L1100 660 L1300 650 L1360 645" stroke="#1A3348" stroke-width="6" fill="none"/>
+  <path d="M100 450 L300 460 L500 450 L700 430 L900 420 L1100 415 L1300 410" stroke="#1A3348" stroke-width="6" fill="none"/>
+  <path d="M350 44 L360 200 L370 400 L380 700 L390 1000 L395 1200" stroke="#1A3348" stroke-width="5" fill="none"/>
+  <path d="M800 44 L820 300 L830 600 L840 900 L845 1200" stroke="#1A3348" stroke-width="5" fill="none"/>
+
+  <!-- Active route (highlighted) -->
+  <path d="M380 860 L460 810 L550 760 L660 700 L770 650 L880 610 L1000 570 L1120 535 L1240 510 L1330 492" stroke="#2B6CB0" stroke-width="10" fill="none" stroke-dasharray="20,8" stroke-linecap="round"/>
+  <path d="M380 860 L460 810 L550 760 L660 700 L770 650 L880 610 L1000 570 L1120 535 L1240 510 L1330 492" stroke="#4A9FE8" stroke-width="5" fill="none" stroke-dasharray="20,8" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Start marker — Cleveland -->
+  <circle cx="380" cy="860" r="20" fill="#34D399" filter="url(#cardShadow)"/>
+  <circle cx="380" cy="860" r="8" fill="white"/>
+  <rect x="320" y="878" width="120" height="30" rx="8" fill="#0D1B2A" fill-opacity="0.9"/>
+  <text x="380" y="898" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="600">Cleveland</text>
+
+  <!-- Truck icon (in transit) -->
+  <rect x="875" y="595" width="50" height="34" rx="6" fill="#F5A623" filter="url(#cardShadow)"/>
+  <rect x="893" y="582" width="28" height="20" rx="4" fill="#F5A623"/>
+  <circle cx="886" cy="631" r="7" fill="white"/>
+  <circle cx="914" cy="631" r="7" fill="white"/>
+  <!-- speed indicator -->
+  <rect x="846" y="566" width="90" height="26" rx="8" fill="#0D1B2A" fill-opacity="0.9"/>
+  <text x="891" y="583" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="600">62 mph</text>
+
+  <!-- End marker — Pittsburgh -->
+  <path d="M1330 492 L1330 455 Q1330 442 1342 442 Q1354 442 1354 455 L1354 492 Z" fill="#EF4444"/>
+  <circle cx="1342" cy="448" r="12" fill="#EF4444"/>
+  <circle cx="1342" cy="448" r="5" fill="white"/>
+  <rect x="1282" y="510" width="120" height="30" rx="8" fill="#0D1B2A" fill-opacity="0.9"/>
+  <text x="1342" y="530" fill="#EF4444" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="600">Pittsburgh</text>
+
+  <!-- City dots on map -->
+  <circle cx="620" cy="440" r="8" fill="#4A9FE8" fill-opacity="0.7"/>
+  <rect x="560" y="425" width="88" height="24" rx="6" fill="#0D1B2A" fill-opacity="0.85"/>
+  <text x="604" y="441" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Columbus</text>
+
+  <circle cx="990" cy="415" r="8" fill="#4A9FE8" fill-opacity="0.7"/>
+  <rect x="940" y="400" width="100" height="24" rx="6" fill="#0D1B2A" fill-opacity="0.85"/>
+  <text x="990" y="416" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Erie, PA</text>
+
+  <circle cx="380" cy="720" r="8" fill="#4A9FE8" fill-opacity="0.7"/>
+  <rect x="328" y="705" width="104" height="24" rx="6" fill="#0D1B2A" fill-opacity="0.85"/>
+  <text x="380" y="721" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Akron, OH</text>
+
+  <!-- Other truck (different route) -->
+  <rect x="555" y="745" width="40" height="27" rx="5" fill="#9B59B6" opacity="0.8"/>
+  <circle cx="562" cy="773" r="5" fill="white" opacity="0.8"/>
+  <circle cx="588" cy="773" r="5" fill="white" opacity="0.8"/>
+  <rect x="500" y="730" width="90" height="22" rx="6" fill="#0D1B2A" fill-opacity="0.85"/>
+  <text x="545" y="745" fill="#9B59B6" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">TRK-1042</text>
+
+  <!-- Map compass -->
+  <circle cx="1320" cy="100" r="32" fill="#0D1B2A" fill-opacity="0.8"/>
+  <text x="1320" y="88" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="700">N</text>
+  <text x="1320" y="118" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">S</text>
+  <text x="1298" y="104" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">W</text>
+  <text x="1342" y="104" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">E</text>
+
+  <!-- Map zoom controls -->
+  <rect x="1312" y="140" width="36" height="36" rx="8" fill="#0D1B2A" fill-opacity="0.9"/>
+  <text x="1330" y="163" fill="white" font-family="Arial" font-size="22" text-anchor="middle" font-weight="300">+</text>
+  <rect x="1312" y="180" width="36" height="36" rx="8" fill="#0D1B2A" fill-opacity="0.9"/>
+  <text x="1330" y="203" fill="white" font-family="Arial" font-size="22" text-anchor="middle" font-weight="300">−</text>
+
+  <!-- TOP INFO BAR over map -->
+  <rect x="80" y="44" width="1280" height="68" fill="#091422" fill-opacity="0.95"/>
+  <rect x="80" y="110" width="1280" height="2" fill="#1A2E42"/>
+
+  <!-- Page title -->
+  <text x="120" y="87" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="26" font-weight="700">Fleet Overview</text>
+
+  <!-- Quick stats in header -->
+  <rect x="320" y="56" width="160" height="44" rx="10" fill="#1A2E42"/>
+  <text x="400" y="74" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Today's Earnings</text>
+  <text x="400" y="94" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">$608</text>
+
+  <rect x="492" y="56" width="160" height="44" rx="10" fill="#1A2E42"/>
+  <text x="572" y="74" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Active Route</text>
+  <text x="572" y="94" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">CLE → PIT</text>
+
+  <rect x="664" y="56" width="160" height="44" rx="10" fill="#1A2E42"/>
+  <text x="744" y="74" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Miles Driven</text>
+  <text x="744" y="94" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">83 mi</text>
+
+  <rect x="836" y="56" width="160" height="44" rx="10" fill="#1A2E42"/>
+  <text x="916" y="74" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">ETA</text>
+  <text x="916" y="94" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">10:18 AM</text>
+
+  <rect x="1008" y="56" width="160" height="44" rx="10" fill="#1A2E42"/>
+  <text x="1088" y="74" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Remaining</text>
+  <text x="1088" y="94" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">51 mi</text>
+
+  <!-- Status pill -->
+  <rect x="1180" y="62" width="150" height="32" rx="16" fill="#2D1F00"/>
+  <circle cx="1200" cy="78" r="6" fill="#F5A623"/>
+  <text x="1255" y="83" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="600">In Transit</text>
+
+  <!-- Map bottom overlay — progress bar -->
+  <rect x="80" y="1110" width="1280" height="90" fill="#091422" fill-opacity="0.92"/>
+  <rect x="80" y="1108" width="1280" height="2" fill="#1A2E42"/>
+  <text x="120" y="1142" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16">Cleveland, OH</text>
+  <!-- Route progress dots -->
+  <circle cx="280" cy="1155" r="8" fill="#34D399"/>
+  <rect x="294" y="1151" width="900" height="8" rx="4" fill="#1A3050"/>
+  <rect x="294" y="1151" width="560" height="8" rx="4" fill="url(#accentGrad)"/>
+  <circle cx="1194" cy="1155" r="8" fill="#EF4444"/>
+  <text x="1240" y="1142" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="end">Pittsburgh, PA</text>
+  <text x="294" y="1185" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16">62% complete — 51 miles remaining — ETA 10:18 AM</text>
+  <text x="1194" y="1185" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="end">134 mi total</text>
+
+  <!-- ===== RIGHT PANEL (1360 to 1920) ===== -->
+  <rect x="1360" y="44" width="560" height="1156" fill="url(#rightPanelGrad)"/>
+  <rect x="1360" y="44" width="2" height="1156" fill="#1A2E42"/>
+
+  <!-- Right panel header -->
+  <rect x="1360" y="44" width="560" height="72" fill="#091422"/>
+  <rect x="1360" y="114" width="560" height="2" fill="#1A2E42"/>
+  <text x="1400" y="88" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="700">This Week</text>
+  <rect x="1750" y="58" width="150" height="36" rx="10" fill="#1A2E42"/>
+  <text x="1825" y="81" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle">Apr 14–20</text>
+
+  <!-- Weekly Stats -->
+  <rect x="1380" y="128" width="240" height="108" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <rect x="1380" y="128" width="240" height="5" rx="3" fill="url(#goldGrad)"/>
+  <text x="1500" y="163" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">Weekly Earnings</text>
+  <text x="1500" y="205" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="36" font-weight="700" text-anchor="middle">$3,847</text>
+  <text x="1500" y="228" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">+12.4% vs last week</text>
+
+  <rect x="1640" y="128" width="240" height="108" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <rect x="1640" y="128" width="240" height="5" rx="3" fill="url(#accentGrad)"/>
+  <text x="1760" y="163" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">Net Profit</text>
+  <text x="1760" y="205" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="36" font-weight="700" text-anchor="middle">$2,844</text>
+  <text x="1760" y="228" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">after all expenses</text>
+
+  <!-- Stats row 2 -->
+  <rect x="1380" y="250" width="112" height="90" rx="12" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1436" y="282" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Trips</text>
+  <text x="1436" y="318" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle">8</text>
+
+  <rect x="1504" y="250" width="116" height="90" rx="12" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1562" y="282" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Miles</text>
+  <text x="1562" y="318" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle">4,218</text>
+
+  <rect x="1632" y="250" width="116" height="90" rx="12" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1690" y="282" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Fuel Cost</text>
+  <text x="1690" y="318" fill="#EF4444" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle">$847</text>
+
+  <rect x="1760" y="250" width="120" height="90" rx="12" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1820" y="282" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">$/mile</text>
+  <text x="1820" y="318" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle">$0.91</text>
+
+  <!-- Divider -->
+  <line x1="1380" y1="354" x2="1890" y2="354" stroke="#1A2E42" stroke-width="1"/>
+  <text x="1400" y="378" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="1">ACTIVE LOADS</text>
+  <text x="1880" y="378" fill="#3182CE" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">View All →</text>
+
+  <!-- Active load card -->
+  <rect x="1380" y="390" width="500" height="106" rx="14" fill="#1D3A50" filter="url(#cardShadow)"/>
+  <rect x="1380" y="390" width="6" height="106" rx="3" fill="#F5A623"/>
+  <rect x="1756" y="402" width="88" height="26" rx="13" fill="#2D1F00"/>
+  <text x="1800" y="419" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="600">In Transit</text>
+  <text x="1400" y="420" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700">CLE → PIT</text>
+  <text x="1400" y="444" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 17 · 134 mi · Auto Parts</text>
+  <!-- Progress -->
+  <rect x="1398" y="458" width="466" height="8" rx="4" fill="#0F2035"/>
+  <rect x="1398" y="458" width="289" height="8" rx="4" fill="#F5A623"/>
+  <text x="1400" y="486" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">62% complete</text>
+  <text x="1870" y="458" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="end">$412</text>
+
+  <!-- Upcoming loads -->
+  <rect x="1380" y="508" width="500" height="84" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <rect x="1380" y="508" width="6" height="84" rx="3" fill="#3182CE"/>
+  <rect x="1756" y="520" width="88" height="26" rx="13" fill="#0A1E35"/>
+  <text x="1800" y="537" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Confirmed</text>
+  <text x="1400" y="540" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">CIN → NAS</text>
+  <text x="1400" y="562" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Tomorrow 07:00 AM · 277 mi</text>
+  <text x="1870" y="556" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="end">$830</text>
+  <text x="1400" y="584" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Echo Global Freight</text>
+
+  <rect x="1380" y="604" width="500" height="84" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <rect x="1380" y="604" width="6" height="84" rx="3" fill="#3182CE"/>
+  <rect x="1756" y="616" width="88" height="26" rx="13" fill="#0A1E35"/>
+  <text x="1800" y="633" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">Confirmed</text>
+  <text x="1400" y="636" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">LOU → MEM</text>
+  <text x="1400" y="658" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Apr 22 · 04:30 AM · 389 mi</text>
+  <text x="1870" y="652" fill="#F5A623" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="end">$1,165</text>
+  <text x="1400" y="680" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="13">Coyote Logistics</text>
+
+  <!-- Divider -->
+  <line x1="1380" y1="700" x2="1890" y2="700" stroke="#1A2E42" stroke-width="1"/>
+  <text x="1400" y="724" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="1">MONTHLY PROGRESS</text>
+
+  <!-- Monthly goal progress -->
+  <rect x="1380" y="736" width="500" height="100" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1400" y="768" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">April 2026 Goal</text>
+  <text x="1870" y="768" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">$13,847 / $18,000</text>
+  <rect x="1398" y="782" width="464" height="16" rx="8" fill="#0F2035"/>
+  <rect x="1398" y="782" width="302" height="16" rx="8" fill="url(#accentGrad)"/>
+  <circle cx="1700" cy="790" r="12" fill="white" filter="url(#cardShadow)"/>
+  <text x="1400" y="822" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="18" font-weight="700">65% achieved</text>
+  <text x="1870" y="822" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">13 days remaining</text>
+
+  <!-- Divider -->
+  <line x1="1380" y1="848" x2="1890" y2="848" stroke="#1A2E42" stroke-width="1"/>
+  <text x="1400" y="872" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="1">QUICK ACTIONS</text>
+
+  <!-- Quick action buttons -->
+  <rect x="1380" y="884" width="152" height="64" rx="12" fill="url(#accentGrad)" filter="url(#cardShadow)"/>
+  <text x="1456" y="910" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="600">Navigate</text>
+  <text x="1456" y="932" fill="rgba(255,255,255,0.7)" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Open Maps</text>
+
+  <rect x="1544" y="884" width="152" height="64" rx="12" fill="#1A3352" filter="url(#cardShadow)"/>
+  <text x="1620" y="910" fill="#4A9FE8" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">Add Load</text>
+  <text x="1620" y="932" fill="#3A6A8A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">+ New entry</text>
+
+  <rect x="1708" y="884" width="172" height="64" rx="12" fill="#0D3320" filter="url(#cardShadow)"/>
+  <text x="1794" y="910" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle">Mark Delivered</text>
+  <text x="1794" y="932" fill="#1A5A32" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">Current load</text>
+
+  <!-- Divider -->
+  <line x1="1380" y1="960" x2="1890" y2="960" stroke="#1A2E42" stroke-width="1"/>
+  <text x="1400" y="984" fill="#8AACCC" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="1">HOS &amp; TRUCK</text>
+
+  <!-- HOS + Truck info -->
+  <rect x="1380" y="996" width="240" height="130" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1500" y="1028" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="600">Drive Time</text>
+  <circle cx="1500" cy="1097" r="44" fill="none" stroke="#1E3D5A" stroke-width="10"/>
+  <circle cx="1500" cy="1097" r="44" fill="none" stroke="#34D399" stroke-width="10" stroke-dasharray="184 92" stroke-dashoffset="69" stroke-linecap="round"/>
+  <text x="1500" y="1091" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" text-anchor="middle">6h 45m</text>
+  <text x="1500" y="1113" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">HOS left</text>
+
+  <rect x="1640" y="996" width="240" height="130" rx="14" fill="url(#cardGrad1)" filter="url(#cardShadow)"/>
+  <text x="1660" y="1030" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">Truck Status</text>
+  <text x="1660" y="1058" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Odometer</text>
+  <text x="1870" y="1058" fill="white" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">287,445 mi</text>
+  <line x1="1650" y1="1068" x2="1870" y2="1068" stroke="#1A3050" stroke-width="1"/>
+  <text x="1660" y="1090" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">DEF Level</text>
+  <text x="1870" y="1090" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">78%</text>
+  <line x1="1650" y1="1100" x2="1870" y2="1100" stroke="#1A3050" stroke-width="1"/>
+  <text x="1660" y="1122" fill="#5A8AB5" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14">Tire Pressure</text>
+  <text x="1870" y="1122" fill="#34D399" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="14" text-anchor="end">All Normal</text>
+
+  <!-- App label -->
+  <text x="960" y="1185" fill="#1E3D5A" font-family="SF Pro Display, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" text-anchor="middle">HaulWallet — Fleet Overview</text>
+</svg>

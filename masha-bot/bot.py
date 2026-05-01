@@ -1140,6 +1140,23 @@ def main():
     signal.signal(signal.SIGINT, _signal_handler)
     atexit.register(_cleanup)
 
+    # Kill any competing instances of this script before acquiring lock
+    my_pid = os.getpid()
+    try:
+        result = subprocess.run(
+            ["pgrep", "-f", "masha-bot/bot.py"],
+            capture_output=True, text=True
+        )
+        for pid_str in result.stdout.strip().split("\n"):
+            if pid_str.strip() and int(pid_str.strip()) != my_pid:
+                competitor = int(pid_str.strip())
+                log.info("Evicting competing instance PID %d", competitor)
+                os.kill(competitor, signal.SIGTERM)
+        if result.stdout.strip():
+            time.sleep(2)  # wait for them to die
+    except Exception as e:
+        log.warning("Could not evict competitors: %s", e)
+
     acquire_lock()
     write_pid()
     write_heartbeat()

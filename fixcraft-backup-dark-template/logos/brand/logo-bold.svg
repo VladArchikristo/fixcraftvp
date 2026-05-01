@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 120" width="340" height="120">
+  <!-- Dark background -->
+  <rect width="340" height="120" fill="#0F172A" rx="10"/>
+
+  <!-- Orange accent bar left -->
+  <rect x="0" y="0" width="8" height="120" fill="#F97316" rx="4"/>
+
+  <!-- Hammer + Wrench crossed icon -->
+  <g transform="translate(25, 20)">
+    <!-- Hammer -->
+    <rect x="5" y="0" width="30" height="14" rx="3" fill="#F97316"/>
+    <rect x="16" y="14" width="8" height="30" rx="2" fill="#F97316"/>
+    <!-- Wrench crossing -->
+    <path d="M0 55 L15 25 L20 30 L5 60 Z" fill="#1E40AF" opacity="0.9"/>
+    <circle cx="4" cy="57" r="5" fill="#1E40AF"/>
+    <path d="M14 24 C14 20 18 17 22 19 L20 22 L18 20 L16 24 Z" fill="#1E40AF"/>
+  </g>
+
+  <!-- FIX big -->
+  <text x="95" y="62" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="48" fill="white" letter-spacing="-2">FIX</text>
+  <!-- CRAFT orange -->
+  <text x="194" y="62" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="48" fill="#F97316" letter-spacing="-2">CRAFT</text>
+
+  <!-- Bottom tagline centered -->
+  <text x="95" y="88" font-family="Arial, sans-serif" font-size="12" fill="#94A3B8" letter-spacing="3">PROFESSIONAL HANDYMAN SERVICES</text>
+
+  <!-- Stars -->
+  <text x="95" y="108" font-family="Arial, sans-serif" font-size="14" fill="#F97316">★ ★ ★ ★ ★</text>
+  <text x="175" y="108" font-family="Arial, sans-serif" font-size="10" fill="#64748B">  Charlotte, NC</text>
+</svg>

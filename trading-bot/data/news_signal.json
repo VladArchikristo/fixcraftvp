@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-01T04:00:26.137049+00:00",
+  "timestamp": "2026-05-01T10:00:27.040219+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.48,
+  "score": -0.34,
   "fear_greed": {
     "value": 26,
     "label": "Fear",
@@ -9,32 +9,30 @@
   },
   "key_events": [
     "U.S. senators won't be weighing in on prediction markets bets after banning themselves",
+    "DeFi protocol Carrot becomes first casualty of $285M Drift exploit",
     "US Senate bans itself from betting on prediction markets",
-    "Bitcoin Crash Incoming? April Surge Was Built on Shaky Ground, Analysts Warn",
-    "Senate Votes to Ban Senators and Staff From Using Prediction Markets",
-    "North Korean Hackers Have Stolen $6 Billion in Crypto‚ÄîIncluding 76% of 2026's Spoils: TRM"
+    "Bitcoin edges above $77,000, but institutional activity suggests downside hedging",
+    "Bithumb scores a legal win in South Korea as six-month suspension is lifted by local judge"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "UNI",
-    "OP",
-    "LINK"
+    "OP"
   ],
   "trending_coins": [
     "MEGA",
-    "LUNC",
     "ACN",
     "PENGU",
-    "ASTEROID",
-    "MON",
-    "USDM"
+    "AI",
+    "SOL",
+    "BTC",
+    "MON"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
-  "news_count": 20,
+  "news_count": 17,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.68,
-  "cached_at": 1777608026.137293
+  "fetch_time_sec": 2.44,
+  "cached_at": 1777629627.04043
 }
