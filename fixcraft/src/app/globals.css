@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  /* Brand Colors */
-  --navy: #1e3a5f;
-  --navy-dark: #152a45;
-  --bronze: #8B6A45;
-  --bronze-light: #A67C52;
-  --bronze-dark: #6B5235;
+  /* Brand Colors - Exact Logo Match */
+  --navy: #1B2A52;
+  --navy-dark: #152040;
+  --bronze: #B8922A;
+  --bronze-light: #C9A640;
+  --bronze-dark: #9A7A20;
   
   /* Neutrals */
   --beige-light: #FAF7F2;

@@ -307,9 +307,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
             <div>
-              <div className="flex items-center gap-1 mb-4">
-                <span className="logo-fix text-xl font-bold">Fix</span>
-                <span className="logo-craft text-xl font-bold">Craft VP</span>
+              <div className="flex items-center gap-0 mb-4">
+                <span className="logo-fix text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>Fix</span>
+                <span className="logo-craft text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>Craft</span>
+                <span className="logo-craft text-base font-normal tracking-wide ml-0.5" style={{ fontFamily: 'var(--font-playfair)' }}>VP</span>
               </div>
               <p className="text-[#6B6560] text-sm font-body leading-relaxed">
                 Charlotte's most trusted handyman service. Professional, licensed, and insured.

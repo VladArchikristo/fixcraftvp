@@ -615,7 +615,8 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
         stdout, stderr = proc.communicate(input=full_prompt, timeout=CLAUDE_TIMEOUT)
 
         if proc.returncode != 0:
-            log.error("Claude exited %d: %s", proc.returncode, stderr.strip())
+            log.error("Claude exited %d | stderr: %s | stdout: %s",
+                      proc.returncode, stderr.strip()[:300], stdout.strip()[:300])
             return False, ""
 
         answer = stdout.strip()

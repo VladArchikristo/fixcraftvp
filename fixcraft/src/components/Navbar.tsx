@@ -10,9 +10,10 @@ export default function Navbar() {
   return (
     <nav className="nav-glass fixed top-0 left-0 right-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-1 group">
-          <span className="logo-fix text-2xl sm:text-3xl font-bold tracking-tight transition-colors group-hover:opacity-80">Fix</span>
-          <span className="logo-craft text-2xl sm:text-3xl font-bold tracking-tight transition-colors group-hover:opacity-80">Craft VP</span>
+        <Link href="/" className="flex items-center gap-0 group">
+          <span className="logo-fix text-2xl sm:text-3xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-playfair)' }}>Fix</span>
+          <span className="logo-craft text-2xl sm:text-3xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-playfair)' }}>Craft</span>
+          <span className="logo-craft text-lg sm:text-xl font-normal tracking-wide ml-0.5" style={{ fontFamily: 'var(--font-playfair)' }}>VP</span>
         </Link>
 
         {/* Desktop Navigation */}
