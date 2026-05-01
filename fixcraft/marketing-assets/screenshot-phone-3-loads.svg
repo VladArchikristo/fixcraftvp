@@ -1,0 +1,184 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg" font-family="'SF Pro Display', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D1B2A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0A1520;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="fabShadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#1565C0" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1920" fill="url(#bgGrad)"/>
+
+  <!-- Status bar -->
+  <rect width="1080" height="100" fill="#0A1520"/>
+  <text x="80" y="68" font-size="32" fill="#FFFFFF" font-weight="600">9:41</text>
+  <rect x="940" y="38" width="66" height="30" rx="6" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <rect x="1006" y="46" width="6" height="14" rx="2" fill="#FFFFFF"/>
+  <rect x="944" y="42" width="48" height="22" rx="4" fill="#4CAF50"/>
+  <rect x="860" y="52" width="8" height="16" rx="2" fill="#FFFFFF"/>
+  <rect x="874" y="46" width="8" height="22" rx="2" fill="#FFFFFF"/>
+  <rect x="888" y="40" width="8" height="28" rx="2" fill="#FFFFFF"/>
+  <path d="M816 60 Q824 52 836 52 Q848 52 856 60" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M822 68 Q830 60 836 60 Q842 60 850 68" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="836" cy="74" r="5" fill="#FFFFFF"/>
+
+  <!-- Header -->
+  <rect x="0" y="100" width="1080" height="140" fill="#0D1B2A"/>
+  <text x="60" y="192" font-size="52" fill="#FFFFFF" font-weight="800">My Loads</text>
+  <!-- Filter/sort button -->
+  <rect x="940" y="136" width="80" height="68" rx="18" fill="#132235"/>
+  <text x="980" y="178" font-size="26" text-anchor="middle" fill="#8BA3BC">⚙</text>
+
+  <!-- Search bar -->
+  <rect x="60" y="256" width="960" height="80" rx="24" fill="#132235"/>
+  <text x="118" y="304" font-size="28" fill="#4A6A8A">🔍</text>
+  <text x="158" y="304" font-size="28" fill="#4A6A8A">Search loads, cities, load #...</text>
+
+  <!-- Filter chips -->
+  <rect x="60" y="360" width="130" height="60" rx="30" fill="#1565C0"/>
+  <text x="125" y="397" font-size="26" text-anchor="middle" fill="#FFFFFF" font-weight="600">All (8)</text>
+
+  <rect x="210" y="360" width="166" height="60" rx="30" fill="#132235"/>
+  <text x="293" y="397" font-size="26" text-anchor="middle" fill="#8BA3BC">Active (3)</text>
+
+  <rect x="396" y="360" width="210" height="60" rx="30" fill="#132235"/>
+  <text x="501" y="397" font-size="26" text-anchor="middle" fill="#8BA3BC">Completed (4)</text>
+
+  <rect x="626" y="360" width="190" height="60" rx="30" fill="#132235"/>
+  <text x="721" y="397" font-size="26" text-anchor="middle" fill="#8BA3BC">Pending (1)</text>
+
+  <!-- LOAD CARDS -->
+
+  <!-- Card 1: Active load -->
+  <rect x="60" y="450" width="960" height="220" rx="28" fill="#0F1E30" filter="url(#shadow)"/>
+  <rect x="60" y="450" width="6" height="220" rx="3" fill="#22C55E"/>
+
+  <!-- Load number and status -->
+  <text x="100" y="504" font-size="28" fill="#8BA3BC" font-weight="500">Load #HW-2846</text>
+  <rect x="820" y="472" width="176" height="52" rx="26" fill="#22C55E" opacity="0.15"/>
+  <circle cx="848" cy="498" r="8" fill="#22C55E"/>
+  <text x="912" y="506" font-size="26" text-anchor="middle" fill="#22C55E" font-weight="600">Active</text>
+
+  <!-- Route -->
+  <text x="100" y="555" font-size="38" fill="#FFFFFF" font-weight="700">Charlotte, NC</text>
+  <text x="100" y="593" font-size="28" fill="#4A6A8A">North Carolina</text>
+  <text x="500" y="574" font-size="38" fill="#8BA3BC">→</text>
+  <text x="570" y="555" font-size="38" fill="#FFFFFF" font-weight="700">Atlanta, GA</text>
+  <text x="570" y="593" font-size="28" fill="#4A6A8A">Georgia</text>
+
+  <!-- Stats row -->
+  <line x1="100" y1="616" x2="980" y2="616" stroke="#1A3A5C" stroke-width="1"/>
+  <text x="130" y="648" font-size="24" fill="#8BA3BC">📅 Apr 17, 2026</text>
+  <text x="380" y="648" font-size="24" fill="#8BA3BC">📏 346 mi</text>
+  <text x="600" y="648" font-size="24" fill="#F59E0B" font-weight="600">💰 $420</text>
+
+  <!-- Card 2: Active load -->
+  <rect x="60" y="692" width="960" height="220" rx="28" fill="#0F1E30" filter="url(#shadow)"/>
+  <rect x="60" y="692" width="6" height="220" rx="3" fill="#22C55E"/>
+
+  <text x="100" y="746" font-size="28" fill="#8BA3BC" font-weight="500">Load #HW-2845</text>
+  <rect x="820" y="714" width="176" height="52" rx="26" fill="#22C55E" opacity="0.15"/>
+  <circle cx="848" cy="740" r="8" fill="#22C55E"/>
+  <text x="912" y="748" font-size="26" text-anchor="middle" fill="#22C55E" font-weight="600">Active</text>
+
+  <text x="100" y="797" font-size="38" fill="#FFFFFF" font-weight="700">Nashville, TN</text>
+  <text x="100" y="835" font-size="28" fill="#4A6A8A">Tennessee</text>
+  <text x="500" y="816" font-size="38" fill="#8BA3BC">→</text>
+  <text x="570" y="797" font-size="38" fill="#FFFFFF" font-weight="700">Memphis, TN</text>
+  <text x="570" y="835" font-size="28" fill="#4A6A8A">Tennessee</text>
+
+  <line x1="100" y1="858" x2="980" y2="858" stroke="#1A3A5C" stroke-width="1"/>
+  <text x="130" y="890" font-size="24" fill="#8BA3BC">📅 Apr 18, 2026</text>
+  <text x="380" y="890" font-size="24" fill="#8BA3BC">📏 212 mi</text>
+  <text x="600" y="890" font-size="24" fill="#F59E0B" font-weight="600">💰 $380</text>
+
+  <!-- Card 3: Pending -->
+  <rect x="60" y="934" width="960" height="220" rx="28" fill="#0F1E30" filter="url(#shadow)"/>
+  <rect x="60" y="934" width="6" height="220" rx="3" fill="#F59E0B"/>
+
+  <text x="100" y="988" font-size="28" fill="#8BA3BC" font-weight="500">Load #HW-2848</text>
+  <rect x="810" y="956" width="194" height="52" rx="26" fill="#F59E0B" opacity="0.12"/>
+  <circle cx="840" cy="982" r="8" fill="#F59E0B"/>
+  <text x="920" y="990" font-size="26" text-anchor="middle" fill="#F59E0B" font-weight="600">Pending</text>
+
+  <text x="100" y="1039" font-size="38" fill="#FFFFFF" font-weight="700">Atlanta, GA</text>
+  <text x="100" y="1077" font-size="28" fill="#4A6A8A">Georgia</text>
+  <text x="500" y="1058" font-size="38" fill="#8BA3BC">→</text>
+  <text x="570" y="1039" font-size="38" fill="#FFFFFF" font-weight="700">Miami, FL</text>
+  <text x="570" y="1077" font-size="28" fill="#4A6A8A">Florida</text>
+
+  <line x1="100" y1="1100" x2="980" y2="1100" stroke="#1A3A5C" stroke-width="1"/>
+  <text x="130" y="1132" font-size="24" fill="#8BA3BC">📅 Apr 19, 2026</text>
+  <text x="380" y="1132" font-size="24" fill="#8BA3BC">📏 664 mi</text>
+  <text x="600" y="1132" font-size="24" fill="#F59E0B" font-weight="600">💰 $680</text>
+
+  <!-- Card 4: Completed -->
+  <rect x="60" y="1176" width="960" height="220" rx="28" fill="#0F1E30" filter="url(#shadow)"/>
+  <rect x="60" y="1176" width="6" height="220" rx="3" fill="#60A5FA"/>
+
+  <text x="100" y="1230" font-size="28" fill="#8BA3BC" font-weight="500">Load #HW-2844</text>
+  <rect x="790" y="1198" width="214" height="52" rx="26" fill="#60A5FA" opacity="0.12"/>
+  <circle cx="820" cy="1224" r="8" fill="#60A5FA"/>
+  <text x="912" y="1232" font-size="26" text-anchor="middle" fill="#60A5FA" font-weight="600">Completed</text>
+
+  <text x="100" y="1281" font-size="38" fill="#8BA3BC" font-weight="700">Raleigh, NC</text>
+  <text x="100" y="1319" font-size="28" fill="#4A6A8A">North Carolina</text>
+  <text x="500" y="1300" font-size="38" fill="#4A6A8A">→</text>
+  <text x="570" y="1281" font-size="38" fill="#8BA3BC" font-weight="700">Charlotte, NC</text>
+  <text x="570" y="1319" font-size="28" fill="#4A6A8A">North Carolina</text>
+
+  <line x1="100" y1="1342" x2="980" y2="1342" stroke="#1A3A5C" stroke-width="1"/>
+  <text x="130" y="1374" font-size="24" fill="#8BA3BC">📅 Apr 16, 2026</text>
+  <text x="380" y="1374" font-size="24" fill="#8BA3BC">📏 168 mi</text>
+  <text x="600" y="1374" font-size="24" fill="#4CAF50" font-weight="600">✓ $290</text>
+
+  <!-- Card 5: Completed -->
+  <rect x="60" y="1418" width="960" height="220" rx="28" fill="#0F1E30" filter="url(#shadow)"/>
+  <rect x="60" y="1418" width="6" height="220" rx="3" fill="#60A5FA"/>
+
+  <text x="100" y="1472" font-size="28" fill="#8BA3BC" font-weight="500">Load #HW-2843</text>
+  <rect x="790" y="1440" width="214" height="52" rx="26" fill="#60A5FA" opacity="0.12"/>
+  <circle cx="820" cy="1466" r="8" fill="#60A5FA"/>
+  <text x="912" y="1474" font-size="26" text-anchor="middle" fill="#60A5FA" font-weight="600">Completed</text>
+
+  <text x="100" y="1523" font-size="38" fill="#8BA3BC" font-weight="700">Memphis, TN</text>
+  <text x="100" y="1561" font-size="28" fill="#4A6A8A">Tennessee</text>
+  <text x="500" y="1542" font-size="38" fill="#4A6A8A">→</text>
+  <text x="570" y="1523" font-size="38" fill="#8BA3BC" font-weight="700">Nashville, TN</text>
+  <text x="570" y="1561" font-size="28" fill="#4A6A8A">Tennessee</text>
+
+  <line x1="100" y1="1584" x2="980" y2="1584" stroke="#1A3A5C" stroke-width="1"/>
+  <text x="130" y="1616" font-size="24" fill="#8BA3BC">📅 Apr 15, 2026</text>
+  <text x="380" y="1616" font-size="24" fill="#8BA3BC">📏 212 mi</text>
+  <text x="600" y="1616" font-size="24" fill="#4CAF50" font-weight="600">✓ $380</text>
+
+  <!-- FAB button -->
+  <circle cx="960" cy="1660" r="72" fill="#1565C0" filter="url(#fabShadow)"/>
+  <text x="960" y="1678" font-size="56" text-anchor="middle" fill="#FFFFFF" font-weight="300">+</text>
+
+  <!-- Bottom Navigation Bar -->
+  <rect x="0" y="1700" width="1080" height="220" fill="#0A1520"/>
+  <line x1="0" y1="1700" x2="1080" y2="1700" stroke="#1A3A5C" stroke-width="1.5"/>
+
+  <text x="148" y="1768" font-size="36" text-anchor="middle" fill="#8BA3BC">🏠</text>
+  <text x="148" y="1800" font-size="26" text-anchor="middle" fill="#8BA3BC">Home</text>
+
+  <rect x="276" y="1720" width="176" height="100" rx="20" fill="#1565C0" opacity="0.2"/>
+  <text x="364" y="1768" font-size="36" text-anchor="middle" fill="#2196F3">📦</text>
+  <text x="364" y="1800" font-size="26" text-anchor="middle" fill="#2196F3" font-weight="600">Loads</text>
+
+  <circle cx="540" cy="1660" r="58" fill="#1565C0"/>
+  <text x="540" y="1678" font-size="40" text-anchor="middle" fill="#FFFFFF">🗺️</text>
+
+  <text x="716" y="1768" font-size="36" text-anchor="middle" fill="#8BA3BC">💵</text>
+  <text x="716" y="1800" font-size="26" text-anchor="middle" fill="#8BA3BC">Earnings</text>
+  <text x="932" y="1768" font-size="36" text-anchor="middle" fill="#8BA3BC">👤</text>
+  <text x="932" y="1800" font-size="26" text-anchor="middle" fill="#8BA3BC">Profile</text>
+  <rect x="390" y="1880" width="300" height="8" rx="4" fill="#FFFFFF" opacity="0.3"/>
+</svg>

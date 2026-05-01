@@ -24,18 +24,28 @@ const TRUCK_TYPES = [
   { label: '5-Axle', value: '5-axle', icon: '🚛' },
 ];
 
-const CITY_SUGGESTIONS = [
-  'Dallas, TX', 'Houston, TX', 'San Antonio, TX', 'Austin, TX', 'Fort Worth, TX',
-  'Los Angeles, CA', 'San Francisco, CA', 'San Diego, CA', 'Sacramento, CA',
-  'Miami, FL', 'Orlando, FL', 'Tampa, FL', 'Jacksonville, FL',
-  'Chicago, IL', 'New York, NY', 'Philadelphia, PA', 'Atlanta, GA',
-  'Charlotte, NC', 'Nashville, TN', 'Memphis, TN',
-  'Denver, CO', 'Phoenix, AZ', 'Las Vegas, NV',
-  'Seattle, WA', 'Portland, OR', 'Boston, MA',
-  'Detroit, MI', 'Columbus, OH', 'Cleveland, OH', 'Pittsburgh, PA',
-  'Kansas City, MO', 'St. Louis, MO', 'Minneapolis, MN',
-  'New Orleans, LA', 'Louisville, KY', 'Indianapolis, IN',
-];
+// Nominatim autocomplete
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+
+async function fetchAddresses(query) {
+  if (!query || query.length < 2) return [];
+  try {
+    const url = `${NOMINATIM_URL}?q=${encodeURIComponent(query + ', USA')}&format=json&limit=5&countrycodes=us&addressdetails=1`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'HaulWallet/1.0' } });
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+    return data.map(item => {
+      const addr = item.address || {};
+      const city = addr.city || addr.town || addr.village || addr.hamlet || '';
+      const state = addr.state || '';
+      const display = city && state ? `${city}, ${state}` : item.display_name;
+      return { display, lat: item.lat, lon: item.lon };
+    }).filter(x => x.display);
+  } catch (e) {
+    console.warn('Nominatim error:', e.message);
+    return [];
+  }
+}
 
 export default function HomeScreen({ navigation }) {
   const [from, setFrom] = useState('');
@@ -44,23 +54,43 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [fromFocus, setFromFocus] = useState(false);
   const [toFocus, setToFocus] = useState(false);
+  // Autocomplete states
+  const [fromSuggestions, setFromSuggestions] = useState([]);
+  const [toSuggestions, setToSuggestions] = useState([]);
+  const [addrLoading, setAddrLoading] = useState(false);
   // Fuel calculation
   const [showFuel, setShowFuel] = useState(false);
   const [mpg, setMpg] = useState('6.5');
   const [fuelPrice, setFuelPrice] = useState('3.80');
-  // Fuel purchases by state (for precise IFTA)
-  const [fuelPurchases, setFuelPurchases] = useState([]); // [{state, gallons}]
-  const [showStatePicker, setShowStatePicker] = useState(null); // index of row with open picker
+  // Fuel purchases by state
+  const [fuelPurchases, setFuelPurchases] = useState([]);
+  const [showStatePicker, setShowStatePicker] = useState(null);
   // Subscription
   const [showPaywall, setShowPaywall] = useState(false);
   const [calcsRemaining, setCalcsRemaining] = useState(FREE_CALCULATIONS_LIMIT);
 
-  const fromSuggestions = CITY_SUGGESTIONS.filter(c =>
-    from.length > 1 && c.toLowerCase().includes(from.toLowerCase())
-  );
-  const toSuggestions = CITY_SUGGESTIONS.filter(c =>
-    to.length > 1 && c.toLowerCase().includes(to.toLowerCase())
-  );
+  // Debounced Nominatim autocomplete
+  useEffect(() => {
+    if (!fromFocus || from.length < 2) { setFromSuggestions([]); return; }
+    const timer = setTimeout(async () => {
+      setAddrLoading(true);
+      const results = await fetchAddresses(from);
+      setFromSuggestions(results);
+      setAddrLoading(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [from, fromFocus]);
+
+  useEffect(() => {
+    if (!toFocus || to.length < 2) { setToSuggestions([]); return; }
+    const timer = setTimeout(async () => {
+      setAddrLoading(true);
+      const results = await fetchAddresses(to);
+      setToSuggestions(results);
+      setAddrLoading(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [to, toFocus]);
 
   const handleClear = () => {
     setFrom('');
@@ -187,11 +217,14 @@ export default function HomeScreen({ navigation }) {
               onBlur={() => setTimeout(() => setFromFocus(false), 200)}
             />
           </View>
-          {fromFocus && fromSuggestions.map(city => (
-            <TouchableOpacity key={city} style={styles.suggestion} onPress={() => { setFrom(city); setFromFocus(false); }}>
-              <Text style={styles.suggestionText}>{city}</Text>
+          {fromFocus && fromSuggestions.map((city, i) => (
+            <TouchableOpacity key={`from-${i}`} style={styles.suggestion} onPress={() => { setFrom(city.display); setFromFocus(false); }}>
+              <Text style={styles.suggestionText}>{city.display}</Text>
             </TouchableOpacity>
           ))}
+          {fromFocus && addrLoading && from.length > 1 && (
+            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginVertical: 8 }} />
+          )}
         </View>
 
         {/* Swap button */}
@@ -214,11 +247,14 @@ export default function HomeScreen({ navigation }) {
               onBlur={() => setTimeout(() => setToFocus(false), 200)}
             />
           </View>
-          {toFocus && toSuggestions.map(city => (
-            <TouchableOpacity key={city} style={styles.suggestion} onPress={() => { setTo(city); setToFocus(false); }}>
-              <Text style={styles.suggestionText}>{city}</Text>
+          {toFocus && toSuggestions.map((city, i) => (
+            <TouchableOpacity key={`to-${i}`} style={styles.suggestion} onPress={() => { setTo(city.display); setToFocus(false); }}>
+              <Text style={styles.suggestionText}>{city.display}</Text>
             </TouchableOpacity>
           ))}
+          {toFocus && addrLoading && to.length > 1 && (
+            <ActivityIndicator size="small" color={COLORS.primary} style={{ marginVertical: 8 }} />
+          )}
         </View>
 
         {/* Truck type */}
@@ -439,13 +475,15 @@ const styles = StyleSheet.create({
   scroll: { padding: 20, paddingBottom: 40 },
   header: { alignItems: 'center', marginBottom: 28, marginTop: 10 },
   logoBadge: {
-    width: 44, height: 44, borderRadius: 14,
-    backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center',
+    width: 52, height: 52, borderRadius: 16,
+    backgroundColor: COLORS.accent, alignItems: 'center', justifyContent: 'center',
     marginBottom: SPACING.sm,
-    ...SHADOW.md,
+    borderWidth: 2,
+    borderColor: COLORS.accentGlow,
+    ...SHADOW.accent,
   },
-  logo: { fontSize: 26, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: 0.5, fontFamily: Platform.select({ ios: '-apple-system', android: 'Roboto' }) },
-  subtitle: { fontSize: 13, color: COLORS.textMuted, marginTop: SPACING.xs },
+  logo: { fontSize: 28, fontWeight: '800', color: COLORS.textPrimary, letterSpacing: 1, fontFamily: Platform.select({ ios: '-apple-system', android: 'Roboto' }) },
+  subtitle: { fontSize: 14, color: COLORS.textMuted, marginTop: SPACING.xs, fontWeight: '500' },
   statsRow: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.md },
   statChip: {
     flexDirection: 'row', alignItems: 'center', gap: 4,

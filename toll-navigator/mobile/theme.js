@@ -6,120 +6,108 @@
  * Spacing: 16px base grid
  */
 
-export const COLORS = {
-  // Backgrounds
-  bg:           '#FFFFFF',
-  bgCard:       '#F5F7FA',
-  bgCardAlt:    '#EDF0F5',
-  bgInput:      '#F0F3F8',
+/**
+ * HaulWallet v14 — Unified Design System
+ * Professional dark theme for truckers
+ */
 
-  // Primary / accent
-  primary:      '#1B3A5C',   // dark navy — brand, headers, icons
-  primaryLight: '#E8EFF5',   // primary tint — active states, hover
-  accent:       '#FF8C00',   // trucking orange — CTAs, buttons
-  accentDark:   '#E07800',
-  accentLight:  '#FFF3E0',   // orange tint
+export const COLORS = {
+  // Backgrounds — deep navy for professional trucking aesthetic
+  bg:           '#0B1220',
+  bgCard:       '#111B2E',
+  bgCardAlt:    '#0E1626',
+  bgInput:      '#1A2744',
+
+  // Primary / accent — amber/gold trucking
+  primary:      '#3B82F6',   // blue — trust, navigation, links
+  primaryLight: '#1E3A5F',   // active states bg
+  accent:       '#F59E0B',   // amber — CTAs, buttons
+  accentDark:   '#D97706',
+  accentLight:  '#FEF3C7',  // amber tint
+  accentGlow:   '#FBBF24',
 
   // Text
-  textPrimary:  '#1B2838',
-  textSecondary:'#5A6B7E',
-  textMuted:    '#9AA8B8',
-  textInverse:  '#FFFFFF',
+  textPrimary:  '#F1F5F9',
+  textSecondary:'#94A3B8',
+  textMuted:    '#64748B',
+  textInverse:  '#0B1220',
 
   // Semantic
-  success:      '#2E7D32',
-  successLight: '#E8F5E9',
-  error:        '#D32F2F',
-  errorLight:   '#FFEBEE',
-  warning:      '#F57C00',
-  info:         '#1565C0',
+  success:      '#22C55E',
+  successLight: '#064E3B',
+  error:        '#EF4444',
+  errorLight:   '#7F1D1D',
+  warning:      '#F59E0B',
+  info:         '#3B82F6',
 
   // Borders
-  border:       '#DEE3EA',
-  borderLight:  '#E8ECF1',
+  border:       '#1E293B',
+  borderLight:  '#334155',
 
   // Tab bar
-  tabActive:    '#1B3A5C',
-  tabInactive:  '#B0B8C4',
+  tabActive:    '#F59E0B',
+  tabInactive:  '#475569',
 };
 
 export const FONTS = {
-  h1:    { fontSize: 28, fontWeight: '800', color: COLORS.textPrimary },
-  h2:    { fontSize: 22, fontWeight: '700', color: COLORS.textPrimary },
+  h1:    { fontSize: 32, fontWeight: '800', color: COLORS.textPrimary },
+  h2:    { fontSize: 24, fontWeight: '700', color: COLORS.textPrimary },
   h3:    { fontSize: 18, fontWeight: '700', color: COLORS.textPrimary },
   body:  { fontSize: 16, fontWeight: '400', color: COLORS.textPrimary },
   small: { fontSize: 14, fontWeight: '400', color: COLORS.textSecondary },
   tiny:  { fontSize: 12, fontWeight: '400', color: COLORS.textMuted },
-  label: { fontSize: 14, fontWeight: '600', color: COLORS.textSecondary, textTransform: 'uppercase', letterSpacing: 1 },
+  label: { fontSize: 12, fontWeight: '700', color: COLORS.accent, textTransform: 'uppercase', letterSpacing: 1 },
 };
 
 export const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
+  xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48,
 };
 
 export const RADIUS = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  full: 999,
+  sm: 8, md: 12, lg: 16, xl: 24, full: 999,
 };
 
-// Shadows
 export const SHADOW = {
   sm: {
-    shadowColor: '#1B2838',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 3,
-    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
   },
   md: {
-    shadowColor: '#1B2838',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  lg: {
-    shadowColor: '#1B2838',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  accent: {
-    shadowColor: '#FF8C00',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 12,
     elevation: 6,
   },
+  lg: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 24,
+    elevation: 12,
+  },
+  accent: {
+    shadowColor: '#F59E0B',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 8,
+  },
 };
 
-// Reusable component styles
 export const SHARED = {
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.bg,
-  },
+  container: { flex: 1, backgroundColor: COLORS.bg },
   card: {
     backgroundColor: COLORS.bgCard,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: COLORS.borderLight,
-    shadowColor: '#1B2838',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 3,
-    elevation: 2,
+    borderColor: COLORS.border,
+    ...SHADOW.sm,
   },
   cardAlt: {
     backgroundColor: COLORS.bgCardAlt,
@@ -136,31 +124,26 @@ export const SHARED = {
     borderWidth: 1,
     borderColor: COLORS.border,
   },
-  inputFocused: {
-    borderColor: COLORS.primary,
-  },
+  inputFocused: { borderColor: COLORS.primary },
   button: {
     backgroundColor: COLORS.accent,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#FF8C00',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 6,
+    ...SHADOW.accent,
   },
   buttonText: {
     color: COLORS.textInverse,
     fontSize: 16,
     fontWeight: '700',
+    letterSpacing: 0.5,
   },
   buttonOutline: {
     borderWidth: 1.5,
     borderColor: COLORS.primary,
-    borderRadius: RADIUS.sm,
+    borderRadius: RADIUS.md,
     paddingVertical: SPACING.md - 2,
     paddingHorizontal: SPACING.lg,
     alignItems: 'center',
@@ -171,22 +154,8 @@ export const SHARED = {
     fontSize: 16,
     fontWeight: '600',
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: COLORS.border,
-    marginVertical: SPACING.md,
-  },
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.bg,
-    paddingTop: 50,  // SafeAreaView fallback
-  },
-  scrollContent: {
-    padding: SPACING.md,
-    paddingBottom: SPACING.xxl,
-  },
+  row: { flexDirection: 'row', alignItems: 'center' },
+  divider: { height: 1, backgroundColor: COLORS.border, marginVertical: SPACING.md },
+  safeArea: { flex: 1, backgroundColor: COLORS.bg, paddingTop: 50 },
+  scrollContent: { padding: SPACING.md, paddingBottom: SPACING.xxl },
 };

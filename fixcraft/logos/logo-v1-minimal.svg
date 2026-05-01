@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <!-- Background -->
+  <rect width="320" height="80" fill="transparent"/>
+
+  <!-- Wrench Icon -->
+  <g transform="translate(12, 10)">
+    <!-- Wrench shape -->
+    <path d="M40 8 C28 8 18 18 18 30 C18 36 20.5 41.5 24.5 45.5 L8 62 C6 64 6 67 8 69 C10 71 13 71 15 69 L31.5 52.5 C35.5 55.5 40 57 45 57 C57 57 66 48 66 36 C66 24 57 15 45 15 L45 15 C42.5 15 40 15.5 37.5 16.5 L44 23 L44 30 L37 37 L30 37 L23 30 L31 22 C28 17.5 24 15 20 14.5 C26.5 10.5 33 8 40 8 Z" fill="#1E40AF"/>
+    <!-- Highlight -->
+    <circle cx="48" cy="28" r="5" fill="#3B82F6" opacity="0.4"/>
+  </g>
+
+  <!-- FixCraft Text -->
+  <text x="85" y="38" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="#1E40AF" letter-spacing="-1">Fix</text>
+  <text x="126" y="38" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="#F97316" letter-spacing="-1">Craft</text>
+
+  <!-- Tagline -->
+  <text x="85" y="58" font-family="Arial, sans-serif" font-size="11" fill="#6B7280" letter-spacing="3" font-weight="600">HANDYMAN SERVICES</text>
+
+  <!-- Accent line -->
+  <rect x="85" y="43" width="170" height="2" fill="#F97316" rx="1"/>
+</svg>

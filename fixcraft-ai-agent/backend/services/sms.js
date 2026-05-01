@@ -1,25 +1,26 @@
 const twilio = require('twilio');
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const FROM_NUMBER = process.env.TWILIO_PHONE_NUMBER;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const fromNumber = process.env.TWILIO_PHONE_NUMBER;
 
-async function sendConfirmationSMS({ to, name, date, timeSlot, serviceType }) {
-  const timeMap = {
-    morning: '8:00 AM – 12:00 PM',
-    afternoon: '12:00 PM – 4:00 PM',
-    evening: '4:00 PM – 7:00 PM',
-  };
-  const time = timeMap[timeSlot] || timeMap.morning;
+const client = twilio(accountSid, authToken);
 
-  const body = `Hi ${name}! Your FixCraft VP appointment is confirmed for ${date} (${time}). Service: ${serviceType.replace('_', ' ')}. We'll call you 30 min before arrival. Questions? Reply here or call ${process.env.BUSINESS_PHONE || '(980) 201-6705'}. — Alex`;
+async function sendSMS(lead) {
+  const { name, phone, serviceType, date, timeSlot } = lead;
+
+  if (!phone || phone === 'N/A') {
+    return { success: false, error: 'No phone number' };
+  }
+
+  const body = `Hi ${name || 'there'}! FixCraft VP received your request for ${serviceType || 'handyman services'}. We'll confirm your inspection for ${date || 'soon'} ${timeSlot || ''}. Questions? Call (980) 485-5899.`;
 
   try {
     const message = await client.messages.create({
       body,
-      from: FROM_NUMBER,
-      to,
+      messagingServiceSid: 'MG249a5e27a8032fb82323098bd45c41a6',
+      to: phone,
     });
-    console.log('SMS sent:', message.sid);
     return { success: true, sid: message.sid };
   } catch (err) {
     console.error('SMS send error:', err.message);
@@ -27,27 +28,4 @@ async function sendConfirmationSMS({ to, name, date, timeSlot, serviceType }) {
   }
 }
 
-async function sendReminderSMS({ to, name, date, timeSlot }) {
-  const timeMap = {
-    morning: '8:00 AM – 12:00 PM',
-    afternoon: '12:00 PM – 4:00 PM',
-    evening: '4:00 PM – 7:00 PM',
-  };
-  const time = timeMap[timeSlot] || timeMap.morning;
-
-  const body = `Reminder: Hi ${name}, your FixCraft VP appointment is tomorrow ${date} (${time}). We'll call 30 min before arrival. Need to reschedule? Reply CALL ME. — Alex`;
-
-  try {
-    const message = await client.messages.create({
-      body,
-      from: FROM_NUMBER,
-      to,
-    });
-    return { success: true, sid: message.sid };
-  } catch (err) {
-    console.error('Reminder SMS error:', err.message);
-    return { success: false, error: err.message };
-  }
-}
-
-module.exports = { sendConfirmationSMS, sendReminderSMS };
+module.exports = { sendSMS };

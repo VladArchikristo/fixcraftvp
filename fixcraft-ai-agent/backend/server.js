@@ -15,7 +15,15 @@ initDB();
 // Routes
 app.use('/api/chat', require('./routes/chat'));
 app.use('/api/sms', require('./routes/sms'));
+app.use('/api/voice', require('./routes/voiceAntispam')); // Anti-spam pre-filter
 app.use('/api/voice', require('./routes/voice'));
+app.use('/api/vapi', require('./routes/vapi'));
+app.use('/api/leads', require('./routes/leads'));
+
+// Public calendar event download (.ics)
+const { getLeadICS, getCalendarPage } = require('./services/calendar-ics');
+app.get('/calendar-event/:id.ics', getLeadICS);
+app.get('/calendar-event/:id', getCalendarPage);
 
 // Health
 app.get('/api/health', (req, res) => {

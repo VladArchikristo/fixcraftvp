@@ -44,7 +44,8 @@ function initDB() {
     d.run(`CREATE TABLE IF NOT EXISTS leads (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT, phone TEXT, email TEXT, address TEXT,
-      service_type TEXT, source TEXT DEFAULT 'chat',
+      service_type TEXT, urgency TEXT, notes TEXT,
+      source TEXT DEFAULT 'chat', status TEXT DEFAULT 'new',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
     d.run(`CREATE TABLE IF NOT EXISTS appointments (
@@ -59,6 +60,26 @@ function initDB() {
       session_id TEXT, role TEXT, content TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
+    
+    // Anti-spam tables for voice calls
+    d.run(`CREATE TABLE IF NOT EXISTS spam_blacklist (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      phone_number TEXT UNIQUE NOT NULL,
+      reason TEXT DEFAULT 'Manual',
+      added_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    d.run(`CREATE TABLE IF NOT EXISTS call_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      caller_number TEXT,
+      status TEXT,
+      duration INTEGER,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    d.run(`CREATE INDEX IF NOT EXISTS idx_call_log_number ON call_log(caller_number)`);
+    d.run(`CREATE INDEX IF NOT EXISTS idx_call_log_time ON call_log(timestamp)`);
+    d.run(`CREATE INDEX IF NOT EXISTS idx_leads_source ON leads(source)`);
+    d.run(`CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status)`);
+    d.run(`CREATE INDEX IF NOT EXISTS idx_leads_created ON leads(created_at)`);
   });
   console.log('SQLite initialized at', dbPath);
 }

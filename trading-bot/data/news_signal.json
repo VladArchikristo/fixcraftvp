@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-29T01:55:21.945876+00:00",
+  "timestamp": "2026-05-01T04:00:26.137049+00:00",
   "sentiment": "slightly_bearish",
   "score": -0.48,
   "fear_greed": {
@@ -8,34 +8,33 @@
     "trend": "falling"
   },
   "key_events": [
-    "Microsoft says legacy banks are hitting a breaking point as AI takes over the heavy lifting",
-    "A crypto coalition releases technical proposal to save Aave users from a massive token exploit",
-    "Judge rejects new trial for former FTX CEO Sam Bankman-Fried",
-    "Robinhood stock falls 8% after big earnings miss due to weak crypto trading revenue",
-    "Paul Tudor Jones calls bitcoin the 'best inflation hedge,' warns of overvalued stocks"
+    "U.S. senators won't be weighing in on prediction markets bets after banning themselves",
+    "US Senate bans itself from betting on prediction markets",
+    "Bitcoin Crash Incoming? April Surge Was Built on Shaky Ground, Analysts Warn",
+    "Senate Votes to Ban Senators and Staff From Using Prediction Markets",
+    "North Korean Hackers Have Stolen $6 Billion in Crypto‚ÄîIncluding 76% of 2026's Spoils: TRM"
   ],
   "affected_assets": [
     "BTC",
     "ETH",
     "SOL",
-    "DOT",
     "UNI",
     "OP",
     "LINK"
   ],
   "trending_coins": [
-    "PROS",
-    "PUMP",
+    "MEGA",
     "LUNC",
-    "HYPE",
-    "BIO",
-    "SOL",
-    "PI"
+    "ACN",
+    "PENGU",
+    "ASTEROID",
+    "MON",
+    "USDM"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.65,
-  "cached_at": 1777427721.9461188
+  "fetch_time_sec": 2.68,
+  "cached_at": 1777608026.137293
 }

@@ -1,17 +1,20 @@
 /**
  * Toll Calculator Service
  * Рассчитывает стоимость толлов по маршруту
+ * 
+ * FIX v14: Исправлена логика расчета — больше не суммируем ВСЕ дороги штата.
+ * Используем средний rate per mile × реальные мили в штате × оси.
  */
 
 const db = require('../db');
 
-// Axle multipliers по типу грузовика
+// Axle config: axles = физическое число осей
 const AXLE_CONFIG = {
-  '2-axle':  { axles: 2,  multiplier: 1.0 },
-  '3-axle':  { axles: 3,  multiplier: 1.8 },
-  '4-axle':  { axles: 4,  multiplier: 2.5 },
-  '5-axle':  { axles: 5,  multiplier: 3.2 },  // стандартный 18-wheeler
-  '6-axle':  { axles: 6,  multiplier: 3.8 },
+  '2-axle':  { axles: 2,  label: '2-Axle' },
+  '3-axle':  { axles: 3,  label: '3-Axle' },
+  '4-axle':  { axles: 4,  label: '4-Axle' },
+  '5-axle':  { axles: 5,  label: '5-Axle' },  // стандартный 18-wheeler
+  '6-axle':  { axles: 6,  label: '6-Axle' },
 };
 
 /**
@@ -25,10 +28,10 @@ function getTollsByState(state) {
 
 /**
  * Рассчитать стоимость толлов для маршрута
- * @param {string[]} states - штаты на маршруте (например ['TX', 'LA', 'FL'])
- * @param {number} distanceMiles - общая дистанция в милях
+ * @param {string[]} states - штаты на маршруте
+ * @param {number} distanceMiles - общая дистанция
  * @param {string} truckType - тип грузовика
- * @param {object} [stateMilesMap] - распределение миль по штатам { TX: 400, OK: 190, ... }
+ * @param {object} [stateMilesMap] - мили по штатам
  * @returns {{ total: number, breakdown: object[], states: string[] }}
  */
 function calculateTollCost(states, distanceMiles, truckType = '2-axle', stateMilesMap = null) {
@@ -40,24 +43,29 @@ function calculateTollCost(states, distanceMiles, truckType = '2-axle', stateMil
     const tolls = getTollsByState(state);
     if (tolls.length === 0) continue;
 
-    // Используем точное распределение миль по штату если доступно
     const milesInState = (stateMilesMap && stateMilesMap[state]) ? stateMilesMap[state] : distanceMiles / states.length;
 
-    let stateCost = 0;
+    // Средний rate per mile per axle по штату (только дороги с rate)
+    const perMileTolls = tolls.filter(t => t.cost_per_axle > 0);
+    if (perMileTolls.length === 0) continue;
 
-    for (const toll of tolls) {
-      let cost = 0;
+    const avgRatePerAxle = perMileTolls.reduce((s, t) => s + t.cost_per_axle, 0) / perMileTolls.length;
 
-      if (toll.cost_per_axle > 0) {
-        // Per-mile rate
-        cost = toll.cost_per_axle * milesInState * config.multiplier;
-      } else if (toll.min_cost > 0) {
-        // Flat rate (умножаем на множитель за оси)
-        cost = toll.min_cost * config.multiplier;
-      }
+    // Эвристика: какая доля миль в штате проходит по платным дорогам?
+    // Больше toll roads → выше coverage, но кап 35%
+    const coverageRatio = Math.min(0.35, perMileTolls.length * 0.0015 + 0.06);
+    const tollMiles = milesInState * coverageRatio;
 
-      // Sum realistic toll costs for this state
-      stateCost += cost;
+    // Основная стоимость: rate × мили × число осей
+    let stateCost = avgRatePerAxle * tollMiles * config.axles;
+
+    // Плюс вероятные bridge/flat tolls (среднее число фиксированных платежей на маршрут)
+    const flatTolls = tolls.filter(t => t.min_cost > 0 && t.cost_per_axle === 0);
+    if (flatTolls.length > 0) {
+      // Предполагаем ~1-2 фиксированных платежа на штат в зависимости от числа дорог
+      const likelyBridgeCount = Math.min(flatTolls.length, Math.ceil(milesInState / 200));
+      const avgFlatCost = flatTolls.reduce((s, t) => s + t.min_cost, 0) / flatTolls.length;
+      stateCost += avgFlatCost * likelyBridgeCount;
     }
 
     total += stateCost;
@@ -66,6 +74,7 @@ function calculateTollCost(states, distanceMiles, truckType = '2-axle', stateMil
       state,
       roads: tolls.length,
       miles_in_state: Math.round(milesInState),
+      toll_miles: Math.round(tollMiles),
       cost: parseFloat(stateCost.toFixed(2)),
     });
   }

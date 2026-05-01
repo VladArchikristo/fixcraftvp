@@ -1,36 +1,69 @@
 const { google } = require('googleapis');
 
-const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  },
-  scopes: ['https://www.googleapis.com/auth/calendar'],
-});
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
-const calendar = google.calendar({ version: 'v3', auth });
-const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID;
-
-async function createEvent({ name, phone, address, service_type, date, time_slot }) {
-  const timeMap = {
-    morning: { hour: 9, minute: 0, duration: 3 },
-    afternoon: { hour: 13, minute: 0, duration: 3 },
-    evening: { hour: 17, minute: 0, duration: 2 },
-  };
-  const t = timeMap[time_slot] || timeMap.morning;
-
-  const startDate = new Date(`${date}T${String(t.hour).padStart(2,'0')}:${String(t.minute).padStart(2,'0')}:00-05:00`);
-  const endDate = new Date(startDate.getTime() + t.duration * 60 * 60 * 1000);
-
-  const event = {
-    summary: `${process.env.BUSINESS_NAME || 'FixCraft'} — ${service_type.replace('_', ' ')}`,
-    description: `Client: ${name}\nPhone: ${phone}\nAddress: ${address || 'TBD'}\nService: ${service_type}`,
-    start: { dateTime: startDate.toISOString(), timeZone: 'America/New_York' },
-    end: { dateTime: endDate.toISOString(), timeZone: 'America/New_York' },
-  };
-
-  const res = await calendar.events.insert({ calendarId: CALENDAR_ID, requestBody: event });
-  return res.data;
+function getAuth() {
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  
+  if (!privateKey || privateKey === 'placeholder') {
+    throw new Error('Google Calendar private key not configured');
+  }
+  
+  return new google.auth.JWT(clientEmail, null, privateKey, SCOPES);
 }
 
-module.exports = { createEvent };
+async function createInspectionEvent({ name, phone, serviceType, date, timeSlot, notes }) {
+  try {
+    const auth = getAuth();
+    const calendar = google.calendar({ version: 'v3', auth });
+    
+    const calendarId = process.env.GOOGLE_CALENDAR_ID || 'primary';
+    
+    // Parse date (expects YYYY-MM-DD)
+    // Parse time — if specific time like "9:00 AM", use it. Otherwise default to 9 AM.
+    let startTime = '09:00:00';
+    let endTime = '10:00:00';
+    
+    if (timeSlot && timeSlot.includes(':')) {
+      // Try to parse "9:00 AM" or "14:30"
+      const match = timeSlot.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+      if (match) {
+        let hour = parseInt(match[1], 10);
+        const min = match[2];
+        const ampm = match[3]?.toUpperCase();
+        if (ampm === 'PM' && hour !== 12) hour += 12;
+        if (ampm === 'AM' && hour === 12) hour = 0;
+        startTime = `${String(hour).padStart(2, '0')}:${min}:00`;
+        // 1-hour inspection slot
+        const endHour = (hour + 1) % 24;
+        endTime = `${String(endHour).padStart(2, '0')}:${min}:00`;
+      }
+    }
+    
+    const startDateTime = `${date}T${startTime}-04:00`; // Charlotte EDT
+    const endDateTime = `${date}T${endTime}-04:00`;
+    
+    const event = {
+      summary: `🔧 FixCraft Inspection — ${name || 'Client'}`,
+      description: `Service: ${serviceType || 'TBD'}\nPhone: ${phone || 'N/A'}\nNotes: ${notes || 'None'}`,
+      start: { dateTime: startDateTime, timeZone: 'America/New_York' },
+      end: { dateTime: endDateTime, timeZone: 'America/New_York' },
+      reminders: {
+        useDefault: false,
+        overrides: [
+          { method: 'email', minutes: 60 },
+          { method: 'popup', minutes: 30 },
+        ],
+      },
+    };
+    
+    const res = await calendar.events.insert({ calendarId, requestBody: event });
+    return { success: true, eventId: res.data.id, link: res.data.htmlLink };
+  } catch (err) {
+    console.error('Calendar create error:', err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+module.exports = { createInspectionEvent };

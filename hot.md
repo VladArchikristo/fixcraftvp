@@ -1,36 +1,32 @@
 ---
-date: 2026-04-28
+date: 2026-04-29
 type: hot
 ---
 
 ## Последняя сессия
-- **Symphony MVP ЗАПУЩЕНА** — GitHub Issues → task_queue → Conductor → боты → результат в Issue + Telegram
-- LaunchAgents: github-watcher (каждые 5 мин) + conductor (daemon) оба активны
-- Тест: Issue #1 → Костя подхватил задачу, система работает end-to-end
-- 11 GitHub лейблов созданы на VladArchikristo/agents
+- FixCraftVP блог расширен до 138 статей + 4 страницы сервисов, закоммичено (b0bf8fc), задеплоено
+- 20 новых статей добавлены в blog index (page.tsx), контент вставлен
+- Hermes бот: диагностирован OAuth token revocation, требует перелогин
 
 ## Активные проекты
-- **Trading Bot (Василий)** — risk-off, 100% кэш $1,018.97 (+1.9%), утренний анализ выполнен
-- **FixCraftVP сайт** — 63 статьи на Vercel, 0 индексация Google, SEO recovery plan готов
-- **Маша** — estimator работает, 75+ площадок для гостевых постов найдено
-- **Костя** — 10 багов пофикшено, перезапущен и работает
-- **Beast Bot** — фронтенд v10, стабилен
-- **Алексей** (@usa_lawyer_bot) — задеплоен, НЕ закоммичен
-- **Зина** — семейная память, стабильна
-- **Toll Navigator** — парсинг завершён, деплой pending
-- **Philip Bot** — Google Calendar API pending
-- **Symphony** — ✅ АКТИВНА, github-watcher + conductor запущены
+- **Symphony** — MVP работает, conductor daemon (60s цикл, timeout 3600s), watcher (5 мин), 11 лейблов
+- **Trading Bot (Василий)** — AVAX SHORT активна, stop-loss обновлён до breakeven, F&G 26 (fear)
+- **FixCraftVP сайт** — 138 статей задеплоено (цель 80 перевыполнена), Google индексация = 0
+- **HaulWallet** — v13 аудит готов (arch 8.5, design 8, func 7.5, tests 5/10), нужны тесты
+- **Beast Bot** — v10, баг параллельных процессов пофикшен (2bd17e8)
+- **Маша** — estimator работает, 75+ площадок для гостевых постов
+- **Костя** — стабилен, назначен механизм прерывания стриминга
+- **Зина** — семейная память работает
 
 ## Незавершённое
-- **Git push заблокирован** — файл >100MB в истории, нужен BFG cleanup
-- **115+ файлов незакоммичено** — trading data, quick_logs, submodules
-- **Cron автосейв** — haiku-runner.sh восстановлен, cron не триггерит
-- Google Search Console регистрация для fixcraftvp.com
-- Philip: Google Calendar API
-- Костя: механизм прерывания стриминга
+- **213+ файлов незакоммичено** — trading data, quick_logs, submodules
+- HaulWallet: дописать тесты, настроить iOS/Android credentials, EAS Build
+- Philip: Google Calendar API — включить в Cloud Console
+- Google индексация 0 страниц — нужен sitemap + Search Console
+- Hermes: OAuth токен revoked, нужен ре-логин в сессии
 
 ## Важные правила
 - **git-save = только GitHub**, Vercel только для site-source
 - **НЕ редактировать** beast-bot/bot.py, .env, launcher.sh, LaunchAgent plist
-- **Git push требует BFG** — pre-receive hook отклоняет из-за >100MB файла в истории
-- **Karpathy rules** активны: думай → простота → хирургия → цель
+- **Symphony flow:** Telegram → Nexus создаёт Issue → watcher → conductor → агент → результат
+- **Боты проверять через PID файлы** (`~/logs/*.pid`), НЕ через `ps aux | grep имя`

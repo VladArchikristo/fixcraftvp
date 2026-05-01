@@ -1,16 +1,16 @@
 {
   "expo": {
     "name": "HaulWallet",
-    "slug": "haulwallet",
-    "version": "1.0.1",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0F172A"
-    },
+  "slug": "haulwallet",
+  "version": "1.14.0",
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "userInterfaceStyle": "automatic",
+  "splash": {
+    "image": "./assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#0B1220"
+  },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.haulwallet.app",
@@ -29,10 +29,10 @@
     },
     "android": {
       "targetSdkVersion": 35,
-      "versionCode": 13,
+      "versionCode": 14,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#0F172A"
+        "backgroundColor": "#0B1220"
       },
       "package": "com.haulwallet.app",
       "permissions": [

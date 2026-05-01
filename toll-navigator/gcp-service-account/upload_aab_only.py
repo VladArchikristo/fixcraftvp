@@ -15,7 +15,16 @@ from googleapiclient.http import MediaFileUpload
 # Configuration
 PACKAGE_NAME = "com.haulwallet.app"
 SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), "service-account.json")
-AAB_PATH = os.path.expanduser("~/Папка тест/fixcraftvp/toll-navigator/builds/haulwallet-v9.aab")
+AAB_DIR = os.path.expanduser("~/Папка тест/fixcraftvp/toll-navigator/builds")
+
+import glob
+def find_latest_aab():
+    files = glob.glob(os.path.join(AAB_DIR, "haulwallet-v*.aab"))
+    if not files:
+        return None
+    return max(files, key=os.path.getmtime)
+
+AAB_PATH = find_latest_aab() or os.path.join(AAB_DIR, "haulwallet-v9.aab")
 
 SCOPES = ["https://www.googleapis.com/auth/androidpublisher"]
 

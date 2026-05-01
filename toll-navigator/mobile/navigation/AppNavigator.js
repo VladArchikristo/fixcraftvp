@@ -32,9 +32,9 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const stackScreenOptions = {
-  headerStyle: { backgroundColor: COLORS.bg, elevation: 0, shadowOpacity: 0, borderBottomWidth: 1, borderBottomColor: COLORS.borderLight },
-  headerTintColor: COLORS.primary,
-  headerTitleStyle: { color: COLORS.textPrimary, fontWeight: '700' },
+  headerStyle: { backgroundColor: COLORS.bg, elevation: 0, shadowOpacity: 0, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  headerTintColor: COLORS.accent,
+  headerTitleStyle: { color: COLORS.textPrimary, fontWeight: '700', fontSize: 18 },
   cardStyle: { backgroundColor: COLORS.bg },
 };
 
@@ -165,13 +165,18 @@ function MainTabs({ onLogout }) {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: COLORS.bg,
-          borderTopColor: COLORS.borderLight,
+          backgroundColor: COLORS.bgCardAlt,
+          borderTopColor: COLORS.border,
           borderTopWidth: 1,
-          height: 60,
-          paddingBottom: 8,
+          height: 64,
+          paddingBottom: 10,
+          elevation: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 12,
         },
-        tabBarActiveTintColor: COLORS.primary,
+        tabBarActiveTintColor: COLORS.accent,
         tabBarInactiveTintColor: COLORS.tabInactive,
         tabBarIcon: ({ focused, color, size }) => {
           const icons = {
@@ -216,8 +221,8 @@ export default function AppNavigator() {
   if (isLoggedIn === null) {
     return (
       <View style={styles.splash}>
-        <Text style={styles.splashLogo}>🛣️</Text>
-        <ActivityIndicator size="large" color={COLORS.primary} style={{ marginTop: 24 }} />
+        <Text style={styles.splashLogo}>🚛</Text>
+        <ActivityIndicator size="large" color={COLORS.accent} style={{ marginTop: 24 }} />
       </View>
     );
   }

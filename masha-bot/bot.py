@@ -54,7 +54,7 @@ ALLOWED_USER = 244710532
 CLAUDE_PATH = "/Users/vladimirprihodko/.local/bin/claude"
 WORKING_DIR = "/Users/vladimirprihodko/Папка тест/fixcraftvp/"
 CLAUDE_MODEL = "claude-sonnet-4-6"
-CLAUDE_TIMEOUT = 600  # 10 min — consistent with other bots
+CLAUDE_TIMEOUT = 900  # 15 min — extended for complex marketing tasks
 
 LOG_DIR = Path.home() / "logs"
 LOG_DIR.mkdir(exist_ok=True)
@@ -262,13 +262,13 @@ _claude_executor = ThreadPoolExecutor(max_workers=1)
 _processing = False
 _processing_lock = asyncio.Lock()
 _processing_since: float | None = None  # timestamp when _processing became True
-_WATCHDOG_TIMEOUT = 300  # 5 min — soft reset if no Claude running
-_WATCHDOG_HARD_LIMIT = 600  # 10 min — hard reset even if Claude is alive
+_WATCHDOG_TIMEOUT = 660  # 11 min — soft reset if no Claude running
+_WATCHDOG_HARD_LIMIT = 720  # 12 min — hard reset even if Claude is alive
 _message_queue: deque = deque(maxlen=5)  # queue up to 5 messages
 
 # Polling health monitor — detect dead polling after Bad Gateway / network errors
 _last_update_time: float = time.time()  # last time ANY update was received
-_POLLING_DEAD_TIMEOUT = 900  # 15 min without any update = polling is dead
+_POLLING_DEAD_TIMEOUT = 3600  # 1 hour without any update = polling is dead
 _polling_restart_count: int = 0
 
 
@@ -595,6 +595,7 @@ def _call_claude_once(full_prompt: str, system: str, extra_flags: list[str] | No
         "--system-prompt", system,
         "--allowedTools", CLAUDE_TOOLS,
         "--permission-mode", "bypassPermissions",
+        "--max-turns", "3",
     ]
     if extra_flags:
         cmd.extend(extra_flags)
@@ -651,7 +652,7 @@ def _call_claude_sync(full_prompt: str, system: str, extra_flags: list[str] | No
             if ok:
                 return True, text
             if text == "TIMEOUT":
-                return False, "Таймаут (10 мин). Задача оказалась слишком объёмной. Попробуй разбить на части."
+                return False, "Таймаут (3 мин). Задача слишком объёмная — разбей на части."
             if attempt < 2:
                 delay = backoff[attempt]
                 log.info("Claude attempt %d/3 failed, retrying in %d sec...", attempt + 1, delay)
