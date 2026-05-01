@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-01T19:00:25.673211+00:00",
+  "timestamp": "2026-05-01T20:16:47.337917+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.48,
+  "score": -0.44,
   "fear_greed": {
     "value": 26,
     "label": "Fear",
@@ -18,22 +18,25 @@
     "BTC",
     "ETH",
     "SOL",
+    "XRP",
     "DOGE",
+    "BNB",
+    "ADA",
     "OP"
   ],
   "trending_coins": [
-    "PENGU",
     "MEGA",
-    "ACN",
     "UB",
+    "ACN",
     "HYPE",
-    "BTC",
-    "ETH"
+    "PENGU",
+    "MON",
+    "DOGE"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.84,
-  "cached_at": 1777662025.6734731
+  "fetch_time_sec": 2.76,
+  "cached_at": 1777666607.338123
 }
