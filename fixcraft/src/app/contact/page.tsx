@@ -205,22 +205,21 @@ export default function ContactPage() {
           </button>
 
           <p className="text-center text-[#6B6560]/60 text-sm">
-            Or call directly:{" "}
-            <a href="tel:7865660753" className="text-[#A67C52] hover:text-[#2C1B0F] transition-colors underline underline-offset-4">
-              (786) 566-0753
+            Or call us at{" "}
+            <a href="tel:+19802016705" className="text-[#A67C52] hover:text-[#2C1B0F] transition-colors underline underline-offset-4">
+              +1 (980) 201-6705
             </a>
+            <br />
+            We typically respond within 1 hour during business hours.
           </p>
         </form>
       </main>
 
       <footer className="bg-[#FAF7F2] border-t border-[#D4C4A8]/30 py-12 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-6xl mx-auto text-center">
           <p className="text-[#6B6560] text-sm">
             © 2026 FixCraft VP — Charlotte, NC
           </p>
-          <a href="tel:7865660753" className="text-[#A67C52] font-medium hover:text-[#2C1B0F] transition-colors text-sm">
-            (786) 566-0753
-          </a>
         </div>
       </footer>
     </>

@@ -58,48 +58,36 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-[#FAF7F2]">
+      <section className="relative min-h-[85vh] flex items-center justify-center bg-[#FAF7F2] px-4">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#E8DCC8]/50 via-transparent to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-[#D4C4A8]/30 via-transparent to-transparent" />
 
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto pt-20">
-          <p className="text-[#A67C52] text-sm font-medium uppercase tracking-[0.25em] mb-6 font-[family-name:var(--font-cormorant)]">
+        <div className="relative z-10 text-center max-w-5xl mx-auto pt-16 pb-8">
+          <p className="text-[#A67C52] text-xs sm:text-sm font-medium uppercase tracking-[0.2em] sm:tracking-[0.25em] mb-4 sm:mb-6 font-[family-name:var(--font-cormorant)]">
             Charlotte, NC &amp; Surrounding Areas
           </p>
-          <h1 className="font-[family-name:var(--font-playfair)] text-5xl md:text-7xl lg:text-8xl font-semibold leading-[1.1] mb-8 text-[#2C1B0F]">
+          <h1 className="font-[family-name:var(--font-playfair)] text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-semibold leading-[1.1] mb-6 sm:mb-8 text-[#2C1B0F]">
             Your Home,
             <br />
             <span className="text-[#A67C52]">Done Right</span>
           </h1>
-          <p className="text-lg md:text-xl text-[#6B6560] mb-12 max-w-2xl mx-auto leading-relaxed font-[family-name:var(--font-cormorant)]">
+          <p className="text-base sm:text-lg md:text-xl text-[#6B6560] mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed font-[family-name:var(--font-cormorant)] px-2">
             Professional furniture assembly, TV mounting, and handyman services
             for homeowners who value precision.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link
               href="/contact"
-              className="bg-[#2C1B0F] text-[#FAF7F2] px-10 py-4 text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#A67C52] transition-colors duration-300 shadow-xl shadow-[#2C1B0F]/10"
+              className="bg-[#2C1B0F] text-[#FAF7F2] px-8 sm:px-10 py-3.5 sm:py-4 text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#A67C52] transition-colors duration-300 shadow-lg shadow-[#2C1B0F]/10 inline-flex items-center justify-center"
             >
               Book a Service
             </Link>
-            <a
-              href="tel:7865660753"
-              className="border border-[#2C1B0F]/20 text-[#2C1B0F] px-10 py-4 text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#F5EFE6] transition-colors duration-300"
-            >
-              (786) 566-0753
-            </a>
           </div>
-        </div>
-
-        {/* Decorative line */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-          <span className="text-[#A67C52] text-xs uppercase tracking-[0.3em]">Scroll</span>
-          <div className="w-px h-12 bg-[#A67C52]/40" />
         </div>
       </section>
 
       {/* Services */}
-      <section className="py-28 px-4 bg-white">
+      <section className="py-16 sm:py-28 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
             <p className="text-[#A67C52] text-sm uppercase tracking-[0.25em] mb-4 font-[family-name:var(--font-cormorant)]">What We Do</p>
@@ -133,7 +121,7 @@ export default function HomePage() {
       </section>
 
       {/* Pricing */}
-      <section className="py-28 px-4 bg-[#FAF7F2]">
+      <section className="py-16 sm:py-28 px-4 bg-[#FAF7F2]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-20">
             <p className="text-[#A67C52] text-sm uppercase tracking-[0.25em] mb-4 font-[family-name:var(--font-cormorant)]">Pricing</p>
@@ -164,7 +152,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-28 px-4 bg-[#2C1B0F] text-center">
+      <section className="py-16 sm:py-28 px-4 bg-[#2C1B0F] text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="font-[family-name:var(--font-playfair)] text-4xl md:text-5xl font-semibold text-[#FAF7F2] mb-6">
             Ready to Get Started?
@@ -191,13 +179,10 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="bg-[#FAF7F2] border-t border-[#D4C4A8]/30 py-12 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-6xl mx-auto text-center">
           <p className="text-[#6B6560] text-sm">
             © 2026 FixCraft VP — Charlotte, NC
           </p>
-          <a href="tel:7865660753" className="text-[#A67C52] font-medium hover:text-[#2C1B0F] transition-colors text-sm">
-            (786) 566-0753
-          </a>
         </div>
       </footer>
     </>

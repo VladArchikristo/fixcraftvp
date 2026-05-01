@@ -1142,17 +1142,32 @@ def main():
 
     # Kill any competing instances of this script before acquiring lock
     my_pid = os.getpid()
+    competitor_pids: set[int] = set()
     try:
-        result = subprocess.run(
-            ["pgrep", "-f", "masha-bot/bot.py"],
-            capture_output=True, text=True
-        )
-        for pid_str in result.stdout.strip().split("\n"):
-            if pid_str.strip() and int(pid_str.strip()) != my_pid:
-                competitor = int(pid_str.strip())
+        # Method 1: pgrep by full path (works when launched from terminal)
+        r1 = subprocess.run(["pgrep", "-f", "masha-bot/bot.py"], capture_output=True, text=True)
+        for p in r1.stdout.strip().split("\n"):
+            if p.strip():
+                competitor_pids.add(int(p.strip()))
+
+        # Method 2: PID file (works when launched by LaunchAgent as "Python bot.py")
+        pid_file = Path.home() / "logs" / "masha-bot.pid"
+        if pid_file.exists():
+            try:
+                saved_pid = int(pid_file.read_text().strip())
+                if saved_pid and saved_pid != my_pid:
+                    competitor_pids.add(saved_pid)
+            except (ValueError, OSError):
+                pass
+
+        competitor_pids.discard(my_pid)
+        for competitor in competitor_pids:
+            try:
                 log.info("Evicting competing instance PID %d", competitor)
                 os.kill(competitor, signal.SIGTERM)
-        if result.stdout.strip():
+            except ProcessLookupError:
+                pass
+        if competitor_pids:
             time.sleep(2)  # wait for them to die
     except Exception as e:
         log.warning("Could not evict competitors: %s", e)
