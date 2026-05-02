@@ -2,51 +2,55 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="nav-glass fixed top-0 left-0 right-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-0 group">
-          <span className="logo-fix logo-text">Fix</span>
-          <span className="logo-craft logo-text">Craft</span>
-          <span className="logo-vp logo-text">VP</span>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-white/10">
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link href="/" className="text-xl font-bold tracking-tight">
+          FixCraft<span className="text-amber-400">VP</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-12">
-          <Link href="/" className="text-[#5A6B7C] hover:text-[#1B2A52] transition-colors text-sm font-bold uppercase tracking-widest">Home</Link>
-          <Link href="/gallery" className="text-[#5A6B7C] hover:text-[#1B2A52] transition-colors text-sm font-bold uppercase tracking-widest">Gallery</Link>
-          <Link href="/contact" className="text-[#5A6B7C] hover:text-[#1B2A52] transition-colors text-sm font-bold uppercase tracking-widest">Contact</Link>
-          <Link href="/contact" className="btn-primary text-sm">
-            Get a Quote
-          </Link>
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
+          <Link href="/gallery" className="text-gray-300 hover:text-white transition-colors">Gallery</Link>
+          <Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link>
+          <a
+            href="tel:7865660753"
+            className="bg-amber-400 text-gray-950 px-4 py-2 rounded-full font-semibold hover:bg-amber-300 transition-colors"
+          >
+            (786) 566-0753
+          </a>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile hamburger */}
         <button
-          className="md:hidden text-[#1B2A52] hover:text-[#B8922A] transition-colors p-2"
+          className="md:hidden text-gray-300 hover:text-white"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
-          {open ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {open ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-[#FAF7F2] border-t border-[#E8E0D5] px-6 pb-8 pt-4">
-          <div className="flex flex-col gap-8">
-            <Link href="/" onClick={() => setOpen(false)} className="text-[#5A6B7C] hover:text-[#1B2A52] transition-colors text-sm font-bold uppercase tracking-widest">Home</Link>
-            <Link href="/gallery" onClick={() => setOpen(false)} className="text-[#5A6B7C] hover:text-[#1B2A52] transition-colors text-sm font-bold uppercase tracking-widest">Gallery</Link>
-            <Link href="/contact" onClick={() => setOpen(false)} className="text-[#5A6B7C] hover:text-[#1B2A52] transition-colors text-sm font-bold uppercase tracking-widest">Contact</Link>
-            <Link href="/contact" onClick={() => setOpen(false)} className="btn-primary text-sm text-center">
-              Get a Quote
-            </Link>
-          </div>
+        <div className="md:hidden bg-gray-950 border-t border-white/10 px-4 pb-4 flex flex-col gap-4 text-sm font-medium">
+          <Link href="/" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white pt-4">Home</Link>
+          <Link href="/gallery" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white">Gallery</Link>
+          <Link href="/contact" onClick={() => setOpen(false)} className="text-gray-300 hover:text-white">Contact</Link>
+          <a href="tel:7865660753" className="bg-amber-400 text-gray-950 px-4 py-2 rounded-full font-semibold text-center">
+            (786) 566-0753
+          </a>
         </div>
       )}
     </nav>
