@@ -46,3 +46,4 @@ philip-bot/credentials.json
 cron-secrets.conf
 *.conf
 .vercel
+toll-navigator/gcp-service-account/service-account.json
