@@ -1,0 +1,4 @@
+.env
+incoming_photos/
+__pycache__/
+*.pyc

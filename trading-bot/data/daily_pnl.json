@@ -166,5 +166,26 @@
     "pnl_day": 0,
     "pnl_pct": 0.0,
     "trades": 0
+  },
+  {
+    "date": "2026-05-02",
+    "balance": 710.87,
+    "pnl_day": 0,
+    "pnl_pct": 0.0,
+    "trades": 0
+  },
+  {
+    "date": "2026-05-03",
+    "balance": 710.87,
+    "pnl_day": 0,
+    "pnl_pct": 0.0,
+    "trades": 0
+  },
+  {
+    "date": "2026-05-04",
+    "balance": 710.87,
+    "pnl_day": 0,
+    "pnl_pct": 0.0,
+    "trades": 0
   }
 ]

@@ -1,0 +1,11 @@
+.env
+conversation_log.jsonl
+conversation_log.jsonl.old
+history.json
+history.json.bak
+logs/
+__pycache__/
+*.pyc
+*.tmp
+*.lock
+*.pid

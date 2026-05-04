@@ -1,18 +1,18 @@
 {
-  "timestamp": "2026-05-01T20:16:47.337917+00:00",
+  "timestamp": "2026-05-04T20:33:16.255396+00:00",
   "sentiment": "slightly_bearish",
-  "score": -0.44,
+  "score": -0.32,
   "fear_greed": {
-    "value": 26,
+    "value": 40,
     "label": "Fear",
     "trend": "falling"
   },
   "key_events": [
-    "Tether posts $1.04 billion Q1 profit, reaches $8.23 billion reserve buffer",
-    "SBI Holdings eyes stake in crypto exchange Bitbank to build digital asset powerhouse",
-    "DeFi can freeze stolen funds, but not everyone agrees it should",
-    "Ethereum Foundation finalizes sale of 10,000 ether to BitMine as part of its treasury strategy",
-    "Canadian pension giant AIMCo buys the dip in Strategy, now sitting on $69 million unrealized gain"
+    "GameStop's $55.5 billion eBay takeover bid puts its $368 million bitcoin stash in the crosshairs",
+    "Shopify and National Bank of Canada are among backers of a new digital currency built to settle trades 24/7",
+    "Kraken's parent company Payward alleges $25 million crypto custody fraud in lawsuit against Etana and firm's CEO",
+    "Hut 8 swaps Coinbase loan for cheaper FalconX deal, slashing borrowing costs as it bets big on AI",
+    "Circle, Coinbase lead crypto stocks rally amid Clarity Act progress, bitcoin hitting $80,000"
   ],
   "affected_assets": [
     "BTC",
@@ -22,21 +22,24 @@
     "DOGE",
     "BNB",
     "ADA",
-    "OP"
+    "UNI",
+    "ARB",
+    "OP",
+    "LINK"
   ],
   "trending_coins": [
-    "MEGA",
-    "UB",
-    "ACN",
-    "HYPE",
+    "FIRO",
+    "LUNC",
+    "ASTEROID",
+    "ONDO",
+    "BTC",
     "PENGU",
-    "MON",
-    "DOGE"
+    "RAVE"
   ],
   "risk_level": "HIGH",
   "vasily_action": "REDUCE_SIZE — уменьши размер новых позиций на 50%, ужесточи SL",
   "news_count": 20,
   "hacks_detected": 0,
-  "fetch_time_sec": 2.76,
-  "cached_at": 1777666607.338123
+  "fetch_time_sec": 2.98,
+  "cached_at": 1777926796.255594
 }

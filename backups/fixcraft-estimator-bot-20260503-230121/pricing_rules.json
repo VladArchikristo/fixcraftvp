@@ -1,0 +1,62 @@
+{
+  "business": {
+    "name": "FixCraft VP",
+    "market": "Charlotte, NC",
+    "currency": "USD",
+    "hourly_rate": 85,
+    "minimum_service_call": 95,
+    "material_markup_pct": 20,
+    "final_quote_rule": "Photo estimate is ballpark only. Final quote after Vlad confirms scope."
+  },
+  "services": {
+    "furniture_assembly": {
+      "small_piece": [49, 69],
+      "mid_piece": [69, 119],
+      "large_piece": [119, 199],
+      "bed_frame": [79, 149],
+      "dresser": [79, 129],
+      "full_room_set": [199, 350]
+    },
+    "tv_mounting": {
+      "standard_wall": [129, 179],
+      "above_fireplace": [179, 249],
+      "brick_or_masonry": [179, 299],
+      "large_tv_65_plus": [179, 279]
+    },
+    "hose_reel_mounting": {
+      "vinyl_or_wood": [95, 150],
+      "brick_tapcon": [125, 200],
+      "multiple_units_each_after_first": [60, 100]
+    },
+    "shelves_and_hanging": {
+      "single_item": [75, 125],
+      "each_additional_simple": [25, 60],
+      "heavy_item_or_masonry": [125, 225]
+    },
+    "drywall_patch": {
+      "small_patch_under_2sqft": [125, 225],
+      "medium_patch_2_8sqft": [225, 450],
+      "large_patch_8_32sqft": [450, 900],
+      "finish_paint_extra": [75, 250]
+    },
+    "painting_touchup": {
+      "per_wall_labor_low_per_sqft": 1.25,
+      "per_wall_labor_high_per_sqft": 3.0,
+      "small_room_labor": [250, 600]
+    },
+    "faucet_replacement": {
+      "standard_replace_labor": [150, 275],
+      "with_disposal_or_complication": [225, 400]
+    },
+    "general_handyman": {
+      "hourly_rate": 85,
+      "half_day": [320, 420],
+      "full_day": [600, 800]
+    }
+  },
+  "sqft_rules": {
+    "wall_sqft_formula": "width_ft * height_ft",
+    "photo_requires_scale": ["tape measure", "known door height 80in", "standard outlet", "drywall sheet 4x8", "known tile size"],
+    "no_scale_behavior": "ask for width and height or give low-confidence range only"
+  }
+}

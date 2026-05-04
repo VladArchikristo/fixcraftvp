@@ -10,9 +10,16 @@
 
 import sqlite3
 import os
+from pathlib import Path
 from datetime import datetime
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "memory.db")
+OBSIDIAN_VAULT = Path(os.getenv("OBSIDIAN_VAULT", "/Users/vladimirprihodko/Documents/Obsidian/Vault"))
+OBSIDIAN_MEMORY_FILES = [
+    OBSIDIAN_VAULT / "z-moc.md",
+    OBSIDIAN_VAULT / "inbox" / "inbox.md",
+    OBSIDIAN_VAULT / "crm" / "fixcraft-crm.md",
+]
 
 
 def _get_conn():
@@ -351,9 +358,49 @@ def get_session_summaries(user_id: int, bot_name: str, limit: int = 5) -> list:
     return [{"summary": r["summary"], "message_count": r["message_count"], "created_at": r["created_at"]} for r in reversed(rows)]
 
 
+def read_obsidian_memory(limit_chars: int = 9000) -> str:
+    """Reads shared Obsidian/Wiki memory for agents. Safe, read-only, capped."""
+    chunks = []
+    for path in OBSIDIAN_MEMORY_FILES:
+        try:
+            if not path.exists() or not path.is_file():
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace").strip()
+            if not text:
+                continue
+            chunks.append(f"## {path.relative_to(OBSIDIAN_VAULT)}\n{text[:3000]}")
+        except Exception:
+            continue
+    combined = "\n\n".join(chunks).strip()
+    return combined[:limit_chars]
+
+
+def append_obsidian_dialogue(bot_name: str, user_id: int, role: str, content: str, limit_chars: int = 2500):
+    """Append raw dialogue into shared Obsidian inbox for durable cross-agent recall."""
+    try:
+        inbox_dir = OBSIDIAN_VAULT / "raw-dialogue"
+        inbox_dir.mkdir(parents=True, exist_ok=True)
+        day = datetime.now().strftime("%Y-%m-%d")
+        path = inbox_dir / f"{day}.md"
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        clean = (content or "").replace("\x00", "").strip()[:limit_chars]
+        if not clean:
+            return
+        with path.open("a", encoding="utf-8") as f:
+            f.write(f"\n\n### {ts} | {bot_name} | user:{user_id} | {role}\n{clean}\n")
+    except Exception:
+        pass
+
+
 def build_memory_prompt(user_id: int, bot_name: str) -> str:
-    """Строит блок памяти для system prompt: факты + последние сессии. ~500-800 токенов."""
+    """Строит блок памяти для system prompt: SQLite факты/сессии + общий Obsidian/Wiki слой."""
     parts = []
+
+    obsidian_memory = read_obsidian_memory()
+    if obsidian_memory:
+        parts.append("=== ОБЩАЯ ПАМЯТЬ / OBSIDIAN WIKI ===")
+        parts.append("Это постоянная общая память всех агентов Влада. Используй как источник контекста, но не печатай секреты.")
+        parts.append(obsidian_memory)
 
     # Факты (Level 2)
     facts = get_facts(user_id, bot_name, limit=30)

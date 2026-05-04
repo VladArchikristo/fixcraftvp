@@ -996,7 +996,8 @@ async def error_handler(update, context: ContextTypes.DEFAULT_TYPE):
         log.warning("Network error: %s", err)
         return
     if isinstance(err, Conflict):
-        log.error("Conflict (duplicate instance). Shutting down.")
+        log.error("Conflict (duplicate instance). Waiting 25s for Telegram to release session, then shutting down.")
+        time.sleep(25)
         os.kill(os.getpid(), signal.SIGTERM)
         return
     log.error("Unhandled error: %s", err, exc_info=True)
